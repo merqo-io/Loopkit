@@ -486,3 +486,5 @@ Prepared migration `0049` adds atomic referral state comparison and recoverable 
 Prepared migrations `0050`–`0060` also address atomic program replacement, plant and stamp redemption, visit concurrency, retired RPC privileges, points/voucher locking, saved-card authorization for customer actions and Qkit claims, audit-table privileges, and historical feedback writes. Disposable CI applied the complete prerequisite migration chain and passed all 284 PostgreSQL assertions in 14 suites. Production rollout and separate multi-session isolation tests remain outstanding; CI does not establish production application.
 
 Component ownership and preserved behavior for the current reuse cleanup are recorded in [the component reuse specification](docs/meta/2026-10-10-component-reuse-spec.md).
+
+The AI harness follows templateCentral 6.0.4: hook commands are anchored on the project directory, and the guard against committing to `main` reads the branch of the directory a command runs in. The dated entry in `AGENTS.md` lists what was adopted.
