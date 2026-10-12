@@ -1,18 +1,18 @@
 {
-  "templatecentral_version": "5.15.0",
+  "templatecentral_version": "6.0.4",
   "stack": "nextjs",
   "adapted": "Next 16 + Supabase (auth/db/realtime) — Supabase variant, based on qkit harness",
   "seeded_at": "2026-07-17",
-  "review_note": "Fresh skeleton seeded from sibling project qkit's harness (same templateCentral Supabase variant, shared Supabase project, schema per kit — loopkit owns `loopkit`). No domain code carried over.",
+  "review_note": "2026-10-12: templateCentral 5.15 to 6.0.4. Ported the harness qkit adopted in its 6.0.1 and 6.0.4 reviews by 3-way merge, keeping this repo's local lines: project-anchored hook commands with timeouts, clean-tree Stop skip, additionalContext typecheck feedback, the Skill matcher, the per-segment block-no-verify parser with cwd-aware branch detection, protect-files path resolution, a verifier that fails on an unreadable manifest, a wider commit-msg gate, fail-closed PR doc gates in CI. Removed post-tool-failure.sh. Not adopted: exec-form hooks, the gitleaks syntax changes, ci-gates.sh, hooks/local, Azure DevOps and OpenCode items. Reasoning is in the AGENTS.md entry of the same date. Hashes below were recomputed from the LF-normalised blobs. Fresh skeleton seeded from sibling project qkit's harness (same templateCentral Supabase variant, shared Supabase project, schema per kit — loopkit owns `loopkit`). No domain code carried over.",
   "adoWiki": false,
   "richReadme": true,
   "seeded_files": {
     "AGENTS.md": {
-      "origin_hash": "6d68cd4e3b4ef5c25ccfeb81e9d9d9d054ea682b06aa460450259a9f84345281",
+      "origin_hash": "52180602ade15eaf0c8fce3b2eca20b554143168dbd6682d1ce3485ea9e859f4",
       "path": "AGENTS.md"
     },
     ".claude/settings.json": {
-      "origin_hash": "095343453b5162532f5ce032172acad3b9df731635539aff63f477632d584d0a",
+      "origin_hash": "8f5e8a2b963faf7ea8ba018e13eab14440d23b06a156c5bf714d81acf03f8b0f",
       "path": ".claude/settings.json"
     },
     ".claude/skills/next-verify/SKILL.md": {
@@ -24,47 +24,43 @@
       "path": ".claude/skills/skill-audit/SKILL.md"
     },
     ".claude/hooks/protect-files.sh": {
-      "origin_hash": "6cdf909952f50b5e653520d87f9ddc4571ada0ddf737ba9a1809794fdea1409f",
+      "origin_hash": "d9572d8039525dfd740315013c21010fcfd23e050515e26e81b4307d71bb6851",
       "path": ".claude/hooks/protect-files.sh"
     },
     ".claude/hooks/block-no-verify.sh": {
-      "origin_hash": "9848cf024fde5e6046c67523ac0162f0ccd57ad39ac1802dd6b413e71232c14a",
+      "origin_hash": "e780da8322bc56be0eb517637aa4593257ef9b8c02e98e3c4d8c60f689544a1b",
       "path": ".claude/hooks/block-no-verify.sh"
     },
     ".claude/hooks/user-prompt-guard.cjs": {
-      "origin_hash": "534a7cb2b825a73d23a8687bbd14c9e9161b24ac3c61ae3df2fcfca8fbddccfd",
+      "origin_hash": "c2caf4b848a00e182e3f4c70517cc774e9c873d346a01e5311ea87eb2872b803",
       "path": ".claude/hooks/user-prompt-guard.cjs"
     },
     ".claude/hooks/post-edit-typecheck.sh": {
-      "origin_hash": "f17a4f6cb67b023f1058acb542b43ccf294de612e5d15352776ffbb50366b509",
+      "origin_hash": "c69f6097a629aa85f321c8c08b61d6dee62d75b82f8647e7034fd0cc08a8172e",
       "path": ".claude/hooks/post-edit-typecheck.sh"
     },
     ".claude/hooks/post-edit-comment-check.sh": {
-      "origin_hash": "f7e5f610135ea114b401b6ca22ce01af3a64729eb753645f21460810ff749fee",
+      "origin_hash": "506aa92359903beb7bf7c8d35636f0150d4f4939c25b680821ae662ab5324275",
       "path": ".claude/hooks/post-edit-comment-check.sh"
     },
     ".claude/comment-hygiene-patterns.txt": {
       "origin_hash": "61e448dd1b798c211ec37f4efc9667275a0eaea0ba3be2217d4d187d15cbf078",
       "path": ".claude/comment-hygiene-patterns.txt"
     },
-    ".claude/hooks/post-tool-failure.sh": {
-      "origin_hash": "31af87da10f31b5ead1d5fa455ffeb8903956ed2dacb5ef7319b1e8a2822efcd",
-      "path": ".claude/hooks/post-tool-failure.sh"
-    },
     ".claude/hooks/stop-checks.sh": {
-      "origin_hash": "6c1142a9207b1ff1f055596875eb962d6ef3da8dd1c7d97c5c9f35fcad973b2e",
+      "origin_hash": "a6ab4ee64c6a3b533ed5f1cda6122a46e2009bc4a17c159605e29d1317cd7415",
       "path": ".claude/hooks/stop-checks.sh"
     },
     ".claude/hooks/subagent-stop.sh": {
-      "origin_hash": "8107bdb11b7dbe71121d24e1e585284f430503f96713b5bcc646308a9c777da5",
+      "origin_hash": "48d0784d1cca1174cb9877d7b9d8579f3585ca53dc927d3e463ca1fdde24922d",
       "path": ".claude/hooks/subagent-stop.sh"
     },
     ".claude/hooks/session-context.sh": {
-      "origin_hash": "f7e2464fd25dc4149686ada47a938b7a8ea478fc9636772907ea5e747c940cd5",
+      "origin_hash": "88104c5326ce6c17a047588d995103235ecd871f0a2e60b3bb20baa92585d136",
       "path": ".claude/hooks/session-context.sh"
     },
     ".claude/hooks/skill-usage-log.sh": {
-      "origin_hash": "5405cf6e00bfee4c2f0bf7f90285215825f9671376383154b2a7aff2dd6db74f",
+      "origin_hash": "db8271e45ac10d7e77fe25eddae497f967a78a483f935c824a34f7f61be0ebdf",
       "path": ".claude/hooks/skill-usage-log.sh"
     },
     ".husky/pre-commit": {
@@ -84,7 +80,7 @@
       "path": ".husky/lib/readme-coupling.sh"
     },
     ".husky/lib/commit-msg-check.sh": {
-      "origin_hash": "f5347b89ef6d530b5ae388cc4dea3bfce10898c89e5218dcfd908876ccc0659e",
+      "origin_hash": "7e90a71545213bdfd63ac45bfad3ef25c06a7ad96d6bbd4a4833c8664bf5bc23",
       "path": ".husky/lib/commit-msg-check.sh"
     },
     ".husky/lib/pre-commit.sh": {
@@ -104,11 +100,11 @@
       "path": ".gitleaks.toml"
     },
     ".github/workflows/ci.yml": {
-      "origin_hash": "7de45d815f79791585422083db642b95d18be27f717563f9c08ae71a34e3ea31",
+      "origin_hash": "cd30da3848cf57fe61a98a5b260ac25bc7596389e889b65e203b97512e8bd5d5",
       "path": ".github/workflows/ci.yml"
     },
     ".claude/verify-harness.sh": {
-      "origin_hash": "8aaa9c5c712f59d2397108aa4b2f5555c325e40155fa2cc81513c62711eeff4b",
+      "origin_hash": "fe9d5222d0664f07e4eff795c904239c1d8b8b75c4a60814ffd3459464c3b2b4",
       "path": ".claude/verify-harness.sh"
     },
     ".claude/regen-harness.sh": {

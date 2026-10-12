@@ -43,6 +43,8 @@ steps. `.claude/verify-harness.sh` checks committed HEAD blobs for the paths
 listed in `.claude/harness.json`; it does not certify every file here
 or uncommitted script changes.
 
+`commit-msg-check.sh` also accepts a breaking-change subject (`type(scope)!:`) and the messages git writes itself (`Revert "…"`, `fixup!`, `squash!`, `amend!`).
+
 ## Parent
 
 [.husky](../README.md)

@@ -14,7 +14,7 @@ against.
 - `harness.json` — harness manifest: templateCentral version/stack/adaptation metadata, plus `seeded_files` — the enforcement-layer file list (path + sha256 `origin_hash`) that `verify-harness.sh` diffs against
 - `hooks/`
 - `regen-harness.sh` — human-run-only: rewrites every `origin_hash` in `harness.json` to match current on-disk content, blessing an intentional harness edit; `protect-files.sh` requires human approval before an agent can even edit it (most recently re-run 2026-08-05 after adding the comment-hygiene enforcement layer)
-- `settings.json` — wires each script in `hooks/` to a Claude Code lifecycle event (PreToolUse, PostToolUse, PostToolUseFailure, Stop, SubagentStop, SessionStart, UserPromptSubmit) and sets tool `permissions` (allow/deny) and skill overrides
+- `settings.json` — wires each script in `hooks/` to a Claude Code lifecycle event (PreToolUse, PostToolUse, Stop, SubagentStop, SessionStart, UserPromptSubmit) and sets tool `permissions` (allow/deny) and skill overrides
 - `skills/`
 - `verify-harness.sh` — harness integrity sensor: computes sha256 from committed HEAD blobs for every seeded file matched by a path guard (`hooks/`, `settings.json`, harness verifier/regen scripts, `.husky/`, `.gitleaks.toml`, `.github/workflows/`) and compares to `harness.json`'s `origin_hash` baseline; read-only, exits non-zero on drift; run by `.github/workflows/ci.yml` and husky's `pre-push` hook
 
@@ -39,7 +39,7 @@ clobbering project-specific edits, not a live-checked baseline itself (that's
 `harness.json`'s job); `protect-files.sh` guards writes to it for the same
 reason it guards `harness.json`. `skills/` holds project skills invoked
 on-demand; `skill-usage-log.sh` (in `hooks/`, wired via the `PostToolUse`
-`Skill__.*` matcher) appends a line to `.claude/skill-usage.log` on every
+`Skill` matcher) appends a line to `.claude/skill-usage.log` on every
 skill invocation, which the `skill-audit` skill (`skills/skill-audit/`)
 later aggregates to surface repeated workflows worth capturing as a new
 project skill.
