@@ -8,11 +8,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
-- The `/earn` claim form now tells the customer why their phone number and name are collected and links to the Privacy Policy, using the shared `DataCollectionNotice` from `@merqo/ui` v0.33.0. Display only; no consent is recorded, and no SMS, voice or fax marketing exists here, so the Do Not Call Registry does not apply.
+- The `/earn` claim form now tells the customer why their phone number and name are collected and links to the Privacy Policy, using the shared `DataCollectionNotice` from `@merqo/ui`. Display only; no consent is recorded, and no SMS, voice or fax marketing exists here, so the Do Not Call Registry does not apply.
 
 ### Changed
 
-- Pin `@merqo/ui` to commit `04c39eba29ada9fa75082d4d6b08580ddff0901a` (tag `v0.33.0`) with matching build permission. Adds `DataCollectionNotice`.
+- Pin `@merqo/ui` to commit `2e8744e6184c2b44e3e2b903736bede8bdbc5967` (tag `v0.34.0`) with matching build permission. Adds `DataCollectionNotice` and its `phoneOptional` prop (not used here: the `/earn` phone field is required).
 - Internal: the AI harness follows templateCentral 6.0.4. Hook commands no
   longer depend on the shell's current directory, the end-of-turn test run
   is skipped when nothing changed, the guard against skipping git hooks
