@@ -29,6 +29,18 @@ describe("EarnForm", () => {
     expect(hidden).toHaveValue("o1");
   });
 
+  it("tells the customer why their phone and name are collected, with a privacy link", () => {
+    render(<EarnForm orderId="o1" />);
+    expect(
+      screen.getByText(
+        /We use your phone number and name to track your stamp card and send reward updates\./,
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: "Privacy Policy" }),
+    ).toHaveAttribute("href", "/legal/privacy");
+  });
+
   it("shows the vendor name when provided", () => {
     render(<EarnForm orderId="o1" vendorName="Kaya Toast Co." />);
     expect(
