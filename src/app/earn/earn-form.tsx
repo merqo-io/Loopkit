@@ -2,7 +2,7 @@
 
 import { useActionState } from "react";
 import { claimEarnAction, type EarnState } from "./actions";
-import { ElevatedCard } from "@merqo/ui";
+import { DataCollectionNotice, ElevatedCard } from "@merqo/ui";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -87,6 +87,7 @@ export function EarnForm({
             the shop for help if you have lost it.
           </p>
         </div>
+        <DataCollectionNotice purpose="track your stamp card and send reward updates" />
         {state.status === "error" && (
           <p role="alert" className="text-sm text-destructive">
             {state.message}
