@@ -441,7 +441,7 @@ by every kit's own `/about` page), linked from the landing `Nav`/`Footer`.
 ## Docs
 
 - Deploy runbook: `docs/DEPLOY.md`
-- Source: `github.com/merqo-io/loopkit`; `@merqo/ui` installs from `github:merqo-io/merqo-ui`, pinned to the commit tagged `v0.34.0`; `pnpm-workspace.yaml` allows its build for that commit only
+- Source: `github.com/merqo-io/loopkit`; `@merqo/ui` installs from `github:merqo-io/merqo-ui`, pinned to the commit tagged `v0.34.1` (its `BackButton` keeps its button styling without a `LinkComponent`); `pnpm-workspace.yaml` allows its build for that commit only
 - Plans/specs: `docs/superpowers/`
 - Release history: `CHANGELOG.md`
 - Dependency security overrides (force-patched transitive CVEs, each
