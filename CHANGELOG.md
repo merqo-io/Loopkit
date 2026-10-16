@@ -92,6 +92,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Fixed
 
+- `@merqo/ui` pinned to v0.34.1. Its `BackButton` dropped its button styling without a `LinkComponent`, so the counter, profile and redeem-voucher pages' "Back to dashboard" button showed the arrow stacked above the label.
 - Improve small brand-text and input-boundary contrast in both themes while preserving primary button fills and decorative separators.
 
 - Replacing or removing a profile icon no longer leaves the old image in storage.
