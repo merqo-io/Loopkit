@@ -34,7 +34,7 @@ at render. `BackButton` falls back to a plain `<a>`.
 
 ## Component ownership
 
-`SetupForm` composes the native form and mounted wizard panels. `use-setup-form-state.ts` owns defaults, action selection, live preview state and edit impact. `setup-basics-fields.tsx`, `setup-points-fields.tsx` and `setup-rules-fields.tsx` own mechanic field groups while preserving submitted names. Preview and customer cards share `components/progress-visual.tsx`; preview timing remains local.
+`SetupForm` composes the native form and mounted wizard panels. `use-setup-form-state.ts` owns defaults, action selection, live preview state and edit impact. `setup-basics-fields.tsx`, `setup-points-fields.tsx` and `setup-rules-fields.tsx` own mechanic field groups while preserving submitted names. Dollar fields (reward cost, points-to-cash rate) use `@merqo/ui`'s `MoneyInput`, which reformats to two decimals on blur. Preview and customer cards share `components/progress-visual.tsx`; preview timing remains local.
 
 ## Parent
 

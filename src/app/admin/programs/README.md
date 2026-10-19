@@ -13,7 +13,7 @@ activity, linking into the per-program detail route.
 ## Connectivity
 
 `[id]/` holds the per-program detail route this list's rows link to; both
-share the `health-badge.ts` and `Stat` helpers from the parent `admin/`
+share the `health-badge.tsx` and `Stat` helpers from the parent `admin/`
 folder.
 
 ## Server-component note

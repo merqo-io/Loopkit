@@ -1,10 +1,10 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Gift, Stamp } from "lucide-react";
+import { BackButton } from "@merqo/ui";
+import { Gift, Stamp } from "lucide-react";
 import { requireAdmin } from "@/lib/admin";
 import { getProgramDetail } from "@/lib/admin-data";
 import { programHealth } from "@/lib/program-health";
-import { HEALTH_BADGE } from "@/app/admin/health-badge";
+import { ProgramHealthBadge } from "@/app/admin/health-badge";
 import { formatSgtDate, formatSgtDateTime } from "@/lib/format";
 import { Badge } from "@/components/ui/badge";
 import { Stat } from "@/app/admin/stat";
@@ -39,22 +39,14 @@ export default async function AdminProgramDetailPage({
     },
     now,
   );
-  const badge = HEALTH_BADGE[health];
 
   return (
     <main className="mx-auto max-w-3xl space-y-8 px-5 py-8">
       <div className="space-y-3">
-        <Link
-          href="/admin/programs"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground"
-        >
-          <ArrowLeft className="size-3.5" /> All programs
-        </Link>
+        <BackButton href="/admin/programs" label="All programs" />
         <div className="flex flex-wrap items-center gap-3">
           <h1 className="text-3xl font-bold tracking-tight">{program.name}</h1>
-          <Badge variant={badge.variant} className="capitalize">
-            {badge.label}
-          </Badge>
+          <ProgramHealthBadge health={health} />
           <Badge variant={program.active ? "default" : "outline"}>
             {program.active ? "Active" : "Inactive"}
           </Badge>

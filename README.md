@@ -242,10 +242,8 @@ opaque client-reference stub — the root cause of the 2026-09-18 RSC
 crashes. It also promoted four modules loopkit had its own copy of:
 `safeRedirectPath`, `resizeToWebp`, `BackToTop` and `GoogleMark`.
 `src/lib/image-upload-adapter.ts` stays local — the Storage bucket and
-object path are loopkit's own. `src/app/admin/health-badge.ts` also stays:
-a cross-kit sweep flagged it as a `StatusBadge` duplicate, but its `gold`
-variant is loopkit's reward motif and `StatusBadge` is deliberately not a
-`Badge` wrapper. v0.31.1 fixes a latent `resizeToWebp` bug where a dotless
+object path are loopkit's own. `src/app/admin/health-badge.tsx` now renders
+through `StatusBadge` (gold-tinted `active` keeps the reward motif). v0.31.1 fixes a latent `resizeToWebp` bug where a dotless
 filename yielded the whole name as its extension. Which kit uses which
 shared export is tracked in `../merqo-ui/docs/usage-matrix.md`.
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { MoneyInput } from "@merqo/ui";
 import { Input } from "@/components/ui/input";
 
 import { Section } from "@/components/section";
@@ -128,14 +129,10 @@ export function SetupPointsFields({
             className="h-11 w-24 rounded-xl"
           />
           <span className="text-sm text-muted-foreground">points =</span>
-          <Input
-            type="number"
+          <MoneyInput
             required
-            min={0.01}
-            step={0.01}
-            max={100000}
-            value={offsetRateDollars}
-            onChange={(e) => setOffsetRateDollars(Number(e.target.value))}
+            cents={Math.round(offsetRateDollars * 100)}
+            onCommit={(cents) => setOffsetRateDollars((cents ?? 0) / 100)}
             aria-label="Dollars off"
             className="h-11 w-24 rounded-xl"
           />
