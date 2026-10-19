@@ -38,6 +38,12 @@ vi.mock("@/components/dashboard-tour", () => ({
   ),
 }));
 
+vi.mock("@/components/landing/footer", () => ({
+  Footer: ({ showSignIn }: { showSignIn?: boolean }) => (
+    <div data-testid="footer" data-sign-in={String(showSignIn)} />
+  ),
+}));
+
 import DashboardLayout from "./layout";
 
 beforeEach(() => {
@@ -58,6 +64,14 @@ describe("DashboardLayout", () => {
     const wrapper = nav.parentElement;
     expect(wrapper).toHaveClass("contents", "print:hidden");
     expect(wrapper?.tagName).not.toBe("HEADER");
+  });
+
+  it("ends every page with the family footer, without a sign-in link and hidden in print", async () => {
+    render(await DashboardLayout({ children: <div>content</div> }));
+
+    const footer = screen.getByTestId("footer");
+    expect(footer).toHaveAttribute("data-sign-in", "false");
+    expect(footer.parentElement).toHaveClass("contents", "print:hidden");
   });
 
   it("passes seen=false to DashboardTour when the vendor has never completed it", async () => {

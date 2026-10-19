@@ -8,6 +8,7 @@ import { createServerClient } from "@/lib/supabase/server";
 import { stampTourSeen } from "@/lib/tour-prefs";
 import { DashboardNav } from "@/app/dashboard/dashboard-nav";
 import { DashboardTour } from "@/components/dashboard-tour";
+import { Footer } from "@/components/landing/footer";
 
 export default async function DashboardLayout({
   children,
@@ -79,6 +80,10 @@ export default async function DashboardLayout({
       <main className="mx-auto w-full max-w-7xl flex-1 p-5 py-10">
         {children}
       </main>
+      {/* Family footer: no sign-in link (signed in), hidden in print. */}
+      <div className="contents print:hidden">
+        <Footer showSignIn={false} />
+      </div>
       <DashboardTour seen={!!vendorRow?.tour_seen_at} />
     </div>
   );

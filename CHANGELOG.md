@@ -8,10 +8,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
+- The dashboard now ends every page with the family footer (no sign-in link, hidden in print), matching stockkit, printkit and paykit.
 - The `/earn` claim form now tells the customer why their phone number and name are collected and links to the Privacy Policy, using the shared `DataCollectionNotice` from `@merqo/ui`. Display only; no consent is recorded, and no SMS, voice or fax marketing exists here, so the Do Not Call Registry does not apply.
 
 ### Changed
 
+- Shared-UI parity: the admin program health chip (list and detail) uses `@merqo/ui`'s `StatusBadge` instead of a local `Badge` variant, the admin program detail back link uses `BackButton`, and the setup reward-cost and points-to-cash dollar fields use `MoneyInput` (shown with two decimals once you leave the field; posted field names and values are unchanged apart from that formatting). The vendor Tier and program-type `Badge`s stay: they are labels, not triage status.
 - Pin `@merqo/ui` to commit `2e8744e6184c2b44e3e2b903736bede8bdbc5967` (tag `v0.34.0`) with matching build permission. Adds `DataCollectionNotice` and its `phoneOptional` prop (not used here: the `/earn` phone field is required).
 - Internal: the AI harness follows templateCentral 6.0.4. Hook commands no
   longer depend on the shell's current directory, the end-of-turn test run

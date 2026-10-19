@@ -8,8 +8,8 @@ landing page.
 ## Contents
 
 - `benefits.tsx` — `Benefits`: eyebrow ("Why vendors switch") + `h2` heading above a 3-column value-prop grid ("Regulars, not one-offs" / "Zero friction" / "Built for a stall"), icon + title + body per item — `border-t` section wrapper matches `how-it-works.tsx`'s divider/heading pattern
-- `footer.tsx` — `Footer`: single-row site footer, matching qkit's exactly. Since 2026-09-16 a thin wrapper around `@merqo/ui`'s own `Footer` (`wordmark`/`tagline`/`kitName` slots) — loopkit's copy was found structurally identical to qkit's and paykit's, differing only in that content, and promoted. No bottom call-to-action band above it (removed to match qkit, which never had one).
-- `footer.test.tsx` — asserts the wordmark link, tagline, copyright line, the About link, Terms/Privacy links, and sign-in link all render.
+- `footer.tsx` — `Footer`: single-row site footer, matching qkit's exactly. Takes `showSignIn` (default true); the dashboard layout passes false. Since 2026-09-16 a thin wrapper around `@merqo/ui`'s own `Footer` (`wordmark`/`tagline`/`kitName` slots) — loopkit's copy was found structurally identical to qkit's and paykit's, differing only in that content, and promoted. No bottom call-to-action band above it (removed to match qkit, which never had one).
+- `footer.test.tsx` — also covers `showSignIn={false}` dropping the sign-in link. Asserts the wordmark link, tagline, copyright line, the About link, Terms/Privacy links, and sign-in link all render.
 - `faq.tsx` — `Faq`: eyebrow ("Questions") + `h2` heading, `border-t` section wrapper matching `how-it-works.tsx`'s pattern, above an accordion of `<details>`-based `FaqItem`s (setup time, app-free claim, reward payout, multi-program tiering), anchored `id="faq"`
 - `hero.tsx` — `Hero`: above-the-fold headline/subhead/CTA buttons/trust bullets plus the `StampCard` illustration, links to `/dashboard` when `authed` else `/login?mode=signup`
 - `how-it-works.tsx` — `HowItWorks`: numbered 3-step explainer (set up card → stamp by phone → they come back), anchored `id="how"`

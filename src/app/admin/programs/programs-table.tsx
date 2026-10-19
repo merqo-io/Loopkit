@@ -5,8 +5,7 @@ import { DataTable, type DataTableColumn } from "@merqo/ui";
 import type { ProgramOverviewRow } from "@/lib/admin-data";
 import { programHealth, type ProgramHealth } from "@/lib/program-health";
 import { formatSgtDate } from "@/lib/format";
-import { Badge } from "@/components/ui/badge";
-import { HEALTH_BADGE, type BadgeVariant } from "@/app/admin/health-badge";
+import { ProgramHealthBadge } from "@/app/admin/health-badge";
 
 // `DataTable` is a `@merqo/ui` Client Component, so its `columns` cell
 // renderers and `getRowKey` function can't be handed to it from the Server
@@ -69,12 +68,7 @@ export function ProgramsTable({
           },
           now,
         );
-        const badge: BadgeVariant = HEALTH_BADGE[health];
-        return (
-          <Badge variant={badge.variant} className="capitalize">
-            {badge.label}
-          </Badge>
-        );
+        return <ProgramHealthBadge health={health} />;
       },
     },
     {

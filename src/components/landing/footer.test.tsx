@@ -37,4 +37,12 @@ describe("Footer", () => {
       "/about",
     );
   });
+
+  it("drops the sign-in link when showSignIn is false (dashboard)", () => {
+    render(<Footer showSignIn={false} />);
+    expect(
+      screen.queryByRole("link", { name: "Vendor sign in →" }),
+    ).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Terms" })).toBeInTheDocument();
+  });
 });

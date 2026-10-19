@@ -934,7 +934,7 @@ describe("SetupForm reward cost field", () => {
       />,
     );
     expect(screen.getByLabelText("Reward cost (SGD, optional)")).toHaveValue(
-      1.5,
+      "1.50",
     );
   });
 
@@ -956,7 +956,8 @@ describe("SetupForm reward cost field", () => {
 
     expect(saveMock).toHaveBeenCalled();
     const submitted = saveMock.mock.calls[0][1] as FormData;
-    expect(submitted.get("reward_cost_dollars")).toBe("2.4");
+    // MoneyInput reformats to two decimals on blur (clicking Save blurs it).
+    expect(submitted.get("reward_cost_dollars")).toBe("2.40");
   });
 });
 

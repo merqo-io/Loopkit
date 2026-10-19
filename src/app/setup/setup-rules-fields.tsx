@@ -1,6 +1,6 @@
 "use client";
 
-import { centsToDollars } from "@/lib/money";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -8,7 +8,7 @@ import { Switch } from "@/components/ui/switch";
 
 import { Section } from "@/components/section";
 import { EditImpactDialog } from "@/app/setup/edit-impact-dialog";
-import { InfoTooltip } from "@merqo/ui";
+import { InfoTooltip, MoneyInput } from "@merqo/ui";
 
 import { SlidersHorizontal } from "lucide-react";
 
@@ -55,6 +55,11 @@ export function SetupRulesFields({
     setStep,
     editImpactLines,
   } = controller;
+  // MoneyInput is controlled in cents; its text value (a dollar string such
+  // as "1.20") still posts under the same `reward_cost_dollars` field name.
+  const [rewardCostCents, setRewardCostCents] = useState<number | undefined>(
+    program?.reward_cost_cents ?? undefined,
+  );
   return (
     <Section
       icon={<SlidersHorizontal className="size-4" />}
@@ -197,19 +202,12 @@ export function SetupRulesFields({
               }
             />
           </div>
-          <Input
+          <MoneyInput
             id="reward_cost_dollars"
             name="reward_cost_dollars"
-            type="number"
-            min={0}
-            step="0.01"
-            inputMode="decimal"
             placeholder="1.20"
-            defaultValue={
-              program?.reward_cost_cents != null
-                ? centsToDollars(program.reward_cost_cents).toString()
-                : ""
-            }
+            cents={rewardCostCents}
+            onCommit={setRewardCostCents}
             className="h-11 rounded-xl"
           />
           <p className="text-xs text-muted-foreground">
