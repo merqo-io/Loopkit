@@ -80,9 +80,7 @@ export default async function DashboardLayout({
       <main className="mx-auto w-full max-w-7xl flex-1 p-5 py-10">
         {children}
       </main>
-      {/* Family footer at the bottom of every dashboard page, matching
-          stockkit/printkit/paykit: no sign-in link (already signed in),
-          hidden in print like the nav above. */}
+      {/* Family footer: no sign-in link (signed in), hidden in print. */}
       <div className="contents print:hidden">
         <Footer showSignIn={false} />
       </div>
