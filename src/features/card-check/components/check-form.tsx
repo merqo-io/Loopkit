@@ -6,6 +6,8 @@ import { forgetCustomerProof } from "@/lib/customer-proof-actions";
 import { STATUS_IDLE } from "../types";
 import { ProgramCardStatus } from "./program-card-status";
 import { BirthdayField } from "./birthday-field";
+import { MarketingConsentToggle } from "./marketing-consent-toggle";
+import { MarketingOptIn } from "@/components/marketing-opt-in";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,9 +15,11 @@ import { Label } from "@/components/ui/label";
 export function CheckForm({
   vendorId,
   referralCode,
+  marketingText,
 }: {
   vendorId: string;
   referralCode?: string;
+  marketingText: string;
 }) {
   const [state, formAction, pending] = useActionState(
     checkStatusAction,
@@ -97,6 +101,7 @@ export function CheckForm({
               recover your card.
             </p>
           </div>
+          <MarketingOptIn id="card-check-marketing" text={marketingText} />
           <Button
             type="button"
             variant="outline"
@@ -154,6 +159,14 @@ export function CheckForm({
             />
           ))}
           <BirthdayField vendorId={vendorId} phone={state.phone!} />
+          {state.marketing && (
+            <MarketingConsentToggle
+              key={`${state.phone}-${state.marketing.granted}-${state.marketing.saveFailed}`}
+              vendorId={vendorId}
+              phone={state.phone!}
+              initial={state.marketing}
+            />
+          )}
         </div>
       )}
     </div>

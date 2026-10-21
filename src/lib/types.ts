@@ -1,3 +1,6 @@
+export type MarketingConsentSource =
+  "card_check" | "earn" | "card_view" | "vendor_recorded";
+
 export type Json =
   | string
   | number
@@ -424,6 +427,37 @@ export interface Database {
         };
         Relationships: [];
       };
+      marketing_consents: {
+        Row: {
+          id: number;
+          vendor_id: string;
+          phone: string;
+          granted: boolean;
+          wording_version: string | null;
+          wording_text: string | null;
+          source: MarketingConsentSource;
+          recorded_at: string;
+        };
+        Insert: {
+          vendor_id: string;
+          phone: string;
+          granted: boolean;
+          wording_version?: string | null;
+          wording_text?: string | null;
+          source: MarketingConsentSource;
+          recorded_at?: string;
+        };
+        Update: {
+          vendor_id?: string;
+          phone?: string;
+          granted?: boolean;
+          wording_version?: string | null;
+          wording_text?: string | null;
+          source?: MarketingConsentSource;
+          recorded_at?: string;
+        };
+        Relationships: [];
+      };
       vendor_notify_settings: {
         Row: {
           vendor_id: string;
@@ -520,6 +554,26 @@ export interface Database {
     };
     Views: Record<string, never>;
     Functions: {
+      customer_set_marketing_consent: {
+        Args: {
+          p_vendor: string;
+          p_phone: string;
+          p_token: string;
+          p_granted: boolean;
+          p_wording_version: string;
+          p_wording_text: string;
+          p_source: Exclude<MarketingConsentSource, "vendor_recorded">;
+        };
+        Returns: boolean;
+      };
+      customer_marketing_consent: {
+        Args: { p_vendor: string; p_phone: string; p_token: string };
+        Returns: boolean;
+      };
+      vendor_withdraw_marketing_consent: {
+        Args: { p_phone: string };
+        Returns: void;
+      };
       owns_program: {
         Args: { p_program: string };
         Returns: boolean;

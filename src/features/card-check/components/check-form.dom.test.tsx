@@ -31,7 +31,7 @@ describe("CheckForm", () => {
       message: "No rewards",
     });
     const user = userEvent.setup();
-    render(<CheckForm vendorId="v1" />);
+    render(<CheckForm marketingText="Offers text" vendorId="v1" />);
     await user.click(
       screen.getByRole("button", { name: "Forget saved card on this browser" }),
     );
@@ -50,7 +50,7 @@ describe("CheckForm", () => {
   it("allows retry after forgetting saved proof rejects", async () => {
     forgetProofMock.mockRejectedValueOnce(new Error("unavailable"));
     const user = userEvent.setup();
-    render(<CheckForm vendorId="v1" />);
+    render(<CheckForm marketingText="Offers text" vendorId="v1" />);
     const button = screen.getByRole("button", {
       name: "Forget saved card on this browser",
     });
@@ -66,7 +66,9 @@ describe("CheckForm", () => {
   });
 
   it("renders the phone input and submit button with the vendor id in a hidden field", () => {
-    const { container } = render(<CheckForm vendorId="v1" />);
+    const { container } = render(
+      <CheckForm marketingText="Offers text" vendorId="v1" />,
+    );
     expect(screen.getByLabelText("Your phone number")).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: "Check my card" }),
@@ -76,13 +78,19 @@ describe("CheckForm", () => {
   });
 
   it("renders no hidden ref field when no referral code is given", () => {
-    const { container } = render(<CheckForm vendorId="v1" />);
+    const { container } = render(
+      <CheckForm marketingText="Offers text" vendorId="v1" />,
+    );
     expect(container.querySelector('input[name="ref"]')).toBeNull();
   });
 
   it("renders the referral code in a hidden ref field when given", () => {
     const { container } = render(
-      <CheckForm vendorId="v1" referralCode="abc123" />,
+      <CheckForm
+        marketingText="Offers text"
+        vendorId="v1"
+        referralCode="abc123"
+      />,
     );
     const hidden = container.querySelector('input[name="ref"]');
     expect(hidden).toHaveValue("abc123");
@@ -110,7 +118,7 @@ describe("CheckForm", () => {
       ],
     });
     const user = userEvent.setup();
-    render(<CheckForm vendorId="v1" />);
+    render(<CheckForm marketingText="Offers text" vendorId="v1" />);
     await user.type(screen.getByLabelText("Your phone number"), "91234567");
     await user.click(screen.getByRole("button", { name: "Check my card" }));
 
@@ -127,7 +135,7 @@ describe("CheckForm", () => {
       message: "Enter a valid Singapore phone number.",
     });
     const user = userEvent.setup();
-    render(<CheckForm vendorId="v1" />);
+    render(<CheckForm marketingText="Offers text" vendorId="v1" />);
     await user.type(screen.getByLabelText("Your phone number"), "123");
     await user.click(screen.getByRole("button", { name: "Check my card" }));
 
@@ -142,12 +150,31 @@ describe("CheckForm", () => {
       message: "We couldn't find any rewards here.",
     });
     const user = userEvent.setup();
-    render(<CheckForm vendorId="v1" />);
+    render(<CheckForm marketingText="Offers text" vendorId="v1" />);
     await user.type(screen.getByLabelText("Your phone number"), "91234567");
     await user.click(screen.getByRole("button", { name: "Check my card" }));
 
     expect(await screen.findByRole("alert")).toHaveTextContent(
       "We couldn't find any rewards here.",
     );
+  });
+
+  it("offers an unticked marketing opt-in and shows the toggle once found", async () => {
+    checkStatusActionMock.mockResolvedValue({
+      status: "found",
+      cards: [],
+      phone: "+6591234567",
+      marketing: { granted: true, text: "Offers text", saveFailed: false },
+    });
+    const user = userEvent.setup();
+    render(<CheckForm marketingText="Offers text" vendorId="v1" />);
+    expect(
+      screen.getByRole("checkbox", { name: "Offers text" }),
+    ).not.toBeChecked();
+    await user.type(screen.getByLabelText("Your phone number"), "91234567");
+    await user.click(screen.getByRole("button", { name: "Check my card" }));
+    expect(
+      await screen.findByRole("switch", { name: "Offers by message" }),
+    ).toBeChecked();
   });
 });

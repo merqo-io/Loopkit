@@ -14,7 +14,13 @@ import { qrSvg } from "@merqo/ui";
 import { isCardExpired } from "@/lib/expiry";
 import type { ActionResult } from "@/lib/action-result";
 import { completeReferralCredit } from "./referral-credit";
-import type { CardStatus, StatusState } from "../types";
+import {
+  MARKETING_CONSENT_VERSION,
+  marketingConsentText,
+  marketingOptedIn,
+} from "@/lib/marketing-consent";
+import { getShopName } from "@/lib/shop-name";
+import type { CardStatus, MarketingStatus, StatusState } from "../types";
 
 type VendorJoinRow = {
   program_id: string;
@@ -155,7 +161,14 @@ async function checkStatusActionImpl(
     return { status: "none", message: "We couldn't find any rewards here." };
   }
 
-  await saveCustomerProof(vendorId, rows[0]!.card_token);
+  const proofToken = rows[0]!.card_token;
+  await saveCustomerProof(vendorId, proofToken);
+  const marketing = await syncMarketingConsent(
+    vendorId,
+    normalized.phone,
+    proofToken,
+    marketingOptedIn(formData),
+  );
   const pendingCredit = payload?.referral_credit;
   if (isPendingReferralCredit(pendingCredit)) {
     await creditReferralHost(pendingCredit);
@@ -223,6 +236,61 @@ async function checkStatusActionImpl(
     cards,
     phone: normalized.phone,
     vendorAvatarUrl: rows[0]?.vendor_avatar_url ?? null,
+    marketing,
+  };
+}
+
+// An unticked box never withdraws: it only means no new opt-in was given.
+async function syncMarketingConsent(
+  vendorId: string,
+  phone: string,
+  token: string,
+  optIn: boolean,
+): Promise<MarketingStatus> {
+  const text = marketingConsentText(await getShopName(vendorId));
+  try {
+    return await readOrGrantMarketingConsent(
+      vendorId,
+      phone,
+      token,
+      optIn,
+      text,
+    );
+  } catch {
+    return { granted: false, text, saveFailed: true };
+  }
+}
+
+async function readOrGrantMarketingConsent(
+  vendorId: string,
+  phone: string,
+  token: string,
+  optIn: boolean,
+  text: string,
+): Promise<MarketingStatus> {
+  const supabase = await createServiceClient();
+  let saveFailed = false;
+  if (optIn) {
+    const { error } = await supabase.rpc("customer_set_marketing_consent", {
+      p_vendor: vendorId,
+      p_phone: phone,
+      p_token: token,
+      p_granted: true,
+      p_wording_version: MARKETING_CONSENT_VERSION,
+      p_wording_text: text,
+      p_source: "card_check",
+    });
+    saveFailed = !!error;
+  }
+  const { data, error } = await supabase.rpc("customer_marketing_consent", {
+    p_vendor: vendorId,
+    p_phone: phone,
+    p_token: token,
+  });
+  return {
+    granted: !error && data === true,
+    text,
+    saveFailed: saveFailed || !!error,
   };
 }
 
@@ -363,6 +431,39 @@ async function selectPointsRewardActionImpl(
   };
 }
 
+async function setMarketingConsentActionImpl(
+  formData: FormData,
+): Promise<ActionResult<{ granted: boolean }>> {
+  const normalized = normalizePhone(String(formData.get("phone") ?? ""));
+  if (!normalized.ok) {
+    return { success: false, error: "Enter a valid Singapore phone number." };
+  }
+  const vendorId = String(formData.get("vendor") ?? "");
+  if (!vendorIdSchema.safeParse(vendorId).success) {
+    return { success: false, error: "Missing shop." };
+  }
+  const granted = z.enum(["true", "false"]).safeParse(formData.get("granted"));
+  if (!granted.success) return { success: false, error: "Missing choice." };
+  const proof = await readCustomerProof(vendorId);
+  if (!proof)
+    return {
+      success: false,
+      error: "Use your saved card code or ask the shop to recover your card.",
+    };
+  const supabase = await createServiceClient();
+  const { data, error } = await supabase.rpc("customer_set_marketing_consent", {
+    p_vendor: vendorId,
+    p_phone: normalized.phone,
+    p_token: proof,
+    p_granted: granted.data === "true",
+    p_wording_version: MARKETING_CONSENT_VERSION,
+    p_wording_text: marketingConsentText(await getShopName(vendorId)),
+    p_source: "card_view",
+  });
+  if (error) return { success: false, error: "Something went wrong." };
+  return { success: true, granted: data === true };
+}
+
 export async function checkStatusAction(
   prev: StatusState,
   formData: FormData,
@@ -405,6 +506,18 @@ export async function selectPointsRewardAction(
     return {
       success: false,
       error: "Could not redeem your reward. Try again.",
+    };
+  }
+}
+export async function setMarketingConsentAction(
+  formData: FormData,
+): Promise<ActionResult<{ granted: boolean }>> {
+  try {
+    return await setMarketingConsentActionImpl(formData);
+  } catch {
+    return {
+      success: false,
+      error: "Could not save your choice. Try again.",
     };
   }
 }

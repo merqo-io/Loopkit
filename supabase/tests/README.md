@@ -23,6 +23,7 @@ fixtures have not yet been executed in this checkout.
 - `points-and-voucher-locks.test.sql` and `stamp-redemption.test.sql` cover lock
   ordering and voucher status; `isolation/stamp-redemption.spec` is a separate
   PostgreSQL multi-session isolation fixture, not automatically run by pgTAP.
+- `marketing-consent.test.sql` covers consent grants, proof checks, vendor isolation, vendor-only withdrawal, immediate effect and the append-only trigger.
 - `audit-truncate-privilege.test.sql` checks effective maintenance privileges and
   denied audit truncation; `legacy-feedback-privileges.test.sql` checks retired
   client writes and retained service maintenance access.

@@ -69,4 +69,6 @@ exception.
 
 - `0060_qualified_rpc_columns.sql` — qualifies column references that overlap RPC output parameters in referral joins and points offsets, preserving signatures, execution grants and row locks. Existing pgTAP tests verify both runtime paths.
 
+- `0061_marketing_consent.sql`: PDPA marketing consent: append-only `loopkit.marketing_consents` log (granted or withdrawn, `wording_version` plus `wording_text` snapshot required on grants, `source`, `recorded_at`), FK-cascaded from `loopkit.customers`. A trigger blocks UPDATE and no role holds DELETE. Vendors read their own rows under RLS; no client write grant. `customer_set_marketing_consent` and `customer_marketing_consent` are service-role RPCs gated by the card-token proof; `vendor_withdraw_marketing_consent` lets a signed-in vendor record a withdrawal only. Not yet applied to prod.
+
 Prepared audit migrations require database validation and rollout review before deployment.

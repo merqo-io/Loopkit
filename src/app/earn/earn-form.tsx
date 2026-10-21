@@ -6,15 +6,18 @@ import { DataCollectionNotice, ElevatedCard } from "@merqo/ui";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { MarketingOptIn } from "@/components/marketing-opt-in";
 
 const initialState: EarnState = { status: "idle" };
 
 export function EarnForm({
   orderId,
   vendorName,
+  marketingText,
 }: {
   orderId: string;
   vendorName?: string;
+  marketingText: string;
 }) {
   const [state, formAction, pending] = useActionState(
     claimEarnAction,
@@ -30,6 +33,11 @@ export function EarnForm({
         {state.rewardText && (
           <p className="mt-1 text-sm text-muted-foreground">
             {state.rewardText}
+          </p>
+        )}
+        {state.marketingSaveFailed && (
+          <p role="alert" className="mt-2 text-sm text-destructive">
+            We could not save your offers choice. Turn it on from your card.
           </p>
         )}
       </ElevatedCard>
@@ -87,6 +95,7 @@ export function EarnForm({
             the shop for help if you have lost it.
           </p>
         </div>
+        <MarketingOptIn id="earn-marketing" text={marketingText} />
         <DataCollectionNotice purpose="track your stamp card and send reward updates" />
         {state.status === "error" && (
           <p role="alert" className="text-sm text-destructive">

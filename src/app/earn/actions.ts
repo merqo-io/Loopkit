@@ -8,6 +8,12 @@ import {
   readCustomerProof,
   saveCustomerProof,
 } from "@/lib/customer-proof";
+import {
+  MARKETING_CONSENT_VERSION,
+  marketingConsentText,
+  marketingOptedIn,
+} from "@/lib/marketing-consent";
+import { getShopName } from "@/lib/shop-name";
 
 export type EarnState = {
   status: "idle" | "error" | "success";
@@ -15,6 +21,7 @@ export type EarnState = {
   stampCount?: number;
   stampsRequired?: number;
   rewardText?: string;
+  marketingSaveFailed?: boolean;
 };
 
 const inputSchema = z.object({
@@ -78,11 +85,30 @@ export async function claimEarnAction(
         message: "Something went wrong. Please try again.",
       };
     await saveCustomerProof(vendorId.data, result.data.card_token);
+    let marketingSaveFailed = false;
+    if (marketingOptedIn(formData)) {
+      const { error: consentError } = await supabase.rpc(
+        "customer_set_marketing_consent",
+        {
+          p_vendor: vendorId.data,
+          p_phone: normalized.phone,
+          p_token: result.data.card_token,
+          p_granted: true,
+          p_wording_version: MARKETING_CONSENT_VERSION,
+          p_wording_text: marketingConsentText(
+            await getShopName(vendorId.data),
+          ),
+          p_source: "earn",
+        },
+      );
+      marketingSaveFailed = !!consentError;
+    }
     return {
       status: "success",
       stampCount: result.data.stamp_count,
       stampsRequired: result.data.stamps_required,
       rewardText: result.data.reward_text,
+      marketingSaveFailed: marketingSaveFailed || undefined,
     };
   } catch {
     return {

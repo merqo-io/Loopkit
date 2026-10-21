@@ -10,6 +10,10 @@ const { getCustomerDetailMock, listActivityMock } = vi.hoisted(() => ({
 vi.mock("@/features/auth", () => ({ requireVendor: vi.fn(async () => ({})) }));
 vi.mock("@/lib/customers", () => ({
   getCustomerDetail: getCustomerDetailMock,
+  getMarketingConsentStatus: vi.fn(async () => null),
+}));
+vi.mock("./marketing-consent-panel", () => ({
+  MarketingConsentPanel: () => <p>Marketing panel</p>,
 }));
 vi.mock("@/lib/activity", () => ({ listActivity: listActivityMock }));
 vi.mock("@/lib/program", () => ({

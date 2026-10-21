@@ -1,6 +1,8 @@
 import { Wordmark } from "@/components/landing/wordmark";
 import { createServerClient } from "@/lib/supabase/server";
 import { CheckForm } from "@/features/card-check";
+import { marketingConsentText } from "@/lib/marketing-consent";
+import { getShopName } from "@/lib/shop-name";
 
 type CheckPageProps = {
   searchParams: Promise<{ v?: string; ref?: string }>;
@@ -26,6 +28,7 @@ export default async function CheckPage({ searchParams }: CheckPageProps) {
     });
     programs = data ?? [];
   }
+  const shopName = v && programs.length > 0 ? await getShopName(v) : null;
 
   return (
     <main className="flex min-h-screen items-center justify-center p-5">
@@ -47,7 +50,11 @@ export default async function CheckPage({ searchParams }: CheckPageProps) {
 
         <div className="rounded-2xl border bg-card px-7 py-9 shadow-sm">
           {v ? (
-            <CheckForm vendorId={v} referralCode={ref} />
+            <CheckForm
+              vendorId={v}
+              referralCode={ref}
+              marketingText={marketingConsentText(shopName)}
+            />
           ) : (
             <p className="text-sm text-muted-foreground">
               Ask the shop for their loyalty link.

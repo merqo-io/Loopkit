@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
+- Customers can now opt in to offers by message. `/c` and `/earn` show an unticked checkbox whose wording names the shop, SMS, WhatsApp and Telegram, and the phone number. Each opt-in is stored with its wording version and text, its source and a timestamp in the new append-only `loopkit.marketing_consents` log (migration `0061`, not yet applied to prod). Customers can turn offers off or back on from their `/c` card view. A vendor can record an opt-out a customer asks for in person on the customer detail page, but can never record an opt-in. Every withdrawal takes effect immediately. Cashier enrolment at the counter records no consent; it tells the cashier to point the customer to the shop QR. No message is sent anywhere yet. Do Not Call Registry checks are deferred until an SMS, voice or fax send exists.
+
 - The dashboard now ends every page with the family footer (no sign-in link, hidden in print), matching stockkit, printkit and paykit.
 - The `/earn` claim form now tells the customer why their phone number and name are collected and links to the Privacy Policy, using the shared `DataCollectionNotice` from `@merqo/ui`. Display only; no consent is recorded, and no SMS, voice or fax marketing exists here, so the Do Not Call Registry does not apply.
 

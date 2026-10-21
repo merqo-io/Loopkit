@@ -15,6 +15,9 @@ vi.mock("@/lib/customer-proof", async () => {
     saveCustomerProof: saveProof,
   };
 });
+vi.mock("@/lib/shop-name", () => ({
+  getShopName: vi.fn(async () => "Kaya Toast"),
+}));
 import { claimEarnAction } from "./actions";
 const order = "00560000-0000-0000-0000-000000000100";
 const vendor = "00560000-0000-0000-0000-000000000001";
@@ -151,5 +154,42 @@ describe("claimEarnAction capability boundary", () => {
     expect((await claimEarnAction({ status: "idle" }, form())).status).toBe(
       "error",
     );
+  });
+});
+describe("claimEarnAction marketing opt-in", () => {
+  it("records a ticked opt-in with the returned card proof", async () => {
+    rpc
+      .mockResolvedValueOnce({ data: vendor, error: null })
+      .mockResolvedValueOnce({ data: result, error: null })
+      .mockResolvedValueOnce({ data: true, error: null });
+    const state = await claimEarnAction(
+      { status: "idle" },
+      form({ marketing: "yes" }),
+    );
+    expect(state.status).toBe("success");
+    expect(state.marketingSaveFailed).toBeUndefined();
+    expect(rpc).toHaveBeenLastCalledWith("customer_set_marketing_consent", {
+      p_vendor: vendor,
+      p_phone: "+6591234567",
+      p_token: token,
+      p_granted: true,
+      p_wording_version: expect.any(String),
+      p_wording_text: expect.stringContaining("Kaya Toast may send me offers"),
+      p_source: "earn",
+    });
+  });
+  it("keeps the stamp and flags a failed consent save", async () => {
+    rpc
+      .mockResolvedValueOnce({ data: vendor, error: null })
+      .mockResolvedValueOnce({ data: result, error: null })
+      .mockResolvedValueOnce({ data: null, error: { message: "down" } });
+    const state = await claimEarnAction(
+      { status: "idle" },
+      form({ marketing: "yes" }),
+    );
+    expect(state).toMatchObject({
+      status: "success",
+      marketingSaveFailed: true,
+    });
   });
 });
