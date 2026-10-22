@@ -438,7 +438,8 @@ by every kit's own `/about` page), linked from the landing `Nav`/`Footer`.
 
 ## Docs
 
-- Deploy runbook: `docs/DEPLOY.md`
+- Deploy runbook: `docs/DEPLOY.md`, including Staging (`loopkit-staging.merqo.io`,
+  previews on the shared staging Supabase project, `scripts/staging-migrate.sh`)
 - Source: `github.com/merqo-io/loopkit`; `@merqo/ui` installs from `github:merqo-io/merqo-ui`, pinned to the commit tagged `v0.34.2` (its `AccountMenu` treats the sign-out action's `redirect()` as navigation, not an error); `pnpm-workspace.yaml` allows its build for that commit only
 - Plans/specs: `docs/superpowers/`
 - Release history: `CHANGELOG.md`
