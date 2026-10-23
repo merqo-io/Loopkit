@@ -77,8 +77,8 @@ importers:
         specifier: ^2.5.5
         version: 2.6.1
       zod:
-        specifier: ^3.25.76
-        version: 3.25.76
+        specifier: ^4.6.6
+        version: 4.6.6
     devDependencies:
       '@eslint/eslintrc':
         specifier: ^3.2.0
@@ -991,7 +991,7 @@ packages:
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
   '@merqo/ui@https://codeload.github.com/merqo-io/merqo-ui/tar.gz/7b386558af36a1cbf008a9b4c4073c07ffc105ba':
-    resolution: {gitHosted: true, tarball: https://codeload.github.com/merqo-io/merqo-ui/tar.gz/7b386558af36a1cbf008a9b4c4073c07ffc105ba}
+    resolution: {gitHosted: true, integrity: sha512-xMvRDG1mbkr02mW3D2U51jNlsRYWxcCCprP4N0y/PukK3up+FFETRgzZNVnSny/1JXtggjKPBCzy6WSo7QLyFw==, tarball: https://codeload.github.com/merqo-io/merqo-ui/tar.gz/7b386558af36a1cbf008a9b4c4073c07ffc105ba}
     version: 0.34.2
     engines: {node: '>=24'}
     peerDependencies:
@@ -5509,11 +5509,8 @@ packages:
     peerDependencies:
       zod: ^3.25.0 || ^4.0.0
 
-  zod@3.25.76:
-    resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
-
-  zod@4.6.5:
-    resolution: {integrity: sha512-v5l/aFXZQeai4awLbOpSoHecE9UiMrnfx75tEXLjNonXVARxQ5mOeipTjROUchszUNCqnE+hqAMujRsRHsut2Q==}
+  zod@4.6.6:
+    resolution: {integrity: sha512-4UmzQUF5fxvfcYHlbjBmejU+w+hbDnWFx4aS8kBx7nPBHcO2SqPbpAG8snbdg+Xse4pRefR98hgjFgIMCI/UhA==}
 
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
@@ -6283,7 +6280,7 @@ snapshots:
       remark-gfm: 4.0.0
       tailwind-merge: 2.6.1
       tailwindcss: 4.3.2
-      zod: 4.6.5
+      zod: 4.6.6
     transitivePeerDependencies:
       - '@types/react'
       - '@types/react-dom'
@@ -9088,8 +9085,8 @@ snapshots:
       '@babel/parser': 7.29.9
       eslint: 9.39.4(jiti@2.7.0)
       hermes-parser: 0.25.1
-      zod: 3.25.76
-      zod-validation-error: 4.0.2(zod@3.25.76)
+      zod: 4.6.6
+      zod-validation-error: 4.0.2(zod@4.6.6)
     transitivePeerDependencies:
       - supports-color
 
@@ -10194,7 +10191,7 @@ snapshots:
 
   mutation-server-protocol@0.4.1:
     dependencies:
-      zod: 4.6.5
+      zod: 4.6.6
 
   mutation-testing-elements@3.7.3: {}
 
@@ -11418,12 +11415,10 @@ snapshots:
 
   yoctocolors@2.1.2: {}
 
-  zod-validation-error@4.0.2(zod@3.25.76):
+  zod-validation-error@4.0.2(zod@4.6.6):
     dependencies:
-      zod: 3.25.76
+      zod: 4.6.6
 
-  zod@3.25.76: {}
-
-  zod@4.6.5: {}
+  zod@4.6.6: {}
 
   zwitch@2.0.4: {}
