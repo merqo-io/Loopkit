@@ -248,7 +248,8 @@ Do the steps in order: **A (Supabase) → B (Vercel) → C (attach to merqo)**.
 ## B. loopkit on Vercel
 
 1. Vercel → New Project → import `merqo-io/loopkit`.
-2. Environment Variables (Production + Preview) — **same shared Supabase project**:
+2. Environment Variables (Production), **same shared Supabase project**.
+   Preview points at the staging project instead (see Staging below):
    - `NEXT_PUBLIC_SUPABASE_URL` = shared project URL
    - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` = anon key
    - `SUPABASE_SECRET_KEY` = service_role key
@@ -285,6 +286,49 @@ curl -H "Authorization: Bearer <MERQO_METRICS_SECRET>" https://<loopkit-domain>/
 → `200` JSON with `product: "loopkit"` and the metric fields. `401` = secret
 mismatch. merqo's `/team` then renders the loopkit card with live numbers — no
 merqo code change needed.
+
+## Staging
+
+Vercel `Preview` deployments use the shared staging Supabase project
+(`merqo-staging`), not production. The `staging` branch, kept on `main` by
+the `staging sync` workflow, is served at `loopkit-staging.merqo.io`. Full
+setup, the env model and the rollout checklist live in merqo's
+`docs/STAGING.md`. loopkit's `Preview` values:
+
+- `NEXT_PUBLIC_SUPABASE_URL` (team shared), `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`,
+  `SUPABASE_SECRET_KEY`: the staging project.
+- `MERQO_BASE_URL` (`https://staging.merqo.io`) and `MERQO_CUSTOMER_SECRET`:
+  the team shared Preview copies, which hold staging values.
+- `MERQO_METRICS_SECRET`, `MERQO_PROVISION_SECRET`: staging-only values,
+  never the production ones, matching loopkit's row in the staging
+  `merqo.products` (merqo's `supabase/seed/staging-registry.sql`).
+- `NEXT_PUBLIC_AUTH_COOKIE_DOMAIN`: `.merqo.io` for Git branch `staging` only,
+  so one sign-in covers the staging hosts. Never on other previews, where the
+  browser rejects the cookie and sign-in breaks.
+- `NEXT_PUBLIC_BASE_URL`: leave unset on Preview; links then use the
+  request's own host.
+
+Vercel Deployment Protection must be off on this project (it still challenges
+a branch-assigned domain), and the sync workflow needs the repo secret
+`VERCEL_STAGING_DEPLOY_HOOK`: Vercel does not git-deploy a commit it already
+built for production, so the workflow calls the deploy hook instead.
+
+Load the `loopkit` schema on staging with `scripts/staging-migrate.sh`, after
+merqo's and qkit's, not with `supabase db push`: every kit shares one
+migration history table and reuses the same version numbers.
+
+### Migration-bearing PRs: staging first
+
+Before merging a PR that adds a file under `supabase/migrations/`:
+
+1. Apply only the new file(s) to staging, from the PR branch checkout, with
+   `STAGING_DB_URL` set to the staging session pooler URI (merqo's
+   `docs/STAGING.md`, setup step 2):
+   `docker run --rm -e STAGING_DB_URL -v "${PWD}:/repo:ro" postgres:17.6-alpine sh /repo/scripts/staging-migrate.sh supabase/migrations/<new-file>.sql`
+2. Check the PR's own Vercel preview end to end. It already uses the staging
+   database and the other apps' staging hosts.
+3. Merge the PR.
+4. Apply the same file to production the usual way (Supabase SQL Editor).
 
 ## Notes
 
