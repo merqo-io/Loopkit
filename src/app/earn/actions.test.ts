@@ -15,10 +15,16 @@ vi.mock("@/lib/customer-proof", async () => {
     saveCustomerProof: saveProof,
   };
 });
-vi.mock("@/lib/shop-name", () => ({
-  getShopName: vi.fn(async () => "Kaya Toast"),
+const { profileMock } = vi.hoisted(() => ({ profileMock: vi.fn() }));
+vi.mock("server-only", () => ({}));
+vi.mock("@/lib/merqo-vendor-profile", () => ({
+  getOrCreateVendorProfile: profileMock,
 }));
+beforeEach(() => {
+  profileMock.mockResolvedValue({ stall_name: "Kaya Toast" });
+});
 import { claimEarnAction } from "./actions";
+import { marketingConsentText } from "@/lib/marketing-consent";
 const order = "00560000-0000-0000-0000-000000000100";
 const vendor = "00560000-0000-0000-0000-000000000001";
 const token = "a".repeat(32);
@@ -157,6 +163,9 @@ describe("claimEarnAction capability boundary", () => {
   });
 });
 describe("claimEarnAction marketing opt-in", () => {
+  beforeEach(() => {
+    profileMock.mockResolvedValue({ stall_name: "Kaya Toast" });
+  });
   it("records a ticked opt-in with the returned card proof", async () => {
     rpc
       .mockResolvedValueOnce({ data: vendor, error: null })
@@ -164,7 +173,7 @@ describe("claimEarnAction marketing opt-in", () => {
       .mockResolvedValueOnce({ data: true, error: null });
     const state = await claimEarnAction(
       { status: "idle" },
-      form({ marketing: "yes" }),
+      form({ marketing: "yes", marketing_shop: "Kaya Toast" }),
     );
     expect(state.status).toBe("success");
     expect(state.marketingSaveFailed).toBeUndefined();
@@ -174,7 +183,7 @@ describe("claimEarnAction marketing opt-in", () => {
       p_token: token,
       p_granted: true,
       p_wording_version: expect.any(String),
-      p_wording_text: expect.stringContaining("Kaya Toast may send me offers"),
+      p_wording_text: marketingConsentText("Kaya Toast"),
       p_source: "earn",
     });
   });
@@ -185,11 +194,42 @@ describe("claimEarnAction marketing opt-in", () => {
       .mockResolvedValueOnce({ data: null, error: { message: "down" } });
     const state = await claimEarnAction(
       { status: "idle" },
-      form({ marketing: "yes" }),
+      form({ marketing: "yes", marketing_shop: "Kaya Toast" }),
     );
     expect(state).toMatchObject({
       status: "success",
       marketingSaveFailed: true,
     });
+  });
+  it("stores the fallback wording when the form showed no shop name", async () => {
+    profileMock.mockRejectedValue(new Error("merqo down"));
+    rpc
+      .mockResolvedValueOnce({ data: vendor, error: null })
+      .mockResolvedValueOnce({ data: result, error: null })
+      .mockResolvedValueOnce({ data: true, error: null });
+    const state = await claimEarnAction(
+      { status: "idle" },
+      form({ marketing: "yes", marketing_shop: "" }),
+    );
+    expect(state.marketingSaveFailed).toBeUndefined();
+    expect(rpc).toHaveBeenLastCalledWith(
+      "customer_set_marketing_consent",
+      expect.objectContaining({ p_wording_text: marketingConsentText(null) }),
+    );
+  });
+  it("skips the consent write when the shown shop name cannot be confirmed", async () => {
+    profileMock.mockRejectedValue(new Error("merqo down"));
+    rpc
+      .mockResolvedValueOnce({ data: vendor, error: null })
+      .mockResolvedValueOnce({ data: result, error: null });
+    const state = await claimEarnAction(
+      { status: "idle" },
+      form({ marketing: "yes", marketing_shop: "Kaya Toast" }),
+    );
+    expect(state).toMatchObject({
+      status: "success",
+      marketingSaveFailed: true,
+    });
+    expect(rpc).toHaveBeenCalledTimes(2);
   });
 });

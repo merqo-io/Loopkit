@@ -19,9 +19,7 @@ describe("EarnForm", () => {
   });
 
   it("renders the phone/name inputs and submit button with the order id in a hidden field", () => {
-    const { container } = render(
-      <EarnForm marketingText="Offers text" orderId="o1" />,
-    );
+    const { container } = render(<EarnForm shopName="Kaya" orderId="o1" />);
     expect(screen.getByLabelText("Your phone number")).toBeInTheDocument();
     expect(screen.getByLabelText("Name (optional)")).toBeInTheDocument();
     expect(
@@ -32,7 +30,7 @@ describe("EarnForm", () => {
   });
 
   it("tells the customer why their phone and name are collected, with a privacy link", () => {
-    render(<EarnForm marketingText="Offers text" orderId="o1" />);
+    render(<EarnForm shopName="Kaya" orderId="o1" />);
     expect(
       screen.getByText(
         /We use your phone number and name to track your stamp card and send reward updates\./,
@@ -45,11 +43,7 @@ describe("EarnForm", () => {
 
   it("shows the vendor name when provided", () => {
     render(
-      <EarnForm
-        marketingText="Offers text"
-        orderId="o1"
-        vendorName="Kaya Toast Co."
-      />,
+      <EarnForm shopName="Kaya" orderId="o1" vendorName="Kaya Toast Co." />,
     );
     expect(
       screen.getByText("Earn a stamp with Kaya Toast Co.?"),
@@ -57,7 +51,7 @@ describe("EarnForm", () => {
   });
 
   it("falls back to 'this shop' when no vendor name is given", () => {
-    render(<EarnForm marketingText="Offers text" orderId="o1" />);
+    render(<EarnForm shopName="Kaya" orderId="o1" />);
     expect(
       screen.getByText("Earn a stamp with this shop?"),
     ).toBeInTheDocument();
@@ -71,7 +65,7 @@ describe("EarnForm", () => {
       rewardText: "Free kopi",
     });
     const user = userEvent.setup();
-    render(<EarnForm marketingText="Offers text" orderId="o1" />);
+    render(<EarnForm shopName="Kaya" orderId="o1" />);
     await user.type(screen.getByLabelText("Your phone number"), "91234567");
     await user.click(screen.getByRole("button", { name: "Claim stamp" }));
 
@@ -89,7 +83,7 @@ describe("EarnForm", () => {
       message: "Enter a valid Singapore phone number.",
     });
     const user = userEvent.setup();
-    render(<EarnForm marketingText="Offers text" orderId="o1" />);
+    render(<EarnForm shopName="Kaya" orderId="o1" />);
     await user.type(screen.getByLabelText("Your phone number"), "123");
     await user.click(screen.getByRole("button", { name: "Claim stamp" }));
 
@@ -99,9 +93,9 @@ describe("EarnForm", () => {
   });
 
   it("offers an unticked marketing opt-in with the given wording", () => {
-    render(<EarnForm marketingText="Offers text" orderId="o1" />);
+    render(<EarnForm shopName="Kaya" orderId="o1" />);
     expect(
-      screen.getByRole("checkbox", { name: "Offers text" }),
+      screen.getByRole("checkbox", { name: /^Yes, Kaya may send me offers/ }),
     ).not.toBeChecked();
   });
 
@@ -113,7 +107,7 @@ describe("EarnForm", () => {
       marketingSaveFailed: true,
     });
     const user = userEvent.setup();
-    render(<EarnForm marketingText="Offers text" orderId="o1" />);
+    render(<EarnForm shopName="Kaya" orderId="o1" />);
     await user.type(screen.getByLabelText("Your phone number"), "91234567");
     await user.click(screen.getByRole("button", { name: "Claim stamp" }));
     expect(await screen.findByRole("alert")).toHaveTextContent(

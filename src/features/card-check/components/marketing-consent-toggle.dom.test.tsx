@@ -11,8 +11,9 @@ vi.mock("../api/actions", () => ({ setMarketingConsentAction }));
 vi.mock("sonner", () => ({ toast: toastMock }));
 
 import { MarketingConsentToggle } from "./marketing-consent-toggle";
+import { marketingConsentText } from "@/lib/marketing-consent";
 
-const text = "Yes, Kaya may send me offers.";
+const text = marketingConsentText("Kaya");
 
 describe("MarketingConsentToggle", () => {
   beforeEach(() => vi.clearAllMocks());
@@ -27,7 +28,7 @@ describe("MarketingConsentToggle", () => {
       <MarketingConsentToggle
         vendorId="v1"
         phone="+6591234567"
-        initial={{ granted: true, text, saveFailed: false }}
+        initial={{ granted: true, shopName: "Kaya", saveFailed: false }}
       />,
     );
     expect(screen.getByText(text)).toBeInTheDocument();
@@ -36,6 +37,7 @@ describe("MarketingConsentToggle", () => {
     const fd = setMarketingConsentAction.mock.calls[0][0] as FormData;
     expect(fd.get("granted")).toBe("false");
     expect(fd.get("vendor")).toBe("v1");
+    expect(fd.get("marketing_shop")).toBe("Kaya");
     expect(toastMock.success).toHaveBeenCalledWith("Offers turned off.");
   });
 
@@ -49,7 +51,7 @@ describe("MarketingConsentToggle", () => {
       <MarketingConsentToggle
         vendorId="v1"
         phone="+6591234567"
-        initial={{ granted: false, text, saveFailed: true }}
+        initial={{ granted: false, shopName: "Kaya", saveFailed: true }}
       />,
     );
     expect(
@@ -71,7 +73,7 @@ describe("MarketingConsentToggle", () => {
       <MarketingConsentToggle
         vendorId="v1"
         phone="+6591234567"
-        initial={{ granted: false, text, saveFailed: false }}
+        initial={{ granted: false, shopName: null, saveFailed: false }}
       />,
     );
     await user.click(screen.getByRole("switch"));

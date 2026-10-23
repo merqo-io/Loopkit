@@ -16,7 +16,7 @@ Lost capability recovery requires the owning shop, which rotates credentials whi
   mode only, empty array for every other mechanic) lists each currently
   active voucher's own id/reward text/expiry/pre-rendered QR.
   `MarketingStatus` (`StatusState.marketing`) carries the current consent
-  state, the server-built wording and whether a save failed
+  state, the shop name its wording is rendered from and whether a save failed
 
 ## Connectivity
 

@@ -15,11 +15,11 @@ import { Label } from "@/components/ui/label";
 export function CheckForm({
   vendorId,
   referralCode,
-  marketingText,
+  shopName,
 }: {
   vendorId: string;
   referralCode?: string;
-  marketingText: string;
+  shopName: string | null;
 }) {
   const [state, formAction, pending] = useActionState(
     checkStatusAction,
@@ -101,7 +101,7 @@ export function CheckForm({
               recover your card.
             </p>
           </div>
-          <MarketingOptIn id="card-check-marketing" text={marketingText} />
+          <MarketingOptIn id="card-check-marketing" shopName={shopName} />
           <Button
             type="button"
             variant="outline"

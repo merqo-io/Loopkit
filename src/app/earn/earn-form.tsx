@@ -13,11 +13,11 @@ const initialState: EarnState = { status: "idle" };
 export function EarnForm({
   orderId,
   vendorName,
-  marketingText,
+  shopName,
 }: {
   orderId: string;
   vendorName?: string;
-  marketingText: string;
+  shopName: string | null;
 }) {
   const [state, formAction, pending] = useActionState(
     claimEarnAction,
@@ -95,7 +95,7 @@ export function EarnForm({
             the shop for help if you have lost it.
           </p>
         </div>
-        <MarketingOptIn id="earn-marketing" text={marketingText} />
+        <MarketingOptIn id="earn-marketing" shopName={shopName} />
         <DataCollectionNotice purpose="track your stamp card and send reward updates" />
         {state.status === "error" && (
           <p role="alert" className="text-sm text-destructive">

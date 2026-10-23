@@ -10,10 +10,10 @@ import {
 } from "@/lib/customer-proof";
 import {
   MARKETING_CONSENT_VERSION,
-  marketingConsentText,
   marketingOptedIn,
+  shownShopName,
 } from "@/lib/marketing-consent";
-import { getShopName } from "@/lib/shop-name";
+import { shownConsentWording } from "@/lib/shop-name";
 
 export type EarnState = {
   status: "idle" | "error" | "success";
@@ -39,6 +39,28 @@ const resultSchema = z.object({
 });
 const recoveryMessage =
   "Open your saved card or paste its card token. If you cannot access it, ask the shop to recover your card.";
+
+// Stores the wording the form showed; refuses when that shop name is stale.
+async function recordEarnOptIn(
+  vendorId: string,
+  phone: string,
+  token: string,
+  shownShop: string,
+): Promise<boolean> {
+  const wording = await shownConsentWording(vendorId, shownShop);
+  if (wording === null) return false;
+  const supabase = await createServiceClient();
+  const { error } = await supabase.rpc("customer_set_marketing_consent", {
+    p_vendor: vendorId,
+    p_phone: phone,
+    p_token: token,
+    p_granted: true,
+    p_wording_version: MARKETING_CONSENT_VERSION,
+    p_wording_text: wording,
+    p_source: "earn",
+  });
+  return !error;
+}
 
 export async function claimEarnAction(
   _prev: EarnState,
@@ -85,24 +107,14 @@ export async function claimEarnAction(
         message: "Something went wrong. Please try again.",
       };
     await saveCustomerProof(vendorId.data, result.data.card_token);
-    let marketingSaveFailed = false;
-    if (marketingOptedIn(formData)) {
-      const { error: consentError } = await supabase.rpc(
-        "customer_set_marketing_consent",
-        {
-          p_vendor: vendorId.data,
-          p_phone: normalized.phone,
-          p_token: result.data.card_token,
-          p_granted: true,
-          p_wording_version: MARKETING_CONSENT_VERSION,
-          p_wording_text: marketingConsentText(
-            await getShopName(vendorId.data),
-          ),
-          p_source: "earn",
-        },
-      );
-      marketingSaveFailed = !!consentError;
-    }
+    const marketingSaveFailed = marketingOptedIn(formData)
+      ? !(await recordEarnOptIn(
+          vendorId.data,
+          normalized.phone,
+          result.data.card_token,
+          shownShopName(formData),
+        ))
+      : false;
     return {
       status: "success",
       stampCount: result.data.stamp_count,

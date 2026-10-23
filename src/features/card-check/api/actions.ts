@@ -16,10 +16,10 @@ import type { ActionResult } from "@/lib/action-result";
 import { completeReferralCredit } from "./referral-credit";
 import {
   MARKETING_CONSENT_VERSION,
-  marketingConsentText,
   marketingOptedIn,
+  shownShopName,
 } from "@/lib/marketing-consent";
-import { getShopName } from "@/lib/shop-name";
+import { getShopName, shownConsentWording } from "@/lib/shop-name";
 import type { CardStatus, MarketingStatus, StatusState } from "../types";
 
 type VendorJoinRow = {
@@ -168,6 +168,7 @@ async function checkStatusActionImpl(
     normalized.phone,
     proofToken,
     marketingOptedIn(formData),
+    shownShopName(formData),
   );
   const pendingCredit = payload?.referral_credit;
   if (isPendingReferralCredit(pendingCredit)) {
@@ -246,18 +247,23 @@ async function syncMarketingConsent(
   phone: string,
   token: string,
   optIn: boolean,
+  shownShop: string,
 ): Promise<MarketingStatus> {
-  const text = marketingConsentText(await getShopName(vendorId));
+  const shopName = await getShopName(vendorId);
   try {
+    const wording = optIn
+      ? await shownConsentWording(vendorId, shownShop)
+      : null;
     return await readOrGrantMarketingConsent(
       vendorId,
       phone,
       token,
       optIn,
-      text,
+      wording,
+      shopName,
     );
   } catch {
-    return { granted: false, text, saveFailed: true };
+    return { granted: false, shopName, saveFailed: true };
   }
 }
 
@@ -266,18 +272,19 @@ async function readOrGrantMarketingConsent(
   phone: string,
   token: string,
   optIn: boolean,
-  text: string,
+  wording: string | null,
+  shopName: string | null,
 ): Promise<MarketingStatus> {
   const supabase = await createServiceClient();
-  let saveFailed = false;
-  if (optIn) {
+  let saveFailed = optIn && wording === null;
+  if (wording !== null) {
     const { error } = await supabase.rpc("customer_set_marketing_consent", {
       p_vendor: vendorId,
       p_phone: phone,
       p_token: token,
       p_granted: true,
       p_wording_version: MARKETING_CONSENT_VERSION,
-      p_wording_text: text,
+      p_wording_text: wording,
       p_source: "card_check",
     });
     saveFailed = !!error;
@@ -289,7 +296,7 @@ async function readOrGrantMarketingConsent(
   });
   return {
     granted: !error && data === true,
-    text,
+    shopName,
     saveFailed: saveFailed || !!error,
   };
 }
@@ -450,14 +457,23 @@ async function setMarketingConsentActionImpl(
       success: false,
       error: "Use your saved card code or ask the shop to recover your card.",
     };
+  const grant = granted.data === "true";
+  const wording = grant
+    ? await shownConsentWording(vendorId, shownShopName(formData))
+    : "";
+  if (wording === null)
+    return {
+      success: false,
+      error: "This shop's details changed. Reload the page and try again.",
+    };
   const supabase = await createServiceClient();
   const { data, error } = await supabase.rpc("customer_set_marketing_consent", {
     p_vendor: vendorId,
     p_phone: normalized.phone,
     p_token: proof,
-    p_granted: granted.data === "true",
+    p_granted: grant,
     p_wording_version: MARKETING_CONSENT_VERSION,
-    p_wording_text: marketingConsentText(await getShopName(vendorId)),
+    p_wording_text: wording,
     p_source: "card_view",
   });
   if (error) return { success: false, error: "Something went wrong." };

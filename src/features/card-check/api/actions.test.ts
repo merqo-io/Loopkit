@@ -24,9 +24,14 @@ vi.mock("@/lib/supabase/server", () => ({
   createServiceClient: vi.fn(async () => ({ rpc: rpcMock })),
 }));
 vi.mock("@merqo/ui", () => ({ qrSvg: vi.fn(async () => "<svg></svg>") }));
-vi.mock("@/lib/shop-name", () => ({
-  getShopName: vi.fn(async () => "Kaya Toast"),
+const { profileMock } = vi.hoisted(() => ({ profileMock: vi.fn() }));
+vi.mock("server-only", () => ({}));
+vi.mock("@/lib/merqo-vendor-profile", () => ({
+  getOrCreateVendorProfile: profileMock,
 }));
+beforeEach(() => {
+  profileMock.mockResolvedValue({ stall_name: "Kaya Toast" });
+});
 
 import {
   checkStatusAction,
@@ -36,6 +41,7 @@ import {
   setMarketingConsentAction,
 } from "./actions";
 import { STATUS_IDLE } from "../types";
+import { marketingConsentText } from "@/lib/marketing-consent";
 import { buildPlantConfig } from "@/lib/program-config";
 
 const plantConfig = buildPlantConfig(8, "Free plant", "plant");
@@ -784,14 +790,19 @@ describe("marketing consent", () => {
     readProof.mockResolvedValue("a".repeat(32));
   });
 
-  it("records a ticked opt-in with server-built wording and reports it", async () => {
+  it("records a ticked opt-in with the shown wording and reports it", async () => {
     rpcMock.mockImplementation(async (name: string) => {
       if (name === "customer_join") return joined;
       return { data: true, error: null };
     });
     const state = await checkStatusAction(
       STATUS_IDLE,
-      formData({ phone: "91234567", vendor: vendorId, marketing: "yes" }),
+      formData({
+        phone: "91234567",
+        vendor: vendorId,
+        marketing: "yes",
+        marketing_shop: "Kaya Toast",
+      }),
     );
     expect(rpcMock).toHaveBeenCalledWith("customer_set_marketing_consent", {
       p_vendor: vendorId,
@@ -799,13 +810,60 @@ describe("marketing consent", () => {
       p_token: "a".repeat(32),
       p_granted: true,
       p_wording_version: expect.any(String),
-      p_wording_text: expect.stringContaining("Kaya Toast may send me offers"),
+      p_wording_text: marketingConsentText("Kaya Toast"),
       p_source: "card_check",
     });
     expect(state.marketing).toEqual({
       granted: true,
-      text: expect.stringContaining("Kaya Toast"),
+      shopName: "Kaya Toast",
       saveFailed: false,
+    });
+  });
+
+  it("stores the fallback wording the customer saw when the lookup failed at render", async () => {
+    rpcMock.mockImplementation(async (name: string) => {
+      if (name === "customer_join") return joined;
+      return { data: true, error: null };
+    });
+    await checkStatusAction(
+      STATUS_IDLE,
+      formData({
+        phone: "91234567",
+        vendor: vendorId,
+        marketing: "yes",
+        marketing_shop: "",
+      }),
+    );
+    expect(rpcMock).toHaveBeenCalledWith(
+      "customer_set_marketing_consent",
+      expect.objectContaining({ p_wording_text: marketingConsentText(null) }),
+    );
+  });
+
+  it("refuses to store consent when the shown shop name cannot be confirmed", async () => {
+    profileMock.mockRejectedValue(new Error("merqo down"));
+    rpcMock.mockImplementation(async (name: string) => {
+      if (name === "customer_join") return joined;
+      return { data: false, error: null };
+    });
+    const state = await checkStatusAction(
+      STATUS_IDLE,
+      formData({
+        phone: "91234567",
+        vendor: vendorId,
+        marketing: "yes",
+        marketing_shop: "Kaya Toast",
+      }),
+    );
+    expect(rpcMock).not.toHaveBeenCalledWith(
+      "customer_set_marketing_consent",
+      expect.anything(),
+    );
+    expect(state.status).toBe("found");
+    expect(state.marketing).toEqual({
+      granted: false,
+      shopName: null,
+      saveFailed: true,
     });
   });
 
@@ -865,6 +923,41 @@ describe("marketing consent", () => {
     const res = await setMarketingConsentAction(formData(fields));
     expect(res).toMatchObject({ success: false });
     expect(!res.success && res.error).toContain(error);
+    expect(rpcMock).not.toHaveBeenCalled();
+  });
+
+  it("opts in from the card view with the wording it showed", async () => {
+    rpcMock.mockResolvedValue({ data: true, error: null });
+    expect(
+      await setMarketingConsentAction(
+        formData({
+          phone: "91234567",
+          vendor: vendorId,
+          granted: "true",
+          marketing_shop: "Kaya Toast",
+        }),
+      ),
+    ).toEqual({ success: true, granted: true });
+    expect(rpcMock).toHaveBeenCalledWith(
+      "customer_set_marketing_consent",
+      expect.objectContaining({
+        p_wording_text: marketingConsentText("Kaya Toast"),
+        p_source: "card_view",
+      }),
+    );
+  });
+
+  it("refuses a card-view opt-in with a stale shop name", async () => {
+    const res = await setMarketingConsentAction(
+      formData({
+        phone: "91234567",
+        vendor: vendorId,
+        granted: "true",
+        marketing_shop: "Old Name",
+      }),
+    );
+    expect(res.success).toBe(false);
+    expect(!res.success && res.error).toContain("Reload the page");
     expect(rpcMock).not.toHaveBeenCalled();
   });
 

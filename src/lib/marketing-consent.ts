@@ -9,3 +9,10 @@ export function marketingConsentText(shopName: string | null): string {
 export function marketingOptedIn(formData: FormData): boolean {
   return formData.get("marketing") === "yes";
 }
+
+// The shop name the form rendered its wording from; blank means the "this shop" fallback.
+export function shownShopName(formData: FormData): string {
+  return String(formData.get("marketing_shop") ?? "")
+    .trim()
+    .slice(0, 200);
+}

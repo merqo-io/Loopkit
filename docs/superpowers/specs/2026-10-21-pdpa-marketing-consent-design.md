@@ -42,9 +42,7 @@ This change builds that record now, before any sending feature.
     the FK cascade from `loopkit.customers`.
   - Vendors can read their own rows under RLS. No client role holds a direct
     write grant.
-- The server builds the wording at submit time. It never trusts text posted
-  by the client. `MARKETING_CONSENT_VERSION` in `src/lib/marketing-consent.ts`
-  is bumped on every wording change.
+- The form posts the shop name it rendered the wording from (`marketing_shop`, blank for the "this shop" fallback). The server rebuilds the wording from that name with `shownConsentWording` and stores it only if the name still matches the shop's current name, so the stored text is always the text the customer saw. A blank name always stores the fallback wording. A name that no longer matches, or a failed lookup, stores nothing and asks the customer to retry. `MARKETING_CONSENT_VERSION` in `src/lib/marketing-consent.ts` is bumped on every wording change.
 - Customers withdraw, or opt in later, with a switch on their own `/c` card
   view. The switch is gated by the same card-token proof as every other
   customer RPC.

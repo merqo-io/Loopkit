@@ -30,7 +30,7 @@ export type CardStatus = {
 
 export type MarketingStatus = {
   granted: boolean;
-  text: string;
+  shopName: string | null;
   saveFailed: boolean;
 };
 

@@ -1,7 +1,6 @@
 import { z } from "zod";
 import { EarnForm } from "./earn-form";
 import { createServiceClient } from "@/lib/supabase/server";
-import { marketingConsentText } from "@/lib/marketing-consent";
 import { getShopName } from "@/lib/shop-name";
 
 async function earnShopName(order: string): Promise<string | null> {
@@ -36,7 +35,7 @@ export default async function EarnPage({ searchParams }: Props) {
       <EarnForm
         orderId={order}
         vendorName={shopName ?? undefined}
-        marketingText={marketingConsentText(shopName)}
+        shopName={shopName}
       />
     </main>
   );

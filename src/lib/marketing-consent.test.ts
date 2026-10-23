@@ -3,6 +3,7 @@ import {
   MARKETING_CONSENT_VERSION,
   marketingConsentText,
   marketingOptedIn,
+  shownShopName,
 } from "./marketing-consent";
 
 describe("marketingConsentText", () => {
@@ -32,5 +33,14 @@ describe("marketingOptedIn", () => {
     expect(marketingOptedIn(fd)).toBe(false);
     fd.set("marketing", "yes");
     expect(marketingOptedIn(fd)).toBe(true);
+  });
+});
+
+describe("shownShopName", () => {
+  it("reads the trimmed shown name, blank when absent", () => {
+    const fd = new FormData();
+    expect(shownShopName(fd)).toBe("");
+    fd.set("marketing_shop", "  Kaya  ");
+    expect(shownShopName(fd)).toBe("Kaya");
   });
 });

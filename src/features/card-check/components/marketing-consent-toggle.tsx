@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { toast } from "sonner";
 import { setMarketingConsentAction } from "../api/actions";
 import type { MarketingStatus } from "../types";
+import { marketingConsentText } from "@/lib/marketing-consent";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 
@@ -18,6 +19,7 @@ export function MarketingConsentToggle({
 }) {
   const [granted, setGranted] = useState(initial.granted);
   const [pending, startTransition] = useTransition();
+  const text = marketingConsentText(initial.shopName);
 
   function change(next: boolean) {
     startTransition(async () => {
@@ -25,6 +27,7 @@ export function MarketingConsentToggle({
       fd.set("vendor", vendorId);
       fd.set("phone", phone);
       fd.set("granted", String(next));
+      fd.set("marketing_shop", initial.shopName ?? "");
       const res = await setMarketingConsentAction(fd);
       if (!res.success) {
         toast.error(res.error);
@@ -52,7 +55,7 @@ export function MarketingConsentToggle({
         />
       </div>
       <p className="text-xs text-muted-foreground">
-        {granted ? initial.text : "Off. Turn on to agree: " + initial.text}
+        {granted ? text : "Off. Turn on to agree: " + text}
       </p>
       {initial.saveFailed && (
         <p role="alert" className="text-xs text-destructive">
