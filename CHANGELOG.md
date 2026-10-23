@@ -6,10 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Security
+
+- `next` and `eslint-config-next` 16.3.8 to 16.4.2. next `>=16.0.0 <=16.4.0` has two critical unauthenticated remote code execution advisories, GHSA-2464-fhr4-w9xw (Image Optimization API with SVG files) and GHSA-673q-mjm6-r5xr (`use cache` functions returning typed arrays), and a high Server Actions denial of service, GHSA-p3m5-59mp-jv5r. They failed the dependency-audit job on every open PR. `pnpm audit --prod --audit-level=high` is clean again.
+
 ### Added
 
 - Customers can now opt in to offers by message. `/c` and `/earn` show an unticked checkbox whose wording names the shop, SMS, WhatsApp and Telegram, and the phone number. Each opt-in is stored with its wording version and text, its source and a timestamp in the new append-only `loopkit.marketing_consents` log (migration `0061`, not yet applied to prod). Customers can turn offers off or back on from their `/c` card view. A vendor can record an opt-out a customer asks for in person on the customer detail page, but can never record an opt-in. Every withdrawal takes effect immediately. Cashier enrolment at the counter records no consent; it tells the cashier to point the customer to the shop QR. No message is sent anywhere yet. Do Not Call Registry checks are deferred until an SMS, voice or fax send exists.
-
+- Staging: Vercel `Preview` deployments use the shared staging Supabase project, and the `staging` branch is served at `loopkit-staging.merqo.io`. `docs/DEPLOY.md` gains a Staging section (loopkit's `Preview` values, Deployment Protection off, the staging-first gate for PRs that add a migration). New `scripts/staging-migrate.sh` loads migrations into staging with psql (the kits share one migration history table with overlapping version numbers, so `supabase db push` cannot). The `staging sync` workflow keeps `staging` on `main` and triggers the Vercel deploy hook. Full setup: merqo's `docs/STAGING.md`.
 - The dashboard now ends every page with the family footer (no sign-in link, hidden in print), matching stockkit, printkit and paykit.
 - The `/earn` claim form now tells the customer why their phone number and name are collected and links to the Privacy Policy, using the shared `DataCollectionNotice` from `@merqo/ui`. Display only; no consent is recorded, and no SMS, voice or fax marketing exists here, so the Do Not Call Registry does not apply.
 
