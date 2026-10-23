@@ -28,12 +28,19 @@ export type CardStatus = {
   }[];
 };
 
+export type MarketingStatus = {
+  granted: boolean;
+  shopName: string | null;
+  saveFailed: boolean;
+};
+
 export type StatusState = {
   status: "idle" | "found" | "none" | "error";
   cards?: CardStatus[];
   message?: string;
   phone?: string;
   vendorAvatarUrl?: string | null;
+  marketing?: MarketingStatus;
 };
 
 export const STATUS_IDLE: StatusState = { status: "idle" };

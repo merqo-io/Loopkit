@@ -436,6 +436,17 @@ strength beyond the record above. `/about` renders that same release's
 shared `AboutMerqo` component (the qkit origin story, one source reused
 by every kit's own `/about` page), linked from the landing `Nav`/`Footer`.
 
+PDPA marketing consent (migration `0061`) is an append-only
+`loopkit.marketing_consents` log per vendor and customer phone. The latest
+row decides the current state, and no row means not opted in. Customers opt
+in with an unticked checkbox on `/c` or `/earn`; the wording names the shop
+and the channels and is stored with its version. They withdraw from their
+own `/c` card view, and a vendor can record an in-person withdrawal (never an
+opt-in) on the customer detail page. Counter and referral host phones capture
+no consent. No marketing send exists yet. Any future SMS, voice or fax send
+must also add a DNC Registry check, as set out in
+`docs/superpowers/specs/2026-10-21-pdpa-marketing-consent-design.md`.
+
 ## Docs
 
 - Deploy runbook: `docs/DEPLOY.md`, including Staging (`loopkit-staging.merqo.io`,

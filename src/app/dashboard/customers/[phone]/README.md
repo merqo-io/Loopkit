@@ -37,6 +37,17 @@ reason, and their full activity history in one place.
   collapsed/expanded states, the submitted `FormData` shape, and the
   success/error toast paths.
 
+- `marketing-consent-panel.tsx`: `MarketingConsentPanel({phone, status})`:
+  shows the customer's current offers-by-message state (latest
+  `loopkit.marketing_consents` row, via `getMarketingConsentStatus`). When
+  opted in, a confirmed "Record opt-out" button records a withdrawal the
+  customer asked for in person. A vendor can never record an opt-in.
+- `actions.ts`: `withdrawMarketingConsentAction`: validates the phone and
+  calls `vendor_withdraw_marketing_consent` under the vendor session
+  (migration `0061`).
+- `marketing-consent-panel.dom.test.tsx`, `actions.test.ts`: status copy,
+  confirm flow, success/error toasts, phone validation and error mapping.
+
 ## Parent
 
 [customers](../README.md)

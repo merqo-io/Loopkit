@@ -12,6 +12,7 @@ repo's AGENTS.md these should not be hand-edited outside the shadcn CLI.
 - `badge.tsx` — `Badge` (cva variants: default/secondary/gold/destructive/outline/ghost/link), `asChild`-capable via Radix `Slot`
 - `button.tsx` — `Button`/`buttonVariants` (cva: 6 variants × 8 sizes including icon/xs/sm/lg), `asChild`-capable via Radix `Slot`
 - `card.tsx` — plain-div `Card` composition: `Card`/`CardHeader`/`CardTitle`/`CardDescription`/`CardAction`/`CardContent`/`CardFooter`
+- `checkbox.tsx`: Radix `Checkbox` wrapper with a check indicator; used by `MarketingOptIn`
 - `dropdown-menu.tsx` — Radix `DropdownMenu` wrapper: full primitive set (Trigger/Content/Group/Item/CheckboxItem/RadioGroup/RadioItem/Label/Separator/Shortcut/Sub/SubTrigger/SubContent)
 - `input.tsx` — `Input`: styled native `<input>` with focus-ring and `aria-invalid` styling
 - `label.tsx` — `Label`: Radix `Label` wrapper, disabled-peer/group styling

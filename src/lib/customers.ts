@@ -211,3 +211,31 @@ export async function getCustomerDetail(
     cards,
   };
 }
+
+export type MarketingConsentStatus = {
+  granted: boolean;
+  recordedAt: string;
+  vendorRecorded: boolean;
+} | null;
+
+// Latest row wins; RLS limits the read to the signed-in vendor's own log.
+export async function getMarketingConsentStatus(
+  phone: string,
+): Promise<MarketingConsentStatus> {
+  const supabase = await createServerClient();
+  const { data, error } = await supabase
+    .from("marketing_consents")
+    .select("granted,recorded_at,source")
+    .eq("phone", phone)
+    .order("recorded_at", { ascending: false })
+    .order("id", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  if (error) throw new Error(`getMarketingConsentStatus: ${error.message}`);
+  if (!data) return null;
+  return {
+    granted: data.granted,
+    recordedAt: data.recorded_at,
+    vendorRecorded: data.source === "vendor_recorded",
+  };
+}

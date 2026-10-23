@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { requireVendor } from "@/features/auth";
 import { listPrograms } from "@/lib/program";
-import { getCustomerDetail } from "@/lib/customers";
+import { getCustomerDetail, getMarketingConsentStatus } from "@/lib/customers";
 import { listActivity } from "@/lib/activity";
 import { normalizePhone } from "@/lib/phone";
 import { formatSgtDate } from "@/lib/format";
@@ -9,6 +9,7 @@ import { ElevatedCard } from "@merqo/ui";
 import { Badge } from "@/components/ui/badge";
 import { ActivityTable } from "@/app/dashboard/activity/activity-table";
 import { AdjustStampForm } from "./adjust-stamp-form";
+import { MarketingConsentPanel } from "./marketing-consent-panel";
 
 const HISTORY_LIMIT = 50;
 
@@ -26,9 +27,10 @@ export default async function CustomerDetailPage({
   if (!normalized.ok) notFound();
   const phone = normalized.phone;
 
-  const [programs, detail] = await Promise.all([
+  const [programs, detail, marketing] = await Promise.all([
     listPrograms(),
     getCustomerDetail(phone),
+    getMarketingConsentStatus(phone),
   ]);
 
   if (detail.cards.length === 0 && !detail.name) notFound();
@@ -90,6 +92,13 @@ export default async function CustomerDetailPage({
             ))}
           </ul>
         )}
+      </div>
+
+      <div className="space-y-3">
+        <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+          Offers by message
+        </h2>
+        <MarketingConsentPanel phone={phone} status={marketing} />
       </div>
 
       <div className="space-y-3">

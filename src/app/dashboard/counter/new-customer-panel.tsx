@@ -79,6 +79,10 @@ export function NewCustomerPanel({
         Ask at the till: &ldquo;Want a loyalty card? Just your phone
         number.&rdquo;
       </p>
+      <p className="text-xs text-muted-foreground">
+        Offers by message need the customer&rsquo;s own opt-in. Point them to
+        your shop QR to turn it on.
+      </p>
     </form>
   );
 }

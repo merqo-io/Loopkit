@@ -24,14 +24,24 @@ vi.mock("@/lib/supabase/server", () => ({
   createServiceClient: vi.fn(async () => ({ rpc: rpcMock })),
 }));
 vi.mock("@merqo/ui", () => ({ qrSvg: vi.fn(async () => "<svg></svg>") }));
+const { profileMock } = vi.hoisted(() => ({ profileMock: vi.fn() }));
+vi.mock("server-only", () => ({}));
+vi.mock("@/lib/merqo-vendor-profile", () => ({
+  getOrCreateVendorProfile: profileMock,
+}));
+beforeEach(() => {
+  profileMock.mockResolvedValue({ stall_name: "Kaya Toast" });
+});
 
 import {
   checkStatusAction,
   setCustomerBirthdayAction,
   selectPointsRewardAction,
   regenerateCardAction,
+  setMarketingConsentAction,
 } from "./actions";
 import { STATUS_IDLE } from "../types";
+import { marketingConsentText } from "@/lib/marketing-consent";
 import { buildPlantConfig } from "@/lib/program-config";
 
 const plantConfig = buildPlantConfig(8, "Free plant", "plant");
@@ -79,7 +89,9 @@ describe("checkStatusAction", () => {
       }),
     );
 
-    expect(rpcMock).toHaveBeenCalledTimes(1);
+    expect(
+      rpcMock.mock.calls.filter(([name]) => name === "customer_join"),
+    ).toHaveLength(1);
     expect(rpcMock).toHaveBeenCalledWith("customer_join", {
       p_vendor: "00550000-0000-0000-0000-000000000001",
       p_phone: "+6591234567",
@@ -126,7 +138,9 @@ describe("checkStatusAction", () => {
       }),
     );
 
-    expect(rpcMock).toHaveBeenCalledTimes(1);
+    expect(
+      rpcMock.mock.calls.filter(([name]) => name === "customer_join"),
+    ).toHaveLength(1);
     expect(rpcMock).not.toHaveBeenCalledWith(
       "apply_referral_credit_checked",
       expect.anything(),
@@ -762,5 +776,215 @@ describe("customer card presentation and expired-cycle behavior", () => {
       ),
     ).toEqual({ success: false, error: "Something went wrong." });
     expect(saveProof).not.toHaveBeenCalled();
+  });
+});
+
+describe("marketing consent", () => {
+  const vendorId = "00550000-0000-0000-0000-000000000001";
+  const joined = {
+    data: { cards: [baseRow], referral_credit: null },
+    error: null,
+  };
+  beforeEach(() => {
+    vi.clearAllMocks();
+    readProof.mockResolvedValue("a".repeat(32));
+  });
+
+  it("records a ticked opt-in with the shown wording and reports it", async () => {
+    rpcMock.mockImplementation(async (name: string) => {
+      if (name === "customer_join") return joined;
+      return { data: true, error: null };
+    });
+    const state = await checkStatusAction(
+      STATUS_IDLE,
+      formData({
+        phone: "91234567",
+        vendor: vendorId,
+        marketing: "yes",
+        marketing_shop: "Kaya Toast",
+      }),
+    );
+    expect(rpcMock).toHaveBeenCalledWith("customer_set_marketing_consent", {
+      p_vendor: vendorId,
+      p_phone: "+6591234567",
+      p_token: "a".repeat(32),
+      p_granted: true,
+      p_wording_version: expect.any(String),
+      p_wording_text: marketingConsentText("Kaya Toast"),
+      p_source: "card_check",
+    });
+    expect(state.marketing).toEqual({
+      granted: true,
+      shopName: "Kaya Toast",
+      saveFailed: false,
+    });
+  });
+
+  it("stores the fallback wording the customer saw when the lookup failed at render", async () => {
+    rpcMock.mockImplementation(async (name: string) => {
+      if (name === "customer_join") return joined;
+      return { data: true, error: null };
+    });
+    await checkStatusAction(
+      STATUS_IDLE,
+      formData({
+        phone: "91234567",
+        vendor: vendorId,
+        marketing: "yes",
+        marketing_shop: "",
+      }),
+    );
+    expect(rpcMock).toHaveBeenCalledWith(
+      "customer_set_marketing_consent",
+      expect.objectContaining({ p_wording_text: marketingConsentText(null) }),
+    );
+  });
+
+  it("refuses to store consent when the shown shop name cannot be confirmed", async () => {
+    profileMock.mockRejectedValue(new Error("merqo down"));
+    rpcMock.mockImplementation(async (name: string) => {
+      if (name === "customer_join") return joined;
+      return { data: false, error: null };
+    });
+    const state = await checkStatusAction(
+      STATUS_IDLE,
+      formData({
+        phone: "91234567",
+        vendor: vendorId,
+        marketing: "yes",
+        marketing_shop: "Kaya Toast",
+      }),
+    );
+    expect(rpcMock).not.toHaveBeenCalledWith(
+      "customer_set_marketing_consent",
+      expect.anything(),
+    );
+    expect(state.status).toBe("found");
+    expect(state.marketing).toEqual({
+      granted: false,
+      shopName: null,
+      saveFailed: true,
+    });
+  });
+
+  it("never records anything for an unticked box", async () => {
+    rpcMock.mockImplementation(async (name: string) => {
+      if (name === "customer_join") return joined;
+      return { data: false, error: null };
+    });
+    const state = await checkStatusAction(
+      STATUS_IDLE,
+      formData({ phone: "91234567", vendor: vendorId }),
+    );
+    expect(rpcMock).not.toHaveBeenCalledWith(
+      "customer_set_marketing_consent",
+      expect.anything(),
+    );
+    expect(state.status).toBe("found");
+    expect(state.marketing?.granted).toBe(false);
+  });
+
+  it("still shows the card when saving consent fails", async () => {
+    rpcMock.mockImplementation(async (name: string) => {
+      if (name === "customer_join") return joined;
+      if (name === "customer_set_marketing_consent")
+        return { data: null, error: { message: "down" } };
+      throw new Error("read failed");
+    });
+    const state = await checkStatusAction(
+      STATUS_IDLE,
+      formData({ phone: "91234567", vendor: vendorId, marketing: "yes" }),
+    );
+    expect(state.status).toBe("found");
+    expect(state.marketing).toMatchObject({ granted: false, saveFailed: true });
+  });
+
+  it("withdraws from the card view with the saved proof", async () => {
+    rpcMock.mockResolvedValue({ data: false, error: null });
+    expect(
+      await setMarketingConsentAction(
+        formData({ phone: "91234567", vendor: vendorId, granted: "false" }),
+      ),
+    ).toEqual({ success: true, granted: false });
+    expect(rpcMock).toHaveBeenCalledWith(
+      "customer_set_marketing_consent",
+      expect.objectContaining({ p_granted: false, p_source: "card_view" }),
+    );
+  });
+
+  it.each([
+    [{ phone: "bad", vendor: vendorId, granted: "true" }, "Enter a valid"],
+    [{ phone: "91234567", vendor: "x", granted: "true" }, "Missing shop."],
+    [
+      { phone: "91234567", vendor: vendorId, granted: "maybe" },
+      "Missing choice.",
+    ],
+  ])("rejects bad toggle input before the database", async (fields, error) => {
+    const res = await setMarketingConsentAction(formData(fields));
+    expect(res).toMatchObject({ success: false });
+    expect(!res.success && res.error).toContain(error);
+    expect(rpcMock).not.toHaveBeenCalled();
+  });
+
+  it("opts in from the card view with the wording it showed", async () => {
+    rpcMock.mockResolvedValue({ data: true, error: null });
+    expect(
+      await setMarketingConsentAction(
+        formData({
+          phone: "91234567",
+          vendor: vendorId,
+          granted: "true",
+          marketing_shop: "Kaya Toast",
+        }),
+      ),
+    ).toEqual({ success: true, granted: true });
+    expect(rpcMock).toHaveBeenCalledWith(
+      "customer_set_marketing_consent",
+      expect.objectContaining({
+        p_wording_text: marketingConsentText("Kaya Toast"),
+        p_source: "card_view",
+      }),
+    );
+  });
+
+  it("refuses a card-view opt-in with a stale shop name", async () => {
+    const res = await setMarketingConsentAction(
+      formData({
+        phone: "91234567",
+        vendor: vendorId,
+        granted: "true",
+        marketing_shop: "Old Name",
+      }),
+    );
+    expect(res.success).toBe(false);
+    expect(!res.success && res.error).toContain("Reload the page");
+    expect(rpcMock).not.toHaveBeenCalled();
+  });
+
+  it("requires a saved card proof to toggle", async () => {
+    readProof.mockResolvedValue(null);
+    const res = await setMarketingConsentAction(
+      formData({ phone: "91234567", vendor: vendorId, granted: "true" }),
+    );
+    expect(res.success).toBe(false);
+    expect(rpcMock).not.toHaveBeenCalled();
+  });
+
+  it("maps database and unexpected failures to a retry message", async () => {
+    rpcMock.mockResolvedValueOnce({ data: null, error: { message: "x" } });
+    expect(
+      await setMarketingConsentAction(
+        formData({ phone: "91234567", vendor: vendorId, granted: "true" }),
+      ),
+    ).toEqual({ success: false, error: "Something went wrong." });
+    rpcMock.mockRejectedValueOnce(new Error("boom"));
+    expect(
+      await setMarketingConsentAction(
+        formData({ phone: "91234567", vendor: vendorId, granted: "true" }),
+      ),
+    ).toEqual({
+      success: false,
+      error: "Could not save your choice. Try again.",
+    });
   });
 });
