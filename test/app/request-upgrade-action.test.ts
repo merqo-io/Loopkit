@@ -25,7 +25,7 @@ vi.mock("@/lib/supabase/server", () => ({
 
 import { requestUpgrade } from "@/app/dashboard/plan/actions";
 
-const vendorId = "11111111-1111-1111-1111-111111111111";
+const vendorId = "11111111-1111-1111-8111-111111111111";
 
 describe("requestUpgrade", () => {
   beforeEach(() => {

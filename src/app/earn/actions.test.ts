@@ -25,8 +25,8 @@ beforeEach(() => {
 });
 import { claimEarnAction } from "./actions";
 import { marketingConsentText } from "@/lib/marketing-consent";
-const order = "00560000-0000-0000-0000-000000000100";
-const vendor = "00560000-0000-0000-0000-000000000001";
+const order = "00560000-0000-4000-8000-000000000100";
+const vendor = "00560000-0000-4000-8000-000000000001";
 const token = "a".repeat(32);
 function form(overrides: Record<string, string | undefined> = {}) {
   const data = new FormData();
@@ -127,7 +127,7 @@ describe("claimEarnAction capability boundary", () => {
     expect(saveProof).not.toHaveBeenCalled();
   });
   it.each([
-    { ...result, vendor_id: "00560000-0000-0000-0000-000000000002" },
+    { ...result, vendor_id: "00560000-0000-4000-8000-000000000002" },
     { ...result, card_token: "bad" },
     { ...result, stamp_count: -1 },
     null,

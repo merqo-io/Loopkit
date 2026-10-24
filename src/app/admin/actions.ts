@@ -9,7 +9,7 @@ import type { ActionResult } from "@/lib/action-result";
 import { pricingFormSchema, type PricingFormInput } from "@/lib/schemas";
 
 const setProgramActiveSchema = z.object({
-  programId: z.string().uuid(),
+  programId: z.uuid(),
   active: z.enum(["true", "false"]).transform((v) => v === "true"),
 });
 
@@ -54,7 +54,7 @@ export async function setProgramActive(
 }
 
 const setVendorProSchema = z.object({
-  vendorId: z.string().uuid(),
+  vendorId: z.uuid(),
   pro: z.enum(["true", "false"]).transform((v) => v === "true"),
 });
 
@@ -98,7 +98,7 @@ export async function setVendorPro(formData: FormData): Promise<ActionResult> {
   return { success: true };
 }
 
-const removeCardSchema = z.object({ cardId: z.string().uuid() });
+const removeCardSchema = z.object({ cardId: z.uuid() });
 
 /**
  * Remove a customer's card (light moderation — a wrong number, an abusive
@@ -138,8 +138,8 @@ export async function removeCard(formData: FormData): Promise<ActionResult> {
 }
 
 const resolveUpgradeRequestSchema = z.object({
-  requestId: z.string().uuid(),
-  vendorId: z.string().uuid(),
+  requestId: z.uuid(),
+  vendorId: z.uuid(),
 });
 
 /** Require a pending request for this vendor before granting Pro. */

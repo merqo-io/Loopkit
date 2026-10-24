@@ -55,8 +55,8 @@ vi.mock("@/lib/supabase/server", () => ({
 }));
 import { resolveUpgradeRequest } from "@/app/admin/actions";
 
-const requestId = "22222222-2222-2222-2222-222222222222";
-const vendorId = "11111111-1111-1111-1111-111111111111";
+const requestId = "22222222-2222-2222-8222-222222222222";
+const vendorId = "11111111-1111-1111-8111-111111111111";
 function form(fields: Record<string, string> = { requestId, vendorId }) {
   const result = new FormData();
   for (const [key, value] of Object.entries(fields)) result.set(key, value);
@@ -112,7 +112,7 @@ describe("resolveUpgradeRequest", () => {
           id: requestId,
           vendor_id:
             kind === "mismatched vendor"
-              ? "33333333-3333-3333-3333-333333333333"
+              ? "33333333-3333-3333-8333-333333333333"
               : vendorId,
           status: kind === "resolved" ? "resolved" : "pending",
         };

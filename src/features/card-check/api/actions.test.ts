@@ -9,7 +9,7 @@ const { rpcMock, readProof, saveProof } = vi.hoisted(() => ({
 vi.mock("@/lib/customer-proof", async () => {
   const { z } = await import("zod");
   return {
-    vendorIdSchema: z.string().uuid(),
+    vendorIdSchema: z.uuid(),
     customerTokenSchema: z.string().regex(/^[a-f0-9]{32}$/),
     readCustomerProof: readProof,
     saveCustomerProof: saveProof,
@@ -53,7 +53,7 @@ function formData(fields: Record<string, string>) {
 }
 
 const baseRow = {
-  program_id: "00550000-0000-0000-0000-000000000010",
+  program_id: "00550000-0000-4000-8000-000000000010",
   name: "Stamp Club",
   type: "stamp",
   config: {},
@@ -85,7 +85,7 @@ describe("checkStatusAction", () => {
       STATUS_IDLE,
       formData({
         phone: "91234567",
-        vendor: "00550000-0000-0000-0000-000000000001",
+        vendor: "00550000-0000-4000-8000-000000000001",
       }),
     );
 
@@ -93,7 +93,7 @@ describe("checkStatusAction", () => {
       rpcMock.mock.calls.filter(([name]) => name === "customer_join"),
     ).toHaveLength(1);
     expect(rpcMock).toHaveBeenCalledWith("customer_join", {
-      p_vendor: "00550000-0000-0000-0000-000000000001",
+      p_vendor: "00550000-0000-4000-8000-000000000001",
       p_phone: "+6591234567",
       p_token: "a".repeat(32),
       p_referral_code: null,
@@ -110,13 +110,13 @@ describe("checkStatusAction", () => {
       STATUS_IDLE,
       formData({
         phone: "91234567",
-        vendor: "00550000-0000-0000-0000-000000000001",
+        vendor: "00550000-0000-4000-8000-000000000001",
         ref: "abc123",
       }),
     );
 
     expect(rpcMock).toHaveBeenCalledWith("customer_join", {
-      p_vendor: "00550000-0000-0000-0000-000000000001",
+      p_vendor: "00550000-0000-4000-8000-000000000001",
       p_phone: "+6591234567",
       p_referral_code: "abc123",
       p_token: "a".repeat(32),
@@ -133,7 +133,7 @@ describe("checkStatusAction", () => {
       STATUS_IDLE,
       formData({
         phone: "91234567",
-        vendor: "00550000-0000-0000-0000-000000000001",
+        vendor: "00550000-0000-4000-8000-000000000001",
         ref: "abc123",
       }),
     );
@@ -150,13 +150,13 @@ describe("checkStatusAction", () => {
   it("finishes a pending non-stamp referral credit via apply_referral_credit, computed by the TS engine", async () => {
     const pendingRow = {
       ...baseRow,
-      program_id: "00550000-0000-0000-0000-000000000020",
+      program_id: "00550000-0000-4000-8000-000000000020",
       type: "plant",
       config: plantConfig,
       state: {},
       referral_credit: {
         pending: true,
-        referralHostId: "00550000-0000-0000-0000-000000000030",
+        referralHostId: "00550000-0000-4000-8000-000000000030",
         guestPhone: "+6591234567",
         programId: "p2",
         programType: "plant",
@@ -208,7 +208,7 @@ describe("checkStatusAction", () => {
       STATUS_IDLE,
       formData({
         phone: "91234567",
-        vendor: "00550000-0000-0000-0000-000000000001",
+        vendor: "00550000-0000-4000-8000-000000000001",
         ref: "abc123",
       }),
     );
@@ -217,7 +217,7 @@ describe("checkStatusAction", () => {
     expect(rpcMock).toHaveBeenCalledWith(
       "apply_referral_credit_checked",
       expect.objectContaining({
-        p_referral_host_id: "00550000-0000-0000-0000-000000000030",
+        p_referral_host_id: "00550000-0000-4000-8000-000000000030",
         p_guest_phone: "+6591234567",
         p_expected: expect.any(Object),
       }),
@@ -230,13 +230,13 @@ describe("checkStatusAction", () => {
       .mockImplementation(() => {});
     const pendingRow = {
       ...baseRow,
-      program_id: "00550000-0000-0000-0000-000000000020",
+      program_id: "00550000-0000-4000-8000-000000000020",
       type: "plant",
       config: plantConfig,
       state: {},
       referral_credit: {
         pending: true,
-        referralHostId: "00550000-0000-0000-0000-000000000030",
+        referralHostId: "00550000-0000-4000-8000-000000000030",
         guestPhone: "+6591234567",
         programId: "p2",
         programType: "plant",
@@ -266,7 +266,7 @@ describe("checkStatusAction", () => {
       STATUS_IDLE,
       formData({
         phone: "91234567",
-        vendor: "00550000-0000-0000-0000-000000000001",
+        vendor: "00550000-0000-4000-8000-000000000001",
         ref: "abc123",
       }),
     );
@@ -288,7 +288,7 @@ describe("setCustomerBirthdayAction", () => {
     const result = await setCustomerBirthdayAction(
       formData({
         phone: "91234567",
-        vendor: "00550000-0000-0000-0000-000000000001",
+        vendor: "00550000-0000-4000-8000-000000000001",
         month: "6",
         day: "15",
       }),
@@ -296,7 +296,7 @@ describe("setCustomerBirthdayAction", () => {
 
     expect(result).toEqual({ success: true });
     expect(rpcMock).toHaveBeenCalledWith("customer_set_birthday", {
-      p_vendor: "00550000-0000-0000-0000-000000000001",
+      p_vendor: "00550000-0000-4000-8000-000000000001",
       p_phone: "+6591234567",
       p_month: 6,
       p_day: 15,
@@ -308,7 +308,7 @@ describe("setCustomerBirthdayAction", () => {
     const result = await setCustomerBirthdayAction(
       formData({
         phone: "not-a-phone",
-        vendor: "00550000-0000-0000-0000-000000000001",
+        vendor: "00550000-0000-4000-8000-000000000001",
         month: "6",
         day: "15",
       }),
@@ -334,7 +334,7 @@ describe("setCustomerBirthdayAction", () => {
       const result = await setCustomerBirthdayAction(
         formData({
           phone: "91234567",
-          vendor: "00550000-0000-0000-0000-000000000001",
+          vendor: "00550000-0000-4000-8000-000000000001",
           month,
           day: "15",
         }),
@@ -350,7 +350,7 @@ describe("setCustomerBirthdayAction", () => {
       const result = await setCustomerBirthdayAction(
         formData({
           phone: "91234567",
-          vendor: "00550000-0000-0000-0000-000000000001",
+          vendor: "00550000-0000-4000-8000-000000000001",
           month: "6",
           day,
         }),
@@ -369,7 +369,7 @@ describe("setCustomerBirthdayAction", () => {
     const result = await setCustomerBirthdayAction(
       formData({
         phone: "91234567",
-        vendor: "00550000-0000-0000-0000-000000000001",
+        vendor: "00550000-0000-4000-8000-000000000001",
         month: "6",
         day: "15",
       }),
@@ -396,7 +396,7 @@ describe("checkStatusAction surfaces active_vouchers", () => {
             config: { variant: "points", redemption_mode: "catalog" },
             active_vouchers: [
               {
-                id: "00550000-0000-0000-0000-000000000001",
+                id: "00550000-0000-4000-8000-000000000001",
                 voucher_token: "b".repeat(32),
                 reward_text: "Free drink",
                 expires_at: null,
@@ -412,7 +412,7 @@ describe("checkStatusAction surfaces active_vouchers", () => {
       STATUS_IDLE,
       formData({
         phone: "91234567",
-        vendor: "00550000-0000-0000-0000-000000000001",
+        vendor: "00550000-0000-4000-8000-000000000001",
       }),
     );
     expect(result.status).toBe("found");
@@ -430,7 +430,7 @@ describe("checkStatusAction surfaces active_vouchers", () => {
       STATUS_IDLE,
       formData({
         phone: "91234567",
-        vendor: "00550000-0000-0000-0000-000000000001",
+        vendor: "00550000-0000-4000-8000-000000000001",
       }),
     );
     expect(result.cards?.[0].activeVouchers).toEqual([]);
@@ -448,16 +448,16 @@ describe("selectPointsRewardAction", () => {
     const res = await selectPointsRewardAction(
       formData({
         phone: "91234567",
-        vendor: "00550000-0000-0000-0000-000000000001",
-        program: "00550000-0000-0000-0000-000000000010",
+        vendor: "00550000-0000-4000-8000-000000000001",
+        program: "00550000-0000-4000-8000-000000000010",
         item_id: "b",
       }),
     );
     expect(rpcMock).toHaveBeenCalledWith("customer_select_points_reward", {
-      p_program: "00550000-0000-0000-0000-000000000010",
+      p_program: "00550000-0000-4000-8000-000000000010",
       p_phone: "+6591234567",
       p_item_id: "b",
-      p_vendor: "00550000-0000-0000-0000-000000000001",
+      p_vendor: "00550000-0000-4000-8000-000000000001",
       p_token: "a".repeat(32),
     });
     expect(res).toEqual({
@@ -477,8 +477,8 @@ describe("selectPointsRewardAction", () => {
     const res = await selectPointsRewardAction(
       formData({
         phone: "91234567",
-        vendor: "00550000-0000-0000-0000-000000000001",
-        program: "00550000-0000-0000-0000-000000000010",
+        vendor: "00550000-0000-4000-8000-000000000001",
+        program: "00550000-0000-4000-8000-000000000010",
         item_id: "b",
       }),
     );
@@ -494,8 +494,8 @@ describe("customer capability boundary", () => {
     vi.clearAllMocks();
     readProof.mockResolvedValue(null);
   });
-  const vendor = "00550000-0000-0000-0000-000000000001";
-  const program = "00550000-0000-0000-0000-000000000010";
+  const vendor = "00550000-0000-4000-8000-000000000001";
+  const program = "00550000-0000-4000-8000-000000000010";
   it("passes absent proof only to the DB enrollment guard and maps conflict to recovery", async () => {
     rpcMock.mockResolvedValueOnce({
       data: null,
@@ -617,8 +617,8 @@ describe("customer capability boundary", () => {
 });
 
 describe("customer card presentation and expired-cycle behavior", () => {
-  const vendor = "00550000-0000-0000-0000-000000000001";
-  const program = "00550000-0000-0000-0000-000000000010";
+  const vendor = "00550000-0000-4000-8000-000000000001";
+  const program = "00550000-0000-4000-8000-000000000010";
   beforeEach(() => {
     vi.clearAllMocks();
     readProof.mockResolvedValue("a".repeat(32));
@@ -705,7 +705,7 @@ describe("customer card presentation and expired-cycle behavior", () => {
     },
   );
   it("keeps stamp and plant programs as distinct cards", async () => {
-    const other = "00550000-0000-0000-0000-000000000020";
+    const other = "00550000-0000-4000-8000-000000000020";
     rpcMock.mockResolvedValueOnce({
       data: {
         cards: [
@@ -780,7 +780,7 @@ describe("customer card presentation and expired-cycle behavior", () => {
 });
 
 describe("marketing consent", () => {
-  const vendorId = "00550000-0000-0000-0000-000000000001";
+  const vendorId = "00550000-0000-4000-8000-000000000001";
   const joined = {
     data: { cards: [baseRow], referral_credit: null },
     error: null,
