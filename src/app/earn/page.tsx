@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { EarnForm } from "./earn-form";
+// eslint-disable-next-line no-restricted-imports -- anonymous customer flow; the card or order token is the credential
 import { createServiceClient } from "@/lib/supabase/server";
 import { getShopName } from "@/lib/shop-name";
 

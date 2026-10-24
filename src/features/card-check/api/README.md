@@ -9,3 +9,5 @@ Marketing consent: `checkStatusAction` records a grant only when the join form's
 Responses are schema validated. Transport and malformed-response failures produce retry messages. Referral completion is best effort after successful enrollment. Tests cover scoped proof, enrollment conflicts, recovery, mutation failures and referral delivery; direct SQL authorization tests live in supabase/tests/customer-capability.test.sql.
 
 [Parent](../README.md)
+
+Service-client imports carry an eslint-disable reason: the card or voucher token is the credential.

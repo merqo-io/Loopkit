@@ -16,3 +16,5 @@ Component/Action, middleware), all pinned to the `loopkit` schema.
 [lib](../README.md)
 
 Factory tests reset environment and cookie mocks between cases, covering schema scope, production cookie domain and service-client separation without real credentials.
+
+`middleware.ts` clears the host-only copy of any auth cookie the browser sends twice (host-only plus `.merqo.io`) on every request, with no one-time marker, so a re-created duplicate cannot send the vendor back to /login.

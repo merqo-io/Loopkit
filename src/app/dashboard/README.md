@@ -66,3 +66,5 @@ Vendor card recovery calls the owner-gated recover_customer_card RPC. It rotates
 card and active-voucher capabilities while preserving earned progress; it is not
 a phone-only public reset. The separate customer expired-cycle reset requires
 saved card possession.
+
+`serve-customer.tsx`'s `dangerouslySetInnerHTML` is `qrSvg()` output over a server-minted token.

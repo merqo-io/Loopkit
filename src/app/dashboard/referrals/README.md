@@ -91,3 +91,5 @@ at render. `BackButton` falls back to a plain `<a>`.
 [dashboard](../README.md)
 
 Labels are validated as returned form errors before insertion. Reward crediting uses trusted snapshots and compare-and-swap commits; database concurrency tests remain separate from the form regressions.
+
+The panel's `dangerouslySetInnerHTML` is `qrSvg()` output over a server-minted link.

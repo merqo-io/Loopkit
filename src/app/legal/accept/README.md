@@ -49,3 +49,5 @@ terms/privacy versions are behind `@merqo/ui`'s `LEGAL_VERSIONS`.
 ## Parent
 
 [legal](../README.md)
+
+The `next` form field is length-checked by Zod before `safeRedirectPath` runs.

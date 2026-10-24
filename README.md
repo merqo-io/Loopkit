@@ -498,3 +498,7 @@ Prepared migrations `0050`–`0060` also address atomic program replacement, pla
 Component ownership and preserved behavior for the current reuse cleanup are recorded in [the component reuse specification](docs/meta/2026-10-10-component-reuse-spec.md).
 
 The AI harness follows templateCentral 6.0.4: hook commands are anchored on the project directory, and the guard against committing to `main` reads the branch of the directory a command runs in. The dated entry in `AGENTS.md` lists what was adopted.
+
+## Security headers and MFA
+
+`src/proxy.ts` sets the CSP (nonce on per-request routes) and `X-Robots-Tag` off production. The admin area requires TOTP MFA; see `src/app/mfa/README.md` and `docs/security/`.

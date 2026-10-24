@@ -134,3 +134,7 @@ the requested size, and reject later-page errors instead of returning partial
 results. cards.pagination.test.ts exercises page ties, search preservation,
 short pages, batches, errors and the unchanged exact-count helper. Concurrent
 card updates are not a transactional snapshot across separate HTTP reads.
+
+`security-headers.ts` holds the nonce route list and CSP source lists; `theme-props.ts` is shared by the root layout and the CSP; `same-origin.ts` guards cookie-authenticated route handlers; `admin.ts` also requires `aal2` in `requireAdmin()`.
+
+`security-headers.ts` also allows the Vercel toolbar origin (`vercel.live`) outside production.
