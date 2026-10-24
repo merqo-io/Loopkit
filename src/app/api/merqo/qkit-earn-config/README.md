@@ -12,3 +12,5 @@ enabled, and for which program.
 ## Parent
 
 [merqo](../README.md)
+
+`vendor_id` is parsed as a UUID before the lookup.

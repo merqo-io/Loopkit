@@ -14,3 +14,5 @@ Vendor sign-in/sign-up route entry — the actual UI lives in
 ## Parent
 
 [app](../README.md)
+
+`layout.tsx` forces per-request rendering so the nonce CSP from `proxy.ts` reaches this page's scripts.

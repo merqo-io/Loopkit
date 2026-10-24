@@ -34,3 +34,17 @@ export const pricingFormSchema = z.object({
   monthly_cents: z.number().int().nonnegative().max(MAX_MONEY_CENTS),
 });
 export type PricingFormInput = z.infer<typeof pricingFormSchema>;
+
+// Route/action boundaries
+
+export const authCallbackQuerySchema = z.object({
+  code: z.string().min(1).max(512),
+});
+
+// Same-origin relative path only: a leading "//" or backslash would leave the site.
+export const redirectPathSchema = z
+  .string()
+  .max(512)
+  .regex(/^\/(?![/\\])/);
+
+export const vendorIdQuerySchema = z.uuid();

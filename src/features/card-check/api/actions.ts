@@ -1,5 +1,6 @@
 "use server";
 
+// eslint-disable-next-line no-restricted-imports -- anonymous customer flow; the card or order token is the credential
 import { createServiceClient } from "@/lib/supabase/server";
 import { z } from "zod";
 import {

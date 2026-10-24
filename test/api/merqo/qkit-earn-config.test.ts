@@ -18,6 +18,8 @@ function result(row: unknown) {
   return r;
 }
 
+const VENDOR = "6df824a1-9da2-4608-ad13-2400a9114ec0";
+
 describe("GET /api/merqo/qkit-earn-config", () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -37,6 +39,12 @@ describe("GET /api/merqo/qkit-earn-config", () => {
     expect(res.status).toBe(401);
   });
 
+  it("400 when vendor_id is not a UUID, without querying", async () => {
+    const res = await GET(req("v1", "Bearer test-secret"));
+    expect(res.status).toBe(400);
+    expect(fromMock).not.toHaveBeenCalled();
+  });
+
   it("400 when vendor_id is missing", async () => {
     const res = await GET(
       new Request("http://localhost/api/merqo/qkit-earn-config", {
@@ -48,7 +56,7 @@ describe("GET /api/merqo/qkit-earn-config", () => {
 
   it("returns enabled:false when no config row exists", async () => {
     fromMock.mockReturnValueOnce(result(null));
-    const res = await GET(req("v1", "Bearer test-secret"));
+    const res = await GET(req(VENDOR, "Bearer test-secret"));
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({ enabled: false });
   });
@@ -57,7 +65,7 @@ describe("GET /api/merqo/qkit-earn-config", () => {
     fromMock.mockReturnValueOnce(
       result({ enabled: true, programs: { name: "Coffee Stamps" } }),
     );
-    const res = await GET(req("v1", "Bearer test-secret"));
+    const res = await GET(req(VENDOR, "Bearer test-secret"));
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({
       enabled: true,

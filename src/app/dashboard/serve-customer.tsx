@@ -147,6 +147,7 @@ export function ServeCustomer({
               <div
                 role="img"
                 aria-label="Recovered card QR code"
+                // SVG from qrSvg() over a server-minted token or link, never user text
                 dangerouslySetInnerHTML={{ __html: recoveredCard.qr }}
               />
               <Label htmlFor="recovered-card-code">Saved card code</Label>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Fraunces, Plus_Jakarta_Sans, IBM_Plex_Mono } from "next/font/google";
 import { ThemeProvider } from "next-themes";
+import { THEME_PROVIDER_PROPS } from "@/lib/theme-props";
 import { Providers } from "@/components/providers";
 import "./globals.css";
 
@@ -45,12 +46,7 @@ export default function RootLayout({
       className={`${fraunces.variable} ${jakarta.variable} ${plexMono.variable}`}
     >
       <body>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
+        <ThemeProvider {...THEME_PROVIDER_PROPS}>
           <Providers>{children}</Providers>
         </ThemeProvider>
       </body>

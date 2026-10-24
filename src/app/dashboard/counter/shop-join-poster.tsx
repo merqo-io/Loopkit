@@ -28,6 +28,7 @@ export function ShopJoinPoster({
         </p>
         <div
           className="mx-auto mt-5 w-44 [&_svg]:h-auto [&_svg]:w-full"
+          // SVG from qrSvg() over a server-minted token or link, never user text
           dangerouslySetInnerHTML={{ __html: qrSvgMarkup }}
         />
         <p className="mt-5 text-sm font-semibold">

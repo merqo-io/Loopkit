@@ -54,3 +54,5 @@ theme, and error/404 boundaries every route in this tree inherits.
 ## Parent
 
 [src](../README.md)
+
+`mfa/` is the TOTP enrol/verify page that `requireAdmin()` redirects password-only admins to. `robots.ts` disallows crawling except on production. `login/` and `reset-password/` have `force-dynamic` layouts so the nonce reaches their scripts.

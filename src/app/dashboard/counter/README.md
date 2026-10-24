@@ -40,3 +40,5 @@ at render. `BackButton` falls back to a plain `<a>`.
 ## Parent
 
 [dashboard](../README.md)
+
+The poster's `dangerouslySetInnerHTML` is `qrSvg()` output over a server-minted link.

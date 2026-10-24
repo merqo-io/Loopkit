@@ -13,3 +13,5 @@ Playwright end-to-end smoke tests — runnable with only `pnpm dev` +
 ## Parent
 
 [loopkit](../README.md)
+
+- `csp.spec.ts`: in CI (production build) `/login` serves a nonce CSP with nonced scripts and no violations, and `/` keeps the static policy.

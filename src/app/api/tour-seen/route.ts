@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createServerClient } from "@/lib/supabase/server";
 import { stampTourSeen } from "@/lib/tour-prefs";
+import { isSameOrigin } from "@/lib/same-origin";
 
 export const revalidate = 0;
 
@@ -24,7 +25,9 @@ export const revalidate = 0;
  * prevent. `keepalive` guarantees the browser finishes sending this request
  * even after the document that started it is gone.
  */
-export async function POST() {
+export async function POST(request: Request) {
+  if (!isSameOrigin(request)) return new NextResponse(null, { status: 403 });
+
   const supabase = await createServerClient();
   const {
     data: { user },

@@ -29,3 +29,5 @@ unauthenticated `/dashboard` and `/setup` requests to `/login`, before any
 ## Parent
 
 [loopkit](../README.md)
+
+`proxy.ts` sets the nonce CSP and, off production, `X-Robots-Tag: noindex`; see `lib/security-headers.ts`.

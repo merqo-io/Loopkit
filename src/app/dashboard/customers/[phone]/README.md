@@ -51,3 +51,5 @@ reason, and their full activity history in one place.
 ## Parent
 
 [customers](../README.md)
+
+The phone form field is length-checked by Zod before `normalizePhone`.

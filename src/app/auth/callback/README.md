@@ -12,3 +12,5 @@ session and redirects the browser onward.
 ## Parent
 
 [auth](../README.md)
+
+The `code` and `next` query values are parsed with `authCallbackQuerySchema` and `redirectPathSchema`.
