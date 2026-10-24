@@ -4,7 +4,6 @@ import { defineConfig, devices } from "@playwright/test";
 // Requires a booting app and installed Chromium; no seeded database is used.
 export default defineConfig({
   testDir: "./e2e",
-  globalSetup: "./e2e/global-setup.ts",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
@@ -15,7 +14,21 @@ export default defineConfig({
     baseURL: "http://localhost:3000",
     trace: "on-first-retry",
   },
-  projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
+  // The signed-in smoke binds the Supabase stand-in to the dummy URL's port, so it
+  // runs after the specs that expect no database there.
+  projects: [
+    {
+      name: "chromium",
+      testIgnore: /signed-in-smoke/,
+      use: { ...devices["Desktop Chrome"] },
+    },
+    {
+      name: "signed-in",
+      testMatch: /signed-in-smoke/,
+      dependencies: ["chromium"],
+      use: { ...devices["Desktop Chrome"] },
+    },
+  ],
   webServer: {
     // CI tests the production build, where the nonce CSP is active.
     command: process.env.CI ? "pnpm build && pnpm start" : "pnpm dev",

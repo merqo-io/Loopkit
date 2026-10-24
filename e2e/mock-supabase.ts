@@ -30,7 +30,10 @@ const user = {
 };
 
 /** The Supabase auth cookie for a signed-in, MFA-cleared (`aal2`) session. */
-export function signedInCookie(supabaseUrl: string): {
+export function signedInCookie(
+  supabaseUrl: string,
+  { aal = "aal2" }: { aal?: "aal1" | "aal2" } = {},
+): {
   name: string;
   value: string;
 } {
@@ -41,7 +44,7 @@ export function signedInCookie(supabaseUrl: string): {
       sub: USER_ID,
       email: USER_EMAIL,
       role: "authenticated",
-      aal: "aal2",
+      aal,
       amr: [{ method: "totp", timestamp: expiresAt - 3600 }],
       session_id: "5f1f0f6e-0d6e-4d3e-9a8e-0c4f2f6d2b11",
       exp: expiresAt,

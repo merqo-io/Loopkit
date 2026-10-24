@@ -1,16 +1,39 @@
+import type { Server } from "node:http";
 import { test, expect } from "@playwright/test";
-import { signedInCookie } from "./mock-supabase";
+import { signedInCookie, startSupabaseMock } from "./mock-supabase";
 
-// Signed in as an admin vendor with MFA cleared, against the Supabase stand-in:
-// every dashboard and admin page must render without a 5xx, an error boundary,
-// a page error or a CSP violation.
+const SUPABASE_URL =
+  process.env.NEXT_PUBLIC_SUPABASE_URL ?? "http://127.0.0.1:54321";
+const USER_ID = "6df824a1-9da2-4608-ad13-2400a9114ec0";
+
+// Signed in as an admin vendor with MFA cleared, against a stand-in for
+// Supabase: every dashboard and admin page must render without a 5xx, an error
+// boundary, a page error, a CSP violation or a 404. The stand-in answers with
+// empty data, so this proves rendering, not seeded content.
 test.describe("signed-in render smoke", () => {
+  // One worker owns the stand-in's port for both tests.
+  test.describe.configure({ mode: "serial" });
+
+  let server: Server;
+  let listening = false;
+
+  test.beforeAll(async () => {
+    const url = new URL(SUPABASE_URL);
+    server = startSupabaseMock({ tables: { admins: [{ user_id: USER_ID }] } });
+    listening = await new Promise<boolean>((resolve) => {
+      server.once("error", () => resolve(false));
+      server.listen(Number(url.port), url.hostname, () => resolve(true));
+    });
+  });
+
+  test.afterAll(async () => {
+    if (listening)
+      await new Promise<void>((done) => server.close(() => done()));
+  });
+
   test.beforeEach(() => {
-    // Intentional, conditional skip, checked per test: global-setup.ts sets the flag after files load.
-    test.skip(
-      process.env.E2E_SUPABASE_MOCK !== "1",
-      "needs the Supabase stand-in (global-setup.ts)",
-    );
+    // Intentional, conditional skip: a real stack already owns the port.
+    test.skip(!listening, "the Supabase stand-in could not bind its port");
   });
 
   test("every dashboard and admin page renders", async ({
@@ -18,14 +41,11 @@ test.describe("signed-in render smoke", () => {
     page,
     baseURL,
   }) => {
-    const { name, value } = signedInCookie(
-      process.env.NEXT_PUBLIC_SUPABASE_URL ?? "http://127.0.0.1:54321",
-    );
+    const { name, value } = signedInCookie(SUPABASE_URL);
     await context.addCookies([
       { name, value, url: baseURL ?? "http://localhost:3000" },
     ]);
 
-    // A 404 is a gate saying no, not a page rendering.
     const notFound: string[] = [];
     page.on("response", (response) => {
       if (
@@ -65,25 +85,9 @@ test.describe("signed-in render smoke", () => {
     page,
     baseURL,
   }) => {
-    const { name, value } = signedInCookie(
-      process.env.NEXT_PUBLIC_SUPABASE_URL ?? "http://127.0.0.1:54321",
-    );
-    const aal1 = value.replace(/^base64-/, "");
-    const session = JSON.parse(Buffer.from(aal1, "base64url").toString());
-    const [head, payload, sig] = session.access_token.split(".");
-    const claims = JSON.parse(Buffer.from(payload, "base64url").toString());
-    claims.aal = "aal1";
-    session.access_token = [
-      head,
-      Buffer.from(JSON.stringify(claims)).toString("base64url"),
-      sig,
-    ].join(".");
+    const { name, value } = signedInCookie(SUPABASE_URL, { aal: "aal1" });
     await context.addCookies([
-      {
-        name,
-        value: `base64-${Buffer.from(JSON.stringify(session)).toString("base64url")}`,
-        url: baseURL ?? "http://localhost:3000",
-      },
+      { name, value, url: baseURL ?? "http://localhost:3000" },
     ]);
 
     await page.goto("/admin");
