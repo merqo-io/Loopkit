@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const loginSchema = z.object({
-  email: z.string().email("Invalid email"),
+  email: z.email("Invalid email"),
   // No min-length here: unlike a new-password field, this just guards against
   // an empty submit — Supabase itself is the source of truth on password
   // policy and returns its own error for a rejected sign-in/sign-up.

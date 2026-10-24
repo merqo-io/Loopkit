@@ -7,7 +7,7 @@ import { bearerOk } from "@/lib/merqo-auth";
 
 export const revalidate = 0;
 
-const querySchema = z.object({ email: z.string().email() });
+const querySchema = z.object({ email: z.email() });
 
 export async function GET(request: Request) {
   if (!bearerOk(request, "MERQO_METRICS_SECRET")) {

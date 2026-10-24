@@ -25,13 +25,13 @@ export type EarnState = {
 };
 
 const inputSchema = z.object({
-  order: z.string().uuid(),
+  order: z.uuid(),
   phone: z.string().max(30),
   name: z.string().trim().max(100),
   token: z.union([customerTokenSchema, z.literal("")]),
 });
 const resultSchema = z.object({
-  vendor_id: z.string().uuid(),
+  vendor_id: z.uuid(),
   card_token: customerTokenSchema,
   stamp_count: z.number().int().nonnegative(),
   stamps_required: z.number().int().positive(),
@@ -89,7 +89,7 @@ export async function claimEarnAction(
       "qkit_earn_vendor",
       { p_order_id: input.data.order },
     );
-    const vendorId = z.string().uuid().safeParse(vendor);
+    const vendorId = z.uuid().safeParse(vendor);
     if (vendorError || !vendorId.success)
       return { status: "error", message: "This link isn't valid." };
     const token = input.data.token || (await readCustomerProof(vendorId.data));

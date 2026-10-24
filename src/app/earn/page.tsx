@@ -4,12 +4,12 @@ import { createServiceClient } from "@/lib/supabase/server";
 import { getShopName } from "@/lib/shop-name";
 
 async function earnShopName(order: string): Promise<string | null> {
-  if (!z.string().uuid().safeParse(order).success) return null;
+  if (!z.uuid().safeParse(order).success) return null;
   const supabase = await createServiceClient();
   const { data } = await supabase.rpc("qkit_earn_vendor", {
     p_order_id: order,
   });
-  const vendorId = z.string().uuid().safeParse(data);
+  const vendorId = z.uuid().safeParse(data);
   return vendorId.success ? getShopName(vendorId.data) : null;
 }
 

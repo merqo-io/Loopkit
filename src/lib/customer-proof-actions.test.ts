@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const { clear } = vi.hoisted(() => ({ clear: vi.fn() }));
 vi.mock("@/lib/customer-proof", async () => {
   const { z } = await import("zod");
-  return { vendorIdSchema: z.string().uuid(), clearCustomerProof: clear };
+  return { vendorIdSchema: z.uuid(), clearCustomerProof: clear };
 });
 import { forgetCustomerProof } from "./customer-proof-actions";
 const vendor = "91111111-1111-4111-8111-111111111111";

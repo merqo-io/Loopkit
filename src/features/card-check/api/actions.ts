@@ -122,7 +122,7 @@ async function checkStatusActionImpl(
     .object({
       cards: z.array(
         z.object({
-          program_id: z.string().uuid(),
+          program_id: z.uuid(),
           name: z.string(),
           type: z.string(),
           config: z.unknown(),
@@ -140,7 +140,7 @@ async function checkStatusActionImpl(
           active_vouchers: z
             .array(
               z.object({
-                id: z.string().uuid(),
+                id: z.uuid(),
                 voucher_token: customerTokenSchema,
                 reward_text: z.string(),
                 expires_at: z.string().nullable(),
@@ -310,7 +310,7 @@ async function regenerateCardActionImpl(
     return { success: false, error: "Enter a valid Singapore phone number." };
   }
   const programId = String(formData.get("program") ?? "");
-  if (!z.string().uuid().safeParse(programId).success) {
+  if (!z.uuid().safeParse(programId).success) {
     return { success: false, error: "Missing program." };
   }
 
@@ -392,7 +392,7 @@ async function selectPointsRewardActionImpl(
     return { success: false, error: "Enter a valid Singapore phone number." };
   }
   const programId = String(formData.get("program") ?? "");
-  if (!z.string().uuid().safeParse(programId).success) {
+  if (!z.uuid().safeParse(programId).success) {
     return { success: false, error: "Missing program." };
   }
   const itemId = String(formData.get("item_id") ?? "");

@@ -2,7 +2,7 @@ import "server-only";
 import { cookies } from "next/headers";
 import { z } from "zod";
 
-export const vendorIdSchema = z.string().uuid();
+export const vendorIdSchema = z.uuid();
 export const customerTokenSchema = z.string().regex(/^[a-f0-9]{32}$/);
 
 function cookieName(vendorId: string) {
