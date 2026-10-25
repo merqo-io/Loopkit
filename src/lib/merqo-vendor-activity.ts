@@ -31,9 +31,11 @@ type VAEvent = {
  */
 export function computeVendorActivity(
   isPro: boolean,
-  programs: VAProgram[],
-  cards: VACard[],
-  events: VAEvent[],
+  {
+    programs,
+    cards,
+    events,
+  }: { programs: VAProgram[]; cards: VACard[]; events: VAEvent[] },
   nowMs: number,
 ): VendorActivity {
   if (programs.length === 0) {

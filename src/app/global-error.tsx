@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax -- renders without the app stylesheet, so colours stay literal */
 "use client";
 
 // Root error boundary. Next renders this ONLY when the root layout itself throws
@@ -46,7 +47,7 @@ export default function GlobalError({
               lineHeight: 1.5,
             }}
           >
-            An unexpected error interrupted the page. Please try again — if it
+            An unexpected error interrupted the page. Please try again, if it
             keeps happening, refresh in a moment.
           </p>
           <button

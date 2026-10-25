@@ -27,7 +27,7 @@ describe("RedeemButton", () => {
     await user.click(screen.getByRole("button", { name: "Redeem" }));
     expect(
       screen.getByText(
-        "Redeem reward for +6591234567? Uses 8 stamps — any extra carries over to their next card.",
+        "Redeem reward for +6591234567? Uses 8 stamps, any extra carries over to their next card.",
       ),
     ).toBeInTheDocument();
   });

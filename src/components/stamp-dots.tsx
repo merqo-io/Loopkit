@@ -28,7 +28,7 @@ function resolveIcon(mark: StampMark | undefined, state: SlotState) {
   const stamped = state === "filled";
   if (mark?.kind === "photo") {
     return (
-      // eslint-disable-next-line @next/next/no-img-element
+      // eslint-disable-next-line @next/next/no-img-element -- user photo URL, not a next/image source
       <img
         src={mark.url}
         alt=""

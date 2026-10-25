@@ -5,6 +5,7 @@ import { prefersReducedMotion } from "@/lib/reduced-motion";
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import type { ScratchCoverStyle } from "@/lib/engine/chance";
+import { MECHANIC_ART } from "@/lib/tokens/mechanic-art";
 
 export type { ScratchCoverStyle };
 
@@ -65,15 +66,15 @@ type CoverVisual = {
 
 const COVER_STYLES: Record<ScratchCoverStyle, CoverVisual> = {
   foil: {
-    gradFrom: "#fbe8b8",
+    gradFrom: MECHANIC_ART.scratch.hexfbe8b8,
     gradTo: "color-mix(in oklch, var(--color-gold) 55%, black)",
-    textColor: "#2a1a06",
+    textColor: MECHANIC_ART.scratch.hex2a1a06,
     text: "Scratch to reveal",
     pattern: "foil-fleck",
-    canvasFrom: "#fbe8b8",
-    canvasMid: "#caa042",
-    canvasTo: "#8a691f",
-    canvasText: "rgba(42,26,6,0.9)",
+    canvasFrom: MECHANIC_ART.scratch.hexfbe8b8,
+    canvasMid: MECHANIC_ART.scratch.hexcaa042,
+    canvasTo: MECHANIC_ART.scratch.hex8a691f,
+    canvasText: MECHANIC_ART.scratch.c_rgba_42_26_6_0_9,
   },
   wax: {
     gradFrom: "var(--color-primary)",
@@ -82,10 +83,10 @@ const COVER_STYLES: Record<ScratchCoverStyle, CoverVisual> = {
     text: "Scratch to reveal",
     pattern: "foil-fleck",
     decoration: "wax-medallion",
-    canvasFrom: "#8a2436",
-    canvasMid: "#6a1c2a",
-    canvasTo: "#4a121c",
-    canvasText: "rgba(255,233,214,0.92)",
+    canvasFrom: MECHANIC_ART.scratch.hex8a2436,
+    canvasMid: MECHANIC_ART.scratch.hex6a1c2a,
+    canvasTo: MECHANIC_ART.scratch.hex4a121c,
+    canvasText: MECHANIC_ART.scratch.c_rgba_255_233_214_0_92,
   },
   ticket: {
     gradFrom: "color-mix(in oklch, var(--color-muted) 90%, black 10%)",
@@ -93,10 +94,10 @@ const COVER_STYLES: Record<ScratchCoverStyle, CoverVisual> = {
     textColor: "var(--color-gold)",
     text: "SCRATCH & WIN",
     decoration: "ticket-lines",
-    canvasFrom: "#3a3630",
-    canvasMid: "#2c2924",
-    canvasTo: "#201d19",
-    canvasText: "#e8c374",
+    canvasFrom: MECHANIC_ART.scratch.hex3a3630,
+    canvasMid: MECHANIC_ART.scratch.hex2c2924,
+    canvasTo: MECHANIC_ART.scratch.hex201d19,
+    canvasText: MECHANIC_ART.scratch.hexe8c374,
   },
 };
 
@@ -120,7 +121,7 @@ function drawCanvasCover(
   ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
 
   if (coverStyle === "foil") {
-    ctx.strokeStyle = "rgba(0,0,0,0.07)";
+    ctx.strokeStyle = MECHANIC_ART.scratch.c_rgba_0_0_0_0_07;
     ctx.lineWidth = 1;
     for (let i = 0; i < 60; i++) {
       const y = Math.random() * CANVAS_H;
@@ -130,7 +131,7 @@ function drawCanvasCover(
       ctx.stroke();
     }
   } else if (coverStyle === "wax") {
-    ctx.strokeStyle = "rgba(230,180,90,0.55)";
+    ctx.strokeStyle = MECHANIC_ART.scratch.c_rgba_230_180_90_0_55;
     ctx.lineWidth = 1.1;
     ctx.beginPath();
     ctx.arc(CANVAS_W / 2, CANVAS_H / 2 - 14, 16, 0, Math.PI * 2);
@@ -140,7 +141,7 @@ function drawCanvasCover(
     ctx.arc(CANVAS_W / 2, CANVAS_H / 2 - 14, 11, 0, Math.PI * 2);
     ctx.stroke();
   } else {
-    ctx.strokeStyle = "rgba(230,180,90,0.4)";
+    ctx.strokeStyle = MECHANIC_ART.scratch.c_rgba_230_180_90_0_4;
     ctx.lineWidth = 1;
     ctx.setLineDash([3, 3]);
     ctx.beginPath();
@@ -205,11 +206,7 @@ export function ScratchCard({
     if (!autoManaged) return;
     if (!revealed) {
       playedRef.current = false;
-      // Syncing to `revealed` going back false (a fresh visit's card) is
-      // external-input-driven, not derivable from existing render state —
-      // same exception already established elsewhere in this codebase
-      // (e.g. Wheel's own landedIndex-driven result sync).
-      // eslint-disable-next-line react-hooks/set-state-in-effect
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- syncs to external input, not derivable from render state
       setAutoRevealed(false);
       setAutoScratching(false);
       return;
@@ -275,9 +272,9 @@ export function ScratchCard({
 
     function brushAt(x: number, y: number) {
       const grad = context.createRadialGradient(x, y, 0, x, y, BRUSH_RADIUS);
-      grad.addColorStop(0, "rgba(0,0,0,1)");
-      grad.addColorStop(0.75, "rgba(0,0,0,1)");
-      grad.addColorStop(1, "rgba(0,0,0,0)");
+      grad.addColorStop(0, MECHANIC_ART.scratch.c_rgba_0_0_0_1);
+      grad.addColorStop(0.75, MECHANIC_ART.scratch.c_rgba_0_0_0_1);
+      grad.addColorStop(1, MECHANIC_ART.scratch.c_rgba_0_0_0_0);
       context.globalCompositeOperation = "destination-out";
       context.fillStyle = grad;
       context.beginPath();

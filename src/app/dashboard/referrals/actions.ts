@@ -12,7 +12,7 @@ import { createServerClient } from "@/lib/supabase/server";
 import type { CreateReferralHostState } from "./types";
 
 const labelSchema = z.preprocess(
-  (v) => (v === "" || v == null ? undefined : v),
+  (v) => (v === "" || v === null || v === undefined ? undefined : v),
   z.string().trim().max(60).optional(),
 );
 

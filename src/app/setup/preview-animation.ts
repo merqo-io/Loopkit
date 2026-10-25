@@ -87,13 +87,13 @@ export function usePreviewAnimation(input: PreviewInput): {
 
   const program = useMemo(
     () => buildPreviewProgram(input),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- the program is rebuilt only when the input changes
     [recipeKey],
   );
 
   const initialCard = useMemo(
     () => buildInitialCard(input, new Date()),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- the initial card is built once from the input
     [recipeKey],
   );
 
@@ -117,17 +117,13 @@ export function usePreviewAnimation(input: PreviewInput): {
   // identical across recipe changes and would never trip an [initialCard]
   // dependency — recipeKey is guaranteed to change on every field edit.
   useEffect(() => {
-    // Resetting to a freshly-computed recipe snapshot on recipe change is
-    // external-input-driven (the form's current field values), not
-    // derivable from existing render state — the render-time-derivation
-    // case react-hooks/set-state-in-effect guards against doesn't apply.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- syncs to the form input, not derivable from render state
     setCard(initialCard);
     setSimulatedNow(new Date());
     setPhase("ticking");
     setLastChanceResult(null);
     setPendingReveal(null);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- resets only when the form input changes
   }, [recipeKey]);
 
   useEffect(() => {

@@ -32,7 +32,7 @@ export function CustomerNotifySettings({
       </div>
       <p className="text-sm text-muted-foreground">
         When on, a customer who&apos;s already connected Telegram gets a message
-        confirming their reward redemption. Off by request only — this never
+        confirming their reward redemption. Off by request only, this never
         changes whether the redemption itself succeeds.
       </p>
       <Button

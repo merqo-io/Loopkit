@@ -95,10 +95,16 @@ export function buildPlantConfig(
 export function buildChanceConfig(
   variant: "wheel" | "scratch",
   segments: SegmentInput[],
-  pityCeiling: number | undefined,
-  rewardText: string,
-  // Scratch-only; ignored for wheel programs.
-  scratchCoverStyle?: ScratchCoverStyle,
+  {
+    pityCeiling,
+    rewardText,
+    scratchCoverStyle,
+  }: {
+    pityCeiling: number | undefined;
+    rewardText: string;
+    // Scratch-only; ignored for wheel programs.
+    scratchCoverStyle?: ScratchCoverStyle;
+  },
 ): ChanceConfig {
   return {
     variant,

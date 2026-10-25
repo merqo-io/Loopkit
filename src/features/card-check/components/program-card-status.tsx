@@ -57,16 +57,10 @@ export function ProgramCardStatus({
       // Storage is optional for the notice.
     }
     if (!dismissed) {
-      // Reading localStorage (an external, non-reactive source) on mount to
-      // seed one-time dialog state — not derivable from props/state, so
-      // this isn't the render-time-derivation case the rule guards against.
-      // eslint-disable-next-line react-hooks/set-state-in-effect
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- localStorage is only readable on the client after mount
       setNoticeOpen(true);
     }
-    // Only re-check when the identity of the retired card changes — not on
-    // every render, and not keyed on active/replacedByName individually
-    // since those don't change without programId also changing.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- re-check only when the retired card changes
   }, [card.programId]);
 
   function dismissNotice() {
@@ -122,7 +116,7 @@ export function ProgramCardStatus({
         toast.error(res.error);
         return;
       }
-      toast.success("New card issued — check your card again to see it.");
+      toast.success("New card issued, check your card again to see it.");
       setRegenOpen(false);
     });
   }
@@ -236,7 +230,7 @@ export function ProgramCardStatus({
                 {card.name} has a new card: {card.replacedByName}
               </AlertDialogTitle>
               <AlertDialogDescription>
-                Your old rewards are still yours to redeem — show the shop this
+                Your old rewards are still yours to redeem, show the shop this
                 card. Next time you check in, you&apos;ll get the new card
                 automatically.
                 {card.carriedOverCount

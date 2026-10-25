@@ -44,8 +44,7 @@ export function PreviewCard({
   const [showChanceResult, setShowChanceResult] = useState(false);
   useEffect(() => {
     if (!lastChanceResult) return;
-    // A new engine result starts a timed presentation effect.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- a new engine result starts a timed presentation
     setShowChanceResult(true);
     const timer = setTimeout(
       () => setShowChanceResult(false),

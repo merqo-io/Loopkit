@@ -7,7 +7,11 @@ const days = (n: number) =>
 
 describe("computeVendorActivity", () => {
   it("is inactive with empty fields when the vendor has no programs", () => {
-    const r = computeVendorActivity(false, [], [], [], NOW);
+    const r = computeVendorActivity(
+      false,
+      { programs: [], cards: [], events: [] },
+      NOW,
+    );
     expect(r).toEqual({
       active: false,
       plan: null,
@@ -30,7 +34,11 @@ describe("computeVendorActivity", () => {
       { card_id: "c2", kind: "regen", created_at: days(0) },
     ];
 
-    const r = computeVendorActivity(false, programs, cards, events, NOW);
+    const r = computeVendorActivity(
+      false,
+      { programs: programs, cards: cards, events: events },
+      NOW,
+    );
 
     expect(r.active).toBe(true);
     expect(r.plan).toBe("free");
@@ -46,16 +54,18 @@ describe("computeVendorActivity", () => {
   });
 
   it("reports plan pro when the vendor is in vendor_pro", () => {
-    const r = computeVendorActivity(true, [{ id: "p1" }], [], [], NOW);
+    const r = computeVendorActivity(
+      true,
+      { programs: [{ id: "p1" }], cards: [], events: [] },
+      NOW,
+    );
     expect(r.plan).toBe("pro");
   });
 
   it("lastActivityAt is null when there are cards but no events", () => {
     const r = computeVendorActivity(
       false,
-      [{ id: "p1" }],
-      [{ id: "c1" }],
-      [],
+      { programs: [{ id: "p1" }], cards: [{ id: "c1" }], events: [] },
       NOW,
     );
     expect(r.lastActivityAt).toBeNull();

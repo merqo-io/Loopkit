@@ -76,7 +76,7 @@ export default async function StatsPage({ searchParams }: StatsPageProps) {
         {stats.enrolled === 0 ? (
           <ElevatedCard className="p-6">
             <p className="text-sm text-muted-foreground">
-              No customers yet — share your QR from the Counter page to start
+              No customers yet, share your QR from the Counter page to start
               enrolling.
             </p>
           </ElevatedCard>
@@ -180,7 +180,7 @@ export default async function StatsPage({ searchParams }: StatsPageProps) {
       {stats.enrolled === 0 ? (
         <ElevatedCard className="p-6">
           <p className="text-sm text-muted-foreground">
-            No customers yet — share your QR from the Counter page to start
+            No customers yet, share your QR from the Counter page to start
             enrolling.
           </p>
         </ElevatedCard>

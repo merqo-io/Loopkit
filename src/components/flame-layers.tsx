@@ -2,6 +2,7 @@
 
 import { useId, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import { MECHANIC_ART } from "@/lib/tokens/mechanic-art";
 
 // ---------- shape geometry (ported verbatim from the approved reference) ----------
 
@@ -64,25 +65,25 @@ type FlameTemp = {
 
 const FLAME_TEMP: Record<"spark" | "small" | "medium", FlameTemp> = {
   spark: {
-    base: "#c2410c",
-    mid: "#f59e0b",
-    tip: "#fef3c7",
-    coreLo: "#fde68a",
-    coreHi: "#fffbeb",
+    base: MECHANIC_ART.flame.hexc2410c,
+    mid: MECHANIC_ART.flame.hexf59e0b,
+    tip: MECHANIC_ART.flame.hexfef3c7,
+    coreLo: MECHANIC_ART.flame.hexfde68a,
+    coreHi: MECHANIC_ART.flame.hexfffbeb,
   },
   small: {
-    base: "#b45309",
-    mid: "#fbbf24",
-    tip: "#fef9e0",
-    coreLo: "#fde68a",
-    coreHi: "#fffdf5",
+    base: MECHANIC_ART.flame.hexb45309,
+    mid: MECHANIC_ART.flame.hexfbbf24,
+    tip: MECHANIC_ART.flame.hexfef9e0,
+    coreLo: MECHANIC_ART.flame.hexfde68a,
+    coreHi: MECHANIC_ART.flame.hexfffdf5,
   },
   medium: {
-    base: "#9a3412",
-    mid: "#f97316",
-    tip: "#fde68a",
-    coreLo: "#fdba74",
-    coreHi: "#fff4d6",
+    base: MECHANIC_ART.flame.hex9a3412,
+    mid: MECHANIC_ART.flame.hexf97316,
+    tip: MECHANIC_ART.flame.hexfde68a,
+    coreLo: MECHANIC_ART.flame.hexfdba74,
+    coreHi: MECHANIC_ART.flame.hexfff4d6,
   },
 };
 
@@ -222,7 +223,7 @@ function SparkPop({
       cx={cx}
       cy={cy}
       r={seeded(seed, 0.7, 1.3)}
-      fill="#ffdd88"
+      fill={MECHANIC_ART.flame.hexffdd88}
       style={{
         animationDelay: `${delay}s`,
         animationDuration: `${seeded(seed + 0.4, 0.8, 1.5)}s`,
@@ -269,7 +270,13 @@ function EmberLayerContent({ coalGradientId }: { coalGradientId: string }) {
     return (
       <g key={i}>
         <circle cx={x} cy={y} r={r} fill={`url(#${coalGradientId})`} />
-        <EmberHotspot x={x} y={y} r={r * 0.55} fill="#ffb84d" seed={i} />
+        <EmberHotspot
+          x={x}
+          y={y}
+          r={r * 0.55}
+          fill={MECHANIC_ART.flame.hexffb84d}
+          seed={i}
+        />
       </g>
     );
   });
@@ -321,7 +328,13 @@ function SparkLayerContent({
         fill={`url(#${coalGradientId})`}
         opacity={0.7}
       />
-      <EmberHotspot x={48} y={83.5} r={1.4} fill="#ffb84d" seed={20} />
+      <EmberHotspot
+        x={48}
+        y={83.5}
+        r={1.4}
+        fill={MECHANIC_ART.flame.hexffb84d}
+        seed={20}
+      />
       <GhostFlame
         cx={47.5}
         baseY={82.5}
@@ -381,7 +394,7 @@ function FlameComposite({
         cx={cx + seeded(seed, -w * 0.7, w * 0.7)}
         cy={baseY - seeded(seed + 0.5, h * 1.1, h * 1.9)}
         r={seeded(seed + 0.25, 0.7, 1.6)}
-        fill="#ffdd88"
+        fill={MECHANIC_ART.flame.hexffdd88}
         style={{
           animationDelay: `${seeded(seed + 0.75, 0, 2)}s`,
           animationDuration: `${seeded(seed + 0.1, 1.1, 2)}s`,
@@ -468,7 +481,7 @@ function LargeFlameComposite({
         cx={cx + seeded(seed, -10, 10)}
         cy={baseY - seeded(seed + 0.5, 18, 36)}
         r={seeded(seed + 0.25, 0.9, 1.8)}
-        fill="#ffdd88"
+        fill={MECHANIC_ART.flame.hexffdd88}
         style={{
           animationDelay: `${seeded(seed + 0.75, 0, 2.2)}s`,
           animationDuration: `${seeded(seed + 0.1, 1.2, 2.1)}s`,
@@ -486,7 +499,7 @@ function LargeFlameComposite({
         className="motion-safe:animate-flame-smoke-drift"
         d={`M${sx - 3} ${baseY - 34} C${sx - 6} ${baseY - 44} ${sx + 4} ${baseY - 50} ${sx} ${baseY - 60}
             C${sx + 5} ${baseY - 52} ${sx - 2} ${baseY - 44} ${sx + 2} ${baseY - 34} Z`}
-        fill="#9ca3af"
+        fill={MECHANIC_ART.flame.hex9ca3af}
         style={{
           animationDelay: `${seeded(seed + 0.5, 0, 4)}s`,
           animationDuration: `${seeded(seed + 0.25, 3.5, 5.5)}s`,
@@ -502,20 +515,20 @@ function LargeFlameComposite({
           <feGaussianBlur stdDeviation={2.4} />
         </filter>
         <linearGradient id={outerId} x1="0" y1="1" x2="0" y2="0">
-          <stop offset="0%" stopColor="#7f1d1d" />
-          <stop offset="45%" stopColor="#ea580c" />
-          <stop offset="100%" stopColor="#fde047" />
+          <stop offset="0%" stopColor={MECHANIC_ART.flame.hex7f1d1d} />
+          <stop offset="45%" stopColor={MECHANIC_ART.flame.hexea580c} />
+          <stop offset="100%" stopColor={MECHANIC_ART.flame.hexfde047} />
         </linearGradient>
         <linearGradient id={coreId} x1="0" y1="1" x2="0" y2="0">
-          <stop offset="0%" stopColor="#f97316" />
-          <stop offset="100%" stopColor="#fffbeb" />
+          <stop offset="0%" stopColor={MECHANIC_ART.flame.hexf97316} />
+          <stop offset="100%" stopColor={MECHANIC_ART.flame.hexfffbeb} />
         </linearGradient>
       </defs>
       {smokePuffs}
       <path
         className="motion-safe:animate-flame-glow-pulse"
         d={flameCur(cx, baseY, 34, 17)}
-        fill="#f97316"
+        fill={MECHANIC_ART.flame.hexf97316}
         opacity={0.5}
         filter={`url(#${glowId})`}
         style={{ animationDuration: `${seeded(70, 1.6, 2.4)}s` }}
@@ -537,7 +550,7 @@ function LargeFlameComposite({
         className="motion-safe:animate-flame-wisp-drift"
         d={`M${cx - 1} ${baseY - 24} C${cx - 3} ${baseY - 30} ${cx + 2} ${baseY - 33} ${cx} ${baseY - 40}
             C${cx + 3} ${baseY - 34} ${cx + 1} ${baseY - 29} ${cx + 1.5} ${baseY - 23} Z`}
-        fill="#fde047"
+        fill={MECHANIC_ART.flame.hexfde047}
         opacity={0.4}
         style={{
           animationDuration: `${seeded(73, 2, 3)}s`,
@@ -570,13 +583,13 @@ export function FlameLayers({
         <svg viewBox="0 0 100 100" aria-hidden="true" className="size-[146px]">
           <defs>
             <linearGradient id={logGradId} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#9c7248" />
-              <stop offset="100%" stopColor="#5c3d24" />
+              <stop offset="0%" stopColor={MECHANIC_ART.flame.hex9c7248} />
+              <stop offset="100%" stopColor={MECHANIC_ART.flame.hex5c3d24} />
             </linearGradient>
             <radialGradient id={coalGradId} cx="40%" cy="30%" r="75%">
-              <stop offset="0%" stopColor="#ff9d4d" />
-              <stop offset="55%" stopColor="#e8590c" />
-              <stop offset="100%" stopColor="#7c2d12" />
+              <stop offset="0%" stopColor={MECHANIC_ART.flame.hexff9d4d} />
+              <stop offset="55%" stopColor={MECHANIC_ART.flame.hexe8590c} />
+              <stop offset="100%" stopColor={MECHANIC_ART.flame.hex7c2d12} />
             </radialGradient>
             <filter
               id={ghostBlurId}

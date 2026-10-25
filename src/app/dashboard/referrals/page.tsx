@@ -46,7 +46,7 @@ export default async function ReferralsPage() {
         <h1 className="font-display text-2xl font-bold">Referrals</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           A wedding or event guest is a one-off visit, but the host who chose
-          you — the bride, groom, or organizer — is a real repeat relationship.
+          you, the bride, groom, or organizer, is a real repeat relationship.
           Give a host their own link on one of your programs: every guest who
           joins through it earns their own card as usual, and bumps the host one
           stamp/visit.

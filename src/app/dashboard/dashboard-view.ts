@@ -261,10 +261,17 @@ type ProgramLike = {
 // Per-program rows for "Your programs" and the cost breakdown: return rate,
 // reward text/cost, and rewards redeemed since the 1st of the month.
 export function buildOverviewPrograms(
-  programs: ProgramLike[],
-  cards: OverviewCardLike[],
-  activityEvents: RawEvent[],
-  rewardEvents: RawEvent[],
+  {
+    programs,
+    cards,
+    activityEvents,
+    rewardEvents,
+  }: {
+    programs: ProgramLike[];
+    cards: OverviewCardLike[];
+    activityEvents: RawEvent[];
+    rewardEvents: RawEvent[];
+  },
   nowMs: number,
 ): OverviewProgram[] {
   const monthStart = sgtMonthStart(nowMs);

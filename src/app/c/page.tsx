@@ -43,7 +43,7 @@ export default async function CheckPage({ searchParams }: CheckPageProps) {
               : "Check your rewards."}
           </p>
           <p className="mt-1 text-xs text-muted-foreground">
-            New here? Enter your phone to join — no app needed.
+            New here? Enter your phone to join, no app needed.
           </p>
         </div>
 

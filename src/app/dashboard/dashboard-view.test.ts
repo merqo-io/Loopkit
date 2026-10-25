@@ -269,7 +269,15 @@ describe("buildOverviewPrograms", () => {
   ];
 
   it("computes per-program return rate, reward fields and rewards this month", () => {
-    const out = buildOverviewPrograms(programs, cards, activity, rewards, NOW);
+    const out = buildOverviewPrograms(
+      {
+        programs: programs,
+        cards: cards,
+        activityEvents: activity,
+        rewardEvents: rewards,
+      },
+      NOW,
+    );
     expect(out[0]).toMatchObject({
       id: "p1",
       rewardText: "kopi",

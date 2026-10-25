@@ -17,7 +17,7 @@ export function Hero({ authed = false }: { authed?: boolean }) {
         </h1>
         <p className="mt-5 max-w-md text-lg text-muted-foreground">
           A digital stamp card for your stall. Stamp customers by phone, reward
-          the regulars — nothing for them to download.
+          the regulars, nothing for them to download.
         </p>
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <Button asChild size="lg">
