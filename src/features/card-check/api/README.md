@@ -11,3 +11,5 @@ Responses are schema validated. Transport and malformed-response failures produc
 [Parent](../README.md)
 
 Service-client imports carry an eslint-disable reason: the card or voucher token is the credential.
+
+`syncMarketingConsent` and `readOrGrantMarketingConsent` take a `CardIdentity` (`vendorId`, `phone`, `token`) as their first argument.

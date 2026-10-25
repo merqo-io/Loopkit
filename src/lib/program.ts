@@ -54,7 +54,9 @@ function parseSegments(value: unknown): unknown {
 }
 
 function emptyToUndefined(value: unknown): unknown {
-  return value === "" || value == null ? undefined : value;
+  return value === "" || value === null || value === undefined
+    ? undefined
+    : value;
 }
 
 const expiryDaysSchema = z.preprocess(
@@ -359,13 +361,12 @@ export function buildProgramFields(data: SaveProgramInput): {
     stampsRequired: data.pity_ceiling ?? 10,
     headStart: false,
     headStartPercent: 20,
-    config: buildChanceConfig(
-      data.type,
-      data.segments,
-      data.pity_ceiling,
-      data.reward_text,
-      data.type === "scratch" ? data.scratch_cover_style : undefined,
-    ) as Json,
+    config: buildChanceConfig(data.type, data.segments, {
+      pityCeiling: data.pity_ceiling,
+      rewardText: data.reward_text,
+      scratchCoverStyle:
+        data.type === "scratch" ? data.scratch_cover_style : undefined,
+    }) as Json,
   };
 }
 

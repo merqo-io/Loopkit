@@ -18,6 +18,57 @@ import { loginSchema, type LoginInput } from "@/lib/schemas";
 
 type Mode = "signin" | "signup";
 
+type Sent = { email: string; kind: "signup" | "reset" };
+
+function SentNotice({ sent, onBack }: { sent: Sent; onBack: () => void }) {
+  const isReset = sent.kind === "reset";
+  return (
+    <main className="flex min-h-screen items-center justify-center p-5">
+      <div className="w-full max-w-md text-center">
+        <ElevatedCard className="px-7 py-10">
+          <Link
+            href="/"
+            aria-label="loopkit home"
+            className="inline-block transition-opacity hover:opacity-80"
+          >
+            <Wordmark className="text-2xl" />
+          </Link>
+          <h1 className="mt-6 text-3xl font-bold tracking-tight">
+            Check your email
+          </h1>
+          <p className="mt-3 text-sm text-muted-foreground">
+            {isReset ? (
+              <>
+                We sent a password reset link to{" "}
+                <span className="font-medium text-foreground">
+                  {sent.email}
+                </span>
+                . Open it to choose a new password.
+              </>
+            ) : (
+              <>
+                We sent a confirmation link to{" "}
+                <span className="font-medium text-foreground">
+                  {sent.email}
+                </span>
+                . Click it to activate your account, then sign in.
+              </>
+            )}
+          </p>
+          <Button
+            type="button"
+            variant="outline"
+            className="mt-7 h-11 w-full rounded-xl"
+            onClick={onBack}
+          >
+            Back to sign in
+          </Button>
+        </ElevatedCard>
+      </div>
+    </main>
+  );
+}
+
 export function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -27,10 +78,7 @@ export function LoginForm() {
   const { pending: busy, run } = useAsyncAction();
   // Set once we've emailed the user and are waiting on their click:
   // "signup" = confirm the new account, "reset" = choose a new password.
-  const [sent, setSent] = useState<{
-    email: string;
-    kind: "signup" | "reset";
-  } | null>(null);
+  const [sent, setSent] = useState<Sent | null>(null);
 
   const {
     register,
@@ -122,54 +170,14 @@ export function LoginForm() {
   }
 
   if (sent) {
-    const isReset = sent.kind === "reset";
     return (
-      <main className="flex min-h-screen items-center justify-center p-5">
-        <div className="w-full max-w-md text-center">
-          <ElevatedCard className="px-7 py-10">
-            <Link
-              href="/"
-              aria-label="loopkit home"
-              className="inline-block transition-opacity hover:opacity-80"
-            >
-              <Wordmark className="text-2xl" />
-            </Link>
-            <h1 className="mt-6 text-3xl font-bold tracking-tight">
-              Check your email
-            </h1>
-            <p className="mt-3 text-sm text-muted-foreground">
-              {isReset ? (
-                <>
-                  We sent a password reset link to{" "}
-                  <span className="font-medium text-foreground">
-                    {sent.email}
-                  </span>
-                  . Open it to choose a new password.
-                </>
-              ) : (
-                <>
-                  We sent a confirmation link to{" "}
-                  <span className="font-medium text-foreground">
-                    {sent.email}
-                  </span>
-                  . Click it to activate your account, then sign in.
-                </>
-              )}
-            </p>
-            <Button
-              type="button"
-              variant="outline"
-              className="mt-7 h-11 w-full rounded-xl"
-              onClick={() => {
-                setSent(null);
-                setMode("signin");
-              }}
-            >
-              Back to sign in
-            </Button>
-          </ElevatedCard>
-        </div>
-      </main>
+      <SentNotice
+        sent={sent}
+        onBack={() => {
+          setSent(null);
+          setMode("signin");
+        }}
+      />
     );
   }
 

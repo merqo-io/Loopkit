@@ -4,6 +4,7 @@ import { prefersReducedMotion } from "@/lib/reduced-motion";
 
 import { useEffect, useId, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { MECHANIC_ART } from "@/lib/tokens/mechanic-art";
 
 // Continue angular velocity across the reveal handoff; solve deceleration
 // from d = v*t - 0.5*a*t² so the wheel stops on the chosen segment.
@@ -91,11 +92,7 @@ export function Wheel({
 
   useEffect(() => {
     if (!result) return;
-    // result is set the instant the settle animation finishes (see the
-    // spin effect below) — external, not derivable from existing render
-    // state, same class of exception already established elsewhere in
-    // this codebase (e.g. preview-card.tsx's showChanceResult).
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- syncs to external spin input, not derivable from render state
     setShowResult(true);
     const timer = setTimeout(() => setShowResult(false), RESULT_VISIBLE_MS);
     return () => clearTimeout(timer);
@@ -112,11 +109,7 @@ export function Wheel({
     if (reducedMotion) {
       if (landedIndex >= 0) {
         const won = !!segments[landedIndex]?.reward;
-        // Syncing to the now-known landed segment (external input from
-        // props, via the parent's engine roll), not a value derivable from
-        // existing render state — same external-input-driven case already
-        // established elsewhere in this codebase.
-        // eslint-disable-next-line react-hooks/set-state-in-effect
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- syncs to the parent engine roll, not derivable from render state
         setAngle(targetAngleMod(landedIndex, anglePerSegment));
         setResult({ won });
         onSettledRef.current?.({ won });
@@ -201,13 +194,7 @@ export function Wheel({
     }
 
     return undefined;
-    // `angle`/`result` are this effect's own animation OUTPUT (read via
-    // angleRef / set imperatively), not inputs that should retrigger it —
-    // including them would restart the physics solve on every frame
-    // instead of once per spin/landing. `segments` is read fresh each
-    // landing via closure, not a dependency, since a segment edit mid-spin
-    // already fully resets the form's recipe (and this component) upstream.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- segments are read fresh per landing; a segment edit resets the wheel upstream
   }, [spinning, landedIndex, anglePerSegment, reducedMotion]);
 
   const rimGradId = `${uid}-rim`;
@@ -221,7 +208,7 @@ export function Wheel({
         <defs>
           {/* Housing ring + hub read as metal, not a flat UI stroke. */}
           <radialGradient id={rimGradId} cx="35%" cy="30%" r="75%">
-            <stop offset="0%" stopColor="#fbe8b8" />
+            <stop offset="0%" stopColor={MECHANIC_ART.wheel.hexfbe8b8} />
             <stop offset="55%" stopColor="var(--color-gold)" />
             <stop
               offset="100%"
@@ -229,7 +216,7 @@ export function Wheel({
             />
           </radialGradient>
           <radialGradient id={hubGoldId} cx="35%" cy="30%" r="75%">
-            <stop offset="0%" stopColor="#fff7e0" />
+            <stop offset="0%" stopColor={MECHANIC_ART.wheel.hexfff7e0} />
             <stop offset="55%" stopColor="var(--color-gold)" />
             <stop
               offset="100%"
@@ -362,12 +349,14 @@ export function Wheel({
         // z-10: the result overlay below is a full circle that would
         // otherwise paint over the pointer's lower half.
         className="absolute inset-x-0 -top-1.5 z-10 flex justify-center"
-        style={{ filter: "drop-shadow(0 1px 1.5px rgb(0 0 0 / 0.4))" }}
+        style={{
+          filter: MECHANIC_ART.wheel.c_drop_shadow_0_1px_1_5px_rgb_0_0_0_0_4,
+        }}
       >
         <svg width="16" height="15" viewBox="0 0 16 15" aria-hidden="true">
           <defs>
             <linearGradient id={`${uid}-pointer`} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#fbe8b8" />
+              <stop offset="0%" stopColor={MECHANIC_ART.wheel.hexfbe8b8} />
               <stop offset="100%" stopColor="var(--color-gold)" />
             </linearGradient>
           </defs>

@@ -1,5 +1,10 @@
 import next from "eslint-config-next";
 import sonarjs from "eslint-plugin-sonarjs";
+import { merqoEslintPreset } from "@merqo/ui/eslint";
+
+const tsPlugin = next.find((c) => c.plugins?.["@typescript-eslint"]).plugins[
+  "@typescript-eslint"
+];
 
 const eslintConfig = [
   ...next,
@@ -38,16 +43,10 @@ const eslintConfig = [
   // reference — two different plugin object identities under the same name
   // throws "Cannot redefine plugin sonarjs" in flat config.
   sonarjs.configs.recommended,
-  {
-    // Comment hygiene (templateCentral standard, full parity): own-line
-    // comments are a hard gate, not a nudge — a comment states the *why*
-    // above the code rather than trailing it, and commented-out code never
-    // survives a commit (version control has the history).
-    rules: {
-      "no-inline-comments": "error",
-      "sonarjs/no-commented-code": "error",
-    },
-  },
+  ...merqoEslintPreset({
+    sonarjsPlugin: sonarjs.configs.recommended.plugins.sonarjs,
+    tsPlugin,
+  }),
   {
     // Every use of Math.random() in this codebase is either cosmetic
     // (confetti/scratch-card jitter, animation timing) or a loyalty-program
@@ -84,22 +83,51 @@ const eslintConfig = [
     },
   },
   {
-    // Tests and one-off scripts routinely label table-driven cases and
-    // fixtures with short trailing notes; that reads better inline, so the
-    // gate would be pure noise there. Table-driven fixtures also legitimately
-    // repeat literal strings/duplicate structure and chained-mock-builder
-    // nesting (Supabase's fluent query builder needs 4+ levels to mock one
-    // call), and a fixture password string like "newpassword123" isn't a
-    // real secret.
+    // Table-driven fixtures repeat literal strings and mock structure.
     files: ["**/*.test.{ts,tsx}", "**/test/**", "scripts/**", "e2e/**"],
     rules: {
-      "no-inline-comments": "off",
       "sonarjs/no-commented-code": "off",
       "sonarjs/no-duplicate-string": "off",
       "sonarjs/no-identical-functions": "off",
-      "sonarjs/no-nested-functions": "off",
-      "sonarjs/no-hardcoded-passwords": "off",
     },
+  },
+  {
+    // Over the size and complexity limits until Task K5 (split long files) shrinks them.
+    files: [
+      "src/app/dashboard/actions.ts",
+      "src/components/flame-layers.tsx",
+      "src/components/scratch-card.tsx",
+      "src/features/card-check/api/actions.ts",
+      "src/lib/stats.ts",
+      "src/lib/types.ts",
+    ],
+    rules: {
+      "max-lines": "off",
+      complexity: "off",
+      "max-lines-per-function": "off",
+    },
+  },
+  {
+    // Over the complexity or function-length limit; split with their pages and hooks later.
+    files: [
+      "src/app/dashboard/counter/use-serve-customer.ts",
+      "src/app/setup/actions.ts",
+      "src/app/setup/page.tsx",
+      "src/app/setup/preview-animation.ts",
+      "src/app/setup/preview-card.tsx",
+      "src/app/setup/setup-form.tsx",
+      "src/app/setup/setup-rules-fields.tsx",
+      "src/app/setup/use-setup-form-state.ts",
+      "src/features/card-check/components/check-form.tsx",
+      "src/features/card-check/components/program-card-status.tsx",
+      "src/lib/activity.ts",
+    ],
+    rules: { complexity: "off", "max-lines-per-function": "off" },
+  },
+  {
+    // Named token modules are where colour literals live.
+    files: ["src/lib/tokens/**"],
+    rules: { "no-restricted-syntax": "off" },
   },
   {
     // Harness enforcement scripts: hash-tracked by .claude/harness.json and

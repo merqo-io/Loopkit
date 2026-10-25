@@ -129,8 +129,8 @@ export function SetupRulesFields({
             trigger="tap"
             content={
               <>
-                Counted from each customer&apos;s current cycle — resets
-                whenever their card is regenerated.
+                Counted from each customer&apos;s current cycle, resets whenever
+                their card is regenerated.
               </>
             }
           />
@@ -161,7 +161,7 @@ export function SetupRulesFields({
               trigger="tap"
               content={
                 <>
-                  Counted from the moment a customer earns the reward — separate
+                  Counted from the moment a customer earns the reward, separate
                   from the card-expiry setting above, which resets a whole
                   card&apos;s progress after inactivity.
                 </>
@@ -293,7 +293,7 @@ function HeadStartFields({
                 content={
                   <>
                     New signups start with a small amount of free progress
-                    toward their first reward — shown to measurably increase
+                    toward their first reward, shown to measurably increase
                     completion.
                   </>
                 }

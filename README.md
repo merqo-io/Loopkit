@@ -502,3 +502,7 @@ The AI harness follows templateCentral 6.0.4: hook commands are anchored on the 
 ## Security headers and MFA
 
 `src/proxy.ts` sets the CSP (nonce on per-request routes) and `X-Robots-Tag` off production. The admin area requires TOTP MFA; see `src/app/mfa/README.md` and `docs/security/`.
+
+## Lint
+
+`eslint.config.mjs` consumes the shared `@merqo/ui/eslint` preset (comment and directive hygiene, size and complexity limits, no colour literals or em dashes in `src`). `eslint.config.test.ts` asserts the key rules stay at `error`. Colour literals are allowed only in `src/lib/brand-icon.tsx`, `src/app/global-error.tsx` and `src/lib/tokens/`. Two baseline blocks list the files over the size or complexity limits; the split-long-files task shrinks them.

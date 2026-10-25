@@ -66,10 +66,12 @@ export default async function DashboardPage() {
   );
 
   const overviewPrograms = buildOverviewPrograms(
-    programs,
-    inputs.cards,
-    inputs.activityEvents,
-    inputs.rewardEvents,
+    {
+      programs: programs,
+      cards: inputs.cards,
+      activityEvents: inputs.activityEvents,
+      rewardEvents: inputs.rewardEvents,
+    },
     nowMs,
   );
 

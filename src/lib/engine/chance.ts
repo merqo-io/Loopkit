@@ -78,7 +78,8 @@ export function makeChanceStrategy(
         typeof event.payload?.roll === "number" ? event.payload.roll : 1;
       const eligible = state.visits_since_win >= config.cooldown_visits;
       const forcePity =
-        config.pity_ceiling != null &&
+        config.pity_ceiling !== null &&
+        config.pity_ceiling !== undefined &&
         eligible &&
         state.visits_since_win + 1 >= config.pity_ceiling;
       const pool = eligible

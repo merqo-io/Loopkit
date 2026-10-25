@@ -68,3 +68,5 @@ tilt treatment regardless of which visual they host.
 ## Parent
 
 [src](../README.md)
+
+`cup.tsx`, `flame-layers.tsx`, `scratch-card.tsx` and `wheel.tsx` take their colours from `@/lib/tokens/mechanic-art`.

@@ -102,7 +102,7 @@ export function ReferralsPanel({
       {hosts.length === 0 ? (
         <ElevatedCard className="p-6">
           <p className="text-sm text-muted-foreground">
-            No referral links yet — create one above to give a host their own
+            No referral links yet, create one above to give a host their own
             shareable link.
           </p>
         </ElevatedCard>

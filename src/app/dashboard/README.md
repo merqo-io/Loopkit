@@ -68,3 +68,5 @@ a phone-only public reset. The separate customer expired-cycle reset requires
 saved card possession.
 
 `serve-customer.tsx`'s `dangerouslySetInnerHTML` is `qrSvg()` output over a server-minted token.
+
+`buildOverviewPrograms({ programs, cards, activityEvents, rewardEvents }, nowMs)` takes its rows as one object.

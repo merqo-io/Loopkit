@@ -74,7 +74,7 @@ export default async function PlanPage({
           as="section"
           className="px-5 py-4 text-sm text-muted-foreground"
         >
-          You&apos;re on Pro — unlimited loyalty programs are unlocked. Thanks
+          You&apos;re on Pro, unlimited loyalty programs are unlocked. Thanks
           for supporting loopkit.
         </ElevatedCard>
       ) : (
@@ -93,7 +93,7 @@ export default async function PlanPage({
           </p>
           <p className="mt-2 text-sm text-muted-foreground">
             Run more than one loyalty program at a time. Message us and
-            we&apos;ll set you up — no card needed yet.
+            we&apos;ll set you up, no card needed yet.
           </p>
           <div className="mt-4">
             <UpgradeCta />

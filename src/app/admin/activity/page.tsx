@@ -25,7 +25,8 @@ function actorLabel(row: AdminAuditRow): string {
 // Readable rendering of the jsonb `detail` column, e.g. "active: true". The
 // `actor` sentinel key is dropped here since it's already surfaced above.
 function detailText(detail: Json | null): string | null {
-  if (!isRecord(detail)) return detail == null ? null : String(detail);
+  if (!isRecord(detail))
+    return detail === null || detail === undefined ? null : String(detail);
   const entries = Object.entries(detail).filter(([key]) => key !== "actor");
   if (entries.length === 0) return null;
   return entries

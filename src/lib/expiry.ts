@@ -7,7 +7,7 @@ export function isCardExpired(
   expiryDays: number | null | undefined,
   now: Date,
 ): boolean {
-  if (expiryDays == null) return false;
+  if (expiryDays === null || expiryDays === undefined) return false;
   const elapsedDays =
     (now.getTime() - new Date(cycleStartedAt).getTime()) / MS_PER_DAY;
   return elapsedDays >= expiryDays;

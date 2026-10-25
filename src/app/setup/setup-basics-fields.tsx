@@ -12,9 +12,13 @@ import { ColorPicker } from "@/components/color-picker";
 import { Tag } from "lucide-react";
 
 import type { SetupFormState } from "./use-setup-form-state";
+import { MECHANIC_ART } from "@/lib/tokens/mechanic-art";
 const labelClass =
   "text-xs font-semibold uppercase tracking-wider text-muted-foreground";
-const DEFAULT_SEGMENT_COLOR = { reward: "#10b981", loss: "#fb7185" };
+const DEFAULT_SEGMENT_COLOR = {
+  reward: MECHANIC_ART.setup.hex10b981,
+  loss: MECHANIC_ART.setup.hexfb7185,
+};
 
 export function SetupBasicsFields({
   controller,
@@ -323,7 +327,7 @@ function ChanceBasics({
                 trigger="tap"
                 content={
                   <>
-                    That&apos;s the odds weight — higher numbers land more often
+                    That&apos;s the odds weight, higher numbers land more often
                     relative to the other prizes.
                   </>
                 }

@@ -165,9 +165,7 @@ async function checkStatusActionImpl(
   const proofToken = rows[0]!.card_token;
   await saveCustomerProof(vendorId, proofToken);
   const marketing = await syncMarketingConsent(
-    vendorId,
-    normalized.phone,
-    proofToken,
+    { vendorId: vendorId, phone: normalized.phone, token: proofToken },
     marketingOptedIn(formData),
     shownShopName(formData),
   );
@@ -192,7 +190,8 @@ async function checkStatusActionImpl(
       const progress = getProgress(programLike, cardLike, new Date());
       const qr = await qrSvg(row.card_token);
       const expired =
-        row.cycle_started_at != null &&
+        row.cycle_started_at !== null &&
+        row.cycle_started_at !== undefined &&
         isCardExpired(row.cycle_started_at, row.expiry_days, new Date());
 
       const rawVouchers = Array.isArray(row.active_vouchers)
@@ -242,11 +241,11 @@ async function checkStatusActionImpl(
   };
 }
 
+type CardIdentity = { vendorId: string; phone: string; token: string };
+
 // An unticked box never withdraws: it only means no new opt-in was given.
 async function syncMarketingConsent(
-  vendorId: string,
-  phone: string,
-  token: string,
+  { vendorId, phone, token }: CardIdentity,
   optIn: boolean,
   shownShop: string,
 ): Promise<MarketingStatus> {
@@ -256,9 +255,7 @@ async function syncMarketingConsent(
       ? await shownConsentWording(vendorId, shownShop)
       : null;
     return await readOrGrantMarketingConsent(
-      vendorId,
-      phone,
-      token,
+      { vendorId: vendorId, phone: phone, token: token },
       optIn,
       wording,
       shopName,
@@ -269,9 +266,7 @@ async function syncMarketingConsent(
 }
 
 async function readOrGrantMarketingConsent(
-  vendorId: string,
-  phone: string,
-  token: string,
+  { vendorId, phone, token }: CardIdentity,
   optIn: boolean,
   wording: string | null,
   shopName: string | null,
