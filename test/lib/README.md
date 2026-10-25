@@ -36,3 +36,5 @@ several (`admin-data.test.ts`, `admin.test.ts`, `cards.test.ts`,
 ## Parent
 
 [test](../README.md)
+
+`admin.test.ts` also covers the `aal2` gate (`requireAdmin`) and the membership-only `requireAdminMember`.

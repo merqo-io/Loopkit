@@ -16,9 +16,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Duplicate host-only auth cookies are cleared on every request instead of once behind a marker (a re-created duplicate sent vendors to /login).
 - The CSP allows the Vercel toolbar origin outside production. In the nonce policy the toolbar script itself stays blocked (`strict-dynamic` ignores host allow-lists), so turn the toolbar off for preview in Vercel.
 - `POST /api/tour-seen` refuses a request whose `Sec-Fetch-Site` is not `same-origin` (or whose `Origin` differs when that header is absent).
-- Zod parsing for the auth callback query, the qkit-earn-config `vendor_id`, the legal-accept redirect and the consent-withdrawal phone field.
+- Zod parsing for the auth callback query, the legal-accept redirect and the consent-withdrawal phone field.
 - `no-restricted-imports` keeps the service-role client to `src/lib` and `src/app/api`; every other import states why.
 - Each `dangerouslySetInnerHTML` site is annotated: all are `qrSvg()` output over a server-minted token or link.
+
+### Fixed
+
+- qkit's "Earn a stamp" link never showed: it called `/api/merqo/qkit-earn-config` with qkit's metrics secret, but loopkit checks its own and the per-kit secrets differ. New `loopkit.qkit_earn_offer(uuid)` (migration `0062`, service role only) answers it, and the route is removed.
 
 ### Added
 

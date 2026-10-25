@@ -99,7 +99,7 @@ calls — loopkit no longer runs its own Telegram bot, both routes go through
 merqo's shared one. `merqo-vendor-profile.ts`, `merqo-vendor-feedback.ts`,
 and `merqo-support.ts` share their `.schema("merqo").rpc(...)` call plumbing
 via `merqo-rpc.ts`'s `callMerqoRpc`; the three `/api/merqo/*` GET routes
-(`metrics`, `vendor-status`, `qkit-earn-config`) and the `vendor-provision`
+(`metrics`, `vendor-status`) and the `vendor-provision`
 write route share their Bearer-token check via `merqo-auth.ts`'s `bearerOk`.
 `legal-gate.ts` is a third kind of merqo HTTP call (kit → merqo, like
 `merqo-customer-notify.ts`, not the RPC-plumbing group above) — its

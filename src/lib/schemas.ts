@@ -46,5 +46,3 @@ export const redirectPathSchema = z
   .string()
   .max(512)
   .regex(/^\/(?![/\\])/);
-
-export const vendorIdQuerySchema = z.uuid();
