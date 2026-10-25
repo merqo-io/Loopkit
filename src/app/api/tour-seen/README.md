@@ -36,3 +36,5 @@ completes.
 ## Parent
 
 [api](../README.md)
+
+Refuses requests that are not same-origin (`Sec-Fetch-Site`, falling back to `Origin`) with a 403.

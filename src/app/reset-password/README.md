@@ -13,3 +13,5 @@ recovery-session callback — the actual UI lives in `@/features/auth`.
 ## Parent
 
 [app](../README.md)
+
+`layout.tsx` forces per-request rendering so the nonce CSP from `proxy.ts` reaches this page's scripts.

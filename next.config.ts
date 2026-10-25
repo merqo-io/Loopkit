@@ -27,14 +27,9 @@ const nextConfig: NextConfig = {
     // dev server inside an <iframe>. Only enforce them in production, where
     // clickjacking is the actual threat model.
     const isProd = process.env.NODE_ENV === "production";
+    // The CSP and X-Robots-Tag are set per request in src/proxy.ts.
     const frameHeaders = isProd
-      ? [
-          { key: "X-Frame-Options", value: "DENY" },
-          {
-            key: "Content-Security-Policy",
-            value: "frame-ancestors 'none'; base-uri 'self'; object-src 'none'",
-          },
-        ]
+      ? [{ key: "X-Frame-Options", value: "DENY" }]
       : [];
 
     return [

@@ -99,7 +99,7 @@ calls — loopkit no longer runs its own Telegram bot, both routes go through
 merqo's shared one. `merqo-vendor-profile.ts`, `merqo-vendor-feedback.ts`,
 and `merqo-support.ts` share their `.schema("merqo").rpc(...)` call plumbing
 via `merqo-rpc.ts`'s `callMerqoRpc`; the three `/api/merqo/*` GET routes
-(`metrics`, `vendor-status`, `qkit-earn-config`) and the `vendor-provision`
+(`metrics`, `vendor-status`) and the `vendor-provision`
 write route share their Bearer-token check via `merqo-auth.ts`'s `bearerOk`.
 `legal-gate.ts` is a third kind of merqo HTTP call (kit → merqo, like
 `merqo-customer-notify.ts`, not the RPC-plumbing group above) — its
@@ -134,5 +134,9 @@ the requested size, and reject later-page errors instead of returning partial
 results. cards.pagination.test.ts exercises page ties, search preservation,
 short pages, batches, errors and the unchanged exact-count helper. Concurrent
 card updates are not a transactional snapshot across separate HTTP reads.
+
+`security-headers.ts` holds the nonce route list and CSP source lists; `theme-props.ts` is shared by the root layout and the CSP; `same-origin.ts` guards cookie-authenticated route handlers; `admin.ts` also requires `aal2` in `requireAdmin()`.
+
+`security-headers.ts` also allows the Vercel toolbar origin (`vercel.live`) outside production.
 
 `merqo-vendor-activity.ts`'s `computeVendorActivity(isPro, { programs, cards, events }, nowMs)` and `program-config.ts`'s `buildChanceConfig(variant, segments, { pityCeiling, rewardText, scratchCoverStyle })` take grouped arguments. Colour values for the mechanic art live in `tokens/`.

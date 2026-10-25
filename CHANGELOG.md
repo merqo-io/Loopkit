@@ -6,6 +6,29 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-24
+
+### Security
+
+- Nonce-based CSP (`script-src` without `unsafe-inline`) on per-request routes (`/dashboard`, `/admin`, `/mfa`, `/c`, `/earn`, `/setup`, `/auth`, `/login`, `/reset-password`, `/legal/accept`), set in `proxy.ts` from `@merqo/ui/security`. Static pages get the static policy from the same builder. Loopkit had no script policy before; every page now gets `default-src 'self'` with Supabase and Google avatar origins allowed. The `@merqo/ui` pin moves to v0.35.0.
+- `X-Robots-Tag: noindex, nofollow` and a disallow-all `robots.txt` on every non-production deployment.
+- Admin pages and actions now require a verified TOTP second factor (`aal2`); a password-only admin session is redirected to the new `/mfa` page.
+- Duplicate host-only auth cookies are cleared on every request instead of once behind a marker (a re-created duplicate sent vendors to /login).
+- The CSP allows the Vercel toolbar origin outside production. In the nonce policy the toolbar script itself stays blocked (`strict-dynamic` ignores host allow-lists), so turn the toolbar off for preview in Vercel.
+- `POST /api/tour-seen` refuses a request whose `Sec-Fetch-Site` is not `same-origin` (or whose `Origin` differs when that header is absent).
+- Zod parsing for the auth callback query, the legal-accept redirect and the consent-withdrawal phone field.
+- `no-restricted-imports` keeps the service-role client to `src/lib` and `src/app/api`; every other import states why.
+- Each `dangerouslySetInnerHTML` site is annotated: all are `qrSvg()` output over a server-minted token or link.
+
+### Fixed
+
+- qkit's "Earn a stamp" link never showed: it called `/api/merqo/qkit-earn-config` with qkit's metrics secret, but loopkit checks its own and the per-kit secrets differ. New `loopkit.qkit_earn_offer(uuid)` (migration `0062`, service role only) answers it, and the route is removed.
+
+### Added
+
+- CSP e2e spec and a signed-in render smoke (against a small Supabase stand-in, so it sees empty data); CI e2e serves the production build.
+- `docs/security/2026-10-24-data-inventory.md`.
+
 ## [0.1.2] - 2026-10-24
 
 ### Changed

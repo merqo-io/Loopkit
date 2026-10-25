@@ -9,7 +9,6 @@ qkit earn-config, and push-provisions a vendor onto loopkit.
 ## Contents
 
 - `metrics/`
-- `qkit-earn-config/`
 - `vendor-activity/` — `GET` endpoint resolving one vendor's programs,
   cards, and stamp/redeem activity by email, for merqo's cross-kit
   `/admin/vendors/[email]` detail view.
@@ -18,7 +17,7 @@ qkit earn-config, and push-provisions a vendor onto loopkit.
 
 ## Connectivity
 
-`metrics/`, `qkit-earn-config/`, `vendor-status/`, and `vendor-activity/`
+`metrics/`, `vendor-status/`, and `vendor-activity/`
 each expose a single GET `route.ts` and share the same constant-time
 Bearer-token check — `bearerOk(request, "MERQO_METRICS_SECRET")`
 (`@/lib/merqo-auth`) — against `MERQO_METRICS_SECRET`. `vendor-provision/`
@@ -36,8 +35,7 @@ activity.ts`) from that vendor's own `programs`/`vendor_pro`/`cards`/
 health concept yet, only program-level — see
 `docs/business/2026-08-26-cross-kit-vendor-activity-design.md`), and a
 vendor absent from `auth.users` entirely 404s rather than returning
-`active: false`. `qkit-earn-config/` returns whether a vendor's qkit-earn
-integration is enabled, and `vendor-provision/` calls
+`active: false`. `vendor-provision/` calls
 `loopkit.provision_default_program` (idempotent, keyed on whether the
 vendor already has any program row) via `supabase.rpc(...)` on the
 service-role client. `vendor-provision/` is the only one of the five that

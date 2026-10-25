@@ -38,3 +38,5 @@ actions write via `recordAudit`.
 [app](../README.md)
 
 Admin writes patch only the intended owned profile fields and preserve unrelated shared Merqo profile data. Authorization checks precede service-role mutations.
+
+Every page and action is gated by `requireAdmin()`, which needs `aal2`; a password-only session is redirected to `/mfa`. Service-client imports carry an eslint-disable reason.

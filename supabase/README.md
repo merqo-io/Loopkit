@@ -25,3 +25,5 @@ shared Merqo Supabase project.
 ## Parent
 
 [loopkit](../README.md)
+
+`config.toml` enables TOTP enrol and verify.

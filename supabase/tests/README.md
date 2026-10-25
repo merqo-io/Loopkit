@@ -16,6 +16,7 @@ fixtures have not yet been executed in this checkout.
 - `customer-capability.test.sql` and `earn-customer-capability.test.sql` exercise
   customer and earn proofs; `retired-rpc-permissions.test.sql` checks retired RPC
   grants.
+- `qkit-earn-offer.test.sql` checks that only the service role can call `qkit_earn_offer`, that it answers enabled, disabled and unknown vendors, and that it exposes no customer data.
 - `reward-rpc.test.sql`, `plant-redemption.test.sql` and
   `plant-redemption-parity.test.sql` exercise reward state and redemption contracts.
 - `visit-compare-and-swap.test.sql` and `referral-cas.test.sql` cover state snapshot

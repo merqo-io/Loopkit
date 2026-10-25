@@ -12,3 +12,5 @@ Customer-facing stamp claims reached through a completed qkit order link.
 Migration `0056` closes direct access to the legacy phone-only lookup and commit functions. The guarded SQL wrapper preserves persisted stamp limits and idempotency. Database authorization and conflict regressions are in `supabase/tests/earn-customer-capability.test.sql`; these require a disposable local database.
 
 [app](../README.md)
+
+The service-client import carries an eslint-disable reason: the order link is the credential.
