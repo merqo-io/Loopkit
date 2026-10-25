@@ -66,3 +66,5 @@ Vendor card recovery calls the owner-gated recover_customer_card RPC. It rotates
 card and active-voucher capabilities while preserving earned progress; it is not
 a phone-only public reset. The separate customer expired-cycle reset requires
 saved card possession.
+
+`buildOverviewPrograms({ programs, cards, activityEvents, rewardEvents }, nowMs)` takes its rows as one object.

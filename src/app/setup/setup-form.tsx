@@ -410,7 +410,7 @@ export function SetupForm({
                   onChange={setStampColor}
                 />
                 <span className="text-xs text-muted-foreground">
-                  Accent color — the reward stamp always stays gold.
+                  Accent color, the reward stamp always stays gold.
                   {!allowedCustomColor && " Custom colors need Pro."}
                 </span>
               </div>

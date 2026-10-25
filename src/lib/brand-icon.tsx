@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax -- ImageResponse needs literal CSS colours */
 import type { ReactElement } from "react";
 
 // "Sealing Wax" marks, approximated from the OKLCH theme tokens as

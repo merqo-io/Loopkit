@@ -498,3 +498,7 @@ Prepared migrations `0050`–`0060` also address atomic program replacement, pla
 Component ownership and preserved behavior for the current reuse cleanup are recorded in [the component reuse specification](docs/meta/2026-10-10-component-reuse-spec.md).
 
 The AI harness follows templateCentral 6.0.4: hook commands are anchored on the project directory, and the guard against committing to `main` reads the branch of the directory a command runs in. The dated entry in `AGENTS.md` lists what was adopted.
+
+## Lint
+
+`eslint.config.mjs` consumes the shared `@merqo/ui/eslint` preset (comment and directive hygiene, size and complexity limits, no colour literals or em dashes in `src`). `eslint.config.test.ts` asserts the key rules stay at `error`. Colour literals are allowed only in `src/lib/brand-icon.tsx`, `src/app/global-error.tsx` and `src/lib/tokens/`. Two baseline blocks list the files over the size or complexity limits; the split-long-files task shrinks them.

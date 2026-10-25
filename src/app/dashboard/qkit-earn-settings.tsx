@@ -33,7 +33,7 @@ export function QkitEarnSettings({
     return (
       <ElevatedCard className="space-y-3 p-4 text-sm text-muted-foreground">
         <p>
-          Let customers claim a stamp after completing a qkit order — they get a
+          Let customers claim a stamp after completing a qkit order, they get a
           link on their order page and enter their phone number to collect it.
         </p>
         <ProLock label="Upgrade to Pro" />

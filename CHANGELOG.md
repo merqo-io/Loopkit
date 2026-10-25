@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-10-24
+
+### Changed
+
+- Lint config now consumes the shared `@merqo/ui/eslint` preset (`@merqo/ui` v0.35.0): comment and directive hygiene, size and complexity limits, and a ban on colour literals and the em dash in `src`. `eslint-plugin-sonarjs` 4.2.2 and `@eslint-community/eslint-plugin-eslint-comments` 4.8.1 pinned. `eslint.config.test.ts` asserts the key rules resolve to `error`. Files over the size or complexity limits are listed in two baseline blocks, shrunk by the split-long-files task.
+- Mechanic art colours (cup, flame, scratch card, wheel, stamp, setup defaults) moved to `src/lib/tokens/mechanic-art.ts` with identical values; a DOM test checks the rendered colours. No visual change.
+- Five functions take a grouped argument instead of five or more positional ones; the vendor-activity route and the login confirmation screen were split into helpers. No behaviour change.
+- Em dashes removed from user-facing copy.
+
 ## [0.1.1] - 2026-10-24
 
 ### Security

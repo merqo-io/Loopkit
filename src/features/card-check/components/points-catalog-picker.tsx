@@ -92,7 +92,7 @@ export function PointsCatalogPicker({
               <AlertDialogTitle>Redeem {item.label}?</AlertDialogTitle>
               <AlertDialogDescription>
                 Uses {item.cost} points. Any remaining points stay on your card
-                — you&apos;ll get a QR to show the shop.
+                , you&apos;ll get a QR to show the shop.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>

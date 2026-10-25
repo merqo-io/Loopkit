@@ -127,13 +127,11 @@ export function buildPreviewProgram(
     type: input.type,
     stamps_required: input.pityCeiling ?? 10,
     reward_text: input.rewardText,
-    config: buildChanceConfig(
-      input.type,
-      input.segments,
-      input.pityCeiling,
-      input.rewardText,
-      input.scratchCoverStyle,
-    ),
+    config: buildChanceConfig(input.type, input.segments, {
+      pityCeiling: input.pityCeiling,
+      rewardText: input.rewardText,
+      scratchCoverStyle: input.scratchCoverStyle,
+    }),
   };
 }
 

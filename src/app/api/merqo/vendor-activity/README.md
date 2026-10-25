@@ -21,3 +21,5 @@ into richer, generic `{active, plan, status, metrics, lastActivityAt}`.
 [merqo](../README.md)
 
 Input validation precedes service-client creation. Paginated reads fail closed on a later-page error rather than reporting partial activity as complete.
+
+The route reads through `readProgramsAndPlan` and `readCardsAndEvents`, and answers any failed read with `upstreamUnavailable`.

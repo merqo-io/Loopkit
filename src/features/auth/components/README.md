@@ -29,3 +29,5 @@ Client-side auth UI.
 ## Parent
 
 [auth](../README.md)
+
+`login-form.tsx` renders the check-your-email screen through `SentNotice`.

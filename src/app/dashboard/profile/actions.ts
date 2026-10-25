@@ -38,7 +38,9 @@ export async function updatePasswordAction(
 // deliberately not a `.optional().or(z.literal(""))` union, which gives
 // unpredictable issue ordering/messages on real validation failures.
 function emptyToUndefined(value: unknown): unknown {
-  return value === "" || value == null ? undefined : value;
+  return value === "" || value === null || value === undefined
+    ? undefined
+    : value;
 }
 
 const socialUrl = z.preprocess(

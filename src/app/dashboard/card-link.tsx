@@ -15,7 +15,7 @@ export function CardLinkActions({ link }: { link: string }) {
       toast.success("Link copied");
       setTimeout(() => setCopied(false), 1500);
     } catch {
-      toast.error("Couldn't copy — long-press the link to copy it.");
+      toast.error("Couldn't copy, long-press the link to copy it.");
     }
   }
 

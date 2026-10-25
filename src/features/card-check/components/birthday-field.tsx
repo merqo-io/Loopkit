@@ -52,7 +52,7 @@ export function BirthdayField({
         return;
       }
       setSaved(true);
-      toast.success("Thanks — we'll remember your birthday.");
+      toast.success("Thanks, we'll remember your birthday.");
     });
   }
 

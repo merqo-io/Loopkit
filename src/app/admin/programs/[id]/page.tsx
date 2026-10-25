@@ -24,8 +24,7 @@ export default async function AdminProgramDetailPage({
   if (!detail) notFound();
 
   const { program, vendor_email, cards, events } = detail;
-  // Reading the wall clock in an async server component is intentional here.
-  // eslint-disable-next-line react-hooks/purity
+  // eslint-disable-next-line react-hooks/purity -- the wall clock is read once per request on purpose
   const now = Date.now();
 
   const stampsIssued = events.filter((e) => e.kind === "stamp").length;

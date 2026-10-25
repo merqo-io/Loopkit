@@ -60,7 +60,7 @@ export function RedeemButton({
         <AlertDialogHeader>
           <AlertDialogTitle>Redeem reward?</AlertDialogTitle>
           <AlertDialogDescription>
-            Redeem reward for {card.phone}? Uses {stampsRequired} stamps — any
+            Redeem reward for {card.phone}? Uses {stampsRequired} stamps, any
             extra carries over to their next card.
           </AlertDialogDescription>
         </AlertDialogHeader>

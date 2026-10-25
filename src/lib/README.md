@@ -134,3 +134,5 @@ the requested size, and reject later-page errors instead of returning partial
 results. cards.pagination.test.ts exercises page ties, search preservation,
 short pages, batches, errors and the unchanged exact-count helper. Concurrent
 card updates are not a transactional snapshot across separate HTTP reads.
+
+`merqo-vendor-activity.ts`'s `computeVendorActivity(isPro, { programs, cards, events }, nowMs)` and `program-config.ts`'s `buildChanceConfig(variant, segments, { pityCeiling, rewardText, scratchCoverStyle })` take grouped arguments. Colour values for the mechanic art live in `tokens/`.
