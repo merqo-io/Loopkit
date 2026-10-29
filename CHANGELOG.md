@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-10-29
+
+### Security
+
+- `qkit_earn_events` now has row level security on (it had none). It has no policies: only the security definer earn functions and the service role use it, and no client role has a grant.
+
+### Changed
+
+- Every foreign key column in the `loopkit` schema has an index (migration `0063`). New pgTAP test covers those indexes, RLS on every table, `vendor_pro` and `pricing` reads, and no client access to `qkit_earn_events`.
+
 ## [0.2.0] - 2026-10-24
 
 ### Security
