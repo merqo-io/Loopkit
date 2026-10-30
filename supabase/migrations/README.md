@@ -72,5 +72,6 @@ exception.
 - `0061_marketing_consent.sql`: PDPA marketing consent: append-only `loopkit.marketing_consents` log (granted or withdrawn, `wording_version` plus `wording_text` snapshot required on grants, `source`, `recorded_at`), FK-cascaded from `loopkit.customers`. A trigger blocks UPDATE and no role holds DELETE. Vendors read their own rows under RLS; no client write grant. `customer_set_marketing_consent` and `customer_marketing_consent` are service-role RPCs gated by the card-token proof; `vendor_withdraw_marketing_consent` lets a signed-in vendor record a withdrawal only. Not yet applied to prod.
 
 - `0062_qkit_earn_offer.sql`: `loopkit.qkit_earn_offer(uuid)` returns `{enabled, program_name}` for a vendor's qkit earn setting. Security definer with an empty search_path, executable by the service role only. qkit's order page calls it instead of the removed `qkit-earn-config` route.
+- `0063_fk_indexes.sql`: indexes every foreign key column the Supabase advisor flagged as unindexed (`admin_audit`, `feedback`, `programs.replaced_by`, `qkit_earn_config`, `qkit_earn_events.card_id`, `referral_hosts`, `reward_vouchers`, `upgrade_requests`) and turns RLS on for `qkit_earn_events` (no policies; only the security definer earn RPCs and the service role use it).
 
 Prepared audit migrations require database validation and rollout review before deployment.
