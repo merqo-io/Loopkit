@@ -16,7 +16,7 @@ each a directory with a `SKILL.md`.
 
 Each subfolder is one skill, loaded by name (`.claude/skills/<name>/SKILL.md`)
 and invoked via the `Skill` tool. `next-verify` is model-invocable (typecheck,
-lint and tests on demand); `supabase-migrate` and `skill-audit` set
+lint, tests and a production build on demand); `supabase-migrate` and `skill-audit` set
 `disable-model-invocation: true` in their frontmatter, so they only run when
 explicitly requested. `.claude/settings.json`'s `skillOverrides` turns off
 the templateCentral plugin's `add`/`scaffold`/`migrate` skills project-wide,
