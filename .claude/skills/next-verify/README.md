@@ -2,11 +2,11 @@
 
 ## Purpose
 
-Project skill: run the full lint/format/test quality gate in one pass.
+Project skill: run the full lint/format/test/build quality gate in one pass.
 
 ## Contents
 
-- `SKILL.md` — skill definition: runs `pnpm check && pnpm test` and reports the results; documents why it doesn't overlap with the harness's own `PostToolUse` incremental-`tsc` and `Stop`-hook test run — this skill's unique value is the lint + format gate (no hook covers that) plus one full-suite pass on demand
+- `SKILL.md` — skill definition: runs `pnpm check && pnpm test && pnpm build` and reports the results; documents why it doesn't overlap with the harness's own `PostToolUse` incremental-`tsc` and `Stop`-hook test run — this skill's unique value is the lint + format gate and the production build (no hook covers those) plus one full-suite pass on demand
 
 ## Connectivity
 
