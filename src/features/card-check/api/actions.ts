@@ -10,6 +10,7 @@ import {
   vendorIdSchema,
 } from "@/lib/customer-proof";
 import { normalizePhone } from "@/lib/phone";
+import { allowAnonymousAction, RATE_LIMIT_MESSAGE } from "@/lib/rate-limit";
 import { getProgress } from "@/lib/engine";
 import { qrSvg } from "@merqo/ui";
 import { isCardExpired } from "@/lib/expiry";
@@ -74,6 +75,9 @@ async function creditReferralHost(credit: ReferralCredit): Promise<void> {
   }
 }
 
+const JOIN_FAILED_MESSAGE =
+  "We could not open a card with those details. Check the number or ask the shop for help.";
+
 // Existing customers must prove possession before the database returns credentials.
 async function checkStatusActionImpl(
   _prev: StatusState,
@@ -106,6 +110,8 @@ async function checkStatusActionImpl(
         "Enter the saved code from your card, or ask the shop to recover it.",
     };
   }
+  if (!(await allowAnonymousAction("card-check", normalized.phone)))
+    return { status: "error", message: RATE_LIMIT_MESSAGE };
   const proof = submittedProof || (await readCustomerProof(vendorId));
   const supabase = await createServiceClient();
   const { data, error } = await supabase.rpc("customer_join", {
@@ -114,11 +120,8 @@ async function checkStatusActionImpl(
     p_token: proof,
     p_referral_code: referralCode || null,
   });
-  if (error)
-    return {
-      status: "error",
-      message: "Use your saved card code or ask the shop to recover your card.",
-    };
+  // One message for every join failure, so it cannot reveal whether the phone is registered.
+  if (error) return { status: "error", message: JOIN_FAILED_MESSAGE };
   const parsedPayload = z
     .object({
       cards: z.array(

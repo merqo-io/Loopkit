@@ -19,6 +19,7 @@ fixtures have not yet been executed in this checkout.
 - `qkit-earn-offer.test.sql` checks that only the service role can call `qkit_earn_offer`, that it answers enabled, disabled and unknown vendors, and that it exposes no customer data.
 - `reward-rpc.test.sql`, `plant-redemption.test.sql` and
   `plant-redemption-parity.test.sql` exercise reward state and redemption contracts.
+- `anon-abuse-limits.test.sql` covers the `0064` limiter (grants, RLS, window counting) and the 5-per-day referral credit cap, including retry of a reserved guest and the cap resetting.
 - `visit-compare-and-swap.test.sql` and `referral-cas.test.sql` cover state snapshot
   conflicts; `atomic-program-replacement.test.sql` covers replacement contracts.
 - `points-and-voucher-locks.test.sql` and `stamp-redemption.test.sql` cover lock
