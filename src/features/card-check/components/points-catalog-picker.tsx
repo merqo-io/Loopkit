@@ -55,7 +55,7 @@ export function PointsCatalogPicker({
           toast.error(res.error);
           return;
         }
-        toast.success(`${res.rewardText} redeemed — show the QR to the shop.`);
+        toast.success(`${res.rewardText} redeemed. Show the QR to the shop.`);
         onSelected({ id: res.id, rewardText: res.rewardText, qr: res.qr });
       } catch {
         toast.error("Could not redeem your reward. Try again.");
