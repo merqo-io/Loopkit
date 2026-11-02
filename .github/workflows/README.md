@@ -15,8 +15,9 @@ security scanning.
   secret `VERCEL_STAGING_DEPLOY_HOOK`) so `loopkit-staging.merqo.io` runs main's
   code; Vercel does not git-deploy a commit it already built for production.
   Fast-forward only: a diverged `staging` fails the job instead of being
-  overwritten. Without the secret it only warns. Only this job gets
-  `contents: write`.
+  overwritten. Without the secret it only warns. The push uses the
+  merqo-staging-sync GitHub App token, because a ruleset limits `staging`
+  pushes to that app; the job's own `GITHUB_TOKEN` is read only.
 
 ## Connectivity
 

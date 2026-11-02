@@ -4,6 +4,12 @@ All notable changes to loopkit are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+### Changed
+
+- The staging sync workflow pushes to `staging` with the merqo-staging-sync GitHub App token instead of the default `GITHUB_TOKEN`, since a ruleset limits `staging` pushes to that app. The job's own token drops to read only.
+
 ## [0.3.0] - 2026-11-02
 
 ### Changed
@@ -17,10 +23,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - `checkStatusAction` and `claimEarnAction` are rate limited per client IP (30 per minute, read from `x-vercel-forwarded-for` then `x-real-ip`, skipped if neither is set), per phone and IP pair (5 per minute per action) and per phone (20 per minute per action); keys hold SHA-256 digests, not raw phones or IPs. The limiter is a Postgres fixed-window counter (`loopkit.check_rate_limit`, service role only, migration `0064`) and fails closed with a "try again" message if it errors.
 - A referral host earns at most 5 new guest credits per rolling 24 hours, enforced in `vendor_join_referred` under the host row lock (migration `0064`).
 - Joining with an unknown or already registered phone now fails with one message, so the response no longer hints that a number is registered.
-
-### Changed
-
-- The staging sync workflow pushes to `staging` with the merqo-staging-sync GitHub App token instead of the default `GITHUB_TOKEN`, since a ruleset limits `staging` pushes to that app. The job's own token drops to read only.
 
 ## [0.2.1] - 2026-10-29
 
