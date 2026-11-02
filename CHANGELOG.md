@@ -10,6 +10,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 - The staging sync workflow pushes to `staging` with the merqo-staging-sync GitHub App token instead of the default `GITHUB_TOKEN`, since a ruleset limits `staging` pushes to that app. The job's own token drops to read only.
 
+### Fixed
+
+- `block-no-verify.sh` no longer blocks commits made from a git worktree on a feature branch: Windows drive-letter paths (`C:\...`, `C:/...`) in the hook cwd, `cd` and `git -C` targets are normalised for Git Bash, and quoted paths containing spaces stay one token. Regression test: `bash .claude/hooks/block-no-verify.test.sh`.
+
 ## [0.3.0] - 2026-11-02
 
 ### Changed
