@@ -4,7 +4,12 @@ All notable changes to loopkit are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [Unreleased]
+## [0.3.0] - 2026-11-02
+
+### Changed
+
+- The public landing is honest about readiness: an "In build" badge with "Built, not yet tried with vendors.", every signup CTA reads "Join the waitlist" and links to the merqo waitlist, and pricing copy is the single pilot line (free during the pilot, at least 30 days' notice before any charge). The FAQ no longer claims rewards happen automatically or quotes setup times, and the landing has a DOM guard test for price, em dash and banned words.
+- `@merqo/ui` pinned to v0.36.0.
 
 ### Security
 

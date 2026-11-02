@@ -1,15 +1,23 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { WAITLIST_URL } from "./waitlist";
 import { StampCard } from "./stamp-card";
 
-const TRUST = ["No app for customers", "Just a phone number", "Free to start"];
+const TRUST = ["No app for customers", "Just a phone number"];
 
 export function Hero({ authed = false }: { authed?: boolean }) {
   return (
     <section className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-16 sm:py-24 lg:grid-cols-2">
       <div className="fade-rise">
-        <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+        <div className="flex flex-wrap items-center gap-3">
+          <Badge variant="gold">In build</Badge>
+          <p className="text-sm text-muted-foreground">
+            Built, not yet tried with vendors.
+          </p>
+        </div>
+        <p className="mt-4 font-mono text-xs uppercase tracking-widest text-muted-foreground">
           loopkit · loyalty for small vendors
         </p>
         <h1 className="mt-4 max-w-xl text-balance font-display text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl">
@@ -21,10 +29,17 @@ export function Hero({ authed = false }: { authed?: boolean }) {
         </p>
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <Button asChild size="lg">
-            <Link href={authed ? "/dashboard" : "/login?mode=signup"}>
-              {authed ? "Go to dashboard" : "Get started"}
-              <ArrowRight className="size-4" />
-            </Link>
+            {authed ? (
+              <Link href="/dashboard">
+                Go to dashboard
+                <ArrowRight className="size-4" />
+              </Link>
+            ) : (
+              <a href={WAITLIST_URL}>
+                Join the waitlist
+                <ArrowRight className="size-4" />
+              </a>
+            )}
           </Button>
           <Button asChild size="lg" variant="outline">
             <a href="#how">How it works</a>

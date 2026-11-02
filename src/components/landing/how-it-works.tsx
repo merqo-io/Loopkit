@@ -5,7 +5,7 @@ const STEPS = [
   {
     icon: CreditCard,
     title: "Set up your card",
-    body: "Pick how many stamps earn a reward and what the reward is. Two minutes.",
+    body: "Pick how many stamps earn a reward and what the reward is.",
   },
   {
     icon: Smartphone,
@@ -15,7 +15,7 @@ const STEPS = [
   {
     icon: Gift,
     title: "They come back",
-    body: "When the card's full they redeem the reward — and you've made a regular.",
+    body: "When the card's full they redeem the reward, and you've made a regular.",
   },
 ];
 
@@ -27,7 +27,7 @@ export function HowItWorks() {
           How it works
         </p>
         <h2 className="mt-3 max-w-xl text-balance font-display text-3xl font-bold tracking-tight sm:text-4xl">
-          Loyalty that runs itself.
+          Three steps to a regular.
         </h2>
         <ol className="mt-10 grid gap-8 sm:grid-cols-3">
           {STEPS.map((s, i) => (
