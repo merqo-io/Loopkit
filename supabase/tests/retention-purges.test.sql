@@ -24,8 +24,9 @@ insert into loopkit.stamp_events(card_id,kind,created_at) values
 ('00650000-0000-4000-8000-0000000000b1','stamp',now()-interval '1 day'),
 ('00650000-0000-4000-8000-0000000000c1','stamp',now()),
 ('00650000-0000-4000-8000-0000000000c2','stamp',now());
-insert into loopkit.reward_vouchers(card_id,program_id,reward_text,earned_at,updated_at) values
-('00650000-0000-4000-8000-0000000000a1','00650000-0000-4000-8000-000000000011','Coffee',now()-interval '30 months',now()-interval '30 months'),
+-- A's voucher is long expired: an active unexpired voucher would keep A.
+insert into loopkit.reward_vouchers(card_id,program_id,reward_text,earned_at,updated_at,status) values
+('00650000-0000-4000-8000-0000000000a1','00650000-0000-4000-8000-000000000011','Coffee',now()-interval '30 months',now()-interval '30 months','expired'),
 ('00650000-0000-4000-8000-0000000000c1','00650000-0000-4000-8000-000000000011','Coffee',now(),now()),
 ('00650000-0000-4000-8000-0000000000c2','00650000-0000-4000-8000-000000000012','Tea',now(),now());
 insert into loopkit.marketing_consents(vendor_id,phone,granted,source,recorded_at) values
@@ -34,9 +35,9 @@ insert into loopkit.marketing_consents(vendor_id,phone,granted,source,recorded_a
 insert into loopkit.qkit_earn_events(order_id,vendor_id,card_id,created_at) values
 ('00650000-0000-4000-8000-0000000000e1','00650000-0000-4000-8000-000000000001','00650000-0000-4000-8000-0000000000a1',now()-interval '30 months'),
 ('00650000-0000-4000-8000-0000000000e2','00650000-0000-4000-8000-000000000001','00650000-0000-4000-8000-0000000000c1',now());
-insert into loopkit.referral_hosts(id,vendor_id,program_id,host_phone,referral_code) values
-('00650000-0000-4000-8000-0000000000f1','00650000-0000-4000-8000-000000000001','00650000-0000-4000-8000-000000000011','+6591000001','retention-host-a'),
-('00650000-0000-4000-8000-0000000000f2','00650000-0000-4000-8000-000000000001','00650000-0000-4000-8000-000000000011','+6591000004','retention-host-d');
+insert into loopkit.referral_hosts(id,vendor_id,program_id,host_phone,referral_code,created_at) values
+('00650000-0000-4000-8000-0000000000f1','00650000-0000-4000-8000-000000000001','00650000-0000-4000-8000-000000000011','+6591000001','retention-host-a',now()-interval '30 months'),
+('00650000-0000-4000-8000-0000000000f2','00650000-0000-4000-8000-000000000001','00650000-0000-4000-8000-000000000011','+6591000004','retention-host-d',now());
 -- E: host-only phone, host 30 months old, no card or customer row.
 -- F: host-only phone, host created now. G: old card holding a live voucher.
 insert into loopkit.referral_hosts(id,vendor_id,program_id,host_phone,referral_code,created_at) values

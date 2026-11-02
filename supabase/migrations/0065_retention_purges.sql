@@ -145,14 +145,17 @@ begin
       pg_catalog.hashtextextended('customer:' || v_pair.vendor_id::text || ':' || v_pair.phone, 0));
     -- Vendor-side stamp and redeem paths lock the card row (and a
     -- program:phone advisory key), not the customer key above. Locking the
-    -- pair's cards and hosts makes a concurrent visit commit first or wait,
-    -- and the re-check below then sees it.
-    perform 1 from loopkit.cards c join loopkit.programs p on p.id = c.program_id
-      where p.vendor_id = v_pair.vendor_id and c.phone = v_pair.phone
-      order by c.id for update of c;
+    -- pair's hosts then cards makes a concurrent visit commit first or wait,
+    -- and the re-check below then sees it. Hosts come first to match
+    -- vendor_join_referred (host row, then card row) and avoid a deadlock.
+    -- Residual window: a first visit inserting a brand-new card has no row to
+    -- lock, so it can race the delete; the customer then simply re-enrolls.
     perform 1 from loopkit.referral_hosts rh
       where rh.vendor_id = v_pair.vendor_id and rh.host_phone = v_pair.phone
       order by rh.id for update;
+    perform 1 from loopkit.cards c join loopkit.programs p on p.id = c.program_id
+      where p.vendor_id = v_pair.vendor_id and c.phone = v_pair.phone
+      order by c.id for update of c;
     if loopkit._customer_last_activity(v_pair.vendor_id, v_pair.phone) < v_cutoff then
       perform loopkit._erase_customer_data(v_pair.vendor_id, v_pair.phone);
       v_count := v_count + 1;
