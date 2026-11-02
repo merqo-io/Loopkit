@@ -7,6 +7,7 @@ import { STATUS_IDLE } from "../types";
 import { ProgramCardStatus } from "./program-card-status";
 import { BirthdayField } from "./birthday-field";
 import { MarketingConsentToggle } from "./marketing-consent-toggle";
+import { EraseData } from "./erase-data";
 import { MarketingOptIn } from "@/components/marketing-opt-in";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -167,6 +168,16 @@ export function CheckForm({
               initial={state.marketing}
             />
           )}
+          <EraseData
+            vendorId={vendorId}
+            phone={state.phone!}
+            shopName={shopName}
+            onErased={() => {
+              setProofForgotten(true);
+              setEditingRequested(true);
+              setSwitchMessage("Your data at this shop was deleted.");
+            }}
+          />
         </div>
       )}
     </div>

@@ -4,6 +4,7 @@
 import { createServiceClient } from "@/lib/supabase/server";
 import { z } from "zod";
 import {
+  clearCustomerProof,
   readCustomerProof,
   saveCustomerProof,
   customerTokenSchema,
@@ -479,6 +480,36 @@ async function setMarketingConsentActionImpl(
   return { success: true, granted: data === true };
 }
 
+// A proved customer erases their own data at this shop. Failures share one
+// message so the response never says whether a phone has a card here.
+const ERASE_FAILED_MESSAGE =
+  "We could not delete your data. Use your saved card code or ask the shop for help.";
+
+async function eraseMyDataActionImpl(
+  formData: FormData,
+): Promise<ActionResult> {
+  const normalized = normalizePhone(String(formData.get("phone") ?? ""));
+  const vendor = vendorIdSchema.safeParse(String(formData.get("vendor") ?? ""));
+  if (!normalized.ok || !vendor.success) {
+    return { success: false, error: ERASE_FAILED_MESSAGE };
+  }
+  if (!(await allowAnonymousAction("erase", normalized.phone)))
+    return { success: false, error: RATE_LIMIT_MESSAGE };
+  const proof = await readCustomerProof(vendor.data);
+  if (!proof) return { success: false, error: ERASE_FAILED_MESSAGE };
+  const supabase = await createServiceClient();
+  const { data, error } = await supabase.rpc("customer_erase", {
+    p_vendor: vendor.data,
+    p_phone: normalized.phone,
+    p_token: proof,
+  });
+  if (error || data !== true) {
+    return { success: false, error: ERASE_FAILED_MESSAGE };
+  }
+  await clearCustomerProof(vendor.data);
+  return { success: true };
+}
+
 export async function checkStatusAction(
   prev: StatusState,
   formData: FormData,
@@ -534,5 +565,14 @@ export async function setMarketingConsentAction(
       success: false,
       error: "Could not save your choice. Try again.",
     };
+  }
+}
+export async function eraseMyDataAction(
+  formData: FormData,
+): Promise<ActionResult> {
+  try {
+    return await eraseMyDataActionImpl(formData);
+  } catch {
+    return { success: false, error: ERASE_FAILED_MESSAGE };
   }
 }

@@ -10,6 +10,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 - The staging sync workflow pushes to `staging` with the merqo-staging-sync GitHub App token instead of the default `GITHUB_TOKEN`, since a ruleset limits `staging` pushes to that app. The job's own token drops to read only.
 
+## [0.4.0] - 2026-11-03
+
+### Security
+
+- PDPA retention (migration `0065`): two daily pg_cron jobs. `loopkit_purge_inactive_customers` (03:40 UTC) deletes every row held for a vendor and phone (customer, cards, stamp events, vouchers, marketing consents, earn events, referral host and guest rows) once its last activity is older than 24 months. `loopkit_purge_feedback` (03:45 UTC) deletes feedback older than 24 months. Periods are defaults for the owner to confirm and the privacy copy to state.
+- Customers can delete their own data at a shop from the card view ("Delete my data at this shop", two-step confirm). The card token is the proof (`loopkit.customer_erase`, service role only), the action is rate limited, failures share one message, and the saved card cookie is cleared on success. Only that shop's data is removed.
+
 ## [0.3.0] - 2026-11-02
 
 ### Changed
