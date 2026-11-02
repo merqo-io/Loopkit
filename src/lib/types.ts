@@ -758,6 +758,10 @@ export interface Database {
           referral_credit: Json | null;
         }[];
       };
+      check_rate_limit: {
+        Args: { p_key: string; p_limit: number; p_window_seconds: number };
+        Returns: boolean;
+      };
       referral_credit_snapshot: {
         Args: { p_referral_host_id: string; p_guest_phone: string };
         Returns: Json;

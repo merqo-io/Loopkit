@@ -1,0 +1,34 @@
+begin;
+select no_plan();
+select ok(not has_function_privilege('anon','loopkit.check_rate_limit(text,int,int)','execute'),'anon cannot call the limiter');
+select ok(not has_function_privilege('authenticated','loopkit.check_rate_limit(text,int,int)','execute'),'authenticated cannot call the limiter');
+select ok(has_function_privilege('service_role','loopkit.check_rate_limit(text,int,int)','execute'),'service role can call the limiter');
+select ok((select relrowsecurity from pg_class where oid='loopkit.rate_limits'::regclass),'rate_limits has RLS on');
+select ok(not has_table_privilege('authenticated','loopkit.rate_limits','select'),'clients cannot read rate_limits');
+select ok(loopkit.check_rate_limit('t:a',2,3600),'first hit allowed');
+select ok(loopkit.check_rate_limit('t:a',2,3600),'hit at the limit allowed');
+select ok(not loopkit.check_rate_limit('t:a',2,3600),'hit over the limit blocked');
+select ok(loopkit.check_rate_limit('t:b',2,3600),'other keys are independent');
+select throws_ok($$select loopkit.check_rate_limit('',2,60)$$,'22023','invalid rate limit parameters','empty key rejected');
+select throws_ok($$select loopkit.check_rate_limit('t:c',0,60)$$,'22023','invalid rate limit parameters','out-of-range limit rejected');
+select throws_ok($$select loopkit.check_rate_limit('t:c',2,86401)$$,'22023','invalid rate limit parameters','out-of-range window rejected');
+insert into loopkit.rate_limits(key,window_start,count)values('t:old',now()-interval '2 hours',99);
+select ok(loopkit.check_rate_limit('t:old',1,60),'a past window does not carry its count into a fresh one');
+
+insert into auth.users(id,instance_id,aud,role,email)values('00640000-0000-0000-0000-000000000001','00000000-0000-0000-0000-000000000000','authenticated','authenticated','abuse-cap@test.local');
+insert into loopkit.programs(id,vendor_id,type,name,stamps_required,reward_text,config,active)values('00640000-0000-0000-0000-000000000010','00640000-0000-0000-0000-000000000001','lucky','Cap test',8,'Coffee','{}',true);
+insert into loopkit.cards(id,program_id,phone,state)values('00640000-0000-0000-0000-000000000020','00640000-0000-0000-0000-000000000010','+6591110064','{}');
+insert into loopkit.referral_hosts(id,vendor_id,program_id,host_phone,referral_code)values('00640000-0000-0000-0000-000000000030','00640000-0000-0000-0000-000000000001','00640000-0000-0000-0000-000000000010','+6591110064','cap-referral');
+select lives_ok(format($$select * from loopkit.vendor_join_referred('00640000-0000-0000-0000-000000000001','+659222000%s','cap-referral')$$,n),'guest '||n||' joins')
+  from generate_series(1,5) n;
+select is((select count(*)::int from loopkit.referral_credits where referral_host_id='00640000-0000-0000-0000-000000000030'),5,'five credits reserved');
+select lives_ok($$select * from loopkit.vendor_join_referred('00640000-0000-0000-0000-000000000001','+6592220006','cap-referral')$$,'sixth guest still joins');
+select is((select count(*)::int from loopkit.referral_credits where referral_host_id='00640000-0000-0000-0000-000000000030'),5,'sixth guest earns no credit');
+select is((select guest_count from loopkit.referral_hosts where id='00640000-0000-0000-0000-000000000030'),5,'guest count capped too');
+select lives_ok($$select * from loopkit.vendor_join_referred('00640000-0000-0000-0000-000000000001','+6592220001','cap-referral')$$,'reserved guest can retry past the cap');
+select is((select guest_count from loopkit.referral_hosts where id='00640000-0000-0000-0000-000000000030'),5,'retry does not recount');
+update loopkit.referral_credits set created_at=now()-interval '25 hours' where referral_host_id='00640000-0000-0000-0000-000000000030';
+select lives_ok($$select * from loopkit.vendor_join_referred('00640000-0000-0000-0000-000000000001','+6592220007','cap-referral')$$,'guest joins after the window rolls');
+select is((select count(*)::int from loopkit.referral_credits where referral_host_id='00640000-0000-0000-0000-000000000030'),6,'cap resets after 24 hours');
+select * from finish();
+rollback;

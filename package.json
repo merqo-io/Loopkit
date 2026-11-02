@@ -1,6 +1,6 @@
 {
   "name": "loopkit",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "private": true,
   "packageManager": "pnpm@11.10.0",
   "engines": {
@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "5.2.2",
-    "@merqo/ui": "github:merqo-io/merqo-ui#5577c4cbef0ef107c351826911264d7dce0cb132",
+    "@merqo/ui": "github:merqo-io/merqo-ui#06e51555e57689f912c3e90b5dd5a76e93e9e344",
     "@supabase/ssr": "^0.10.3",
     "@supabase/supabase-js": "2.110.0",
     "@zxing/browser": "^0.2.1",

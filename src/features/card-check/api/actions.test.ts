@@ -1,10 +1,15 @@
 import { createServiceClient } from "@/lib/supabase/server";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
-const { rpcMock, readProof, saveProof } = vi.hoisted(() => ({
+const { rpcMock, readProof, saveProof, allow } = vi.hoisted(() => ({
   rpcMock: vi.fn(),
   readProof: vi.fn(),
   saveProof: vi.fn(),
+  allow: vi.fn(),
+}));
+vi.mock("@/lib/rate-limit", () => ({
+  allowAnonymousAction: allow,
+  RATE_LIMIT_MESSAGE: "Too many tries.",
 }));
 vi.mock("@/lib/customer-proof", async () => {
   const { z } = await import("zod");
@@ -18,6 +23,7 @@ vi.mock("@/lib/customer-proof", async () => {
 beforeEach(() => {
   readProof.mockResolvedValue("a".repeat(32));
   saveProof.mockResolvedValue(undefined);
+  allow.mockResolvedValue(true);
 });
 vi.mock("@/lib/supabase/server", () => ({
   createServerClient: vi.fn(async () => ({ rpc: rpcMock })),
@@ -73,6 +79,42 @@ const baseRow = {
 describe("checkStatusAction", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+  });
+
+  it("stops a rate-limited caller before the join RPC", async () => {
+    allow.mockResolvedValue(false);
+    const state = await checkStatusAction(
+      STATUS_IDLE,
+      formData({
+        phone: "91234567",
+        vendor: "00550000-0000-4000-8000-000000000001",
+      }),
+    );
+    expect(state).toEqual({ status: "error", message: "Too many tries." });
+    expect(allow).toHaveBeenCalledWith("card-check", "+6591234567");
+    expect(rpcMock).not.toHaveBeenCalled();
+  });
+
+  it("gives identical responses whichever way the join fails", async () => {
+    const fields = {
+      phone: "91234567",
+      vendor: "00550000-0000-4000-8000-000000000001",
+    };
+    rpcMock.mockResolvedValueOnce({
+      data: null,
+      error: { message: "customer proof required" },
+    });
+    const existingPhone = await checkStatusAction(
+      STATUS_IDLE,
+      formData(fields),
+    );
+    rpcMock.mockResolvedValueOnce({
+      data: null,
+      error: { message: "invalid customer" },
+    });
+    const otherFailure = await checkStatusAction(STATUS_IDLE, formData(fields));
+    expect(existingPhone).toEqual(otherFailure);
+    expect(existingPhone).toMatchObject({ status: "error" });
   });
 
   it("calls guarded customer_join without a referral", async () => {
@@ -512,7 +554,7 @@ describe("customer capability boundary", () => {
       p_referral_code: null,
     });
     expect(result.status).toBe("error");
-    expect(result.message).toContain("recover your card");
+    expect(result.message).toContain("ask the shop for help");
     expect(saveProof).not.toHaveBeenCalled();
   });
   it("uses a valid supplied saved card code and stores successful proof", async () => {

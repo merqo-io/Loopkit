@@ -4,7 +4,7 @@ const BENEFITS = [
   {
     icon: HeartHandshake,
     title: "Regulars, not one-offs",
-    body: "A reason to come back beats a one-time sale. loopkit gives them the reason — a reward they're already halfway to.",
+    body: "A reason to come back beats a one-time sale. loopkit gives them the reason: a reward they're already halfway to.",
   },
   {
     icon: Zap,
@@ -14,7 +14,7 @@ const BENEFITS = [
   {
     icon: WalletMinimal,
     title: "Built for a stall",
-    body: "Made for home kitchens, pop-ups, and small cafes — plain, fast, and priced for one counter.",
+    body: "Made for home kitchens, pop-ups, and small cafes. Plain and fast, sized for one counter.",
   },
 ];
 

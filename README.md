@@ -49,7 +49,7 @@ output instead of a hand-copied string, so it can't drift from what the
 engine actually computes — see
 `../docs/superpowers/specs/2026-08-25-tour-example-badge-drift-fix-design.md`
 in the workspace root. Migrated onto
-the shared `@merqo/ui` component package (v0.14.0, `package.json`): the
+the shared `@merqo/ui` component package (v0.36.0, `package.json`): the
 dashboard nav/account dropdown, `useAsyncAction`, `InfoTooltip`,
 `ImageUploader`, `DashboardTour`, `PricingForm` (the `/admin` pricing
 section, `src/app/admin/pricing-form-client.tsx`), the landing page's
@@ -435,6 +435,10 @@ ToS/Privacy clickwrap doesn't need a signatory name for evidentiary
 strength beyond the record above. `/about` renders that same release's
 shared `AboutMerqo` component (the qkit origin story, one source reused
 by every kit's own `/about` page), linked from the landing `Nav`/`Footer`.
+
+Anonymous card actions (`/c` check, `/earn` claim) are rate limited per IP and
+per phone through a Postgres counter that fails closed, and a referral host
+earns at most 5 guest credits per 24 hours (migration `0064`).
 
 PDPA marketing consent (migration `0061`) is an append-only
 `loopkit.marketing_consents` log per vendor and customer phone. The latest
