@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 
+- Vercel deploys only `main` (`git.deploymentEnabled` in `vercel.json`). Pull request branches no longer get preview deployments, which kept hitting the merqo-io Hobby team's daily deployment cap. CI's build job still builds every PR; to preview a branch on demand, deploy it with the `vercel` CLI or temporarily allow the branch in `vercel.json`.
 - The staging sync workflow pushes to `staging` with the merqo-staging-sync GitHub App token instead of the default `GITHUB_TOKEN`, since a ruleset limits `staging` pushes to that app. The job's own token drops to read only.
 
 ## [0.3.0] - 2026-11-02
