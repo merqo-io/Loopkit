@@ -10,6 +10,10 @@ select ok(loopkit.check_rate_limit('t:a',2,3600),'hit at the limit allowed');
 select ok(not loopkit.check_rate_limit('t:a',2,3600),'hit over the limit blocked');
 select ok(loopkit.check_rate_limit('t:b',2,3600),'other keys are independent');
 select throws_ok($$select loopkit.check_rate_limit('',2,60)$$,'22023','invalid rate limit parameters','empty key rejected');
+select throws_ok($$select loopkit.check_rate_limit('t:c',0,60)$$,'22023','invalid rate limit parameters','out-of-range limit rejected');
+select throws_ok($$select loopkit.check_rate_limit('t:c',2,86401)$$,'22023','invalid rate limit parameters','out-of-range window rejected');
+insert into loopkit.rate_limits(key,window_start,count)values('t:old',now()-interval '2 hours',99);
+select ok(loopkit.check_rate_limit('t:old',1,60),'a past window does not carry its count into a fresh one');
 
 insert into auth.users(id,instance_id,aud,role,email)values('00640000-0000-0000-0000-000000000001','00000000-0000-0000-0000-000000000000','authenticated','authenticated','abuse-cap@test.local');
 insert into loopkit.programs(id,vendor_id,type,name,stamps_required,reward_text,config,active)values('00640000-0000-0000-0000-000000000010','00640000-0000-0000-0000-000000000001','lucky','Cap test',8,'Coffee','{}',true);
