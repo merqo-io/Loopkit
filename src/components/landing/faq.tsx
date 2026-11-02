@@ -1,21 +1,23 @@
+import { PRICING_LINE } from "./waitlist";
+
 type FaqEntry = { q: string; a: string };
 
 const FAQ: FaqEntry[] = [
   {
     q: "Do customers need to download an app?",
-    a: "No. Customers scan a QR at your counter and their stamp card lives on a web page — nothing to install.",
+    a: "No. Customers scan a QR at your counter and their stamp card lives on a web page, nothing to install.",
   },
   {
     q: "How long does it take to set up a loyalty program?",
-    a: "Minutes. Pick stamps, points, or a lucky-draw reward, print the QR, and you're running a program.",
+    a: "Pick stamps, points, or a lucky-draw reward, print the QR, and you're running a program.",
   },
   {
     q: "What happens when a customer completes their card?",
-    a: "They get their reward automatically — a free item, a discount, or a spin/scratch reward, depending on the program you set up.",
+    a: "They show their card at your counter and you redeem the reward you set up, such as a free item or a discount.",
   },
   {
-    q: "Can I run more than one loyalty program?",
-    a: "Yes, on paid tiers. Free starts with one active program; Pro adds more.",
+    q: "What does it cost?",
+    a: PRICING_LINE,
   },
 ];
 

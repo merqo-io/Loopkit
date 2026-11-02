@@ -10,7 +10,7 @@ test("landing renders", async ({ page }) => {
     }),
   ).toBeVisible();
   await expect(
-    page.getByRole("link", { name: "Get started" }).first(),
+    page.getByRole("link", { name: "Join the waitlist" }).first(),
   ).toBeVisible();
 });
 
