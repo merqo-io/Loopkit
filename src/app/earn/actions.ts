@@ -4,6 +4,7 @@ import { z } from "zod";
 // eslint-disable-next-line no-restricted-imports -- anonymous customer flow; the card or order token is the credential
 import { createServiceClient } from "@/lib/supabase/server";
 import { normalizePhone } from "@/lib/phone";
+import { allowAnonymousAction, RATE_LIMIT_MESSAGE } from "@/lib/rate-limit";
 import {
   customerTokenSchema,
   readCustomerProof,
@@ -63,6 +64,27 @@ async function recordEarnOptIn(
   return !error;
 }
 
+// Phone validation then the abuse limiter, so no DB work runs for a refused caller.
+async function admitPhone(
+  raw: string,
+): Promise<{ ok: true; phone: string } | { ok: false; state: EarnState }> {
+  const normalized = normalizePhone(raw);
+  if (!normalized.ok)
+    return {
+      ok: false,
+      state: {
+        status: "error",
+        message: "Enter a valid Singapore phone number.",
+      },
+    };
+  if (!(await allowAnonymousAction("earn", normalized.phone)))
+    return {
+      ok: false,
+      state: { status: "error", message: RATE_LIMIT_MESSAGE },
+    };
+  return { ok: true, phone: normalized.phone };
+}
+
 export async function claimEarnAction(
   _prev: EarnState,
   formData: FormData,
@@ -78,12 +100,8 @@ export async function claimEarnAction(
       status: "error",
       message: "Check the order link, name and saved card token.",
     };
-  const normalized = normalizePhone(input.data.phone);
-  if (!normalized.ok)
-    return {
-      status: "error",
-      message: "Enter a valid Singapore phone number.",
-    };
+  const normalized = await admitPhone(input.data.phone);
+  if (!normalized.ok) return normalized.state;
   try {
     const supabase = await createServiceClient();
     const { data: vendor, error: vendorError } = await supabase.rpc(

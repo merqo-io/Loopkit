@@ -1,8 +1,13 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-const { rpc, readProof, saveProof } = vi.hoisted(() => ({
+const { rpc, readProof, saveProof, allow } = vi.hoisted(() => ({
   rpc: vi.fn(),
   readProof: vi.fn(),
   saveProof: vi.fn(),
+  allow: vi.fn(),
+}));
+vi.mock("@/lib/rate-limit", () => ({
+  allowAnonymousAction: allow,
+  RATE_LIMIT_MESSAGE: "Too many tries.",
 }));
 vi.mock("@/lib/supabase/server", () => ({
   createServiceClient: vi.fn(async () => ({ rpc })),
@@ -50,6 +55,18 @@ beforeEach(() => {
   vi.resetAllMocks();
   readProof.mockResolvedValue(null);
   saveProof.mockResolvedValue(undefined);
+  allow.mockResolvedValue(true);
+});
+describe("claimEarnAction rate limit", () => {
+  it("stops a limited caller before any RPC and keys on the normalized phone", async () => {
+    allow.mockResolvedValue(false);
+    expect(await claimEarnAction({ status: "idle" }, form())).toEqual({
+      status: "error",
+      message: "Too many tries.",
+    });
+    expect(allow).toHaveBeenCalledWith("earn", "+6591234567");
+    expect(rpc).not.toHaveBeenCalled();
+  });
 });
 describe("claimEarnAction capability boundary", () => {
   it.each([

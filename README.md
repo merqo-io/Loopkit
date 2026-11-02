@@ -436,6 +436,10 @@ strength beyond the record above. `/about` renders that same release's
 shared `AboutMerqo` component (the qkit origin story, one source reused
 by every kit's own `/about` page), linked from the landing `Nav`/`Footer`.
 
+Anonymous card actions (`/c` check, `/earn` claim) are rate limited per IP and
+per phone through a Postgres counter that fails closed, and a referral host
+earns at most 5 guest credits per 24 hours (migration `0064`).
+
 PDPA marketing consent (migration `0061`) is an append-only
 `loopkit.marketing_consents` log per vendor and customer phone. The latest
 row decides the current state, and no row means not opted in. Customers opt
