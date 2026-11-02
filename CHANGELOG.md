@@ -4,6 +4,12 @@ All notable changes to loopkit are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+### Changed
+
+- The staging sync workflow pushes to `staging` with the merqo-staging-sync GitHub App token instead of the default `GITHUB_TOKEN`, since a ruleset limits `staging` pushes to that app. The job's own token drops to read only.
+
 ## [0.3.0] - 2026-11-02
 
 ### Changed
