@@ -8,10 +8,10 @@
 --   inactive customers  every row for a (vendor, phone) pair is deleted once
 --                       its last activity is older than 24 months. Last
 --                       activity is the latest of the customer row's
---                       timestamps and the pair's card, stamp event, voucher
---                       and marketing consent timestamps. A pair with a live
---                       voucher or balance inside that window is therefore
---                       never purged.
+--                       timestamps and the pair's card, stamp event, voucher,
+--                       marketing consent and referral host or credit
+--                       timestamps. A pair holding an active voucher that has
+--                       not expired is never purged, however long its expiry.
 --   feedback            deleted 24 months after created_at
 -- Out of scope: admin_audit (5-year policy, see AGENTS.md), vendor data and
 -- legal acceptances.
@@ -36,7 +36,13 @@ stable
 security definer
 set search_path = ''
 as $$
-  select pg_catalog.greatest(
+  select case when exists (
+      select 1 from loopkit.reward_vouchers rv
+      join loopkit.cards c on c.id = rv.card_id
+      join loopkit.programs p on p.id = c.program_id
+      where p.vendor_id = p_vendor and c.phone = p_phone
+        and rv.status = 'active' and (rv.expires_at is null or rv.expires_at > pg_catalog.now())
+    ) then pg_catalog.now() else pg_catalog.greatest(
     coalesce((select pg_catalog.max(pg_catalog.greatest(cu.first_seen_at, cu.last_seen_at))
       from loopkit.customers cu
       where cu.vendor_id = p_vendor and cu.phone = p_phone), '-infinity'::timestamptz),
@@ -55,8 +61,15 @@ as $$
       where p.vendor_id = p_vendor and c.phone = p_phone), '-infinity'::timestamptz),
     coalesce((select pg_catalog.max(m.recorded_at)
       from loopkit.marketing_consents m
-      where m.vendor_id = p_vendor and m.phone = p_phone), '-infinity'::timestamptz)
-  );
+      where m.vendor_id = p_vendor and m.phone = p_phone), '-infinity'::timestamptz),
+    coalesce((select pg_catalog.max(rh.created_at)
+      from loopkit.referral_hosts rh
+      where rh.vendor_id = p_vendor and rh.host_phone = p_phone), '-infinity'::timestamptz),
+    coalesce((select pg_catalog.max(rc.created_at)
+      from loopkit.referral_credits rc
+      join loopkit.referral_hosts rh on rh.id = rc.referral_host_id
+      where rh.vendor_id = p_vendor and (rh.host_phone = p_phone or rc.guest_phone = p_phone)), '-infinity'::timestamptz)
+  ) end;
 $$;
 
 -- Removes everything loopkit holds about one phone at one vendor. Stamp
@@ -110,21 +123,36 @@ declare
   v_pair record;
 begin
   -- Bounded per run so the advisory locks taken below stay few; a backlog
-  -- drains over successive nights.
+  -- drains over successive nights. The pre-filter uses indexed-or-cheap
+  -- timestamps so the full activity check only runs on plausible candidates.
   for v_pair in
     select cand.vendor_id, cand.phone
     from (
       select cu.vendor_id, cu.phone from loopkit.customers cu
+      where cu.last_seen_at < v_cutoff
       union
       select p.vendor_id, c.phone
       from loopkit.cards c join loopkit.programs p on p.id = c.program_id
+      where c.updated_at < v_cutoff
+      union
+      select rh.vendor_id, rh.host_phone from loopkit.referral_hosts rh
+      where rh.created_at < v_cutoff
     ) cand
     where loopkit._customer_last_activity(cand.vendor_id, cand.phone) < v_cutoff
     limit 500
   loop
     perform pg_catalog.pg_advisory_xact_lock(
       pg_catalog.hashtextextended('customer:' || v_pair.vendor_id::text || ':' || v_pair.phone, 0));
-    -- Re-checked under the lock: the customer may have visited since the scan.
+    -- Vendor-side stamp and redeem paths lock the card row (and a
+    -- program:phone advisory key), not the customer key above. Locking the
+    -- pair's cards and hosts makes a concurrent visit commit first or wait,
+    -- and the re-check below then sees it.
+    perform 1 from loopkit.cards c join loopkit.programs p on p.id = c.program_id
+      where p.vendor_id = v_pair.vendor_id and c.phone = v_pair.phone
+      order by c.id for update of c;
+    perform 1 from loopkit.referral_hosts rh
+      where rh.vendor_id = v_pair.vendor_id and rh.host_phone = v_pair.phone
+      order by rh.id for update;
     if loopkit._customer_last_activity(v_pair.vendor_id, v_pair.phone) < v_cutoff then
       perform loopkit._erase_customer_data(v_pair.vendor_id, v_pair.phone);
       v_count := v_count + 1;

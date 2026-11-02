@@ -493,7 +493,7 @@ async function eraseMyDataActionImpl(
   if (!normalized.ok || !vendor.success) {
     return { success: false, error: ERASE_FAILED_MESSAGE };
   }
-  if (!(await allowAnonymousAction("erase", normalized.phone)))
+  if (!(await allowAnonymousAction(`erase:${vendor.data}`, normalized.phone)))
     return { success: false, error: RATE_LIMIT_MESSAGE };
   const proof = await readCustomerProof(vendor.data);
   if (!proof) return { success: false, error: ERASE_FAILED_MESSAGE };

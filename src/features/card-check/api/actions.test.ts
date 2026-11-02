@@ -1054,6 +1054,7 @@ describe("eraseMyDataAction", () => {
       p_token: "a".repeat(32),
     });
     expect(clearProof).toHaveBeenCalledWith(vendor);
+    expect(allow).toHaveBeenCalledWith(`erase:${vendor}`, "+6591234567");
   });
 
   it("rejects a missing proof cookie without calling the database", async () => {

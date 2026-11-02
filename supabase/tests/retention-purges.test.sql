@@ -37,9 +37,18 @@ insert into loopkit.qkit_earn_events(order_id,vendor_id,card_id,created_at) valu
 insert into loopkit.referral_hosts(id,vendor_id,program_id,host_phone,referral_code) values
 ('00650000-0000-4000-8000-0000000000f1','00650000-0000-4000-8000-000000000001','00650000-0000-4000-8000-000000000011','+6591000001','retention-host-a'),
 ('00650000-0000-4000-8000-0000000000f2','00650000-0000-4000-8000-000000000001','00650000-0000-4000-8000-000000000011','+6591000004','retention-host-d');
-insert into loopkit.referral_credits(referral_host_id,guest_phone) values
-('00650000-0000-4000-8000-0000000000f1','+6591000002'),
-('00650000-0000-4000-8000-0000000000f2','+6591000003');
+-- E: host-only phone, host 30 months old, no card or customer row.
+-- F: host-only phone, host created now. G: old card holding a live voucher.
+insert into loopkit.referral_hosts(id,vendor_id,program_id,host_phone,referral_code,created_at) values
+('00650000-0000-4000-8000-0000000000f3','00650000-0000-4000-8000-000000000001','00650000-0000-4000-8000-000000000011','+6591000005','retention-host-e',now()-interval '30 months'),
+('00650000-0000-4000-8000-0000000000f4','00650000-0000-4000-8000-000000000001','00650000-0000-4000-8000-000000000011','+6591000006','retention-host-f',now());
+insert into loopkit.cards(id,program_id,phone,stamp_count,card_token,created_at,updated_at) values
+('00650000-0000-4000-8000-0000000000a9','00650000-0000-4000-8000-000000000011','+6591000007',1,'99999999999999999999999999999999',now()-interval '30 months',now()-interval '30 months');
+insert into loopkit.reward_vouchers(card_id,program_id,reward_text,earned_at,updated_at,expires_at,status) values
+('00650000-0000-4000-8000-0000000000a9','00650000-0000-4000-8000-000000000011','Coffee',now()-interval '30 months',now()-interval '30 months',now()+interval '1 year','active');
+insert into loopkit.referral_credits(referral_host_id,guest_phone,created_at) values
+('00650000-0000-4000-8000-0000000000f1','+6591000002',now()-interval '30 months'),
+('00650000-0000-4000-8000-0000000000f2','+6591000003',now());
 insert into loopkit.feedback(vendor_id,nps,message,created_at) values
 ('00650000-0000-4000-8000-000000000001',9,'old',now()-interval '30 months'),
 ('00650000-0000-4000-8000-000000000001',9,'recent',now()-interval '1 month');
@@ -47,7 +56,7 @@ insert into loopkit.feedback(vendor_id,nps,message,created_at) values
 -- The triggers stamp customers with the insert time; age the one customer
 -- whose every signal is old.
 update loopkit.customers set first_seen_at=now()-interval '30 months', last_seen_at=now()-interval '30 months'
-where phone in ('+6591000001','+6591000002');
+where phone in ('+6591000001','+6591000002','+6591000007');
 update loopkit.customers set first_seen_at=now()-interval '30 months', last_seen_at=now()-interval '1 day'
 where phone='+6591000002';
 
@@ -78,7 +87,12 @@ select ok(
 select is(loopkit._customer_last_activity('00650000-0000-4000-8000-000000000001','+6591000002')>now()-interval '2 days',true,'a recent stamp event counts as activity');
 select is(loopkit.purge_old_feedback(),1,'one old feedback row purged');
 select is((select message from loopkit.feedback),'recent','recent feedback kept');
-select is(loopkit.purge_inactive_customers(),1,'one inactive customer purged');
+select is(loopkit._customer_last_activity('00650000-0000-4000-8000-000000000001','+6591000007')>now()-interval '1 minute',true,'an unexpired active voucher counts as activity');
+select is(loopkit._customer_last_activity('00650000-0000-4000-8000-000000000001','+6591000005')<now()-interval '24 months',true,'an old host-only phone is inactive');
+select is(loopkit.purge_inactive_customers(),2,'the inactive customer and the stale host-only phone are purged');
+select is((select count(*)::int from loopkit.referral_hosts where host_phone='+6591000005'),0,'stale host-only phone gone');
+select is((select count(*)::int from loopkit.referral_hosts where host_phone='+6591000006'),1,'recent host kept');
+select is((select count(*)::int from loopkit.cards where phone='+6591000007'),1,'old card with a live voucher kept');
 select is((select count(*)::int from loopkit.cards where phone='+6591000001'),0,'inactive customer card gone');
 select is((select count(*)::int from loopkit.customers where phone='+6591000001'),0,'inactive customer row gone');
 select is((select count(*)::int from loopkit.stamp_events where card_id='00650000-0000-4000-8000-0000000000a1'),0,'stamp events cascaded');
@@ -88,7 +102,7 @@ select is((select count(*)::int from loopkit.qkit_earn_events where order_id='00
 select is((select count(*)::int from loopkit.referral_hosts where id='00650000-0000-4000-8000-0000000000f1'),0,'referral host removed');
 select is((select count(*)::int from loopkit.referral_credits where referral_host_id='00650000-0000-4000-8000-0000000000f1'),0,'referral credits cascaded');
 select is((select count(*)::int from loopkit.cards where phone in ('+6591000002','+6591000003','+6591000004')),4,'active customers keep their cards');
-select is((select count(*)::int from loopkit.reward_vouchers),2,'active customers keep their vouchers');
+select is((select count(*)::int from loopkit.reward_vouchers),3,'active customers keep their vouchers');
 select is(loopkit.purge_inactive_customers(),0,'a second run finds nothing to purge');
 
 -- Customer erase.
