@@ -50,8 +50,7 @@ engine actually computes — see
 in the workspace root. Migrated onto
 the shared `@merqo/ui` component package (v0.36.0, `package.json`): the
 dashboard nav/account dropdown, `useAsyncAction`, `InfoTooltip`,
-`ImageUploader`, `DashboardTour`, `PricingForm` (the `/admin` pricing
-section, `src/app/admin/pricing-form-client.tsx`), the landing page's
+`ImageUploader`, `DashboardTour`, the landing page's
 sticky header (`LandingNav`, via `src/components/landing/nav.tsx`), and
 the profile page's two-column layout, `BackButton`, `ElevatedCard`,
 `SOCIAL_LINK_FIELDS`/`SocialLinksFields`, `qrSvg`, and the landing `Footer`
@@ -329,15 +328,16 @@ for a vendor and phone after 24 months of inactivity, and `loopkit.feedback`
 after 24 months. A customer can also erase their own data at one shop from
 the card view (`loopkit.customer_erase`, gated by the card token).
 
-loopkit's first-ever live price ships as a single-row, admin-tunable
-`loopkit.pricing` table (migration `0034`, seeded at $4.99/mo, no write
-RLS policy — writes only via the service-role `setPricing` admin action,
-`src/lib/pricing.ts`/`src/app/admin/actions.ts`). `/admin` shows a
-`PricingForm` section to retune it with no redeploy, and `/dashboard/plan`
-reads the live value in place of the previous no-price copy. The manual
-"ask us to upgrade" grant flow (`requestUpgrade`/`UpgradeCta`/
-`setVendorPro`/`resolveUpgradeRequest`) is unchanged — this is a display
-change, not real Stripe billing.
+Plans and pricing are owned by merqo. Merqo pushes each vendor's entitlement to
+`POST /api/merqo/entitlement` (bearer `MERQO_PROVISION_SECRET`), and loopkit
+stores it in `loopkit.vendor_entitlements` (migrations `0066` to `0070`, which
+also drop `vendor_pro`, `pricing` and `upgrade_requests`). `isPro()` and
+`loopkit.is_pro` read that cache: Pro means tier `paid` and a `valid_until` that
+is null or in the future, so a lapse applies without a new push. A push whose
+`issued_at` is not newer than the stored one is ignored. `/dashboard/plan` shows
+the plan name with no price and points vendors to their Merqo account; there is
+no admin pricing form or Pro toggle in loopkit any more. The free-tier limits
+are unchanged. See `src/app/api/merqo/entitlement/README.md`.
 
 Reward-redemption vendor alerts route through merqo's own shared Telegram
 bot (Phase A2, `docs/superpowers/specs/2026-08-16-vendor-telegram-connect-design.md`):

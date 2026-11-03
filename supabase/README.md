@@ -20,7 +20,7 @@ shared Merqo Supabase project.
   from the environment for local `supabase start` (see `.env.example`).
 - `migrations/` — SQL schema and RLS policies. `0060` qualifies RPC column references that overlap with output parameters; it preserves function contracts, locking and execution grants. Existing pgTAP referral and points tests exercise these runtime paths.
 - `seed/` — manually-run seed data
-- `tests/` — pgTAP RLS test suite (vendors, upgrade_requests, feedback, vendor_notify_settings, referral_hosts, vendor_join_referred/apply_referral_credit); run via `supabase test db`
+- `tests/` — pgTAP RLS test suite (vendors, vendor_entitlements, feedback, vendor_notify_settings, referral_hosts, vendor_join_referred/apply_referral_credit); run via `supabase test db`
 
 ## Parent
 
