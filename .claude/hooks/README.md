@@ -10,6 +10,10 @@ harness.
 ## Contents
 
 - `block-no-verify.sh` — PreToolUse(Bash): blocks `--no-verify`/`-n` on `git commit`, `HUSKY=0`/`HUSKY_SKIP_HOOKS`/`core.hooksPath=` bypasses on `git commit`/`push`/`config`, direct commits to `main`, force-push to a protected branch, `git checkout/restore` on guard-layer files, and recursive-force `rm` on source directories; exit 2 blocks
+  Windows drive-letter paths (`C:\…`, `C:/…`) and quoted paths with spaces
+  are normalised before the branch is judged, so worktree commits on feature
+  branches pass.
+- `block-no-verify.test.sh` — regression tests for the hook (run `bash .claude/hooks/block-no-verify.test.sh`).
 - `post-edit-comment-check.sh` — PostToolUse(Edit\|Write), `.ts`/`.tsx`/`.js`/`.jsx`/`.mjs`/`.cjs` files only: flags change-narration comments (patterns from `.claude/comment-hygiene-patterns.txt`) and oversized (>5 line) comment blocks in the edited file via `hookSpecificOutput.additionalContext`; feedback-only, never blocks
 - `post-edit-typecheck.sh` — PostToolUse(Edit\|Write), `.ts`/`.tsx` files only: runs incremental `tsc --noEmit` and surfaces the last 5 lines; feedback-only, never blocks
 - `protect-files.sh` — PreToolUse(Read\|Edit\|Write): normalizes Windows and relative paths, hard-blocks (exit 2) reads and writes to `.env*` (except `.env.example`/`.env.default`), secrets directories, and cert/credential files; asks for human approval on governance and CI/CD workflow writes; governance reads are permitted. Other protected files include (AGENTS.md/CLAUDE.md, `docs/CONSTITUTION.md`, `.claude/settings.json`, `.claude/hooks/*`, `.claude/agents/*`, `.mcp.json`, the harness manifest/verifier/regen scripts, `.claude/.harness-base/*`, `Dockerfile`, `.husky/*`/`.gitleaks.toml`)
