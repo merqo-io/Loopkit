@@ -26,7 +26,8 @@ fixtures have not yet been executed in this checkout.
   ordering and voucher status; `isolation/stamp-redemption.spec` is a separate
   PostgreSQL multi-session isolation fixture, not automatically run by pgTAP.
 - `marketing-consent.test.sql` covers consent grants, proof checks, vendor isolation, vendor-only withdrawal, immediate effect and the append-only trigger.
-- `db-hygiene.test.sql` covers the `0063` foreign key indexes, RLS on every table, own-row `vendor_pro` reads, signed-in-only `pricing` reads and no client access to `qkit_earn_events`.
+- `vendor-entitlements.test.sql` covers the `0066`/`0067` cache: grants, own-row reads, the `issued_at` ordering (older and equal pushes are no-ops) and `is_pro` for paid, free and lapsed rows.
+- `db-hygiene.test.sql` covers the `0063` foreign key indexes, RLS on every table, own-row `vendor_entitlements` reads and no client access to `qkit_earn_events`.
 - `retention-purges.test.sql` covers the `0065` purges (old rows deleted, recent and active customers kept, cascade through cards, vouchers, consents, earn events and referral rows), the token-gated `customer_erase` (wrong, other-vendor, missing token rejected; one vendor only), grants and, through dynamic SQL, cron job registration.
 - `audit-truncate-privilege.test.sql` checks effective maintenance privileges and
   denied audit truncation; `legacy-feedback-privileges.test.sql` checks retired

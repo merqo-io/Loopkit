@@ -19,7 +19,6 @@ vi.mock("@/lib/supabase/server", () => ({
 import {
   listProgramsOverview,
   listVendors,
-  listPendingUpgradeRequests,
   platformTotals,
   recentActivity,
   getProgramDetail,
@@ -106,14 +105,21 @@ describe("admin-data", () => {
   });
 
   describe("listVendors", () => {
-    it("counts programs per vendor and flags Pro, sorted by email", async () => {
+    it("counts programs per vendor and flags a paid, unexpired entitlement as Pro, sorted by email", async () => {
       mockTables({
         programs: [
           { vendor_id: "v2" },
           { vendor_id: "v1" },
           { vendor_id: "v1" },
         ],
-        vendor_pro: [{ vendor_id: "v1" }],
+        vendor_entitlements: [
+          { vendor_id: "v1", tier: "paid", valid_until: null },
+          {
+            vendor_id: "v2",
+            tier: "paid",
+            valid_until: "2020-01-01T00:00:00Z",
+          },
+        ],
       });
 
       const rows = await listVendors();
@@ -137,34 +143,6 @@ describe("admin-data", () => {
     it("throws when a read errors", async () => {
       fromMock.mockReturnValueOnce(builder(null, { message: "boom" }));
       await expect(listVendors()).rejects.toThrow("listVendors");
-    });
-  });
-
-  describe("listPendingUpgradeRequests", () => {
-    it("returns pending requests oldest-first with resolved emails", async () => {
-      mockTables({
-        upgrade_requests: [
-          { id: "r1", vendor_id: "v1", created_at: "2026-07-01T00:00:00Z" },
-        ],
-      });
-
-      const rows = await listPendingUpgradeRequests();
-
-      expect(rows).toEqual([
-        {
-          id: "r1",
-          vendor_id: "v1",
-          email: "vendor1@x.com",
-          created_at: "2026-07-01T00:00:00Z",
-        },
-      ]);
-    });
-
-    it("throws when the read errors", async () => {
-      fromMock.mockReturnValue(builder(null, { message: "boom" }));
-      await expect(listPendingUpgradeRequests()).rejects.toThrow(
-        "listPendingUpgradeRequests",
-      );
     });
   });
 

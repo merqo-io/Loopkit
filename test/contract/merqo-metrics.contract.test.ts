@@ -33,6 +33,7 @@ describe("loopkit metrics payload satisfies merqo's contract", () => {
 
     const sample = computeLoopkitMetrics({
       nowMs: now,
+      entitlements: [],
       programs: [
         { id: "p1", active: true, created_at: iso(1) },
         { id: "p2", active: false, created_at: iso(40) },

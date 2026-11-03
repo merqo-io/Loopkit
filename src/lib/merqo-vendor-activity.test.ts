@@ -53,7 +53,7 @@ describe("computeVendorActivity", () => {
     expect(r.lastActivityAt).toBe(days(1));
   });
 
-  it("reports plan pro when the vendor is in vendor_pro", () => {
+  it("reports plan pro when the vendor has a paid entitlement", () => {
     const r = computeVendorActivity(
       true,
       { programs: [{ id: "p1" }], cards: [], events: [] },

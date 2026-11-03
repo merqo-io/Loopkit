@@ -24,9 +24,8 @@ function req(body: unknown, auth?: string) {
   });
 }
 
-// loopkit's own resolveVendorStatus (src/lib/merqo-vendor-status.ts) derives
-// plan from vendor_pro row existence, NOT a vendors.plan column — mirror
-// that exactly here, so `fromMock` must branch on which table is queried.
+// Plan is derived from the cached merqo entitlement, NOT a vendors.plan
+// column, so `fromMock` must branch on which table is queried.
 function tables(opts: {
   insertError?: { code: string; message: string } | null;
   isPro?: boolean;
@@ -38,13 +37,13 @@ function tables(opts: {
         insert: () => Promise.resolve({ error: opts.insertError ?? null }),
       };
     }
-    if (table === "vendor_pro") {
+    if (table === "vendor_entitlements") {
       return {
         select: () => ({
           eq: () => ({
             maybeSingle: () =>
               Promise.resolve({
-                data: opts.isPro ? { vendor_id: USER_ID } : null,
+                data: opts.isPro ? { tier: "paid", valid_until: null } : null,
                 error: opts.proReadError ?? null,
               }),
           }),
@@ -134,7 +133,7 @@ describe("POST /api/merqo/vendor-provision (loopkit)", () => {
     });
   });
 
-  it("reports plan pro when the vendor already has a vendor_pro row", async () => {
+  it("reports plan pro when the vendor has a paid cached entitlement", async () => {
     fromMock.mockImplementation(
       tables({
         insertError: { code: "23505", message: "duplicate key" },
@@ -186,7 +185,7 @@ describe("POST /api/merqo/vendor-provision (loopkit)", () => {
     expect(res.status).toBe(500);
   });
 
-  it("500 when the vendor_pro read-back errors", async () => {
+  it("500 when the entitlement read-back errors", async () => {
     fromMock.mockImplementation(
       tables({
         insertError: null,

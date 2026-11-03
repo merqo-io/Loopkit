@@ -3,7 +3,6 @@
 import { DataTable, type DataTableColumn } from "@merqo/ui";
 import type { VendorRow } from "@/lib/admin-data";
 import { Badge } from "@/components/ui/badge";
-import { VendorProToggle } from "@/app/admin/vendors/vendor-pro-toggle";
 
 const columns: DataTableColumn<VendorRow>[] = [
   {
@@ -23,17 +22,6 @@ const columns: DataTableColumn<VendorRow>[] = [
       ) : (
         <Badge variant="outline">Free</Badge>
       ),
-  },
-  {
-    header: "Pro",
-    cell: (v) => (
-      <VendorProToggle
-        vendorId={v.vendor_id}
-        email={v.email}
-        isPro={v.is_pro}
-      />
-    ),
-    className: "text-right",
   },
 ];
 

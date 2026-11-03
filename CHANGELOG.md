@@ -6,8 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added
+
+- `POST /api/merqo/entitlement` receives merqo's pushed subscription entitlement (bearer `MERQO_PROVISION_SECRET`) and stores it in the new `loopkit.vendor_entitlements` cache. Pushes older than the stored `issued_at` are ignored. Migrations `0066` to `0070`.
+
+### Removed
+
+- `loopkit.vendor_pro` and `loopkit.pricing`, the admin pricing form, the admin Pro toggle, the upgrade-request inbox and the vendor upgrade request button (`loopkit.upgrade_requests` is dropped too). Plans and pricing are managed in merqo.
+
 ### Changed
 
+- Pro is now a cache of merqo's entitlement: `isPro()` and `loopkit.is_pro` read `vendor_entitlements` (paid and not past `valid_until`, so a lapse applies without a new push). Existing `vendor_pro` rows are carried over as paid with no expiry. `vendor-status`, `vendor-activity` and `vendor-provision` report the plan from the cache.
+- The plan page shows no price and points vendors to their Merqo account to change plan.
 - Vercel deploys only `main` (`git.deploymentEnabled` in `vercel.json`). Pull request branches no longer get preview deployments, which kept hitting the merqo-io Hobby team's daily deployment cap. CI's build job still builds every PR; to preview a branch on demand, deploy it with the `vercel` CLI or temporarily allow the branch in `vercel.json`.
 - The staging sync workflow pushes to `staging` with the merqo-staging-sync GitHub App token instead of the default `GITHUB_TOKEN`, since a ruleset limits `staging` pushes to that app. The job's own token drops to read only.
 

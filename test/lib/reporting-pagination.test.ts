@@ -107,7 +107,9 @@ describe("complete reporting integration", () => {
       { id: "other", vendor_id: "other" },
       { id: "wanted-program", vendor_id: "wanted" },
     ];
-    rows.vendor_pro = [{ vendor_id: "wanted" }];
+    rows.vendor_entitlements = [
+      { vendor_id: "wanted", tier: "paid", valid_until: null },
+    ];
     const response = await vendorStatus(
       new Request(
         "https://loopkit.example/api/merqo/vendor-status?email=vendor%40example.com",
@@ -116,7 +118,7 @@ describe("complete reporting integration", () => {
     expect(await response.json()).toEqual({ active: true, plan: "pro" });
     expect(eqCalls).toEqual([
       ["programs", "vendor_id", "wanted"],
-      ["vendor_pro", "vendor_id", "wanted"],
+      ["vendor_entitlements", "vendor_id", "wanted"],
     ]);
   });
   it("rejects an unavailable auth directory", async () => {

@@ -35,17 +35,13 @@ Do the steps in order: **A (Supabase) → B (Vercel) → C (attach to merqo)**.
      access; existing rows are backfilled with distinct tokens on add.
    - apply `0007_loopkit_multiprogram.sql` (drops the one-program-per-vendor
      unique constraint so a vendor can own many programs, indexes
-     `programs.vendor_id`, and adds the `vendor_pro` Pro allow-list + the
+     `programs.vendor_id`, and adds the `vendor_pro` Pro allow-list (dropped by `0068`) + the
      `is_pro` SECURITY DEFINER predicate). The free/Pro limit — free = 1
      program, Pro = unlimited — is enforced in the `/setup` create action, not
      in SQL. Safe to re-run; existing single-program vendors stay valid.
 
-     **Grant a vendor Pro (admin/SQL only; no self-serve billing yet).** Find
-     the vendor's id under Authentication → Users, then in the SQL Editor run:
-
-     ```sql
-     insert into loopkit.vendor_pro (vendor_id) values ('<VENDOR_AUTH_USER_ID>');
-     ```
+     Pro is no longer granted here: `0066` to `0070` replace `vendor_pro` with a
+     cache of the entitlement merqo pushes to `/api/merqo/entitlement`.
 
    - apply `0008_loopkit_hardening.sql` (v2 hardening). Recreates `card_view` to
      also return the `stamp_count` column (so a stamp card's `/c` progress is
@@ -83,7 +79,8 @@ Do the steps in order: **A (Supabase) → B (Vercel) → C (attach to merqo)**.
    - apply `0013_loopkit_upgrade_requests.sql` — adds `loopkit.upgrade_requests`
      (vendor self-files on hitting the free-tier program cap; admin resolves on
      `/admin/vendors` and grants Pro). No payment integration — same manual-
-     fulfillment model as qkit's `purchase_requests`. Safe to re-run.
+     fulfillment model as qkit's `purchase_requests`. Safe to re-run. Superseded:
+     `0070` drops this table; Pro now comes from merqo's pushed entitlement.
 
    - apply `0014_loopkit_head_start.sql` — adds `programs.head_start` (vendor
      opt-in, off by default) and updates `create_program`/`enroll_card` to seed
@@ -225,7 +222,7 @@ Do the steps in order: **A (Supabase) → B (Vercel) → C (attach to merqo)**.
      carries over. Safe to re-run.
 
    - **Current migration inventory:** the historical descriptions above stop at `0037`. Review every migration in
-     `supabase/migrations/` in numeric order and its cross-schema prerequisites. The October audit additions `0048`–`0060` passed disposable CI migration application and 284 PostgreSQL assertions in 14 suites. Production deployment and separate multi-session isolation tests remain pending; do not treat CI as proof of production rollout.
+     `supabase/migrations/` in numeric order and its cross-schema prerequisites. The entitlement cache migrations `0066` to `0070` (`vendor_entitlements` and its ordered upsert, the `is_pro` rewrite with the `vendor_pro` carry-over, then dropping `vendor_pro`, `pricing` and `upgrade_requests`) apply together, staging first, before the matching deploy. The October audit additions `0048`–`0060` passed disposable CI migration application and 284 PostgreSQL assertions in 14 suites. Production deployment and separate multi-session isolation tests remain pending; do not treat CI as proof of production rollout.
 
    - **Customer authorization:** the current actions require migrations `0055` and `0056`. Existing customers use saved card-token proof, with shop-assisted recovery. The former Upstash limiter and dependencies were removed; setting Upstash variables does not enable throttling in this application.
 

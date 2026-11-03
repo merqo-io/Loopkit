@@ -4,8 +4,7 @@
 -- Scoped to the highest-risk vendor-facing write paths (loopkit has 40+
 -- migrations; exhaustive coverage of every table is out of scope for this
 -- pass — see docs/superpowers/specs/2026-07-22-cicd-hook-harness-parity-design.md
--- §3): loopkit.vendors (shared profile, for-all self policy), loopkit.upgrade_requests
--- (vendor-insert/select-own + admin-select-all), loopkit.feedback (retired client writes),
+-- §3): loopkit.vendors (shared profile, for-all self policy), loopkit.feedback (retired client writes),
 -- loopkit.vendor_notify_settings (for-all own-row, same shape as vendors),
 -- loopkit.referral_hosts (own-row create/read, no update/delete grant), a
 -- functional suite for vendor_join_referred/apply_referral_credit, and
@@ -13,7 +12,7 @@
 -- Runs in ONE rolled-back transaction with inline fixtures (fixed UUIDs).
 
 begin;
-select plan(96);
+select plan(87);
 
 -- ── Fixtures (created under the default/superuser test role → RLS + grants
 -- are bypassed here, same as inserting via the table owner) ─────────────────
@@ -49,11 +48,6 @@ values
   ('00000000-0000-0000-0000-00000000000a', 'Vendor A'),
   ('00000000-0000-0000-0000-00000000000b', 'Vendor B');
 
-insert into loopkit.upgrade_requests (id, vendor_id, status)
-values
-  ('00000000-0000-0000-0000-0000000e0001', '00000000-0000-0000-0000-00000000000a', 'pending'),
-  ('00000000-0000-0000-0000-0000000e0002', '00000000-0000-0000-0000-00000000000b', 'pending');
-
 -- Vendor B's own vendor_notify_settings row (0038) — seeded here, under the
 -- superuser fixture role, so Vendor A's cross-read/update tests below exercise
 -- real row-level isolation instead of just an empty result set.
@@ -83,7 +77,6 @@ values
 
 -- ── RLS is actually enabled on every protected table ─────────────────────────
 select ok((select relrowsecurity from pg_class where oid = 'loopkit.vendors'::regclass), 'RLS on vendors');
-select ok((select relrowsecurity from pg_class where oid = 'loopkit.upgrade_requests'::regclass), 'RLS on upgrade_requests');
 select ok((select relrowsecurity from pg_class where oid = 'loopkit.feedback'::regclass), 'RLS on feedback');
 select ok((select relrowsecurity from pg_class where oid = 'loopkit.vendor_notify_settings'::regclass), 'RLS on vendor_notify_settings');
 select ok((select relrowsecurity from pg_class where oid = 'loopkit.referral_hosts'::regclass), 'RLS on referral_hosts');
@@ -147,22 +140,6 @@ with upd_notify as (
 )
 select is((select count(*)::int from upd_notify), 0, 'A''s update of B''s vendor_notify_settings row is silently filtered to 0 rows');
 
--- upgrade_requests: vendor inserts/selects own, cannot select another's
-select lives_ok(
-  $$ insert into loopkit.upgrade_requests (vendor_id, status) values ('00000000-0000-0000-0000-00000000000a', 'pending') $$,
-  'A can file its own upgrade request');
-select throws_ok(
-  $$ insert into loopkit.upgrade_requests (vendor_id, status) values ('00000000-0000-0000-0000-00000000000b', 'pending') $$,
-  '42501',
-  null,
-  'A cannot file an upgrade request as B');
-select isnt_empty(
-  $$ select 1 from loopkit.upgrade_requests where id = '00000000-0000-0000-0000-0000000e0001' $$,
-  'A reads its own upgrade request');
-select is_empty(
-  $$ select 1 from loopkit.upgrade_requests where id = '00000000-0000-0000-0000-0000000e0002' $$,
-  'A cannot read B''s upgrade request');
-
 -- Legacy feedback writes are retired; current feedback uses the shared Merqo RPC.
 select throws_ok(
   $$ insert into loopkit.feedback (vendor_id, nps, message) values ('00000000-0000-0000-0000-00000000000a', 9, 'great') $$,
@@ -181,26 +158,6 @@ select set_config(
   json_build_object('sub', '00000000-0000-0000-0000-00000000000d', 'role', 'authenticated')::text,
   true);
 
-select isnt_empty(
-  $$ select 1 from loopkit.upgrade_requests where id = '00000000-0000-0000-0000-0000000e0001' $$,
-  'admin reads any vendor''s upgrade request (A)');
-select isnt_empty(
-  $$ select 1 from loopkit.upgrade_requests where id = '00000000-0000-0000-0000-0000000e0002' $$,
-  'admin reads any vendor''s upgrade request (B)');
--- 0013_loopkit_upgrade_requests.sql grants only `select, insert` to
--- `authenticated` — there is no `grant update`, even though the
--- upgrade_requests_admin_update RLS policy exists. Table-level privilege is
--- checked before RLS, so ANY update attempt by the authenticated role
--- (admin or not) is denied outright — the policy is currently unreachable via
--- a direct client and only documents intent; the app's admin action resolves
--- requests through the service-role client instead (per that migration's own
--- comment). Asserting `lives_ok` here would not match reality.
-select throws_ok(
-  $$ update loopkit.upgrade_requests set status = 'resolved' where id = '00000000-0000-0000-0000-0000000e0001' $$,
-  '42501',
-  null,
-  'admin cannot resolve via direct client update (no UPDATE grant to authenticated; service-role only)');
-
 -- ── Act as anon ───────────────────────────────────────────────────────────
 reset role;
 set local role anon;
@@ -209,7 +166,7 @@ select throws_ok(
   '42501',
   null,
   'anon cannot insert feedback');
--- anon has no table-level grant at all on vendors or upgrade_requests (only
+-- anon has no table-level grant at all on vendors (only
 -- `usage on schema loopkit` from 0001_loopkit_core.sql) — a direct SELECT
 -- fails on the privilege check itself, before RLS row-filtering ever runs, so
 -- it raises permission-denied rather than returning an empty result set.
@@ -218,11 +175,6 @@ select throws_ok(
   '42501',
   null,
   'anon cannot read vendors (no SELECT grant)');
-select throws_ok(
-  $$ select 1 from loopkit.upgrade_requests $$,
-  '42501',
-  null,
-  'anon cannot read upgrade_requests (no SELECT grant)');
 select throws_ok(
   $$ select 1 from loopkit.vendor_notify_settings $$,
   '42501',
@@ -296,9 +248,7 @@ select ok(
 -- referral_hosts: vendor create/read own, no update/delete grant this round
 -- (0040) — same "for all" policy shape as programs_own, but the table-level
 -- grant only includes select/insert, so an authenticated UPDATE/DELETE is
--- denied at the privilege check before RLS ever runs (same idiom as
--- upgrade_requests_admin_update's documented-but-unreachable UPDATE policy
--- above). Vendor C/F (not A/B) so these fixtures never touch A/B's own
+-- denied at the privilege check before RLS ever runs. Vendor C/F (not A/B) so these fixtures never touch A/B's own
 -- program-count pre-conditions above.
 reset role;
 set local role authenticated;

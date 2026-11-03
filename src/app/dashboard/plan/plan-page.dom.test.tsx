@@ -17,9 +17,6 @@ function getGrid(container: HTMLElement) {
 }
 
 vi.mock("@/features/auth", () => ({ requireVendor: vi.fn(async () => ({})) }));
-vi.mock("@/app/dashboard/plan/actions", () => ({
-  requestUpgrade: vi.fn(),
-}));
 
 const program = { id: "p1", name: "Coffee Stamps", type: "stamp" };
 
@@ -36,21 +33,18 @@ vi.mock("@/lib/stats", () => ({
     rewardsTotal: 3,
   })),
 }));
-vi.mock("@/lib/pricing", () => ({
-  getPricing: vi.fn(async () => ({ monthly_cents: 499, currency: "SGD" })),
-}));
 
 import PlanPage from "./page";
 
 describe("PlanPage", () => {
-  it("shows the Pro upsell card and the feature comparison table for a Free vendor", async () => {
+  it("shows the plan, no price and the Merqo account pointer for a Free vendor", async () => {
     render(await PlanPage({ searchParams: Promise.resolve({}) }));
     expect(screen.getByText("Plan")).toBeInTheDocument();
     expect(screen.getAllByText("Free").length).toBeGreaterThan(0);
     expect(
-      screen.getByText(/run more than one loyalty program/i),
+      screen.getByText(/change plan from your merqo account/i),
     ).toBeInTheDocument();
-    expect(screen.getByText("$4.99")).toBeInTheDocument();
+    expect(screen.queryByText(/\$\d/)).not.toBeInTheDocument();
     expect(screen.getByText("Loyalty programs")).toBeInTheDocument();
   });
 
@@ -108,6 +102,9 @@ describe("PlanPage", () => {
     render(await PlanPage({ searchParams: Promise.resolve({ p: "p1" }) }));
     expect(
       screen.getByText(/unlimited loyalty programs are unlocked/i),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/change plan from your merqo account/i),
     ).toBeInTheDocument();
     expect(screen.getByText(/how your program is doing/i)).toBeInTheDocument();
   });

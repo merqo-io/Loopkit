@@ -1,3 +1,4 @@
+import { isPaidEntitlement } from "@/lib/entitlement-cache";
 import { MS_PER_DAY } from "@/lib/time";
 
 // Mirrors merqo's `metricsPayloadSchema` (../merqo/src/lib/metrics-schema.ts).
@@ -41,6 +42,7 @@ export type LoopkitMetricsInput = {
   nowMs: number;
   programs: { id: string; active: boolean; created_at: string }[];
   cards: { id: string; program_id: string }[];
+  entitlements: { tier: string; valid_until: string | null }[];
   stampEvents: {
     card_id: string;
     kind: string;
@@ -70,13 +72,18 @@ export function isWonVisit(event: {
 //   orders_7d/prev_7d     → 'stamp' events ("loopkit's activity")
 //   with_booth            → programs with ≥1 card
 //   with_order            → programs with ≥1 stamp event
-//   revenue/gmv/pro/pending → 0 (no revenue tracking, no plans in v1)
+//   pro_vendors/funnel.pro → vendors with a paid, unexpired cached entitlement
+//   revenue/gmv/pending → 0 (no revenue tracking, no upgrade inbox)
 export function computeLoopkitMetrics(
   input: LoopkitMetricsInput,
 ): LoopkitMetrics {
-  const { nowMs, programs, cards, stampEvents } = input;
+  const { nowMs, programs, cards, stampEvents, entitlements } = input;
   const cutoff7d = nowMs - 7 * MS_PER_DAY;
   const cutoff14d = nowMs - 14 * MS_PER_DAY;
+
+  const proVendors = entitlements.filter((e) =>
+    isPaidEntitlement(e, new Date(nowMs)),
+  ).length;
 
   const programIdByCardId = new Map(cards.map((c) => [c.id, c.program_id]));
 
@@ -112,14 +119,15 @@ export function computeLoopkitMetrics(
     orders_7d,
     orders_prev_7d,
     signups_7d,
-    pro_vendors: 0,
+    pro_vendors: proVendors,
     total_vendors: programs.length,
+    // merqo's metrics schema still reads this field; loopkit has no upgrade inbox.
     pending_upgrade_requests: 0,
     funnel: {
       signed_up: programs.length,
       with_booth: programs.filter((p) => programIdsWithCards.has(p.id)).length,
       with_order: programs.filter((p) => programIdsWithEvents.has(p.id)).length,
-      pro: 0,
+      pro: proVendors,
     },
     cards_total: cards.length,
     rewards_redeemed: stampEvents.filter(
