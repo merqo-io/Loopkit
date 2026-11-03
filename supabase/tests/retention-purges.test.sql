@@ -27,8 +27,8 @@ insert into loopkit.stamp_events(card_id,kind,created_at) values
 -- A's voucher is long expired: an active unexpired voucher would keep A.
 insert into loopkit.reward_vouchers(card_id,program_id,reward_text,earned_at,updated_at,status) values
 ('00650000-0000-4000-8000-0000000000a1','00650000-0000-4000-8000-000000000011','Coffee',now()-interval '30 months',now()-interval '30 months','expired'),
-('00650000-0000-4000-8000-0000000000c1','00650000-0000-4000-8000-000000000011','Coffee',now(),now()),
-('00650000-0000-4000-8000-0000000000c2','00650000-0000-4000-8000-000000000012','Tea',now(),now());
+('00650000-0000-4000-8000-0000000000c1','00650000-0000-4000-8000-000000000011','Coffee',now(),now(),'active'),
+('00650000-0000-4000-8000-0000000000c2','00650000-0000-4000-8000-000000000012','Tea',now(),now(),'active');
 insert into loopkit.marketing_consents(vendor_id,phone,granted,source,recorded_at) values
 ('00650000-0000-4000-8000-000000000001','+6591000001',false,'card_view',now()-interval '30 months'),
 ('00650000-0000-4000-8000-000000000001','+6591000003',false,'card_view',now());
