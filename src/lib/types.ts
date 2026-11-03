@@ -813,6 +813,10 @@ export interface Database {
         };
         Returns: Database["loopkit"]["Tables"]["reward_vouchers"]["Row"];
       };
+      customer_erase: {
+        Args: { p_vendor: string; p_phone: string; p_token: string };
+        Returns: boolean;
+      };
       customer_set_birthday: {
         Args: {
           p_vendor: string;

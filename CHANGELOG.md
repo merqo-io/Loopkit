@@ -15,6 +15,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 - `block-no-verify.sh` no longer blocks commits made from a git worktree on a feature branch: Windows drive-letter paths (`C:\...`, `C:/...`) in the hook cwd, `cd` and `git -C` targets are normalised for Git Bash, and quoted paths containing spaces stay one token. Regression test: `bash .claude/hooks/block-no-verify.test.sh`.
 
+## [0.4.0] - 2026-11-03
+
+### Security
+
+- PDPA retention (migration `0065`): two daily pg_cron jobs. `loopkit_purge_inactive_customers` (03:40 UTC) deletes every row held for a vendor and phone (customer, cards, stamp events, vouchers, marketing consents, earn events, referral host and guest rows) once its last activity is older than 24 months (a pair holding an unexpired active voucher, or a recent referral host or credit, is kept). `loopkit_purge_feedback` (03:45 UTC) deletes feedback older than 24 months. Periods are defaults for the owner to confirm and the privacy copy to state.
+- Customers can delete their own data at a shop from the card view ("Delete my data at this shop", two-step confirm). The card token is the proof (`loopkit.customer_erase`, service role only), the action is rate limited, failures share one message, and the saved card cookie is cleared on success. Only that shop's data is removed.
+
 ## [0.3.0] - 2026-11-02
 
 ### Changed

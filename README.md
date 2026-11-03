@@ -325,6 +325,11 @@ start` has no merqo schema at all). See
 `docs/business/2026-07-21-profile-settings-page-standard.md` (in the parent
 `Merqo Business/docs/` repo) for the locked cross-kit pattern.
 
+Customer PII retention (migration `0065`): pg_cron deletes every row held
+for a vendor and phone after 24 months of inactivity, and `loopkit.feedback`
+after 24 months. A customer can also erase their own data at one shop from
+the card view (`loopkit.customer_erase`, gated by the card token).
+
 loopkit's first-ever live price ships as a single-row, admin-tunable
 `loopkit.pricing` table (migration `0034`, seeded at $4.99/mo, no write
 RLS policy — writes only via the service-role `setPricing` admin action,

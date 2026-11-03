@@ -1,10 +1,11 @@
 import { createServiceClient } from "@/lib/supabase/server";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
-const { rpcMock, readProof, saveProof, allow } = vi.hoisted(() => ({
+const { rpcMock, readProof, saveProof, clearProof, allow } = vi.hoisted(() => ({
   rpcMock: vi.fn(),
   readProof: vi.fn(),
   saveProof: vi.fn(),
+  clearProof: vi.fn(),
   allow: vi.fn(),
 }));
 vi.mock("@/lib/rate-limit", () => ({
@@ -18,6 +19,7 @@ vi.mock("@/lib/customer-proof", async () => {
     customerTokenSchema: z.string().regex(/^[a-f0-9]{32}$/),
     readCustomerProof: readProof,
     saveCustomerProof: saveProof,
+    clearCustomerProof: clearProof,
   };
 });
 beforeEach(() => {
@@ -45,6 +47,7 @@ import {
   selectPointsRewardAction,
   regenerateCardAction,
   setMarketingConsentAction,
+  eraseMyDataAction,
 } from "./actions";
 import { STATUS_IDLE } from "../types";
 import { marketingConsentText } from "@/lib/marketing-consent";
@@ -1028,5 +1031,73 @@ describe("marketing consent", () => {
       success: false,
       error: "Could not save your choice. Try again.",
     });
+  });
+});
+
+describe("eraseMyDataAction", () => {
+  const vendor = "00650000-0000-4000-8000-000000000001";
+  beforeEach(() => {
+    vi.clearAllMocks();
+    readProof.mockResolvedValue("a".repeat(32));
+    allow.mockResolvedValue(true);
+  });
+
+  it("erases with the cookie proof and clears it", async () => {
+    rpcMock.mockResolvedValue({ data: true, error: null });
+    const res = await eraseMyDataAction(
+      formData({ vendor, phone: "91234567" }),
+    );
+    expect(res).toEqual({ success: true });
+    expect(rpcMock).toHaveBeenCalledWith("customer_erase", {
+      p_vendor: vendor,
+      p_phone: "+6591234567",
+      p_token: "a".repeat(32),
+    });
+    expect(clearProof).toHaveBeenCalledWith(vendor);
+    expect(allow).toHaveBeenCalledWith(`erase:${vendor}`, "+6591234567");
+  });
+
+  it("rejects a missing proof cookie without calling the database", async () => {
+    readProof.mockResolvedValue(null);
+    const res = await eraseMyDataAction(
+      formData({ vendor, phone: "91234567" }),
+    );
+    expect(res.success).toBe(false);
+    expect(rpcMock).not.toHaveBeenCalled();
+    expect(clearProof).not.toHaveBeenCalled();
+  });
+
+  it("rejects malformed input before any lookup", async () => {
+    const badPhone = await eraseMyDataAction(
+      formData({ vendor, phone: "123" }),
+    );
+    const badVendor = await eraseMyDataAction(
+      formData({ vendor: "nope", phone: "91234567" }),
+    );
+    expect(badPhone.success).toBe(false);
+    expect(badVendor.success).toBe(false);
+    expect(rpcMock).not.toHaveBeenCalled();
+  });
+
+  it("returns one generic error for a bad token and keeps the cookie", async () => {
+    rpcMock.mockResolvedValue({
+      data: null,
+      error: { message: "customer proof required" },
+    });
+    const res = await eraseMyDataAction(
+      formData({ vendor, phone: "91234567" }),
+    );
+    expect(res.success).toBe(false);
+    expect(JSON.stringify(res)).not.toContain("proof required");
+    expect(clearProof).not.toHaveBeenCalled();
+  });
+
+  it("stops when rate limited", async () => {
+    allow.mockResolvedValue(false);
+    const res = await eraseMyDataAction(
+      formData({ vendor, phone: "91234567" }),
+    );
+    expect(res).toEqual({ success: false, error: "Too many tries." });
+    expect(rpcMock).not.toHaveBeenCalled();
   });
 });
