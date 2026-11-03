@@ -1,6 +1,9 @@
 export type MarketingConsentSource =
   "card_check" | "earn" | "card_view" | "vendor_recorded";
 
+export type EntitlementTier = "free" | "starter" | "qkit" | "paid";
+export type EntitlementStatsWindow = "24h" | "90d";
+
 export type Json =
   | string
   | number
@@ -241,38 +244,32 @@ export interface Database {
         };
         Relationships: [];
       };
-      vendor_pro: {
+      vendor_entitlements: {
         Row: {
           vendor_id: string;
-          created_at: string;
-        };
-        Insert: {
-          vendor_id: string;
-          created_at?: string;
-        };
-        Update: {
-          vendor_id?: string;
-          created_at?: string;
-        };
-        Relationships: [];
-      };
-      pricing: {
-        Row: {
-          id: number;
-          monthly_cents: number;
-          currency: string;
+          tier: EntitlementTier;
+          founder: boolean;
+          stats_window: EntitlementStatsWindow;
+          valid_until: string | null;
+          issued_at: string;
           updated_at: string;
         };
         Insert: {
-          id?: number;
-          monthly_cents?: number;
-          currency?: string;
+          vendor_id: string;
+          tier: EntitlementTier;
+          founder?: boolean;
+          stats_window?: EntitlementStatsWindow;
+          valid_until?: string | null;
+          issued_at: string;
           updated_at?: string;
         };
         Update: {
-          id?: number;
-          monthly_cents?: number;
-          currency?: string;
+          vendor_id?: string;
+          tier?: EntitlementTier;
+          founder?: boolean;
+          stats_window?: EntitlementStatsWindow;
+          valid_until?: string | null;
+          issued_at?: string;
           updated_at?: string;
         };
         Relationships: [];
@@ -758,6 +755,17 @@ export interface Database {
           referral_credit: Json | null;
         }[];
       };
+      upsert_vendor_entitlement: {
+        Args: {
+          p_vendor_id: string;
+          p_tier: string;
+          p_founder: boolean;
+          p_stats_window: string;
+          p_valid_until: string | null;
+          p_issued_at: string;
+        };
+        Returns: undefined;
+      };
       check_rate_limit: {
         Args: { p_key: string; p_limit: number; p_window_seconds: number };
         Returns: boolean;
@@ -956,5 +964,3 @@ export interface Database {
     CompositeTypes: Record<string, never>;
   };
 }
-
-export type Pricing = Database["loopkit"]["Tables"]["pricing"]["Row"];

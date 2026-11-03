@@ -5,6 +5,7 @@ import { createServiceClient } from "@/lib/supabase/server";
 import { listAllUsers } from "@/lib/list-all-users";
 import { bearerOk } from "@/lib/merqo-auth";
 import { computeVendorActivity } from "@/lib/merqo-vendor-activity";
+import { isPaidEntitlement } from "@/lib/entitlement-cache";
 
 export const revalidate = 0;
 
@@ -36,8 +37,8 @@ async function readProgramsAndPlan(supabase: ServiceClient, userId: string) {
     ),
     readAllRows((start, end) =>
       supabase
-        .from("vendor_pro")
-        .select("vendor_id")
+        .from("vendor_entitlements")
+        .select("vendor_id, tier, valid_until")
         .eq("vendor_id", userId)
         .order("vendor_id", { ascending: true })
         .range(start, end),
@@ -46,7 +47,7 @@ async function readProgramsAndPlan(supabase: ServiceClient, userId: string) {
   const failure = programsRes.error ?? proRes.error;
   if (failure) return { error: failure.message };
   return {
-    isPro: (proRes.data ?? []).length > 0,
+    isPro: (proRes.data ?? []).some((e) => isPaidEntitlement(e)),
     programs: (programsRes.data ?? []).map((p) => ({ id: p.id as string })),
   };
 }

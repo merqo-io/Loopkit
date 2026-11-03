@@ -4,6 +4,7 @@ import { createServiceClient } from "@/lib/supabase/server";
 import { resolveVendorStatus } from "@/lib/merqo-vendor-status";
 import { listAllUsers } from "@/lib/list-all-users";
 import { bearerOk } from "@/lib/merqo-auth";
+import { isPaidEntitlement } from "@/lib/entitlement-cache";
 
 export const revalidate = 0;
 
@@ -40,8 +41,8 @@ export async function GET(request: Request) {
       .eq("vendor_id", user.id)
       .limit(1),
     supabase
-      .from("vendor_pro")
-      .select("vendor_id")
+      .from("vendor_entitlements")
+      .select("vendor_id, tier, valid_until")
       .eq("vendor_id", user.id)
       .limit(1),
   ]);
@@ -55,7 +56,9 @@ export async function GET(request: Request) {
     parsed.data.email,
     usersRes.data?.users ?? [],
     (programsRes.data ?? []).map((p) => p.vendor_id as string),
-    (proRes.data ?? []).map((p) => p.vendor_id as string),
+    (proRes.data ?? [])
+      .filter((e) => isPaidEntitlement(e))
+      .map((e) => e.vendor_id as string),
   );
 
   return NextResponse.json(status);

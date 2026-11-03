@@ -1,6 +1,7 @@
 import { readAllRows, readRowsForIds } from "@/lib/read-all-rows";
 import { createServiceClient } from "@/lib/supabase/server";
 import { listAllUsers } from "@/lib/list-all-users";
+import { isPaidEntitlement } from "@/lib/entitlement-cache";
 import type { CardRow } from "@/lib/cards";
 import type { Json } from "@/lib/types";
 
@@ -39,13 +40,6 @@ export type VendorRow = {
   email: string | null;
   program_count: number;
   is_pro: boolean;
-};
-
-export type PendingUpgradeRequest = {
-  id: string;
-  vendor_id: string;
-  email: string | null;
-  created_at: string;
 };
 
 export type ProgramDetail = {
@@ -151,8 +145,9 @@ export async function listProgramsOverview(): Promise<ProgramOverviewRow[]> {
 
 /**
  * Every vendor that owns at least one program, with their email, program count,
- * and Pro status — for the admin Make-Pro table. Service-role reads over the
- * flat programs + vendor_pro tables; identity resolved via the admin API.
+ * and Pro status from the cached merqo entitlement — for the admin vendors
+ * table. Service-role reads over the flat programs + vendor_entitlements
+ * tables; identity resolved via the admin API.
  */
 export async function listVendors(): Promise<VendorRow[]> {
   const supabase = await createServiceClient();
@@ -166,8 +161,8 @@ export async function listVendors(): Promise<VendorRow[]> {
     ),
     readAllRows((start, end) =>
       supabase
-        .from("vendor_pro")
-        .select("vendor_id")
+        .from("vendor_entitlements")
+        .select("vendor_id, tier, valid_until")
         .order("vendor_id", { ascending: true })
         .range(start, end),
     ),
@@ -176,7 +171,11 @@ export async function listVendors(): Promise<VendorRow[]> {
     if (r.error) throw new Error(`listVendors: ${r.error.message}`);
   }
   const programs = programsRes.data ?? [];
-  const pro = new Set((proRes.data ?? []).map((p) => p.vendor_id));
+  const pro = new Set(
+    (proRes.data ?? [])
+      .filter((e) => isPaidEntitlement(e))
+      .map((e) => e.vendor_id),
+  );
   const emails = await emailByUserId(supabase);
 
   const counts = new Map<string, number>();
@@ -192,35 +191,6 @@ export async function listVendors(): Promise<VendorRow[]> {
       is_pro: pro.has(vendor_id),
     }))
     .sort((a, b) => (a.email ?? "").localeCompare(b.email ?? ""));
-}
-
-/**
- * Pending self-serve upgrade requests, oldest first — the admin's grant-Pro
- * inbox on /admin/vendors. Service-role read, same email-resolution pattern
- * as listVendors.
- */
-export async function listPendingUpgradeRequests(): Promise<
-  PendingUpgradeRequest[]
-> {
-  const supabase = await createServiceClient();
-  const { data, error } = await readAllRows((start, end) =>
-    supabase
-      .from("upgrade_requests")
-      .select("id, vendor_id, created_at")
-      .eq("status", "pending")
-      .order("created_at", { ascending: true })
-      .order("id", { ascending: true })
-      .range(start, end),
-  );
-  if (error) throw new Error(`listPendingUpgradeRequests: ${error.message}`);
-
-  const emails = await emailByUserId(supabase);
-  return (data ?? []).map((r) => ({
-    id: r.id,
-    vendor_id: r.vendor_id,
-    email: emails.get(r.vendor_id) ?? null,
-    created_at: r.created_at,
-  }));
 }
 
 /** Platform-wide totals for the overview stat tiles. */

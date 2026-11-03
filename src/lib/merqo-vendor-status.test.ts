@@ -7,12 +7,12 @@ const authUsers = [
 ];
 
 describe("resolveVendorStatus", () => {
-  it("active (free) when the vendor owns a program but isn't in vendor_pro", () => {
+  it("active (free) when the vendor owns a program but has no paid entitlement", () => {
     const r = resolveVendorStatus("alice@example.com", authUsers, ["u1"], []);
     expect(r).toEqual({ active: true, plan: "free" });
   });
 
-  it("active (pro) when the vendor owns a program and is in vendor_pro", () => {
+  it("active (pro) when the vendor owns a program and has a paid entitlement", () => {
     const r = resolveVendorStatus(
       "alice@example.com",
       authUsers,

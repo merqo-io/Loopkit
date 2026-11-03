@@ -14,32 +14,30 @@ select is(
   (select count(*)::int from pg_tables where schemaname = 'loopkit' and not rowsecurity),
   0, 'every loopkit table has row level security on');
 
--- vendor_pro: own row or admin; pricing: any signed-in vendor; qkit_earn_events: server-only.
+-- vendor_entitlements: own row only; qkit_earn_events: server-only.
 insert into auth.users (id, instance_id, aud, role, email) values
   ('a0000000-0000-0000-0000-00000000a201', '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'hygiene-a@test.local'),
   ('a0000000-0000-0000-0000-00000000a202', '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'hygiene-b@test.local');
-insert into loopkit.vendor_pro (vendor_id) values ('a0000000-0000-0000-0000-00000000a201');
+insert into loopkit.vendor_entitlements (vendor_id, tier, issued_at) values ('a0000000-0000-0000-0000-00000000a201', 'paid', now());
 
 select ok(not has_table_privilege(r, 'loopkit.qkit_earn_events', p), r || ' has no ' || p || ' on loopkit.qkit_earn_events')
 from unnest(array['anon', 'authenticated']) r, unnest(array['SELECT', 'INSERT', 'UPDATE', 'DELETE']) p;
 select ok(not has_table_privilege('anon', t, p), 'anon has no ' || p || ' on ' || t)
-from unnest(array['loopkit.vendor_pro', 'loopkit.pricing']) t, unnest(array['SELECT', 'INSERT', 'UPDATE', 'DELETE']) p;
+from unnest(array['loopkit.vendor_entitlements']) t, unnest(array['SELECT', 'INSERT', 'UPDATE', 'DELETE']) p;
 select ok(not has_table_privilege('authenticated', t, p), 'authenticated has no ' || p || ' on ' || t)
-from unnest(array['loopkit.vendor_pro', 'loopkit.pricing']) t, unnest(array['INSERT', 'UPDATE', 'DELETE']) p;
+from unnest(array['loopkit.vendor_entitlements']) t, unnest(array['INSERT', 'UPDATE', 'DELETE']) p;
 
 set local role anon;
 select set_config('request.jwt.claims', json_build_object('role', 'anon')::text, true);
 select throws_ok($$ select 1 from loopkit.qkit_earn_events $$, '42501', null, 'anon cannot read loopkit.qkit_earn_events');
-select throws_ok($$ select 1 from loopkit.pricing $$, '42501', null, 'anon cannot read loopkit.pricing');
 reset role;
 
 set local role authenticated;
 select set_config('request.jwt.claims', json_build_object('sub', 'a0000000-0000-0000-0000-00000000a202', 'role', 'authenticated')::text, true);
-select is((select count(*)::int from loopkit.vendor_pro where vendor_id = 'a0000000-0000-0000-0000-00000000a201'), 0, 'another vendor cannot see a Pro row');
-select is((select count(*)::int from loopkit.pricing), 1, 'a signed-in vendor reads the price');
+select is((select count(*)::int from loopkit.vendor_entitlements where vendor_id = 'a0000000-0000-0000-0000-00000000a201'), 0, 'another vendor cannot see an entitlement row');
 select throws_ok($$ select 1 from loopkit.qkit_earn_events $$, '42501', null, 'authenticated cannot read loopkit.qkit_earn_events');
 select set_config('request.jwt.claims', json_build_object('sub', 'a0000000-0000-0000-0000-00000000a201', 'role', 'authenticated')::text, true);
-select is((select count(*)::int from loopkit.vendor_pro where vendor_id = 'a0000000-0000-0000-0000-00000000a201'), 1, 'a vendor reads their own Pro row');
+select is((select count(*)::int from loopkit.vendor_entitlements where vendor_id = 'a0000000-0000-0000-0000-00000000a201'), 1, 'a vendor reads their own entitlement row');
 reset role;
 
 select * from finish();

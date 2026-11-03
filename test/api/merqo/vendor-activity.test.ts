@@ -37,7 +37,7 @@ function rows(data: unknown[], error: { message: string } | null = null) {
   return r;
 }
 
-type Table = "programs" | "vendor_pro" | "cards" | "stamp_events";
+type Table = "programs" | "vendor_entitlements" | "cards" | "stamp_events";
 
 function mockTables(byTable: Partial<Record<Table, unknown[]>>) {
   fromMock.mockImplementation((table: Table) => rows(byTable[table] ?? []));
@@ -88,7 +88,7 @@ describe("GET /api/merqo/vendor-activity", () => {
       data: { users: [user("v1", "vendor@x.com")] },
       error: null,
     });
-    mockTables({ programs: [], vendor_pro: [] });
+    mockTables({ programs: [], vendor_entitlements: [] });
 
     const res = await GET(req("vendor@x.com", "Bearer test-secret"));
     expect(res.status).toBe(200);
@@ -110,7 +110,9 @@ describe("GET /api/merqo/vendor-activity", () => {
     const recent = new Date(now - 24 * 60 * 60 * 1000).toISOString();
     mockTables({
       programs: [{ id: "p1" }, { id: "p2" }],
-      vendor_pro: [{ vendor_id: "v1" }],
+      vendor_entitlements: [
+        { vendor_id: "v1", tier: "paid", valid_until: null },
+      ],
       cards: [{ id: "c1" }, { id: "c2" }],
       stamp_events: [
         { card_id: "c1", kind: "stamp", created_at: recent },

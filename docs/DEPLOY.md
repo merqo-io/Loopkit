@@ -40,12 +40,8 @@ Do the steps in order: **A (Supabase) → B (Vercel) → C (attach to merqo)**.
      program, Pro = unlimited — is enforced in the `/setup` create action, not
      in SQL. Safe to re-run; existing single-program vendors stay valid.
 
-     **Grant a vendor Pro (admin/SQL only; no self-serve billing yet).** Find
-     the vendor's id under Authentication → Users, then in the SQL Editor run:
-
-     ```sql
-     insert into loopkit.vendor_pro (vendor_id) values ('<VENDOR_AUTH_USER_ID>');
-     ```
+     Pro is no longer granted here: `0066` to `0069` replace `vendor_pro` with a
+     cache of the entitlement merqo pushes to `/api/merqo/entitlement`.
 
    - apply `0008_loopkit_hardening.sql` (v2 hardening). Recreates `card_view` to
      also return the `stamp_count` column (so a stamp card's `/c` progress is

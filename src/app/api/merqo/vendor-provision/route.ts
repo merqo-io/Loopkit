@@ -3,6 +3,7 @@ import { z } from "zod";
 import { createServiceClient } from "@/lib/supabase/server";
 import { provisionBearerOk } from "@/lib/merqo-auth";
 import { recordAudit } from "@/lib/admin-audit";
+import { isPaidEntitlement } from "@/lib/entitlement-cache";
 
 export const revalidate = 0;
 
@@ -62,19 +63,16 @@ export async function POST(request: Request) {
     );
   }
 
-  // loopkit has no vendors.plan column — plan is derived from vendor_pro row
-  // existence, exactly like src/lib/merqo-vendor-status.ts's
-  // resolveVendorStatus already does for the vendor-status route. Mirror
-  // that derivation here rather than reading a plan column that doesn't
-  // exist.
-  const { data: proRow, error: proReadError } = await supabase
-    .from("vendor_pro")
-    .select("vendor_id")
+  // loopkit has no vendors.plan column; the plan is derived from the cached
+  // merqo entitlement, the same way the vendor-status route does.
+  const { data: entitlementRow, error: proReadError } = await supabase
+    .from("vendor_entitlements")
+    .select("tier, valid_until")
     .eq("vendor_id", user_id)
     .maybeSingle();
   if (proReadError) {
     console.error(
-      "vendor-provision: vendor_pro read-back failed",
+      "vendor-provision: entitlement read-back failed",
       proReadError.message,
     );
     return NextResponse.json(
@@ -83,7 +81,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const plan = proRow ? "pro" : "free";
+  const plan = isPaidEntitlement(entitlementRow) ? "pro" : "free";
 
   // merqo push-provisions this vendor over a bearer secret, not a signed-in
   // admin — there's no real admin (or merqo-team user) id to attribute this

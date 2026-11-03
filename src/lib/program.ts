@@ -2,6 +2,7 @@ import { readAllRows } from "@/lib/read-all-rows";
 import { z } from "zod";
 import { requireVendor } from "@/features/auth";
 import { createServerClient } from "@/lib/supabase/server";
+import { isPaidEntitlement } from "@/lib/entitlement-cache";
 import type { Json } from "@/lib/types";
 import {
   buildChanceConfig,
@@ -534,16 +535,17 @@ export function canUseColor(
   );
 }
 
-// Whether the signed-in vendor is on the Pro tier (present in vendor_pro).
+// Whether the signed-in vendor is on the Pro tier, read from the cache of
+// merqo's pushed entitlement (RLS scopes the row to the vendor).
 export async function isPro(): Promise<boolean> {
   const { user } = await requireVendor();
   const supabase = await createServerClient();
   const { data } = await supabase
-    .from("vendor_pro")
-    .select("vendor_id")
+    .from("vendor_entitlements")
+    .select("tier, valid_until")
     .eq("vendor_id", user.id)
     .maybeSingle();
-  return !!data;
+  return isPaidEntitlement(data);
 }
 
 // Lazy cutover check for Pro's scheduled retirement (schedule_retirement

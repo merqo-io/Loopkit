@@ -25,16 +25,6 @@ export const SUPPORT_CATEGORY_LABELS: Record<
   other: "Something else",
 };
 
-// A generous but real ceiling (S$10,000) so a forged/garbled form payload
-// can't write an absurd price — same sentinel value qkit's schemas.ts uses
-// for every money field.
-export const MAX_MONEY_CENTS = 10_000_00;
-
-export const pricingFormSchema = z.object({
-  monthly_cents: z.number().int().nonnegative().max(MAX_MONEY_CENTS),
-});
-export type PricingFormInput = z.infer<typeof pricingFormSchema>;
-
 // Route/action boundaries
 
 export const authCallbackQuerySchema = z.object({

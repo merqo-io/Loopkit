@@ -7,7 +7,6 @@ import { requireAdmin } from "@/lib/admin";
 import { createServiceClient } from "@/lib/supabase/server";
 import { recordAudit } from "@/lib/admin-audit";
 import type { ActionResult } from "@/lib/action-result";
-import { pricingFormSchema, type PricingFormInput } from "@/lib/schemas";
 
 const setProgramActiveSchema = z.object({
   programId: z.uuid(),
@@ -54,51 +53,6 @@ export async function setProgramActive(
   return { success: true };
 }
 
-const setVendorProSchema = z.object({
-  vendorId: z.uuid(),
-  pro: z.enum(["true", "false"]).transform((v) => v === "true"),
-});
-
-/**
- * Grant or revoke a vendor's Pro tier. Admin-only: requireAdmin() 404s
- * non-admins first. Pro membership is presence in vendor_pro, so granting is an
- * upsert and revoking a delete, both via the service-role client (allowed in
- * Server Actions) since RLS scopes vendor_pro reads to the owner or an admin.
- */
-export async function setVendorPro(formData: FormData): Promise<ActionResult> {
-  const { user } = await requireAdmin();
-
-  const parsed = setVendorProSchema.safeParse({
-    vendorId: formData.get("vendorId"),
-    pro: formData.get("pro"),
-  });
-  if (!parsed.success) return { success: false, error: "Invalid input" };
-
-  const supabase = await createServiceClient();
-  const { error } = parsed.data.pro
-    ? await supabase
-        .from("vendor_pro")
-        .upsert(
-          { vendor_id: parsed.data.vendorId },
-          { onConflict: "vendor_id" },
-        )
-    : await supabase
-        .from("vendor_pro")
-        .delete()
-        .eq("vendor_id", parsed.data.vendorId);
-  if (error) {
-    console.error("setVendorPro failed", error.message);
-    return { success: false, error: "Could not update Pro status" };
-  }
-
-  await recordAudit(user.id, "set_vendor_pro", parsed.data.vendorId, {
-    pro: parsed.data.pro,
-  });
-
-  revalidatePath("/admin/vendors");
-  return { success: true };
-}
-
 const removeCardSchema = z.object({ cardId: z.uuid() });
 
 /**
@@ -135,117 +89,5 @@ export async function removeCard(formData: FormData): Promise<ActionResult> {
   });
 
   revalidatePath(`/admin/programs/${card.program_id}`);
-  return { success: true };
-}
-
-const resolveUpgradeRequestSchema = z.object({
-  requestId: z.uuid(),
-  vendorId: z.uuid(),
-});
-
-/** Require a pending request for this vendor before granting Pro. */
-export async function resolveUpgradeRequest(
-  formData: FormData,
-): Promise<ActionResult> {
-  const { user } = await requireAdmin();
-
-  const parsed = resolveUpgradeRequestSchema.safeParse({
-    requestId: formData.get("requestId"),
-    vendorId: formData.get("vendorId"),
-  });
-  if (!parsed.success) return { success: false, error: "Invalid input" };
-
-  const supabase = await createServiceClient();
-
-  const { data: request, error: requestError } = await supabase
-    .from("upgrade_requests")
-    .select("vendor_id, status")
-    .eq("id", parsed.data.requestId)
-    .eq("vendor_id", parsed.data.vendorId)
-    .eq("status", "pending")
-    .maybeSingle();
-  if (requestError) {
-    console.error(
-      "resolveUpgradeRequest (lookup) failed",
-      requestError.message,
-    );
-    return { success: false, error: "Could not load upgrade request" };
-  }
-  if (
-    !request ||
-    request.vendor_id !== parsed.data.vendorId ||
-    request.status !== "pending"
-  )
-    return { success: false, error: "Pending upgrade request not found" };
-
-  // Upgrade-request grants use their own audit action.
-  const { error: proError } = await supabase
-    .from("vendor_pro")
-    .upsert({ vendor_id: parsed.data.vendorId }, { onConflict: "vendor_id" });
-  if (proError) {
-    console.error("resolveUpgradeRequest (grant) failed", proError.message);
-    return { success: false, error: "Could not grant Pro" };
-  }
-
-  await recordAudit(user.id, "resolve_upgrade_request", parsed.data.vendorId, {
-    requestId: parsed.data.requestId,
-    stage: "pro_granted",
-  });
-
-  const { data: resolved, error: resolveError } = await supabase
-    .from("upgrade_requests")
-    .update({ status: "resolved" })
-    .eq("id", parsed.data.requestId)
-    .eq("vendor_id", parsed.data.vendorId)
-    .eq("status", "pending")
-    .select("id")
-    .maybeSingle();
-  if (resolveError || !resolved) {
-    console.error(
-      "resolveUpgradeRequest (resolve) failed",
-      resolveError?.message ?? "no pending row updated",
-    );
-    return {
-      success: false,
-      error: "Granted Pro, but could not clear the request",
-    };
-  }
-
-  revalidatePath("/admin/vendors");
-  return { success: true };
-}
-
-/**
- * Update the single pricing row shown on the vendor plan page. Admin-only:
- * requireAdmin() 404s non-admins before any write. Service-role client,
- * since the pricing table has no write RLS policy at all.
- */
-export async function setPricing(
-  input: PricingFormInput,
-): Promise<ActionResult> {
-  const { user } = await requireAdmin();
-
-  const parsed = pricingFormSchema.safeParse(input);
-  if (!parsed.success) return { success: false, error: "Invalid input" };
-
-  const supabase = await createServiceClient();
-  const { error } = await supabase
-    .from("pricing")
-    .update({
-      monthly_cents: parsed.data.monthly_cents,
-      updated_at: new Date().toISOString(),
-    })
-    .eq("id", 1);
-  if (error) {
-    console.error("setPricing failed", error.message);
-    return { success: false, error: "Could not update pricing" };
-  }
-
-  await recordAudit(user.id, "set_pricing", null, {
-    monthly_cents: parsed.data.monthly_cents,
-  });
-
-  revalidatePath("/admin");
-  revalidatePath("/dashboard/plan");
   return { success: true };
 }
