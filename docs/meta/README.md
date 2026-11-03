@@ -9,6 +9,9 @@ implementation history live in `docs/superpowers/`.
   October review update. Direct wheel/scratch dispatch tests now close T1;
   September catalog/payment-offset work supersedes T4. Setup complexity and the
   typed strategy-dispatch tradeoff remain documented maintenance debt.
+- `ai-harness-reference.md` is the hook-by-hook AI harness reference, and
+  `templatecentral-adoption-log.md` is the templateCentral review history
+  (adopted / not adopted); both were moved out of `AGENTS.md`.
 - `archive/2026-10-08-unused-vouchers/` preserves removed, uncalled voucher
   wrappers and their tests outside runtime and test discovery.
 

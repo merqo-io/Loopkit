@@ -29,8 +29,7 @@ owns the callback props, since a Server Component can't pass a function
 across the client boundary. The audit table
 is append-only at
 the grant level (`service_role` can no longer `UPDATE`/`DELETE` it, only
-`SELECT`/`INSERT`) — see `AGENTS.md`'s data
-model section for the retention policy. `GET /api/merqo/vendor-activity`
+`SELECT`/`INSERT`) — see `docs/DATA-MODEL.md` for the retention policy. `GET /api/merqo/vendor-activity`
 gives merqo's cross-kit vendor detail view real per-vendor loyalty activity
 (programs, cards, stamps/rewards in the last 30 days) instead of nothing —
 see `src/app/api/merqo/vendor-activity/README.md`. No per-IP rate
@@ -58,7 +57,7 @@ the profile page's two-column layout, `BackButton`, `ElevatedCard`,
 `SOCIAL_LINK_FIELDS`/`SocialLinksFields`, `qrSvg`, and the landing `Footer`
 (as of v0.29.1, 2026-09-16 — each confirmed duplicated across 2+ sibling
 kits before promoting) all now delegate to `@merqo/ui`'s versions — see
-`AGENTS.md`'s File Layout and this README's Data model section below for
+`docs/FILE-LAYOUT.md` and this README's Data model section below for
 what's still loopkit-local (the upload adapter, step/action wiring, and
 `ProLock`/the activity-page `PaginationNav`, both deliberately left local —
 see `CHANGELOG.md`). Bumped `@merqo/ui` to v0.30.0 (2026-09-16):
@@ -475,7 +474,7 @@ must also add a DNC Registry check, as set out in
   relevant floor there when a new advisory lands rather than waiting on
   the upstream package to update.
 
-See `AGENTS.md` for full engineering rules, harness details, and skills.
+See `AGENTS.md` for engineering rules and skills. `AGENTS.md` is kept under 200 lines because it loads into every agent session; the reference material it points to is `docs/FILE-LAYOUT.md`, `docs/DATA-MODEL.md`, `docs/meta/ai-harness-reference.md` and `docs/meta/templatecentral-adoption-log.md`.
 
 ## Structure
 
@@ -511,7 +510,7 @@ Prepared migrations `0050`–`0060` also address atomic program replacement, pla
 
 Component ownership and preserved behavior for the current reuse cleanup are recorded in [the component reuse specification](docs/meta/2026-10-10-component-reuse-spec.md).
 
-The AI harness follows templateCentral 6.0.4: hook commands are anchored on the project directory, and the guard against committing to `main` reads the branch of the directory a command runs in. The dated entry in `AGENTS.md` lists what was adopted.
+The AI harness follows templateCentral 6.0.4: hook commands are anchored on the project directory, and the guard against committing to `main` reads the branch of the directory a command runs in. `docs/meta/templatecentral-adoption-log.md` lists what was adopted.
 
 ## Security headers and MFA
 

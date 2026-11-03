@@ -34,33 +34,10 @@ pnpm format       # prettier --write
 
 ## File Layout
 
-```
-src/app/dashboard/      — vendor console (programs, cards, stats)
-src/app/c/              — customer-facing card view (QR entry point)
-src/app/admin/          — Merqo-team admin console
-src/app/setup/          — vendor onboarding
-src/app/login/, auth/   — auth pages
-src/app/api/            — route handlers (merqo metrics, etc.)
-src/proxy.ts            — Supabase session refresh + /dashboard,/setup guard (Next 16)
-src/lib/engine/         — stamp/points/lucky-reward core logic
-src/lib/program.ts      — program CRUD + rules
-src/lib/cards.ts        — customer card state
-src/lib/loyalty.ts      — stamping/redemption flow
-src/lib/stats.ts        — vendor-facing metrics
-src/lib/merqo-customer-notify.ts — notifyCustomerByPhone/notifyVendor: kit → merqo HTTP calls (customer Telegram reuse + vendor alerts via merqo's shared bot)
-src/lib/merqo-vendor-status.ts — reports status/metrics to merqo over HTTP
-src/lib/supabase/       — browser / server / service clients + middleware helper
-src/lib/types.ts        — DB types (mirror of supabase/migrations)
-src/lib/utils.ts        — cn() + shared formatting helpers
-src/components/         — wheel, scratch-card, flame-layers, cup, points-bar, stamp-dots, etc.
-src/components/ui/      — shadcn primitives (CLI-managed, do not hand-edit)
-supabase/migrations/    — SQL schema + RLS (ordered chain through 0059)
-```
-
-Domain code (schema, programs/cards/stamps, auth pages, admin) is implemented,
-per the v1 scope in `docs/superpowers/specs/2026-07-07-loopkit-core-design.md`
-and `docs/superpowers/plans/2026-07-07-loopkit-core.md`. Later work is tracked
-as further specs/plans in the same `docs/superpowers/{specs,plans}/` dirs.
+Source map: `docs/FILE-LAYOUT.md`. Domain code is implemented per the v1 scope in
+`docs/superpowers/specs/2026-07-07-loopkit-core-design.md` and
+`docs/superpowers/plans/2026-07-07-loopkit-core.md`; later work lives in the
+same `docs/superpowers/{specs,plans}/` dirs.
 
 ## Rules (always)
 
@@ -86,10 +63,11 @@ typescript`) — keep the `loopkit` schema key in sync everywhere it's reference
 
 ### Project skills — check here first (`.claude/skills/`)
 
-| Skill               | What it does                                                 |
-| ------------------- | ------------------------------------------------------------ |
-| `/next-verify`      | typecheck + lint + test in one pass                          |
-| `/supabase-migrate` | apply `supabase/migrations` + regenerate types (safety gate) |
+| Skill               | What it does                                                     |
+| ------------------- | ---------------------------------------------------------------- |
+| `/next-verify`      | typecheck + lint + test in one pass                              |
+| `/skill-audit`      | surface repeated workflows worth capturing as skills (usage log) |
+| `/supabase-migrate` | apply `supabase/migrations` + regenerate types (safety gate)     |
 
 ### templateCentral plugin skills
 
@@ -103,69 +81,24 @@ no realtime). Use only the stack-agnostic ones here:
 Do **not** run `templatecentral:add (auth)` or `(database)` — they install
 better-auth / Drizzle and will break RLS + realtime.
 
-**templateCentral 6.0.4 review (2026-10-12):** `harness.json` moved 5.15.0 →
-6.0.4, porting the harness qkit adopted in its own 6.0.1 and 6.0.4 reviews
-(qkit's `AGENTS.md` holds the full reasoning). The scripts were 3-way merged
-against qkit's, so this repo's local lines are kept. Adopted:
-
-- Hook commands anchored on `${CLAUDE_PROJECT_DIR}`, each with a timeout. The
-  old relative paths resolved against the shell's current directory.
-- `stop-checks.sh` skips the test run on a clean tree; `subagent-stop.sh`
-  skips read-only agents; `post-edit-typecheck.sh` reports through
-  `additionalContext`.
-- The skill-usage matcher (`Skill__.*` never matched; now `Skill`), and
-  `NotebookEdit` on the `protect-files.sh` matcher.
-- The per-segment `block-no-verify.sh`: closes a hook-skipping flag on push,
-  `--force-with-lease`, `HEAD:main`, deleting a protected branch and
-  `bash -c` wrappers. A bare `git commit` / `git push` is judged by the
-  branch it can land on (the hook input's `cwd` plus every literal `cd`
-  target), so a worktree commit is no longer blocked by the main checkout
-  sitting on `main`. Anything the hook cannot resolve also judges the
-  project root: use a bare `git commit` or `git -C <literal path>`.
-- `protect-files.sh`: symlinked parents resolved, `notebook_path` read,
-  relative paths anchored on the project root.
-- `verify-harness.sh` fails on an unreadable or empty manifest.
-- The commit-msg gate accepts `type(scope)!:` and the messages git writes
-  itself (`Revert "…"`, `fixup!`, `squash!`, `amend!`).
-- The PR-only CI gates (changelog, readme, comment hygiene) fail when
-  `origin/<base>` is missing and read the base branch from `env`.
-- `post-tool-failure.sh` removed (the agent already sees tool errors).
-
-Not adopted, for qkit's reasons: exec-form hooks (`"command": "bash",
-"args": [...]`; a bare `bash` resolved without a shell on Windows can be
-the WSL launcher, so any hook that used that form here is now a shell
-string), the gitleaks command and allowlist syntax changes, the shared
-`.claude/ci-gates.sh`, `.claude/hooks/local/`, and every Azure DevOps and
-OpenCode item.
+Template adoption history (6.0.4 review, adopted / not adopted):
+`docs/meta/templatecentral-adoption-log.md`.
 
 ## AI Harness
 
-PreToolUse(Read|Edit|Write): normalize Windows and relative paths; hard-block
-secret-file reads and writes (environment files except the blank templates,
-secret directories and certificate/credential files). Governance and CI/CD
-writes require human approval; their reads are allowed. Ordinary application
-code, skills and specifications remain unrestricted. The Bash guard continues
-to block hook bypasses, protected-branch force pushes and destructive guard edits.
-UserPromptSubmit: credential-shaped input is blocked; injection-phrase matches
-produce advisory context so quoted security research can proceed.
-PostToolUse: incremental type-check (`pnpm exec tsc --noEmit
---incremental`) after every Edit/Write. Feedback-only.
-Stop hook: runs full test suite (`pnpm test --run`); exit 2 feeds failures
-to Claude via stderr; exit 0 on pass.
-SubagentStop: type-gates a subagent's uncommitted TS changes before it can
-hand back control.
-Git hooks (husky): pre-commit runs format/lint/typecheck + gitleaks
-secret-scan on staged files, plus a readme-coupling staleness warning;
-commit-msg enforces Conventional Commits; pre-push runs the harness
-integrity check + quality gate. Hard-local; coverage/changed-line gates
-run in CI. Migrated 2026-08-01 off lefthook, whose unsigned `lefthook.exe`
-Windows Smart App Control blocks unconditionally — see
-`docs/superpowers/specs/2026-08-01-lefthook-to-husky-migration-design.md`.
-CI (GitHub Actions): hard gate on changed-line coverage (`diff-cover`
-≥80%), lockfile-in-sync (`--frozen-lockfile`), a changelog-touched check, a
-readme-freshness check, harness integrity, and (via `security.yml`) a
-redacted gitleaks scan of the current commit range + `pnpm audit`.
-Project skills: `.claude/skills/` | Manifest: `.claude/harness.json`
+- PreToolUse hard-blocks secret-file reads and writes (env files except blank
+  templates, secret dirs, certificate/credential files); governance and CI/CD
+  writes require human approval. The Bash guard blocks hook bypasses,
+  protected-branch force pushes and destructive guard edits.
+- Credential-shaped prompts are blocked; PostToolUse type-checks after every
+  Edit/Write; the Stop hook runs `pnpm test --run`; SubagentStop type-gates a
+  subagent's uncommitted TS changes.
+- Husky: pre-commit (format/lint/typecheck + gitleaks), commit-msg
+  (Conventional Commits), pre-push (harness integrity + quality gate).
+- CI: `diff-cover` ≥80% on changed lines, lockfile, changelog-touched,
+  readme-freshness, harness integrity, gitleaks + `pnpm audit`.
+- Hook-by-hook detail: `docs/meta/ai-harness-reference.md`. Manifest:
+  `.claude/harness.json`.
 
 ## Skills Security
 
@@ -192,81 +125,26 @@ of this route (see "AI Harness" above).
 
 ## Project-Specific Notes
 
-- This repo was seeded as a harness from the sibling project `qkit` (same
-  templateCentral Supabase variant, same shared Supabase project, different
-  schema). Domain code (programs/cards/stamps, auth pages, dashboard, admin)
-  is implemented; v1 plan/design: `docs/superpowers/plans/2026-07-07-loopkit-core.md`
-  (design: `docs/superpowers/specs/2026-07-07-loopkit-core-design.md`).
-- Later features are tracked as further specs/plans in the same
-  `docs/superpowers/{specs,plans}/` dirs (v2 phases, workspace phases, etc.).
-- **Vendor Telegram Connect / Phase A2** (2026-08-16, supersedes Phase A):
-  loopkit no longer runs its own Telegram bot. Phase A (deep-link QR in
-  `/dashboard/settings`, `src/lib/telegram.ts`/`telegram-link.ts`, the
-  `src/app/api/telegram/webhook/` route, `loopkit.vendor_telegram`/
-  `loopkit.telegram_link_tokens` from migration `0036`) was retired in
-  full — those tables were dropped by migration `0037`, and every file
-  above was deleted. `redeemAction`'s vendor alert
-  (`notifyRedemptionOnTelegram`, `src/app/dashboard/actions.ts`) now calls
-  `notifyVendor` (`src/lib/merqo-customer-notify.ts`), which posts to
-  merqo's shared bot via `POST /api/merqo/notify-vendor`. A vendor who'd
-  linked loopkit's own bot must reconnect once via merqo's own profile
-  page — no data carried over. A missing connection or a send failure is
-  caught and logged, never surfaces to `redeemAction`'s own result. See
-  `docs/superpowers/specs/2026-08-16-vendor-telegram-connect-design.md`.
-- **Customer Telegram connect (2026-08-16), loopkit's reuse-only half of
-  the cross-kit Phase B+D design:** `redeemAction` also calls
-  `notifyCustomerByPhone` (`src/lib/merqo-customer-notify.ts`) as a
-  sibling to the vendor alert above, posting to merqo's
-  `/api/merqo/notify-customer` endpoint in its `phone` lookup mode (never
-  `notify_ref` — loopkit has no prior connect-token round to attach one
-  to). This only reaches a customer who already has a **standing**
-  Telegram connection with merqo from having connected via qkit _with a
-  matching phone number_ — a Telegram-only qkit connection (no phone) or
-  a customer who never connected at all is a silent no-op, not a bug to
-  work around. No new UI, no new table, no connect flow on loopkit's side.
-  `MERQO_BASE_URL`/`MERQO_CUSTOMER_SECRET` are optional; a missing value
-  no-ops the same way the Telegram vars above do. See
+Seeded from sibling `qkit` (same templateCentral Supabase variant, shared
+Supabase project, different schema). Full detail for each note below:
+`docs/DATA-MODEL.md`; the table-by-table model is in `README.md` "Data model".
+
+- **No own Telegram bot.** Vendor alerts (`notifyVendor`) and customer alerts
+  (`notifyCustomerByPhone`, phone lookup only) go through merqo's shared bot via
+  `src/lib/merqo-customer-notify.ts`. A missing connection or send failure is
+  caught and logged, never surfaced to `redeemAction`; a customer without a
+  standing merqo connection is a silent no-op, not a bug. Specs:
+  `docs/superpowers/specs/2026-08-16-vendor-telegram-connect-design.md`,
   `docs/superpowers/specs/2026-08-16-customer-telegram-connect-design.md`.
-- **Customer notify vendor toggle (2026-08-16), fast-follow on the above:**
-  `loopkit.vendor_notify_settings` (migration `0038`) is a small dedicated
-  table — `vendor_id` primary key, `customer_telegram_notify_enabled`
-  boolean, default `true` — giving a vendor an on/off switch (default on,
-  opt-out) for `redeemAction`'s `notifyCustomerByPhone` call, since the
-  customer already consented by connecting Telegram; this is a vendor
-  brand-preference gate, never a consent gate, and it never touches
-  merqo's own connection data. RLS is `for all` own-row (not
-  service-role-only like `vendor_telegram`/`telegram_link_tokens` used to
-  be) — a vendor upserts their own row directly under RLS from
-  `saveCustomerNotifySettingsAction` (`src/app/dashboard/actions.ts`,
-  same upsert-on-`vendor_id` shape as `saveQkitEarnConfigAction`),
-  surfaced as a switch in `/dashboard/settings`
-  (`src/app/dashboard/customer-notify-settings.tsx`). `redeemAction`
-  reads the row itself via `customerNotifyEnabled` before calling
-  `notifyCustomerByPhone`, and skips the call only when a row exists AND
-  the flag is explicitly `false` — a vendor with no row at all (never
-  visited the settings page) still gets the call; that "no row means on"
-  default is resolved in application code, not just the column default.
-  See `docs/superpowers/specs/2026-08-16-customer-notify-vendor-toggle-design.md`.
-- **Host/couple-facing referral mechanic (2026-08-20):** `loopkit.
-referral_hosts` (migration `0040`) lets a vendor name one of their own
-  active programs plus a host's phone (the bride/groom/organizer who chose
-  them), and share a `/c?v=<vendorId>&ref=<code>` link
-  (`src/app/dashboard/referrals/`). Every distinct guest who joins through
-  that link bumps the host one stamp/visit on the named program — credit-
-  routing on an existing program, not a sixth engine `type`. See
-  `README.md`'s "Data model" section for the full RPC/table shape
-  (`vendor_join_referred`, `apply_referral_credit`, `loopkit.
-referral_credits`) and `docs/superpowers/specs/
-2026-08-20-host-referral-mechanic-design.md`.
-- **`admin_audit` retention (2026-08-19):** `loopkit.admin_audit` (migration
-  `0003`; helper: `recordAudit`, `src/lib/admin-audit.ts`) is retained for
-  **5 years** from `created_at` — matching Singapore's IRAS record-keeping
-  norm for a small business. No archival/purge job exists yet; this is a
-  stated policy so retention isn't decided ad hoc later, not an automated
-  one — add a scheduled purge only if/when actually needed. Separately,
-  migration `0039` revokes `UPDATE`/`DELETE` on `admin_audit` from
-  `service_role` (RLS already blocked `authenticated`/`anon`; the app only
-  ever `INSERT`s into it) so the trail can't be edited or erased even by
-  whoever holds the service-role key.
+- **Customer-notify toggle:** `loopkit.vendor_notify_settings` (migration `0038`).
+  "No row means on" — skip the call only when a row exists AND the flag is
+  explicitly `false`; that default is resolved in application code. Spec:
+  `docs/superpowers/specs/2026-08-16-customer-notify-vendor-toggle-design.md`.
+- **Referral mechanic:** `loopkit.referral_hosts` (migration `0040`) is
+  credit-routing on an existing program, not a sixth engine `type`. Spec:
+  `docs/superpowers/specs/2026-08-20-host-referral-mechanic-design.md`.
+- **`admin_audit`:** retained 5 years from `created_at` (policy only, no purge
+  job); migration `0039` revokes `UPDATE`/`DELETE` from `service_role`, so the
+  app only ever `INSERT`s.
 
 <!-- [[post-harness]] — reserved for trace capture and meta-harness integration -->
