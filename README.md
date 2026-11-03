@@ -253,6 +253,10 @@ Next.js 16.3.4 · App Router · Turbopack · TypeScript strict · Tailwind v4 ·
 shadcn/ui (new-york) · React Hook Form · Zod · Supabase (`@supabase/ssr`) ·
 Vitest 4 · pnpm 11 · Node ≥24 · deploy target: Vercel
 
+Vercel deploys only `main` (`git.deploymentEnabled` in `vercel.json`), so PR
+branches have no automatic preview. Deploy a branch on demand with the
+`vercel` CLI.
+
 `@merqo/ui` bumped to v0.27.0 (2026-09-15), which adds `DashboardTours` — a
 route-matched multi-tour router for kits with more than one dashboard-page
 tour (qkit's first consumer); purely additive, this kit's own `DashboardTour`
@@ -320,6 +324,11 @@ if `merqo.upsert_customer` doesn't exist (a loopkit-only local `supabase
 start` has no merqo schema at all). See
 `docs/business/2026-07-21-profile-settings-page-standard.md` (in the parent
 `Merqo Business/docs/` repo) for the locked cross-kit pattern.
+
+Customer PII retention (migration `0065`): pg_cron deletes every row held
+for a vendor and phone after 24 months of inactivity, and `loopkit.feedback`
+after 24 months. A customer can also erase their own data at one shop from
+the card view (`loopkit.customer_erase`, gated by the card token).
 
 loopkit's first-ever live price ships as a single-row, admin-tunable
 `loopkit.pricing` table (migration `0034`, seeded at $4.99/mo, no write

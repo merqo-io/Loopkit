@@ -311,7 +311,9 @@ setup, the env model and the rollout checklist live in merqo's
 Vercel Deployment Protection must be off on this project (it still challenges
 a branch-assigned domain), and the sync workflow needs the repo secret
 `VERCEL_STAGING_DEPLOY_HOOK`: Vercel does not git-deploy a commit it already
-built for production, so the workflow calls the deploy hook instead.
+built for production, so the workflow calls the deploy hook instead. The
+`staging` branch also falls under `"**": false` in `vercel.json`, so it
+deploys only through that hook, never from a git push.
 
 Load the `loopkit` schema on staging with `scripts/staging-migrate.sh`, after
 merqo's and qkit's, not with `supabase db push`: every kit shares one
@@ -325,8 +327,11 @@ Before merging a PR that adds a file under `supabase/migrations/`:
    `STAGING_DB_URL` set to the staging session pooler URI (merqo's
    `docs/STAGING.md`, setup step 2):
    `docker run --rm -e STAGING_DB_URL -v "${PWD}:/repo:ro" postgres:17.6-alpine sh /repo/scripts/staging-migrate.sh supabase/migrations/<new-file>.sql`
-2. Check the PR's own Vercel preview end to end. It already uses the staging
-   database and the other apps' staging hosts.
+2. Check the PR end to end on a preview. Vercel only deploys `main`, so PR
+   branches have no automatic preview. Deploy the branch on demand with the
+   `vercel` CLI (its `Preview` env is the staging database), or temporarily
+   allow the branch in `vercel.json`'s `git.deploymentEnabled` and revert
+   that before merging.
 3. Merge the PR.
 4. Apply the same file to production the usual way (Supabase SQL Editor).
 

@@ -42,11 +42,11 @@ as $$
       join loopkit.programs p on p.id = c.program_id
       where p.vendor_id = p_vendor and c.phone = p_phone
         and rv.status = 'active' and (rv.expires_at is null or rv.expires_at > pg_catalog.now())
-    ) then pg_catalog.now() else pg_catalog.greatest(
-    coalesce((select pg_catalog.max(pg_catalog.greatest(cu.first_seen_at, cu.last_seen_at))
+    ) then pg_catalog.now() else greatest(
+    coalesce((select pg_catalog.max(greatest(cu.first_seen_at, cu.last_seen_at))
       from loopkit.customers cu
       where cu.vendor_id = p_vendor and cu.phone = p_phone), '-infinity'::timestamptz),
-    coalesce((select pg_catalog.max(pg_catalog.greatest(c.created_at, c.updated_at))
+    coalesce((select pg_catalog.max(greatest(c.created_at, c.updated_at))
       from loopkit.cards c join loopkit.programs p on p.id = c.program_id
       where p.vendor_id = p_vendor and c.phone = p_phone), '-infinity'::timestamptz),
     coalesce((select pg_catalog.max(se.created_at)
@@ -54,7 +54,7 @@ as $$
       join loopkit.cards c on c.id = se.card_id
       join loopkit.programs p on p.id = c.program_id
       where p.vendor_id = p_vendor and c.phone = p_phone), '-infinity'::timestamptz),
-    coalesce((select pg_catalog.max(pg_catalog.greatest(rv.earned_at, rv.updated_at, rv.redeemed_at))
+    coalesce((select pg_catalog.max(greatest(rv.earned_at, rv.updated_at, rv.redeemed_at))
       from loopkit.reward_vouchers rv
       join loopkit.cards c on c.id = rv.card_id
       join loopkit.programs p on p.id = c.program_id

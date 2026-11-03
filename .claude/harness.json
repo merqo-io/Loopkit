@@ -28,7 +28,7 @@
       "path": ".claude/hooks/protect-files.sh"
     },
     ".claude/hooks/block-no-verify.sh": {
-      "origin_hash": "e780da8322bc56be0eb517637aa4593257ef9b8c02e98e3c4d8c60f689544a1b",
+      "origin_hash": "00ccbbd921a8233f086be173d37f32046c1adcb95a39104d655d64af466c9301",
       "path": ".claude/hooks/block-no-verify.sh"
     },
     ".claude/hooks/user-prompt-guard.cjs": {
