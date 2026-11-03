@@ -3,12 +3,12 @@
   "stack": "nextjs",
   "adapted": "Next 16 + Supabase (auth/db/realtime) — Supabase variant, based on qkit harness",
   "seeded_at": "2026-07-17",
-  "review_note": "2026-10-12: templateCentral 5.15 to 6.0.4. Ported the harness qkit adopted in its 6.0.1 and 6.0.4 reviews by 3-way merge, keeping this repo's local lines: project-anchored hook commands with timeouts, clean-tree Stop skip, additionalContext typecheck feedback, the Skill matcher, the per-segment block-no-verify parser with cwd-aware branch detection, protect-files path resolution, a verifier that fails on an unreadable manifest, a wider commit-msg gate, fail-closed PR doc gates in CI. Removed post-tool-failure.sh. Not adopted: exec-form hooks, the gitleaks syntax changes, ci-gates.sh, hooks/local, Azure DevOps and OpenCode items. Reasoning is in the AGENTS.md entry of the same date. Hashes below were recomputed from the LF-normalised blobs. Fresh skeleton seeded from sibling project qkit's harness (same templateCentral Supabase variant, shared Supabase project, schema per kit — loopkit owns `loopkit`). No domain code carried over.",
+  "review_note": "2026-10-12: templateCentral 5.15 to 6.0.4. Ported the harness qkit adopted in its 6.0.1 and 6.0.4 reviews by 3-way merge, keeping this repo's local lines: project-anchored hook commands with timeouts, clean-tree Stop skip, additionalContext typecheck feedback, the Skill matcher, the per-segment block-no-verify parser with cwd-aware branch detection, protect-files path resolution, a verifier that fails on an unreadable manifest, a wider commit-msg gate, fail-closed PR doc gates in CI. Removed post-tool-failure.sh. Not adopted: exec-form hooks, the gitleaks syntax changes, ci-gates.sh, hooks/local, Azure DevOps and OpenCode items. Reasoning is in docs/meta/templatecentral-adoption-log.md. Hashes below were recomputed from the LF-normalised blobs. Fresh skeleton seeded from sibling project qkit's harness (same templateCentral Supabase variant, shared Supabase project, schema per kit — loopkit owns `loopkit`). No domain code carried over.",
   "adoWiki": false,
   "richReadme": true,
   "seeded_files": {
     "AGENTS.md": {
-      "origin_hash": "52180602ade15eaf0c8fce3b2eca20b554143168dbd6682d1ce3485ea9e859f4",
+      "origin_hash": "c2e5cad65a7b9b1ee7ce46f2f9e0c76813085527b4124f9d4e914e5b84587d40",
       "path": "AGENTS.md"
     },
     ".claude/settings.json": {
