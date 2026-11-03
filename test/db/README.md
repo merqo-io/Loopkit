@@ -27,7 +27,7 @@ RPC access; current authorization requires final-schema pgTAP tests.
 - `head-start-percent-schema.test.ts` — checks migration `0024_loopkit_head_start_percent.sql` (`head_start_percent` column)
 - `head-start-schema.test.ts` — checks migration `0014_loopkit_head_start.sql` (`head_start` column)
 - `legal-check-state-schema.test.ts` — checks migration `0044_legal_check_state.sql` (`legal_check_state` table shape, RLS enabled with zero policies, `service_role`-only grant)
-- `multiprogram-schema.test.ts` — checks migration `0007_loopkit_multiprogram.sql` (drops one-program-per-vendor constraint, adds `vendor_pro`)
+- `multiprogram-schema.test.ts`: checks migration `0007_loopkit_multiprogram.sql` (drops one-program-per-vendor constraint, adds `vendor_pro`, which `0068` later drops)
 - `points-per-visit-schema.test.ts` — checks migration `0026_loopkit_points_per_visit.sql` (`points_per_visit` config, widened `stamps_required` range)
 - `program-replacement-schema.test.ts` — checks migration `0016_loopkit_program_replacement.sql` (`replaced_by` self-reference)
 - `record-visit-schema.test.ts` — checks migration `0005_loopkit_record_visit.sql` (`record_visit` SECURITY DEFINER function)
