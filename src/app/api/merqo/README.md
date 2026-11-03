@@ -8,7 +8,7 @@ qkit earn-config, and push-provisions a vendor onto loopkit.
 
 ## Contents
 
-- `entitlement/` — `POST` endpoint that receives merqo's pushed subscription entitlement for one vendor and stores it in the `vendor_entitlements` cache that `isPro()` and `loopkit.is_pro` read.
+- `entitlement/`: `POST` endpoint that receives merqo's pushed subscription entitlement for one vendor and stores it in the `vendor_entitlements` cache that `isPro()` and `loopkit.is_pro` read.
 - `metrics/`
 - `vendor-activity/` — `GET` endpoint resolving one vendor's programs,
   cards, and stamp/redeem activity by email, for merqo's cross-kit

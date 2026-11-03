@@ -1,5 +1,5 @@
 begin;
-select no_plan();
+select plan(27);
 
 select has_index('loopkit', 'admin_audit', 'admin_audit_admin_id_idx', 'loopkit.admin_audit (admin_id) is indexed');
 select has_index('loopkit', 'feedback', 'feedback_vendor_id_idx', 'loopkit.feedback (vendor_id) is indexed');
@@ -8,7 +8,6 @@ select has_index('loopkit', 'qkit_earn_config', 'qkit_earn_config_program_id_idx
 select has_index('loopkit', 'qkit_earn_events', 'qkit_earn_events_card_id_idx', 'loopkit.qkit_earn_events (card_id) is indexed');
 select has_index('loopkit', 'referral_hosts', 'referral_hosts_program_id_idx', 'loopkit.referral_hosts (program_id) is indexed');
 select has_index('loopkit', 'reward_vouchers', 'reward_vouchers_program_id_idx', 'loopkit.reward_vouchers (program_id) is indexed');
-select has_index('loopkit', 'upgrade_requests', 'upgrade_requests_vendor_id_idx', 'loopkit.upgrade_requests (vendor_id) is indexed');
 
 select is(
   (select count(*)::int from pg_tables where schemaname = 'loopkit' and not rowsecurity),

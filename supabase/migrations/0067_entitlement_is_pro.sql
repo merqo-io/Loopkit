@@ -1,13 +1,15 @@
--- 0067 — Pro becomes a cache of merqo's entitlement. Existing vendor_pro rows
+-- 0067: Pro becomes a cache of merqo's entitlement. Existing vendor_pro rows
 -- are carried over as paid with no expiry (open until merqo's next push),
 -- then is_pro reads the cache instead. Name and signature are unchanged, so
 -- the RLS policies and create_program callers keep working.
+--
+-- Legacy rows get the epoch as issued_at so any real push from merqo wins.
 --
 -- Merqo has no cron, so a lapsed subscription must stop counting without a
 -- new push: paid means tier 'paid' and (valid_until is null or in the future).
 
 insert into loopkit.vendor_entitlements (vendor_id, tier, founder, stats_window, valid_until, issued_at)
-select vendor_id, 'paid', false, '90d', null, created_at
+select vendor_id, 'paid', false, '90d', null, '1970-01-01T00:00:00Z'
 from loopkit.vendor_pro
 on conflict (vendor_id) do nothing;
 

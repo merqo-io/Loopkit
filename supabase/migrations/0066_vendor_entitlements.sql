@@ -1,4 +1,4 @@
--- 0066 — merqo owns subscriptions and pushes each vendor's entitlement to
+-- 0066: merqo owns subscriptions and pushes each vendor's entitlement to
 -- every kit (POST /api/merqo/entitlement). This table is loopkit's cache of
 -- that push; loopkit never decides a vendor's plan itself. event_pass is
 -- never stored: merqo sends null for loopkit.
@@ -53,5 +53,5 @@ as $$
   where e.issued_at < excluded.issued_at;
 $$;
 
-revoke all on function loopkit.upsert_vendor_entitlement(uuid, text, boolean, text, timestamptz, timestamptz) from public;
+revoke all on function loopkit.upsert_vendor_entitlement(uuid, text, boolean, text, timestamptz, timestamptz) from public, anon, authenticated;
 grant execute on function loopkit.upsert_vendor_entitlement(uuid, text, boolean, text, timestamptz, timestamptz) to service_role;

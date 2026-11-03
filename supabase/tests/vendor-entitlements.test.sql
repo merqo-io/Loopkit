@@ -1,5 +1,5 @@
 begin;
-select no_plan();
+select plan(13);
 
 insert into auth.users (id, instance_id, aud, role, email) values
   ('a0000000-0000-0000-0000-00000000e101', '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'ent-a@test.local'),
@@ -7,6 +7,7 @@ insert into auth.users (id, instance_id, aud, role, email) values
 
 select ok(not has_function_privilege('authenticated', 'loopkit.upsert_vendor_entitlement(uuid, text, boolean, text, timestamptz, timestamptz)', 'EXECUTE'), 'authenticated cannot run the entitlement upsert');
 select ok(has_function_privilege('service_role', 'loopkit.upsert_vendor_entitlement(uuid, text, boolean, text, timestamptz, timestamptz)', 'EXECUTE'), 'service_role can run the entitlement upsert');
+select ok(not has_function_privilege('anon', 'loopkit.upsert_vendor_entitlement(uuid, text, boolean, text, timestamptz, timestamptz)', 'EXECUTE'), 'anon cannot run the entitlement upsert');
 select ok(not has_table_privilege('authenticated', 'loopkit.vendor_entitlements', 'INSERT'), 'authenticated cannot insert entitlements');
 select ok(not has_table_privilege('anon', 'loopkit.vendor_entitlements', 'SELECT'), 'anon cannot read entitlements');
 

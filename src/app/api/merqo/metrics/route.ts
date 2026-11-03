@@ -13,33 +13,41 @@ export async function GET(request: Request) {
 
   const supabase = await createServiceClient();
 
-  // Three independent reads — issue them concurrently so endpoint latency is
+  // Four independent reads, issue them concurrently so endpoint latency is
   // one round-trip, not the sum of three.
-  const [programsRes, cardsRes, stampEventsRes] = await Promise.all([
-    readAllRows((start, end) =>
-      supabase
-        .from("programs")
-        .select("id, active, created_at")
-        .order("id", { ascending: true })
-        .range(start, end),
-    ),
-    readAllRows((start, end) =>
-      supabase
-        .from("cards")
-        .select("id, program_id")
-        .order("id", { ascending: true })
-        .range(start, end),
-    ),
-    readAllRows((start, end) =>
-      supabase
-        .from("stamp_events")
-        .select("card_id, kind, created_at, payload")
-        .order("id", { ascending: true })
-        .range(start, end),
-    ),
-  ]);
+  const [programsRes, cardsRes, stampEventsRes, entitlementsRes] =
+    await Promise.all([
+      readAllRows((start, end) =>
+        supabase
+          .from("programs")
+          .select("id, active, created_at")
+          .order("id", { ascending: true })
+          .range(start, end),
+      ),
+      readAllRows((start, end) =>
+        supabase
+          .from("cards")
+          .select("id, program_id")
+          .order("id", { ascending: true })
+          .range(start, end),
+      ),
+      readAllRows((start, end) =>
+        supabase
+          .from("stamp_events")
+          .select("card_id, kind, created_at, payload")
+          .order("id", { ascending: true })
+          .range(start, end),
+      ),
+      readAllRows((start, end) =>
+        supabase
+          .from("vendor_entitlements")
+          .select("vendor_id, tier, valid_until")
+          .order("vendor_id", { ascending: true })
+          .range(start, end),
+      ),
+    ]);
 
-  for (const r of [programsRes, cardsRes, stampEventsRes]) {
+  for (const r of [programsRes, cardsRes, stampEventsRes, entitlementsRes]) {
     if (r.error) {
       console.error("merqo metrics: read failed", r.error.message);
       return NextResponse.json(
@@ -54,6 +62,7 @@ export async function GET(request: Request) {
     programs: programsRes.data ?? [],
     cards: cardsRes.data ?? [],
     stampEvents: stampEventsRes.data ?? [],
+    entitlements: entitlementsRes.data ?? [],
   });
 
   return NextResponse.json({

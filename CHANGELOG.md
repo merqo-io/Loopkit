@@ -8,11 +8,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
-- `POST /api/merqo/entitlement` receives merqo's pushed subscription entitlement (bearer `MERQO_PROVISION_SECRET`) and stores it in the new `loopkit.vendor_entitlements` cache. Pushes older than the stored `issued_at` are ignored. Migrations `0066` to `0069`.
+- `POST /api/merqo/entitlement` receives merqo's pushed subscription entitlement (bearer `MERQO_PROVISION_SECRET`) and stores it in the new `loopkit.vendor_entitlements` cache. Pushes older than the stored `issued_at` are ignored. Migrations `0066` to `0070`.
 
 ### Removed
 
-- `loopkit.vendor_pro` and `loopkit.pricing`, the admin pricing form, the admin Pro toggle, the upgrade-request inbox and the vendor upgrade request button. Plans and pricing are managed in merqo.
+- `loopkit.vendor_pro` and `loopkit.pricing`, the admin pricing form, the admin Pro toggle, the upgrade-request inbox and the vendor upgrade request button (`loopkit.upgrade_requests` is dropped too). Plans and pricing are managed in merqo.
 
 ### Changed
 

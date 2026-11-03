@@ -10,6 +10,7 @@ describe("computeLoopkitMetrics", () => {
   it("maps programs/cards/stamp events onto the merqo shape", () => {
     const m = computeLoopkitMetrics({
       nowMs: now,
+      entitlements: [],
       programs: [
         { id: "p1", active: true, created_at: iso(2) },
         { id: "p2", active: false, created_at: iso(40) },
@@ -48,6 +49,7 @@ describe("computeLoopkitMetrics", () => {
   it("counts a program with no cards as signed up but not with_booth", () => {
     const m = computeLoopkitMetrics({
       nowMs: now,
+      entitlements: [],
       programs: [{ id: "p1", active: true, created_at: iso(1) }],
       cards: [],
       stampEvents: [],
@@ -68,6 +70,7 @@ describe("computeLoopkitMetrics", () => {
   it("counts visits as activity and won visits + redeems as rewards", () => {
     const m = computeLoopkitMetrics({
       nowMs: now,
+      entitlements: [],
       programs: [{ id: "p1", active: true, created_at: iso(1) }],
       cards: [{ id: "c1", program_id: "p1" }],
       stampEvents: [
@@ -97,6 +100,7 @@ describe("computeLoopkitMetrics", () => {
   it("treats a stamp event exactly 7 days ago as inside the 7d window (inclusive cutoff)", () => {
     const m = computeLoopkitMetrics({
       nowMs: now,
+      entitlements: [],
       programs: [{ id: "p1", active: true, created_at: iso(1) }],
       cards: [{ id: "c1", program_id: "p1" }],
       stampEvents: [{ card_id: "c1", kind: "stamp", created_at: iso(7) }],
@@ -104,5 +108,28 @@ describe("computeLoopkitMetrics", () => {
 
     expect(m.orders_7d).toBe(1);
     expect(m.orders_prev_7d).toBe(0);
+  });
+});
+
+describe("computeLoopkitMetrics pro counts", () => {
+  const now = Date.UTC(2026, 6, 7);
+
+  it("counts only paid, unexpired entitlements as pro vendors", () => {
+    const m = computeLoopkitMetrics({
+      nowMs: now,
+      programs: [],
+      cards: [],
+      stampEvents: [],
+      entitlements: [
+        { tier: "paid", valid_until: null },
+        { tier: "paid", valid_until: new Date(now + 1000).toISOString() },
+        { tier: "paid", valid_until: new Date(now - 1000).toISOString() },
+        { tier: "free", valid_until: null },
+      ],
+    });
+
+    expect(m.pro_vendors).toBe(2);
+    expect(m.funnel.pro).toBe(2);
+    expect(m.pending_upgrade_requests).toBe(0);
   });
 });

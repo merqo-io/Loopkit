@@ -5,7 +5,7 @@
 `GET /api/merqo/vendor-activity?email=` — merqo's cross-kit vendor detail
 view calls this to show real per-vendor loyalty activity instead of just
 kit grants. Generalizes the `vendor-status` endpoint's `{active, plan}`
-into richer, generic `{active, plan, status, metrics, lastActivityAt}`.
+into richer, generic `{active, plan, status, metrics, lastActivityAt}`. The plan comes from the cached merqo entitlement (`vendor_entitlements`, paid and unexpired means Pro).
 
 ## Contents
 

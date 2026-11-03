@@ -7,12 +7,12 @@ figure/badge helpers used by the overview, programs, and vendors screens.
 
 ## Contents
 
-- `actions.ts` — Server Actions (all admin-only via `requireAdmin()`): `setProgramActive`, `removeCard`, each writing via the service-role client and appending an `admin_audit` row via `recordAudit` (`@/lib/admin-audit`, shared with `vendor-provision/route.ts`).
+- `actions.ts`: Server Actions (all admin-only via `requireAdmin()`): `setProgramActive`, `removeCard`, each writing via the service-role client and appending an `admin_audit` row via `recordAudit` (`@/lib/admin-audit`, shared with `vendor-provision/route.ts`).
 - `activity/` — `AdminActivityPage`: read-only viewer over `admin_audit` (`listAdminAudit`, `@/lib/admin-data`), rendered via `@merqo/ui`'s `AuditLogTable` with a `formatAction` map for the real action strings `actions.ts`/`vendor-provision/route.ts` write, and the `detail.actor === "merqo_system"` sentinel surfaced as "Merqo (system)" instead of a raw vendor id.
 - `admin-nav.tsx` — `AdminNav` client component: the Overview/Programs/Vendors/Activity tab bar, highlighting the active section by path.
 - `health-badge.tsx` — `ProgramHealthBadge`: `ProgramHealth` rendered through `@merqo/ui`'s `StatusBadge`, shared by the programs list and the program detail header.
 - `layout.tsx` — `AdminLayout`: gates every `/admin` route with `requireAdmin()`, renders the header (wordmark, Admin badge, sign-out) and `AdminNav`.
-- `page.tsx` — `AdminOverviewPage`: platform-wide totals (programs, customers, stamps, rewards), and a recent cross-shop activity feed, wrapped in `@merqo/ui`'s `ElevatedCard`.
+- `page.tsx`: `AdminOverviewPage`: platform-wide totals (programs, customers, stamps, rewards), and a recent cross-shop activity feed, wrapped in `@merqo/ui`'s `ElevatedCard`.
 - `programs/`
 - `stat.tsx` — `Stat`: a small labeled-value tile (`@merqo/ui`'s `ElevatedCard`-based) used across the admin overview and program detail pages.
 - `vendors/`

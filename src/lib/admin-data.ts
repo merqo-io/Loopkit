@@ -145,7 +145,7 @@ export async function listProgramsOverview(): Promise<ProgramOverviewRow[]> {
 
 /**
  * Every vendor that owns at least one program, with their email, program count,
- * and Pro status from the cached merqo entitlement — for the admin vendors
+ * and Pro status from the cached merqo entitlement, for the admin vendors
  * table. Service-role reads over the flat programs + vendor_entitlements
  * tables; identity resolved via the admin API.
  */

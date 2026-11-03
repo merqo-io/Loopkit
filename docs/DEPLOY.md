@@ -40,7 +40,7 @@ Do the steps in order: **A (Supabase) → B (Vercel) → C (attach to merqo)**.
      program, Pro = unlimited — is enforced in the `/setup` create action, not
      in SQL. Safe to re-run; existing single-program vendors stay valid.
 
-     Pro is no longer granted here: `0066` to `0069` replace `vendor_pro` with a
+     Pro is no longer granted here: `0066` to `0070` replace `vendor_pro` with a
      cache of the entitlement merqo pushes to `/api/merqo/entitlement`.
 
    - apply `0008_loopkit_hardening.sql` (v2 hardening). Recreates `card_view` to

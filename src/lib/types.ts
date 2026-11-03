@@ -301,27 +301,6 @@ export interface Database {
         };
         Relationships: [];
       };
-      upgrade_requests: {
-        Row: {
-          id: string;
-          vendor_id: string;
-          status: string;
-          created_at: string;
-        };
-        Insert: {
-          id?: string;
-          vendor_id: string;
-          status?: string;
-          created_at?: string;
-        };
-        Update: {
-          id?: string;
-          vendor_id?: string;
-          status?: string;
-          created_at?: string;
-        };
-        Relationships: [];
-      };
       qkit_earn_config: {
         Row: {
           vendor_id: string;
