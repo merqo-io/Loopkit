@@ -120,7 +120,7 @@ describe("DashboardNav", () => {
       "Switch products",
       "Profile",
       "Settings",
-      "Plan · free",
+      "Plan · Free",
       "Get help",
       "Feedback",
       "Theme · System",

@@ -17,6 +17,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - `/dashboard/plan` renders the shared `PricingLadder` from merqo's `/api/plans` catalog (server-side fetch, calm fallback line when unavailable); `@merqo/ui` bumped to v0.39.0. loopkit stores no plan prices, and the local feature table and its `--color-status-ready` override are gone.
 - `POST /api/merqo/entitlement` receives merqo's pushed subscription entitlement (bearer `MERQO_PROVISION_SECRET`) and stores it in the new `loopkit.vendor_entitlements` cache. Pushes older than the stored `issued_at` are ignored. Migrations `0066` to `0070`.
 
+### Changed
+
+- Tier labels in the dashboard nav badge and admin vendors table (client components) now come from `@merqo/ui`'s shared `tierLabel`; the server-rendered `/dashboard/plan` uses a local Free / Starter / Pro map because that helper is client-only. Tiers read Free / Starter / Pro like the other kits. `@merqo/ui` pinned to v0.41.0 (commit `e641d60`). Stored tier values are unchanged.
+
 ### Removed
 
 - `loopkit.vendor_pro` and `loopkit.pricing`, the admin pricing form, the admin Pro toggle, the upgrade-request inbox and the vendor upgrade request button (`loopkit.upgrade_requests` is dropped too). Plans and pricing are managed in merqo.
