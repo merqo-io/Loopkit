@@ -97,6 +97,7 @@ export function LoginForm() {
     handleSubmit,
     getValues,
     setError,
+    clearErrors,
     formState: { errors },
   } = useForm<LoginInput>({ resolver: zodResolver(loginSchema) });
 
@@ -120,6 +121,7 @@ export function LoginForm() {
       });
       // On success the browser navigates to Google; only an early error lands here.
       if (error) {
+        console.error("Google sign-in failed", error);
         setFormError("Could not start Google sign-in. Try again.");
       }
     });
@@ -142,6 +144,7 @@ export function LoginForm() {
           },
         });
         if (error) {
+          console.error("Sign-up failed", error);
           setFormError(
             "Could not create your account. Check your details, or sign in if you already have one.",
           );
@@ -161,6 +164,7 @@ export function LoginForm() {
 
       const { error } = await supabase.auth.signInWithPassword(data);
       if (error) {
+        console.error("Sign-in failed", error);
         setFormError(
           "Could not sign in. Check your email and password and try again.",
         );
@@ -184,12 +188,14 @@ export function LoginForm() {
       });
       return;
     }
+    clearErrors("email");
     return run(async () => {
       const supabase = createClient();
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/auth/callback?next=/reset-password`,
       });
       if (error) {
+        console.error("Password reset email failed", error);
         setFormError("Could not send the reset link. Try again in a moment.");
         return;
       }
@@ -271,11 +277,14 @@ export function LoginForm() {
                   className="h-11 rounded-xl text-base"
                   aria-invalid={!!errors.email}
                   aria-describedby={errors.email ? "email-error" : undefined}
-                  {...register("email")}
+                  {...register("email", {
+                    onChange: () => clearErrors("email"),
+                  })}
                 />
                 {errors.email && (
                   <p
                     id="email-error"
+                    role="alert"
                     className="text-sm font-medium text-destructive"
                   >
                     {errors.email.message}

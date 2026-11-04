@@ -213,11 +213,24 @@ describe("LoginForm", () => {
     await user.click(screen.getByRole("button", { name: "Forgot password?" }));
     const msg = await screen.findByText(/Enter your email above/);
     expect(msg).toHaveAttribute("id", "email-error");
+    expect(msg).toHaveAttribute("role", "alert");
     expect(screen.getByLabelText("Email")).toHaveAttribute(
       "aria-describedby",
       "email-error",
     );
     expect(authMock.resetPasswordForEmail).not.toHaveBeenCalled();
+  });
+
+  it("clears the email error once the user edits the email", async () => {
+    const user = userEvent.setup();
+    render(<LoginForm />);
+    await user.click(screen.getByRole("button", { name: "Forgot password?" }));
+    await screen.findByText(/Enter your email above/);
+
+    await user.type(screen.getByLabelText("Email"), "v");
+    expect(
+      screen.queryByText(/Enter your email above/),
+    ).not.toBeInTheDocument();
   });
 
   it("returns to sign-in from the check-your-email state", async () => {

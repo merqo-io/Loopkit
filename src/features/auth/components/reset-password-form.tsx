@@ -45,7 +45,8 @@ export function ResetPasswordForm() {
         password: parsed.data.password,
       });
       if (error) {
-        setError(error.message);
+        console.error("Password update failed", error);
+        setError("Could not update your password. Try again.");
         return;
       }
       router.push("/dashboard");
