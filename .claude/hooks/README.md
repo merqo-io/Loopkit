@@ -12,12 +12,15 @@ harness.
 - `block-no-verify.sh` — PreToolUse(Bash): blocks `--no-verify`/`-n` on `git commit`, `HUSKY=0`/`HUSKY_SKIP_HOOKS`/`core.hooksPath=` bypasses on `git commit`/`push`/`config`, direct commits to `main`, force-push to a protected branch, `git checkout/restore` on guard-layer files, and recursive-force `rm` on source directories; exit 2 blocks
   Windows drive-letter paths (`C:\…`, `C:/…`) and quoted paths with spaces
   are normalised before the branch is judged, so worktree commits on feature
-  branches pass.
+  branches pass. A strict `&&` chain (`cd <repo> && git commit`) is judged only
+  by the directories git actually runs in, so it passes from a `main` checkout
+  when the `cd` lands on a feature branch; anything looser keeps the starting
+  directory as a candidate.
 - `block-no-verify.test.sh` — regression tests for the hook (run `bash .claude/hooks/block-no-verify.test.sh`).
 - `post-edit-comment-check.sh` — PostToolUse(Edit\|Write), `.ts`/`.tsx`/`.js`/`.jsx`/`.mjs`/`.cjs` files only: flags change-narration comments (patterns from `.claude/comment-hygiene-patterns.txt`) and oversized (>5 line) comment blocks in the edited file via `hookSpecificOutput.additionalContext`; feedback-only, never blocks
 - `post-edit-typecheck.sh` — PostToolUse(Edit\|Write), `.ts`/`.tsx` files only: runs incremental `tsc --noEmit` and surfaces the last 5 lines; feedback-only, never blocks
 - `protect-files.sh` — PreToolUse(Read\|Edit\|Write): normalizes Windows and relative paths, hard-blocks (exit 2) reads and writes to `.env*` (except `.env.example`/`.env.default`), secrets directories, and cert/credential files; asks for human approval on governance and CI/CD workflow writes; governance reads are permitted. Other protected files include (AGENTS.md/CLAUDE.md, `docs/CONSTITUTION.md`, `.claude/settings.json`, `.claude/hooks/*`, `.claude/agents/*`, `.mcp.json`, the harness manifest/verifier/regen scripts, `.claude/.harness-base/*`, `Dockerfile`, `.husky/*`/`.gitleaks.toml`)
-- `session-context.sh` — SessionStart(startup\|resume\|clear\|compact): re-injects the first 30 lines of `AGENTS.md`, all of `docs/CONSTITUTION.md` if present, and a fixed list of always-on invariants (secrets guard, quality gate, feature-branch rule, protected files, architecture boundaries)
+- `session-context.sh` — SessionStart(startup\|resume\|clear\|compact): re-injects all of `docs/CONSTITUTION.md` if present, and a fixed list of always-on invariants (`AGENTS.md` is already loaded through the `CLAUDE.md` import; secrets guard, quality gate, feature-branch rule, protected files, architecture boundaries)
 - `skill-usage-log.sh` — PostToolUse(`Skill`): appends a `timestamp\tskill-name` line to `.claude/skill-usage.log`; always exits 0; the data source for the `skill-audit` skill
 - `stop-checks.sh` — Stop: runs `pnpm test --run`; on failure, tails the last 20 lines to stderr and exits 2 to force a fix before the turn ends; short-circuits to exit 0 when `stop_hook_active` is true, avoiding a re-entry loop
 - `subagent-stop.sh` — SubagentStop: if a subagent left uncommitted `.ts`/`.tsx` changes (working tree or staged), runs `tsc --noEmit` and exits 2 with the last 20 lines of errors, blocking a handback of broken code

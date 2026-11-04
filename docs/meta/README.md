@@ -10,7 +10,7 @@ implementation history live in `docs/superpowers/`.
   September catalog/payment-offset work supersedes T4. Setup complexity and the
   typed strategy-dispatch tradeoff remain documented maintenance debt.
 - `ai-harness-reference.md` is the hook-by-hook AI harness reference, and
-  `templatecentral-adoption-log.md` is the templateCentral review history
+  `templatecentral-adoption-log.md` is the templateCentral review history (6.0.4 and 7.2.2)
   (adopted / not adopted); both were moved out of `AGENTS.md`.
 - `archive/2026-10-08-unused-vouchers/` preserves removed, uncalled voucher
   wrappers and their tests outside runtime and test discovery.

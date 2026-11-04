@@ -253,7 +253,7 @@ Dashboard pages now share a local `PageHeader` and `EmptyState` (`src/components
 
 Next.js 16.3.4 · App Router · Turbopack · TypeScript strict · Tailwind v4 ·
 shadcn/ui (new-york) · React Hook Form · Zod · Supabase (`@supabase/ssr`) ·
-Vitest 4 · pnpm 11 · Node ≥24 · deploy target: Vercel
+Vitest 4 · pnpm 11 · Node ≥24.22.1 · deploy target: Vercel
 
 Vercel deploys only `main` (`git.deploymentEnabled` in `vercel.json`), so PR
 branches have no automatic preview. Deploy a branch on demand with the
@@ -473,8 +473,9 @@ must also add a DNC Registry check, as set out in
 - Release history: `CHANGELOG.md`
 - Dependency security overrides (force-patched transitive CVEs, each
   scoped/commented with its advisory ID, e.g. browserslist
-  GHSA-c83g-rgw3-j3cx): `pnpm-workspace.yaml`. `pnpm audit --prod
---audit-level=high` is CI's hard gate (`security.yml`) — bump the
+  GHSA-c83g-rgw3-j3cx): `pnpm-workspace.yaml`. `.claude/deps-gate.sh`
+  (a fail-closed `pnpm audit --prod` high/critical gate) is CI's hard gate
+  (`security.yml`) — bump the
   relevant floor there when a new advisory lands rather than waiting on
   the upstream package to update.
 
@@ -514,7 +515,7 @@ Prepared migrations `0050`–`0060` also address atomic program replacement, pla
 
 Component ownership and preserved behavior for the current reuse cleanup are recorded in [the component reuse specification](docs/meta/2026-10-10-component-reuse-spec.md).
 
-The AI harness follows templateCentral 6.0.4: hook commands are anchored on the project directory, and the guard against committing to `main` reads the branch of the directory a command runs in. `docs/meta/templatecentral-adoption-log.md` lists what was adopted.
+The AI harness follows templateCentral 7.2.2: hook commands are anchored on the project directory, and the guard against committing to `main` reads the branch of the directory a command runs in (a strict `&&` chain only by the directories git runs in). The dependency audit is the fail-closed `.claude/deps-gate.sh`, with expiring suppressions only in `.claude/dep-audit-allow.txt`. `docs/meta/templatecentral-adoption-log.md` lists what was adopted.
 
 ## Security headers and MFA
 

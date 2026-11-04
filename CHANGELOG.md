@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Changed
+
+- Internal: the AI harness follows templateCentral 7.2.2. `block-no-verify.sh` judges a strict `&&` chain only by the directories git runs in, `session-context.sh` no longer prints `AGENTS.md`, `engines.node` is `>=24.22.1` with CI pinned to `24.22.1`, and `security.yml` runs the fail-closed `.claude/deps-gate.sh` (expiring suppressions only in `.claude/dep-audit-allow.txt`).
+
 ### Added
 
 - `PageHeader` and `EmptyState` components. Dashboard pages (home, Counter, Customers, customer detail, cohort lists, Activity, Stats) and the admin page header now share one header (eyebrow, display-font title, muted line, optional action) and dashed empty states with a next step.
