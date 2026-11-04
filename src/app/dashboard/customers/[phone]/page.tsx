@@ -7,6 +7,7 @@ import { normalizePhone } from "@/lib/phone";
 import { formatSgtDate } from "@/lib/format";
 import { ElevatedCard } from "@merqo/ui";
 import { Badge } from "@/components/ui/badge";
+import { PageHeader } from "@/components/page-header";
 import { ActivityTable } from "@/app/dashboard/activity/activity-table";
 import { AdjustStampForm } from "./adjust-stamp-form";
 import { MarketingConsentPanel } from "./marketing-consent-panel";
@@ -45,17 +46,16 @@ export default async function CustomerDetailPage({
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">
-          {detail.name ?? phone}
-        </h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          {detail.name && `${phone} · `}
-          {detail.lastSeenAt
-            ? `Last seen ${formatSgtDate(detail.lastSeenAt)}`
-            : "No visits recorded yet"}
-        </p>
-      </div>
+      <PageHeader
+        eyebrow="Customer"
+        title={detail.name ?? phone}
+        className="mb-0"
+      >
+        {detail.name && `${phone} · `}
+        {detail.lastSeenAt
+          ? `Last seen ${formatSgtDate(detail.lastSeenAt)}`
+          : "No visits recorded yet"}
+      </PageHeader>
 
       <div className="space-y-3">
         <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">

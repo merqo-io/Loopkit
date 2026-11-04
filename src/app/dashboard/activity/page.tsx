@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { requireVendor } from "@/features/auth";
+import { PageHeader } from "@/components/page-header";
 import { listPrograms, currentProgram } from "@/lib/program";
 import { listActivity } from "@/lib/activity";
 import { ActivityTable } from "@/app/dashboard/activity/activity-table";
@@ -130,10 +131,9 @@ export default async function ActivityPage({
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">Activity</h1>
-        <p className="mt-1 text-sm text-muted-foreground">{description}</p>
-      </div>
+      <PageHeader eyebrow="History" title="Activity" className="mb-0">
+        {description}
+      </PageHeader>
       <ActivityFilters
         basePath={basePath}
         programs={programs}

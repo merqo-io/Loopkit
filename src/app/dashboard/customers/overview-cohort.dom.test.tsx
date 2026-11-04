@@ -138,7 +138,7 @@ describe("overview cohort route boundary", () => {
     );
     expect(getVendorOverviewInputs).toHaveBeenCalledWith([]);
     expect(listCards).not.toHaveBeenCalled();
-    expect(screen.getByText("No matching cards.")).toBeInTheDocument();
+    expect(screen.getByText("No matching cards yet.")).toBeInTheDocument();
   });
   it("keeps two matching cards for one phone distinct across programs", async () => {
     const second = { ...program, id: "p2", name: "Bakery" };

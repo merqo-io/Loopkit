@@ -1,7 +1,9 @@
 "use client";
 
 import { Gift, Stamp, Pencil } from "lucide-react";
-import { DataTable, ElevatedCard, type DataTableColumn } from "@merqo/ui";
+import Link from "next/link";
+import { DataTable, type DataTableColumn } from "@merqo/ui";
+import { EmptyState } from "@/components/empty-state";
 import { Badge } from "@/components/ui/badge";
 import { formatSgtDateTime } from "@/lib/format";
 import type { VendorActivityRow } from "@/lib/activity";
@@ -30,11 +32,19 @@ export function ActivityTable({
 }) {
   if (activity.length === 0) {
     return (
-      <ElevatedCard className="p-6">
-        <p className="text-sm text-muted-foreground">
-          No activity matches these filters.
-        </p>
-      </ElevatedCard>
+      <EmptyState
+        title="No activity yet."
+        actions={
+          <Link
+            href="/dashboard/activity"
+            className="rounded-lg border bg-card px-4 py-2 text-sm font-semibold hover:bg-muted"
+          >
+            Clear filters
+          </Link>
+        }
+      >
+        No activity matches these filters. Clear them to see everything.
+      </EmptyState>
     );
   }
 
