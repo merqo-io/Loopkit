@@ -17,7 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 
-- Tier labels (dashboard nav badge, `/dashboard/plan`, admin vendors table) now come from `@merqo/ui`'s shared `tierLabel`, so tiers read Free / Starter / Pro like the other kits. `@merqo/ui` pinned to v0.41.0 (commit `e641d60`). Stored tier values are unchanged.
+- Tier labels in the dashboard nav badge and admin vendors table (client components) now come from `@merqo/ui`'s shared `tierLabel`; the server-rendered `/dashboard/plan` uses a local Free / Starter / Pro map because that helper is client-only. Tiers read Free / Starter / Pro like the other kits. `@merqo/ui` pinned to v0.41.0 (commit `e641d60`). Stored tier values are unchanged.
 
 ### Removed
 

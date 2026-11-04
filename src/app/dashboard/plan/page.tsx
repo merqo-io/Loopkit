@@ -1,15 +1,14 @@
 import { Sparkles } from "lucide-react";
-import {
-  ElevatedCard,
-  PricingLadder,
-  fetchPlanCatalog,
-  tierLabel,
-} from "@merqo/ui";
+import { ElevatedCard, PricingLadder, fetchPlanCatalog } from "@merqo/ui";
 import { requireVendor } from "@/features/auth";
 import { isPro, listPrograms, currentProgram } from "@/lib/program";
 import { merqoBaseUrl } from "@/lib/legal-gate";
 import { getProgramStats } from "@/lib/stats";
 import { Badge } from "@/components/ui/badge";
+
+// merqo-ui's tierLabel lives in a client-only module and crashes when called
+// from a Server Component, so this page keeps its own copy of the labels.
+const TIER_LABEL = { free: "Free", starter: "Starter", pro: "Pro" } as const;
 
 export default async function PlanPage({
   searchParams,
@@ -40,7 +39,7 @@ export default async function PlanPage({
         <span className="inline-flex items-center gap-1.5">
           {pro && <Sparkles className="size-3.5 text-primary" />}
           <Badge variant={pro ? "gold" : "secondary"}>
-            {tierLabel(pro ? "pro" : "free")}
+            {pro ? TIER_LABEL.pro : TIER_LABEL.free}
           </Badge>
         </span>
       </div>
