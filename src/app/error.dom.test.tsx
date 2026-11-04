@@ -14,9 +14,9 @@ describe("RouteError", () => {
     render(<RouteError error={error} reset={reset} />);
 
     expect(
-      screen.getByRole("heading", { name: "That didn't load" }),
+      screen.getByRole("heading", { name: "That did not load" }),
     ).toBeInTheDocument();
-    expect(screen.getByText(/a hiccup on our end/i)).toBeInTheDocument();
+    expect(screen.getByText(/usually a flaky connection/i)).toBeInTheDocument();
     expect(consoleError).toHaveBeenCalledWith("Unhandled error", error);
     consoleError.mockRestore();
   });

@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
 import { Wordmark } from "@/components/landing/wordmark";
 import { ElevatedCard } from "@merqo/ui";
 import { GoogleMark } from "@merqo/ui";
@@ -33,7 +32,7 @@ function SentNotice({ sent, onBack }: { sent: Sent; onBack: () => void }) {
           >
             <Wordmark className="text-2xl" />
           </Link>
-          <h1 className="mt-6 text-3xl font-bold tracking-tight">
+          <h1 className="mt-6 font-display text-3xl font-bold tracking-tight">
             Check your email
           </h1>
           <p className="mt-3 text-sm text-muted-foreground">
@@ -69,6 +68,19 @@ function SentNotice({ sent, onBack }: { sent: Sent; onBack: () => void }) {
   );
 }
 
+function FormError({ message }: { message: string | null }) {
+  if (!message) return null;
+  return (
+    <p
+      id="form-error"
+      role="alert"
+      className="text-sm font-medium text-destructive"
+    >
+      {message}
+    </p>
+  );
+}
+
 export function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -84,13 +96,19 @@ export function LoginForm() {
     register,
     handleSubmit,
     getValues,
+    setError,
     formState: { errors },
   } = useForm<LoginInput>({ resolver: zodResolver(loginSchema) });
+
+  // Form-level failure from Supabase, shown inline so it stays visible and
+  // is announced by screen readers (a toast disappears).
+  const [formError, setFormError] = useState<string | null>(null);
 
   const isSignin = mode === "signin";
   const submitLabel = isSignin ? "Sign in" : "Create account";
 
   function signInWithGoogle() {
+    setFormError(null);
     return run(async () => {
       const supabase = createClient();
       const { error } = await supabase.auth.signInWithOAuth({
@@ -101,11 +119,14 @@ export function LoginForm() {
         },
       });
       // On success the browser navigates to Google; only an early error lands here.
-      if (error) toast.error(error.message);
+      if (error) {
+        setFormError("Could not start Google sign-in. Try again.");
+      }
     });
   }
 
   function onSubmit(data: LoginInput) {
+    setFormError(null);
     return run(async () => {
       const supabase = createClient();
 
@@ -121,7 +142,9 @@ export function LoginForm() {
           },
         });
         if (error) {
-          toast.error(error.message);
+          setFormError(
+            "Could not create your account. Check your details, or sign in if you already have one.",
+          );
           return;
         }
         // Email confirmation on → no session yet. Show a "check your email" state
@@ -138,7 +161,9 @@ export function LoginForm() {
 
       const { error } = await supabase.auth.signInWithPassword(data);
       if (error) {
-        toast.error(error.message);
+        setFormError(
+          "Could not sign in. Check your email and password and try again.",
+        );
         return;
       }
       router.push("/dashboard");
@@ -150,10 +175,13 @@ export function LoginForm() {
   // Email a password-reset link. The link lands on /auth/callback, which
   // establishes a recovery session and forwards to /reset-password.
   function sendReset() {
+    setFormError(null);
     const email = getValues("email");
     const parsed = loginSchema.shape.email.safeParse(email);
     if (!parsed.success) {
-      toast.error("Enter your email first.");
+      setError("email", {
+        message: "Enter your email above, then select Forgot password.",
+      });
       return;
     }
     return run(async () => {
@@ -162,7 +190,7 @@ export function LoginForm() {
         redirectTo: `${window.location.origin}/auth/callback?next=/reset-password`,
       });
       if (error) {
-        toast.error(error.message);
+        setFormError("Could not send the reset link. Try again in a moment.");
         return;
       }
       setSent({ email, kind: "reset" });
@@ -199,7 +227,7 @@ export function LoginForm() {
 
         <ElevatedCard>
           <div className="px-7 pt-9 pb-8">
-            <h1 className="text-3xl font-bold tracking-tight">
+            <h1 className="font-display text-3xl font-bold tracking-tight">
               {isSignin ? "Welcome back" : "Create your account"}
             </h1>
             <p className="mt-1.5 text-sm text-muted-foreground">
@@ -240,7 +268,7 @@ export function LoginForm() {
                   type="email"
                   autoComplete="email"
                   placeholder="you@business.sg"
-                  className="h-11 rounded-xl"
+                  className="h-11 rounded-xl text-base"
                   aria-invalid={!!errors.email}
                   aria-describedby={errors.email ? "email-error" : undefined}
                   {...register("email")}
@@ -278,7 +306,7 @@ export function LoginForm() {
                   type="password"
                   autoComplete={isSignin ? "current-password" : "new-password"}
                   placeholder="••••••••"
-                  className="h-11 rounded-xl"
+                  className="h-11 rounded-xl text-base"
                   aria-invalid={!!errors.password}
                   aria-describedby={
                     errors.password ? "password-error" : undefined
@@ -294,6 +322,7 @@ export function LoginForm() {
                   </p>
                 )}
               </div>
+              <FormError message={formError} />
               <Button
                 type="submit"
                 size="lg"
@@ -311,7 +340,10 @@ export function LoginForm() {
             <button
               type="button"
               className="font-semibold text-primary underline-offset-4 hover:underline"
-              onClick={() => setMode(isSignin ? "signup" : "signin")}
+              onClick={() => {
+                setFormError(null);
+                setMode(isSignin ? "signup" : "signin");
+              }}
             >
               {isSignin ? "Create an account" : "Sign in"}
             </button>

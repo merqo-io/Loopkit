@@ -1,12 +1,12 @@
-/* eslint-disable no-restricted-syntax -- renders without the app stylesheet, so colours stay literal */
 "use client";
+
+import "./globals.css";
 
 // Root error boundary. Next renders this ONLY when the root layout itself throws
 // (nested errors are caught closer); it replaces the layout, so it must ship its
-// own <html>/<body> and can't rely on the global stylesheet having loaded —
-// hence inline styles hand-converted from globals.css's light-mode OKLCH tokens
-// (--background/--foreground/--muted-foreground/--primary) to hex. Kept
-// deliberately tiny and dependency-free.
+// own <html>/<body>. It imports the global stylesheet for the theme tokens but
+// not the next/font variables (those live on the layout it replaces), so type
+// falls back to the system stack. Kept dependency-free beyond that.
 export default function GlobalError({
   reset,
 }: {
@@ -15,54 +15,22 @@ export default function GlobalError({
 }) {
   return (
     <html lang="en">
-      <body
-        style={{
-          margin: 0,
-          minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          background: "#fef7f7",
-          color: "#331417",
-          fontFamily:
-            "ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif",
-          padding: "1.5rem",
-        }}
-      >
-        <div style={{ maxWidth: "24rem", textAlign: "center" }}>
-          <h1
-            style={{
-              fontSize: "1.5rem",
-              fontWeight: 700,
-              margin: "0 0 0.5rem",
-            }}
-          >
+      <body className="flex min-h-screen items-center justify-center bg-background p-6 text-foreground">
+        <div className="max-w-sm text-center">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
             Something went wrong
+          </p>
+          <h1 className="font-display mt-3 text-3xl font-semibold">
+            That did not load
           </h1>
-          <p
-            style={{
-              fontSize: "0.9rem",
-              color: "#674e4f",
-              margin: "0 0 1.5rem",
-              lineHeight: 1.5,
-            }}
-          >
-            An unexpected error interrupted the page. Please try again, if it
-            keeps happening, refresh in a moment.
+          <p className="mt-3 text-sm text-muted-foreground">
+            An unexpected error interrupted the page. Try again, and refresh in
+            a moment if it keeps happening.
           </p>
           <button
             type="button"
             onClick={() => reset()}
-            style={{
-              cursor: "pointer",
-              border: "none",
-              borderRadius: "0.625rem",
-              background: "#d93f5a",
-              color: "#fff",
-              fontSize: "0.9rem",
-              fontWeight: 600,
-              padding: "0.7rem 1.25rem",
-            }}
+            className="mt-6 h-11 cursor-pointer rounded-xl bg-primary px-6 text-sm font-semibold text-primary-foreground"
           >
             Try again
           </button>

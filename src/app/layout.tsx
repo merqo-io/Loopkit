@@ -29,7 +29,10 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Loopkit | Loyalty Cards",
+  title: {
+    default: "loopkit | Loyalty cards",
+    template: "loopkit | %s",
+  },
   description:
     "A digital stamp card for Singapore's small food vendors. Stamp customers by phone number and reward the regulars. No app for them to download.",
 };

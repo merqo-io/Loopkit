@@ -10,6 +10,9 @@ const { metadata } = await import("./layout");
 
 describe("root layout metadata", () => {
   it("sets the browser-tab title", () => {
-    expect(metadata.title).toBe("Loopkit | Loyalty Cards");
+    expect(metadata.title).toEqual({
+      default: "loopkit | Loyalty cards",
+      template: "loopkit | %s",
+    });
   });
 });

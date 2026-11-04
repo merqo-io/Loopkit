@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Changed
+
+- Sign-in, sign-up and password-reset errors now show inline (announced as alerts, with the missing-email case attached to the email field) instead of only as toasts. Browser titles use a `loopkit | <page>` template, and the error, not-found and global-error pages use theme tokens with plainer copy.
+
 ### Added
 
 - `/dashboard/plan` renders the shared `PricingLadder` from merqo's `/api/plans` catalog (server-side fetch, calm fallback line when unavailable); `@merqo/ui` bumped to v0.39.0. loopkit stores no plan prices, and the local feature table and its `--color-status-ready` override are gone.
