@@ -506,15 +506,37 @@ html {
    control (the box would cover its neighbour) or on an already positioned
    element (it sets `position: relative`). */
 @media (pointer: coarse) {
-  :is(button, a)[data-variant][data-size]:not([data-variant="link"]),
+  :is(button, a)[data-variant][data-size]:not(
+      [data-variant="link"],
+      [data-size="xs"],
+      [data-size="icon-xs"]
+    ),
   [data-slot="input"],
-  [data-slot="textarea"],
   [data-slot="select-trigger"],
+  [data-slot="toggle-group-item"],
   input[type="time"] {
     min-height: 2.75rem;
   }
-  :is(button, a)[data-variant][data-size^="icon"] {
+  :is(button, a)[data-variant][data-size^="icon"]:not([data-size="icon-xs"]) {
     min-width: 2.75rem;
+  }
+  /* xs chips and inline actions sit in dense rows: they keep their drawn size
+     and only gain an invisible 44px hit area. */
+  :is(button, a)[data-variant][data-size="xs"]:not([data-variant="link"]),
+  :is(button, a)[data-variant][data-size="icon-xs"] {
+    position: relative;
+  }
+  :is(button, a)[data-variant][data-size="xs"]:not(
+      [data-variant="link"]
+    )::after,
+  :is(button, a)[data-variant][data-size="icon-xs"]::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: max(100%, 2.75rem);
+    height: max(100%, 2.75rem);
+    transform: translate(-50%, -50%);
   }
   [data-slot="dropdown-menu-item"],
   [data-slot="select-item"] {

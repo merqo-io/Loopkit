@@ -296,6 +296,8 @@ src/components/         — wheel, scratch-card, flame-layers, cup, points-bar, 
 supabase/migrations/    — SQL schema + RLS
 ```
 
+Touch devices (@media (pointer: coarse)) get 44px minimum buttons and fields; desktop density is unchanged. See src/app/globals.css.
+
 ## Data model
 
 Owns the `loopkit` schema in the shared Merqo Supabase project. All

@@ -64,10 +64,12 @@ tilt treatment regardless of which visual they host.
 
 ## Reuse and ownership
 
-`progress-visual.tsx` delegates the existing discriminated progress views to loyalty visuals; callers supply avatar/plant seed and preview reveal callbacks. Catalog actions and animation timing stay in callers. `form-card.tsx` provides existing card chrome around a native form, preserving GET/action semantics.
+`progress-visual.tsx` delegates the existing discriminated progress views to loyalty visuals; callers supply avatar/plant seed and preview reveal callbacks. Catalog actions and animation timing stay in callers. `form-card.tsx` provides a flat paper surface (2px bottom edge, no blurred shadow) around a native form, preserving GET/action semantics.
 
 ## Parent
 
 [src](../README.md)
 
 `cup.tsx`, `flame-layers.tsx`, `scratch-card.tsx` and `wheel.tsx` take their colours from `@/lib/tokens/mechanic-art`.
+
+On coarse pointers the shared controls reach 44px via the `@media (pointer: coarse)` rules in `src/app/globals.css`; use `.tap-area` to grow only the touch area of a small control.
