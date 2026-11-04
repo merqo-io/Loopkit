@@ -9,6 +9,8 @@ against.
 
 ## Contents
 
+- `deps-gate.sh` + `dep-audit-allow.txt`: the fail-closed dependency-audit gate
+  run by `security.yml`, and its expiring advisory allowlist.
 - `.harness-base/`
 - `comment-hygiene-patterns.txt` — the canonical change-narration/ticket-reference pattern list, read at runtime by `hooks/post-edit-comment-check.sh`, `.husky/lib/comment-hygiene.sh`, and `.github/workflows/ci.yml`'s `comment-hygiene` job instead of each hardcoding its own copy; first 10 lines are anchored keyword patterns (feed all three surfaces), last 3 (date/ticket/issue reference) are lower-precision and feed only the two warn-only surfaces, not the CI hard gate
 - `harness.json` — harness manifest (its `review_note` points at `docs/meta/templatecentral-adoption-log.md`, and the `AGENTS.md` `origin_hash` tracks the slimmed file; the hook-by-hook reference is `docs/meta/ai-harness-reference.md`): templateCentral version/stack/adaptation metadata, plus `seeded_files` — the enforcement-layer file list (path + sha256 `origin_hash`) that `verify-harness.sh` diffs against
