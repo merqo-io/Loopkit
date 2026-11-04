@@ -1,5 +1,10 @@
 import { Sparkles } from "lucide-react";
-import { ElevatedCard, PricingLadder, fetchPlanCatalog } from "@merqo/ui";
+import {
+  ElevatedCard,
+  PricingLadder,
+  fetchPlanCatalog,
+  tierLabel,
+} from "@merqo/ui";
 import { requireVendor } from "@/features/auth";
 import { isPro, listPrograms, currentProgram } from "@/lib/program";
 import { merqoBaseUrl } from "@/lib/legal-gate";
@@ -35,7 +40,7 @@ export default async function PlanPage({
         <span className="inline-flex items-center gap-1.5">
           {pro && <Sparkles className="size-3.5 text-primary" />}
           <Badge variant={pro ? "gold" : "secondary"}>
-            {pro ? "Pro" : "Free"}
+            {tierLabel(pro ? "pro" : "free")}
           </Badge>
         </span>
       </div>
