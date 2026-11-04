@@ -111,6 +111,11 @@
   --color-gold-foreground: var(--gold-foreground);
   --color-gold-accent: var(--gold-accent);
 
+  /* Small-text scale for badges, eyebrows and meta lines (replaces ad-hoc 10px / 0.65rem). */
+  --text-2xs: 0.625rem;
+  --text-2xs--line-height: 0.875rem;
+  --text-xs-plus: 0.6875rem;
+  --text-xs-plus--line-height: 1rem;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -484,6 +489,50 @@ html {
   .animate-pulse,
   .animate-spin {
     animation: none;
+  }
+}
+
+/* Touch targets. On a touch device every button, field and dropdown row is at
+   least 44px tall whatever compact height its classes ask for; a mouse keeps
+   the compact heights. Keyed on the pointer, not the screen width, because an
+   iPad is wide and still a finger.
+
+   Buttons match on `data-variant` + `data-size`, not `data-slot`: a Button
+   under a Radix trigger has its `data-slot` replaced by the trigger's. Link
+   buttons sit inside sentences and are left alone.
+
+   `.tap-area` keeps a control's drawn size and grows only its touch area with
+   a transparent 44px box. Do not use it on something packed against another
+   control (the box would cover its neighbour) or on an already positioned
+   element (it sets `position: relative`). */
+@media (pointer: coarse) {
+  :is(button, a)[data-variant][data-size]:not([data-variant="link"]),
+  [data-slot="input"],
+  [data-slot="textarea"],
+  [data-slot="select-trigger"],
+  input[type="time"] {
+    min-height: 2.75rem;
+  }
+  :is(button, a)[data-variant][data-size^="icon"] {
+    min-width: 2.75rem;
+  }
+  [data-slot="dropdown-menu-item"],
+  [data-slot="select-item"] {
+    min-height: 2.75rem;
+  }
+  .tap-area,
+  [data-slot="switch"] {
+    position: relative;
+  }
+  .tap-area::after,
+  [data-slot="switch"]::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: max(100%, 2.75rem);
+    height: max(100%, 2.75rem);
+    transform: translate(-50%, -50%);
   }
 }
 
