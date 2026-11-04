@@ -77,7 +77,7 @@ describe("PlanPage", () => {
     stubFetch(async () => Response.json(catalog));
     await renderPage();
     expect(screen.getByText("All-Access")).toBeInTheDocument();
-    expect(screen.getAllByText(/49/).length).toBeGreaterThan(0);
+    expect(screen.getByText("S$49")).toBeInTheDocument();
     expect(screen.getByText(/recommended/i)).toBeInTheDocument();
     expect(screen.queryByText(/event pass/i)).not.toBeInTheDocument();
     expect(
