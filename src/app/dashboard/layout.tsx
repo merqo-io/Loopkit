@@ -77,7 +77,7 @@ export default async function DashboardLayout({
           plain <div> (no landmark clash with this <main>) and may still nest a
           narrower wrapper inside here when content genuinely reads better
           narrower (profile/counter/plan/settings). */}
-      <main className="mx-auto w-full max-w-7xl flex-1 p-5 py-10">
+      <main className="mx-auto w-full max-w-7xl flex-1 px-5 py-7">
         {children}
       </main>
       {/* Family footer: no sign-in link (signed in), hidden in print. */}

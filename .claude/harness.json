@@ -1,14 +1,14 @@
 {
-  "templatecentral_version": "6.0.4",
+  "templatecentral_version": "7.2.2",
   "stack": "nextjs",
   "adapted": "Next 16 + Supabase (auth/db/realtime) — Supabase variant, based on qkit harness",
   "seeded_at": "2026-07-17",
-  "review_note": "2026-10-12: templateCentral 5.15 to 6.0.4. Ported the harness qkit adopted in its 6.0.1 and 6.0.4 reviews by 3-way merge, keeping this repo's local lines: project-anchored hook commands with timeouts, clean-tree Stop skip, additionalContext typecheck feedback, the Skill matcher, the per-segment block-no-verify parser with cwd-aware branch detection, protect-files path resolution, a verifier that fails on an unreadable manifest, a wider commit-msg gate, fail-closed PR doc gates in CI. Removed post-tool-failure.sh. Not adopted: exec-form hooks, the gitleaks syntax changes, ci-gates.sh, hooks/local, Azure DevOps and OpenCode items. Reasoning is in docs/meta/templatecentral-adoption-log.md. Hashes below were recomputed from the LF-normalised blobs. Fresh skeleton seeded from sibling project qkit's harness (same templateCentral Supabase variant, shared Supabase project, schema per kit — loopkit owns `loopkit`). No domain code carried over.",
+  "review_note": "2026-11-04: templateCentral 6.0.4 to 7.2.2 by 3-way merge onto this repo's files. Adopted: the 6.0.5 strict && chain fix in block-no-verify.sh (with upstream's test cases), session-context.sh no longer printing head -30 AGENTS.md (7.0.0), engines.node >=24.22.1 (7.2.2 eMudhra CA fix), and the 6.1.0/6.1.1 fail-closed deps gate as a standalone .claude/deps-gate.sh with the expiring .claude/dep-audit-allow.txt and its protect-files.sh ask rule, wired into security.yml. Skipped items and reasons are in docs/meta/templatecentral-adoption-log.md. 2026-10-12: templateCentral 5.15 to 6.0.4. Ported the harness qkit adopted in its 6.0.1 and 6.0.4 reviews by 3-way merge, keeping this repo's local lines: project-anchored hook commands with timeouts, clean-tree Stop skip, additionalContext typecheck feedback, the Skill matcher, the per-segment block-no-verify parser with cwd-aware branch detection, protect-files path resolution, a verifier that fails on an unreadable manifest, a wider commit-msg gate, fail-closed PR doc gates in CI. Removed post-tool-failure.sh. Not adopted: exec-form hooks, the gitleaks syntax changes, ci-gates.sh, hooks/local, Azure DevOps and OpenCode items. Reasoning is in docs/meta/templatecentral-adoption-log.md. Hashes below were recomputed from the LF-normalised blobs. Fresh skeleton seeded from sibling project qkit's harness (same templateCentral Supabase variant, shared Supabase project, schema per kit — loopkit owns `loopkit`). No domain code carried over.",
   "adoWiki": false,
   "richReadme": true,
   "seeded_files": {
     "AGENTS.md": {
-      "origin_hash": "c2e5cad65a7b9b1ee7ce46f2f9e0c76813085527b4124f9d4e914e5b84587d40",
+      "origin_hash": "6e1bd4cc6ad9934a154df7c9ec9a5084e4556f00d79e6d9a794dc8568714d5e4",
       "path": "AGENTS.md"
     },
     ".claude/settings.json": {
@@ -24,11 +24,11 @@
       "path": ".claude/skills/skill-audit/SKILL.md"
     },
     ".claude/hooks/protect-files.sh": {
-      "origin_hash": "d9572d8039525dfd740315013c21010fcfd23e050515e26e81b4307d71bb6851",
+      "origin_hash": "f7ad3cb301997e640776a78d4ed17a792b288c8468efe3e4f6b99f22b8ceb4c2",
       "path": ".claude/hooks/protect-files.sh"
     },
     ".claude/hooks/block-no-verify.sh": {
-      "origin_hash": "00ccbbd921a8233f086be173d37f32046c1adcb95a39104d655d64af466c9301",
+      "origin_hash": "f946e5872fc18d0fce24634d4e441bf6307eaac63cd865c3f3f6aff4f1098328",
       "path": ".claude/hooks/block-no-verify.sh"
     },
     ".claude/hooks/user-prompt-guard.cjs": {
@@ -56,7 +56,7 @@
       "path": ".claude/hooks/subagent-stop.sh"
     },
     ".claude/hooks/session-context.sh": {
-      "origin_hash": "88104c5326ce6c17a047588d995103235ecd871f0a2e60b3bb20baa92585d136",
+      "origin_hash": "c02d70ea599e3512f0d32ff21dde00b8a4f6b147b40150f78cbb53c856d156a6",
       "path": ".claude/hooks/session-context.sh"
     },
     ".claude/hooks/skill-usage-log.sh": {
@@ -100,7 +100,7 @@
       "path": ".gitleaks.toml"
     },
     ".github/workflows/ci.yml": {
-      "origin_hash": "cd30da3848cf57fe61a98a5b260ac25bc7596389e889b65e203b97512e8bd5d5",
+      "origin_hash": "3c1598361ab82132035208c8b2216f02b4f2cdeda49ecfc23acaf48895f3dc3b",
       "path": ".github/workflows/ci.yml"
     },
     ".claude/verify-harness.sh": {
@@ -110,6 +110,15 @@
     ".claude/regen-harness.sh": {
       "origin_hash": "a8c844610843c39550ac920d1d29323244bdecbcdeaa4519c97d8867de1b37a0",
       "path": ".claude/regen-harness.sh"
+    },
+    ".claude/deps-gate.sh": {
+      "origin_hash": "ddfd9aa43a84429f576a38c7bda5eb754c95eea186baeb27f28c8b71479bf195",
+      "path": ".claude/deps-gate.sh"
+    },
+    ".claude/dep-audit-allow.txt": {
+      "origin_hash": "1b1aa7ce946db18b417352ed016f5329c70d90b382fc735af395de58143de0b2",
+      "path": ".claude/dep-audit-allow.txt"
     }
-  }
+  },
+  "reviewed_at": "2026-11-04"
 }

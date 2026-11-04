@@ -1,6 +1,6 @@
 "use client";
 
-import { DataTable, type DataTableColumn } from "@merqo/ui";
+import { DataTable, tierLabel, type DataTableColumn } from "@merqo/ui";
 import type { VendorRow } from "@/lib/admin-data";
 import { Badge } from "@/components/ui/badge";
 
@@ -18,9 +18,9 @@ const columns: DataTableColumn<VendorRow>[] = [
     header: "Tier",
     cell: (v) =>
       v.is_pro ? (
-        <Badge variant="gold">Pro</Badge>
+        <Badge variant="gold">{tierLabel("pro")}</Badge>
       ) : (
-        <Badge variant="outline">Free</Badge>
+        <Badge variant="outline">{tierLabel("free")}</Badge>
       ),
   },
 ];

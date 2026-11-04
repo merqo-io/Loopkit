@@ -1,4 +1,4 @@
-<!-- templateCentral: nextjs@6.0.4 (Supabase variant — shared project, schema per kit) -->
+<!-- templateCentral: nextjs@7.2.2 (Supabase variant — shared project, schema per kit) -->
 
 # AGENTS.md — loopkit
 
@@ -18,7 +18,7 @@ over HTTP.
 
 Next.js 16 · App Router · Turbopack · TypeScript strict · Tailwind v4 · shadcn/ui
 (new-york) · React Hook Form · Zod · Supabase (`@supabase/ssr`) · Vitest ·
-pnpm 11 · Node ≥24 · deploy target: Vercel
+pnpm 11 · Node ≥24.22.1 · deploy target: Vercel
 
 ## Commands
 
@@ -96,7 +96,9 @@ Template adoption history (6.0.4 review, adopted / not adopted):
 - Husky: pre-commit (format/lint/typecheck + gitleaks), commit-msg
   (Conventional Commits), pre-push (harness integrity + quality gate).
 - CI: `diff-cover` ≥80% on changed lines, lockfile, changelog-touched,
-  readme-freshness, harness integrity, gitleaks + `pnpm audit`.
+  readme-freshness, harness integrity, gitleaks + the fail-closed deps gate
+  `.claude/deps-gate.sh` (`pnpm audit` high/critical; expiring suppressions only
+  in `.claude/dep-audit-allow.txt`).
 - Hook-by-hook detail: `docs/meta/ai-harness-reference.md`. Manifest:
   `.claude/harness.json`.
 

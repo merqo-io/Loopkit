@@ -28,6 +28,9 @@ project skills: `.claude/skills/`.
 - **CI (GitHub Actions):** hard gate on changed-line coverage (`diff-cover`
   at least 80%), lockfile-in-sync (`--frozen-lockfile`), a changelog-touched
   check, a readme-freshness check, harness integrity, and (via `security.yml`)
-  a redacted gitleaks scan of the current commit range + `pnpm audit`.
+  a redacted gitleaks scan of the current commit range + the fail-closed
+  dependency gate `.claude/deps-gate.sh` (`pnpm audit --prod` high/critical and
+  tool, network or parse failure; the only suppression path is the expiring
+  `.claude/dep-audit-allow.txt`, which `protect-files.sh` asks before editing).
 
 Template adoption history: `templatecentral-adoption-log.md`.

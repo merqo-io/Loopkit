@@ -9,11 +9,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Changed
 
 - Sign-in, sign-up and password-reset errors now show inline (announced as alerts, with the missing-email case attached to the email field) instead of only as toasts. Browser titles use a `loopkit | <page>` template, and the error, not-found and global-error pages use theme tokens with plainer copy.
+- Internal: the AI harness follows templateCentral 7.2.2. `block-no-verify.sh` judges a strict `&&` chain only by the directories git runs in, `session-context.sh` no longer prints `AGENTS.md`, `engines.node` is `>=24.22.1` with CI pinned to `24.22.1`, and `security.yml` runs the fail-closed `.claude/deps-gate.sh` (expiring suppressions only in `.claude/dep-audit-allow.txt`).
 
 ### Added
 
+- `PageHeader` and `EmptyState` components. Dashboard pages (home, Counter, Customers, customer detail, cohort lists, Activity, Stats) and the admin page header now share one header (eyebrow, display-font title, muted line, optional action) and dashed empty states with a next step.
+
 - `/dashboard/plan` renders the shared `PricingLadder` from merqo's `/api/plans` catalog (server-side fetch, calm fallback line when unavailable); `@merqo/ui` bumped to v0.39.0. loopkit stores no plan prices, and the local feature table and its `--color-status-ready` override are gone.
 - `POST /api/merqo/entitlement` receives merqo's pushed subscription entitlement (bearer `MERQO_PROVISION_SECRET`) and stores it in the new `loopkit.vendor_entitlements` cache. Pushes older than the stored `issued_at` are ignored. Migrations `0066` to `0070`.
+
+### Changed
+
+- Tier labels in the dashboard nav badge and admin vendors table (client components) now come from `@merqo/ui`'s shared `tierLabel`; the server-rendered `/dashboard/plan` uses a local Free / Starter / Pro map because that helper is client-only. Tiers read Free / Starter / Pro like the other kits. `@merqo/ui` pinned to v0.41.0 (commit `e641d60`). Stored tier values are unchanged.
 
 ### Removed
 
@@ -21,6 +28,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 
+- Stats tiles are grouped into Customers, Visits and Rewards with plainer labels ("Came back", "Rewards expired unclaimed") and monospaced numbers. The dashboard content area uses `py-7` padding.
 - Pro is now a cache of merqo's entitlement: `isPro()` and `loopkit.is_pro` read `vendor_entitlements` (paid and not past `valid_until`, so a lapse applies without a new push). Existing `vendor_pro` rows are carried over as paid with no expiry. `vendor-status`, `vendor-activity` and `vendor-provision` report the plan from the cache.
 - The plan page shows no price and points vendors to their Merqo account to change plan.
 - Vercel deploys only `main` (`git.deploymentEnabled` in `vercel.json`). Pull request branches no longer get preview deployments, which kept hitting the merqo-io Hobby team's daily deployment cap. CI's build job still builds every PR; to preview a branch on demand, deploy it with the `vercel` CLI or temporarily allow the branch in `vercel.json`.
@@ -28,6 +36,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Fixed
 
+- `setup-form.dom.test.tsx` timeout raised to 20s so it no longer flakes at the 5s default when suites run in parallel under load.
 - `block-no-verify.sh` no longer blocks commits made from a git worktree on a feature branch: Windows drive-letter paths (`C:\...`, `C:/...`) in the hook cwd, `cd` and `git -C` targets are normalised for Git Bash, and quoted paths containing spaces stay one token. Regression test: `bash .claude/hooks/block-no-verify.test.sh`.
 
 ## [0.4.0] - 2026-11-03

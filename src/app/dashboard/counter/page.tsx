@@ -18,6 +18,7 @@ import { RememberProgram } from "@/app/dashboard/counter/remember-program";
 import { ServeCustomer } from "@/app/dashboard/serve-customer";
 import { ProgramSwitcher } from "@/app/dashboard/program-switcher";
 import { BackButton, qrSvg } from "@merqo/ui";
+import { PageHeader } from "@/components/page-header";
 import { Badge } from "@/components/ui/badge";
 
 type CounterPageProps = {
@@ -63,25 +64,28 @@ export default async function CounterPage({ searchParams }: CounterPageProps) {
     <div className="mx-auto max-w-4xl space-y-6">
       <BackButton href="/dashboard" label="Back to dashboard" />
 
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-lg font-bold tracking-tight">{program.name}</h1>
-            <Badge variant={badge.variant}>{badge.label}</Badge>
-          </div>
-          <p className="mt-1 text-sm text-muted-foreground">
-            {describeProgram(program)}
-          </p>
-        </div>
-        <ProgramSwitcher
-          programs={activePrograms.map((prog) => ({
-            id: prog.id,
-            name: prog.name,
-          }))}
-          currentId={program.id}
-          basePath="/dashboard/counter"
-        />
-      </div>
+      <PageHeader
+        eyebrow="Daily work"
+        title="Counter"
+        className="mb-0"
+        action={
+          <ProgramSwitcher
+            programs={activePrograms.map((prog) => ({
+              id: prog.id,
+              name: prog.name,
+            }))}
+            currentId={program.id}
+            basePath="/dashboard/counter"
+          />
+        }
+      >
+        <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
+          <span>
+            {program.name} · {describeProgram(program)}
+          </span>
+          <Badge variant={badge.variant}>{badge.label}</Badge>
+        </span>
+      </PageHeader>
 
       <RememberProgram id={program.id} />
 

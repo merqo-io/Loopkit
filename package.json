@@ -4,7 +4,7 @@
   "private": true,
   "packageManager": "pnpm@11.10.0",
   "engines": {
-    "node": "24.x",
+    "node": ">=24.22.1",
     "pnpm": ">=11"
   },
   "scripts": {
@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "5.2.2",
-    "@merqo/ui": "github:merqo-io/merqo-ui#v0.39.0",
+    "@merqo/ui": "github:merqo-io/merqo-ui#e641d602cd1f4e4a1e7a4d6fd463ba26661de9ad",
     "@supabase/ssr": "^0.10.3",
     "@supabase/supabase-js": "2.110.0",
     "@zxing/browser": "^0.2.1",

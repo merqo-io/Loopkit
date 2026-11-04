@@ -1,6 +1,8 @@
 import { CustomerSearchToolbar } from "./customer-search-toolbar";
 import Link from "next/link";
 import { ElevatedCard } from "@merqo/ui";
+import { PageHeader } from "@/components/page-header";
+import { EmptyState } from "@/components/empty-state";
 import { listCards } from "@/lib/cards";
 import { getVendorOverviewInputs } from "@/lib/stats";
 import {
@@ -54,12 +56,13 @@ export async function OverviewCohortList({
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">{titles[cohort]}</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          {matches.length} matching cards across the selected programs.
-        </p>
-      </div>
+      <PageHeader
+        eyebrow="Your regulars"
+        title={titles[cohort]}
+        className="mb-0"
+      >
+        {matches.length} matching cards across the selected programs.
+      </PageHeader>
       <CustomerSearchToolbar
         programs={programs}
         currentId={p ?? ""}
@@ -67,7 +70,19 @@ export async function OverviewCohortList({
         cohort={cohort}
       />
       {matches.length === 0 ? (
-        <p className="text-sm text-muted-foreground">No matching cards.</p>
+        <EmptyState
+          title="No matching cards yet."
+          actions={
+            <Link
+              href="/dashboard/customers"
+              className="rounded-lg border bg-card px-4 py-2 text-sm font-semibold hover:bg-muted"
+            >
+              See all customers
+            </Link>
+          }
+        >
+          Cards show up here as customers reach this point.
+        </EmptyState>
       ) : (
         <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           {matches.map(({ program, card }) => (

@@ -11,6 +11,7 @@ being found duplicated across 2+ sibling kits) rather than living here.
 
 ## Contents
 
+- `page-header.tsx` / `empty-state.tsx` (+ `.dom.test.tsx`) — `PageHeader` (eyebrow, single h1, muted line, action slot) and `EmptyState` (dashed card, headline, one sentence, up to two actions): the shared page chrome for the dashboard and admin pages.
 - `card-burst.dom.test.tsx` — jsdom tests: `CardBurst` renders nothing when inactive; renders 40 absolutely (not fixed) positioned particles when active
 - `card-burst.tsx` — `CardBurst`: client component rendering a container-relative fireworks-style particle burst (40 randomized-size pieces, mixed square/circle shapes, wider spread), used inside `RewardCelebration`
 - `card-shell.dom.test.tsx` — jsdom tests: `CardShell` renders children, tilts on `pointermove`, resets to flat on `pointerleave`, skips the tilt entirely under `prefers-reduced-motion`

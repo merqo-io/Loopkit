@@ -2,7 +2,11 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { DashboardNav as SharedDashboardNav, getSwitchKits } from "@merqo/ui";
+import {
+  DashboardNav as SharedDashboardNav,
+  getSwitchKits,
+  tierLabel,
+} from "@merqo/ui";
 import { Wordmark } from "@/components/landing/wordmark";
 import { cn } from "@/lib/utils";
 import { submitFeedbackAction } from "@/app/actions/feedback";
@@ -29,20 +33,14 @@ function tourAnchor(href: string): string {
   return `nav-${href === "/dashboard" ? "dashboard" : href.split("/").pop()}`;
 }
 
-const TIER_BADGE: Record<Tier, { label: string; className: string }> = {
-  free: {
-    label: "Free",
-    className: "bg-gold/10 text-gold-accent ring-gold/40",
-  },
-  pro: {
-    label: "Pro",
-    className:
-      "bg-emerald-500/15 text-emerald-700 ring-emerald-500/30 dark:bg-emerald-400/15 dark:text-emerald-400 dark:ring-emerald-400/30",
-  },
+const TIER_BADGE_CLASS: Record<Tier, string> = {
+  free: "bg-gold/10 text-gold-accent ring-gold/40",
+  pro: "bg-emerald-500/15 text-emerald-700 ring-emerald-500/30 dark:bg-emerald-400/15 dark:text-emerald-400 dark:ring-emerald-400/30",
 };
 
 function TierBadge({ tier }: { tier: Tier }) {
-  const { label, className } = TIER_BADGE[tier];
+  const className = TIER_BADGE_CLASS[tier];
+  const label = tierLabel(tier);
   return (
     <span
       className={cn(
