@@ -245,6 +245,8 @@ through `StatusBadge` (gold-tinted `active` keeps the reward motif). v0.31.1 fix
 filename yielded the whole name as its extension. Which kit uses which
 shared export is tracked in `../merqo-ui/docs/usage-matrix.md`.
 
+Bumped `@merqo/ui` to v0.39.0: `/dashboard/plan` now fetches merqo's plan catalog (`/api/plans`) server-side and renders the shared `PricingLadder` instead of a local feature table; loopkit stores no plan prices and shows a calm fallback line when the catalog is unavailable.
+
 ## Stack
 
 Next.js 16.3.4 · App Router · Turbopack · TypeScript strict · Tailwind v4 ·

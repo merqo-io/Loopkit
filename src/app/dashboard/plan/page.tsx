@@ -1,16 +1,10 @@
 import { Sparkles } from "lucide-react";
-import { PlanComparisonTable, ElevatedCard } from "@merqo/ui";
+import { ElevatedCard, PricingLadder, fetchPlanCatalog } from "@merqo/ui";
 import { requireVendor } from "@/features/auth";
 import { isPro, listPrograms, currentProgram } from "@/lib/program";
+import { merqoBaseUrl } from "@/lib/legal-gate";
 import { getProgramStats } from "@/lib/stats";
 import { Badge } from "@/components/ui/badge";
-
-const FEATURES = [
-  { label: "Loyalty programs", free: "1", pro: "∞" },
-  { label: "Loyalty card templates", free: true, pro: true },
-  { label: "Change card type", free: true, pro: true },
-  { label: "Stats dashboard", free: true, pro: true },
-] as const;
 
 export default async function PlanPage({
   searchParams,
@@ -18,7 +12,11 @@ export default async function PlanPage({
   searchParams: Promise<{ p?: string }>;
 }) {
   await requireVendor();
-  const [pro, programs] = await Promise.all([isPro(), listPrograms()]);
+  const [pro, programs, catalog] = await Promise.all([
+    isPro(),
+    listPrograms(),
+    fetchPlanCatalog(merqoBaseUrl()),
+  ]);
   const { p } = await searchParams;
   const program = currentProgram(programs, p);
   const stats = program ? await getProgramStats(program.id) : null;
@@ -70,16 +68,17 @@ export default async function PlanPage({
         Change plan from your Merqo account.
       </ElevatedCard>
 
-      <PlanComparisonTable
-        tiers={[
-          { key: "free", label: "Free" },
-          { key: "pro", label: "Pro" },
-        ]}
-        rows={FEATURES.map((f) => ({
-          label: f.label,
-          values: { free: f.free, pro: f.pro },
-        }))}
-      />
+      {catalog ? (
+        <PricingLadder
+          catalog={catalog}
+          highlight="all_access"
+          showEventPass={false}
+        />
+      ) : (
+        <p className="text-sm text-muted-foreground">
+          Prices are unavailable right now. Check back later.
+        </p>
+      )}
     </div>
   );
 }
