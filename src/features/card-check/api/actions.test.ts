@@ -798,7 +798,7 @@ describe("customer card presentation and expired-cycle behavior", () => {
       ),
     ).toEqual({
       status: "none",
-      message: "We couldn't find any rewards here.",
+      message: "We could not find any rewards here.",
     });
   });
   it.each([

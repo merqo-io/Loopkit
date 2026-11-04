@@ -9,6 +9,17 @@ import { BirthdayField } from "./birthday-field";
 import { MarketingConsentToggle } from "./marketing-consent-toggle";
 import { EraseData } from "./erase-data";
 import { MarketingOptIn } from "@/components/marketing-opt-in";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -103,16 +114,34 @@ export function CheckForm({
             </p>
           </div>
           <MarketingOptIn id="card-check-marketing" shopName={shopName} />
-          <Button
-            type="button"
-            variant="outline"
-            disabled={pending || switching}
-            onClick={switchCustomer}
-          >
-            {switching
-              ? "Forgetting saved card…"
-              : "Forget saved card on this browser"}
-          </Button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button
+                type="button"
+                variant="outline"
+                disabled={pending || switching}
+              >
+                {switching
+                  ? "Forgetting saved card…"
+                  : "Forget saved card on this browser"}
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Forget this card?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This browser will stop showing your saved card. You will need
+                  your card code to see it again.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Keep card</AlertDialogCancel>
+                <AlertDialogAction onClick={switchCustomer}>
+                  Forget card
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
           {switchMessage && (
             <p role="status" className="text-sm text-muted-foreground">
               {switchMessage}
@@ -137,7 +166,7 @@ export function CheckForm({
             onClick={() => setEditingRequested(true)}
             className="shrink-0 text-xs font-semibold text-primary underline-offset-4 hover:underline"
           >
-            Not you?
+            Not you? Change number
           </button>
         </div>
       )}

@@ -36,6 +36,8 @@ test.describe("public flows without a valid link", () => {
     page,
   }) => {
     await page.goto("/earn");
-    await expect(page.getByText("Missing order reference.")).toBeVisible();
+    await expect(
+      page.getByText("This link is incomplete. Ask the shop for a new one."),
+    ).toBeVisible();
   });
 });

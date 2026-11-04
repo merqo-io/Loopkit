@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { EarnForm } from "./earn-form";
+import { CustomerShell } from "@/components/customer-shell";
 // eslint-disable-next-line no-restricted-imports -- anonymous customer flow; the card or order token is the credential
 import { createServiceClient } from "@/lib/supabase/server";
 import { getShopName } from "@/lib/shop-name";
@@ -24,20 +25,22 @@ export default async function EarnPage({ searchParams }: Props) {
   const { order } = await searchParams;
   if (!order) {
     return (
-      <main className="mx-auto max-w-sm p-6 text-center text-sm text-muted-foreground">
-        Missing order reference.
-      </main>
+      <CustomerShell eyebrow="Stamp card" title="Claim your stamp">
+        <p className="text-sm text-muted-foreground">
+          This link is incomplete. Ask the shop for a new one.
+        </p>
+      </CustomerShell>
     );
   }
 
   const shopName = await earnShopName(order);
   return (
-    <main className="mx-auto max-w-sm p-6">
+    <CustomerShell eyebrow="Stamp card" title="Claim your stamp">
       <EarnForm
         orderId={order}
         vendorName={shopName ?? undefined}
         shopName={shopName}
       />
-    </main>
+    </CustomerShell>
   );
 }

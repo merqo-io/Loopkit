@@ -10,7 +10,7 @@ lives in `@/features/card-check`.
 - `page.tsx` — `CheckPage`: thin route entry that resolves the vendor's
   active programs from the `v` search param via the `vendor_active_programs`
   RPC (public, `SECURITY DEFINER`; an unknown vendor id just returns an
-  empty list), then renders `CheckForm` from `@/features/card-check`, passing
+  empty list), then renders `CheckForm` from `@/features/card-check` inside `CustomerShell` (h1 is the shop name), passing
   through an optional `ref` search param (a host/couple referral link —
   `src/app/dashboard/referrals/`) as `CheckForm`'s `referralCode` prop. When the vendor has active programs it also resolves the shop name (`getShopName`) and passes it to `CheckForm` as `shopName`, which the consent checkbox renders and posts back
 
