@@ -56,7 +56,9 @@ describe("StatsPage", () => {
     expect(screen.getByText("Stats")).toBeInTheDocument();
     expect(screen.getByText("8")).toBeInTheDocument();
     expect(screen.getByText("Last 30 days")).toBeInTheDocument();
-    expect(screen.getByText("Expired unclaimed (30d)")).toBeInTheDocument();
+    expect(screen.getByText("Came back")).toBeInTheDocument();
+    expect(screen.getByText("Rewards expired unclaimed")).toBeInTheDocument();
+    expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
   });
 
   it("renders program-scoped stats tiles when ?p= is set", async () => {
@@ -75,7 +77,10 @@ describe("StatsPage", () => {
     });
     render(await StatsPage({ searchParams: Promise.resolve({}) }));
     expect(
-      screen.getByText(/share your qr from the counter page/i),
+      screen.getByText(/share your qr from the counter/i),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: "Open the Counter" }),
     ).toBeInTheDocument();
   });
 

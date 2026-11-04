@@ -247,6 +247,8 @@ shared export is tracked in `../merqo-ui/docs/usage-matrix.md`.
 
 Bumped `@merqo/ui` to v0.39.0: `/dashboard/plan` now fetches merqo's plan catalog (`/api/plans`) server-side and renders the shared `PricingLadder` instead of a local feature table; loopkit stores no plan prices and shows a calm fallback line when the catalog is unavailable.
 
+Dashboard pages now share a local `PageHeader` and `EmptyState` (`src/components/`), so every screen opens with the same eyebrow, single h1 and action, and every empty list offers a next step.
+
 ## Stack
 
 Next.js 16.3.4 · App Router · Turbopack · TypeScript strict · Tailwind v4 ·

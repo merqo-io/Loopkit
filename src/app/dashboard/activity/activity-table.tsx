@@ -1,7 +1,9 @@
 "use client";
 
 import { Gift, Stamp, Pencil } from "lucide-react";
-import { DataTable, ElevatedCard, type DataTableColumn } from "@merqo/ui";
+import Link from "next/link";
+import { DataTable, type DataTableColumn } from "@merqo/ui";
+import { EmptyState } from "@/components/empty-state";
 import { Badge } from "@/components/ui/badge";
 import { formatSgtDateTime } from "@/lib/format";
 import type { VendorActivityRow } from "@/lib/activity";
@@ -24,17 +26,37 @@ function activityIcon(event: VendorActivityRow) {
 export function ActivityTable({
   activity,
   showProgram,
+  filtered = false,
 }: {
   activity: VendorActivityRow[];
   showProgram: boolean;
+  filtered?: boolean;
 }) {
   if (activity.length === 0) {
-    return (
-      <ElevatedCard className="p-6">
-        <p className="text-sm text-muted-foreground">
-          No activity matches these filters.
-        </p>
-      </ElevatedCard>
+    const linkClass =
+      "rounded-lg border bg-card px-4 py-2 text-sm font-semibold hover:bg-muted";
+    return filtered ? (
+      <EmptyState
+        title="No matching activity"
+        actions={
+          <Link href="/dashboard/activity" className={linkClass}>
+            Clear filters
+          </Link>
+        }
+      >
+        No activity matches these filters. Clear them to see everything.
+      </EmptyState>
+    ) : (
+      <EmptyState
+        title="No activity yet."
+        actions={
+          <Link href="/dashboard/counter" className={linkClass}>
+            Open the Counter
+          </Link>
+        }
+      >
+        Stamps, plays and redemptions show up here as you serve customers.
+      </EmptyState>
     );
   }
 

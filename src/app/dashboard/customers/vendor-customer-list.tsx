@@ -4,6 +4,8 @@ import { formatSgtDate } from "@/lib/format";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ElevatedCard } from "@merqo/ui";
+import { EmptyState } from "@/components/empty-state";
+
 export function VendorCustomerList({
   customers,
 }: {
@@ -11,9 +13,19 @@ export function VendorCustomerList({
 }) {
   if (customers.length === 0) {
     return (
-      <ElevatedCard className="p-6">
-        <p className="text-sm text-muted-foreground">No customers yet.</p>
-      </ElevatedCard>
+      <EmptyState
+        title="No customers yet."
+        actions={
+          <Link
+            href="/dashboard/counter"
+            className="rounded-lg border bg-card px-4 py-2 text-sm font-semibold hover:bg-muted"
+          >
+            Open the Counter
+          </Link>
+        }
+      >
+        Customers appear here once they join with your QR code.
+      </EmptyState>
     );
   }
 

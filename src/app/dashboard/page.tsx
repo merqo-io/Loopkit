@@ -27,7 +27,9 @@ import { WorthALook } from "@/app/dashboard/overview/worth-a-look";
 import { RecentActivity } from "@/app/dashboard/overview/recent-activity";
 import { RewardCostPanel } from "@/app/dashboard/overview/reward-cost-panel";
 import { YourPrograms } from "@/app/dashboard/overview/your-programs";
-import { ElevatedCard } from "@merqo/ui";
+import Link from "next/link";
+import { PageHeader } from "@/components/page-header";
+import { EmptyState } from "@/components/empty-state";
 
 export default async function DashboardPage() {
   await requireVendor();
@@ -100,36 +102,40 @@ export default async function DashboardPage() {
     : model.greeting;
 
   const head = (
-    <div
+    <PageHeader
       data-tour="shop-qr"
-      className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between"
+      className="mb-0"
+      eyebrow="Today"
+      title={heading}
+      action={
+        <ServeCta
+          defaultProgramId={model.serveDefaultProgramId}
+          programIds={programIds}
+        />
+      }
     >
-      <div>
-        <h1 className="font-display text-2xl font-semibold tracking-tight">
-          {heading}
-        </h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          {vendorName ? `${vendorName} · ` : ""}
-          {formatSgtDate(new Date(nowMs).toISOString())}
-        </p>
-      </div>
-      <ServeCta
-        defaultProgramId={model.serveDefaultProgramId}
-        programIds={programIds}
-      />
-    </div>
+      {vendorName ? `${vendorName} · ` : ""}
+      {formatSgtDate(new Date(nowMs).toISOString())}
+    </PageHeader>
   );
 
   if (stats.enrolled === 0) {
     return (
       <div className="mx-auto flex max-w-[46rem] flex-col gap-6">
         {head}
-        <ElevatedCard className="p-6">
-          <p className="text-sm text-muted-foreground">
-            No customers yet. Share your join QR from the Counter to start
-            enrolling.
-          </p>
-        </ElevatedCard>
+        <EmptyState
+          title="No customers yet."
+          actions={
+            <Link
+              href={`/dashboard/counter?p=${model.serveDefaultProgramId}`}
+              className="rounded-lg border bg-card px-4 py-2 text-sm font-semibold hover:bg-muted"
+            >
+              Open the Counter
+            </Link>
+          }
+        >
+          Share your join QR from the Counter to start enrolling.
+        </EmptyState>
       </div>
     );
   }

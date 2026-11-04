@@ -7,6 +7,7 @@ figure/badge helpers used by the overview, programs, and vendors screens.
 
 ## Contents
 
+- `admin-page-header.tsx` — `AdminPageHeader`: the admin pages' title row, a thin wrapper over the shared `@/components/page-header` `PageHeader` (eyebrow "Internal").
 - `actions.ts`: Server Actions (all admin-only via `requireAdmin()`): `setProgramActive`, `removeCard`, each writing via the service-role client and appending an `admin_audit` row via `recordAudit` (`@/lib/admin-audit`, shared with `vendor-provision/route.ts`).
 - `activity/` — `AdminActivityPage`: read-only viewer over `admin_audit` (`listAdminAudit`, `@/lib/admin-data`), rendered via `@merqo/ui`'s `AuditLogTable` with a `formatAction` map for the real action strings `actions.ts`/`vendor-provision/route.ts` write, and the `detail.actor === "merqo_system"` sentinel surfaced as "Merqo (system)" instead of a raw vendor id.
 - `admin-nav.tsx` — `AdminNav` client component: the Overview/Programs/Vendors/Activity tab bar, highlighting the active section by path.

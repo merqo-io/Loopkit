@@ -87,7 +87,11 @@ describe("CounterPage", () => {
     expect(
       screen.getByRole("link", { name: /back to dashboard/i }),
     ).toHaveAttribute("href", "/dashboard");
-    expect(screen.getByText("Coffee Stamps")).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { level: 1, name: "Counter" }),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/^Coffee Stamps ·/)).toBeInTheDocument();
+    expect(screen.getByText("Stamp")).toBeInTheDocument();
     const serve = screen.getByTestId("serve-customer");
     expect(serve).toHaveAttribute("data-program", "p1");
     expect(serve).toHaveAttribute("data-qr", "<svg id='qr'></svg>");
