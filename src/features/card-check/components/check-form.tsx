@@ -119,7 +119,12 @@ export function CheckForm({
               <Button
                 type="button"
                 variant="outline"
-                disabled={pending || switching}
+                aria-disabled={pending || switching}
+                // Stays focusable (not `disabled`) because the dialog returns
+                // focus here after "Forget card" while `switching` is true.
+                onClick={(e) => {
+                  if (pending || switching) e.preventDefault();
+                }}
               >
                 {switching
                   ? "Forgetting saved card…"

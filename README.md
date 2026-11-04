@@ -507,6 +507,8 @@ as a browser would, independent of that structure. `.claude/` and
 `.github/` are the enforcement layer around all of the above — they gate
 what can be committed/merged but contain no application logic themselves.
 
+Customer pages `/c` and `/earn` share `CustomerShell` (`src/components/customer-shell.tsx`); see `CHANGELOG.md`.
+
 ## October 2026 audit status
 
 Prepared migration `0048` restricts internal reward writes, validates Qkit earn claims, and creates vouchers for earned stamp thresholds while preserving birthday bonuses. It is not applied to production; see [the audit evidence](docs/loopkit-audit-2026-10-08.md) for source coverage and disposable database CI validation.

@@ -68,6 +68,29 @@ describe("CheckForm", () => {
     );
   });
 
+  it("does not open the confirmation while a forget is in flight", async () => {
+    let resolve!: (v: { success: true }) => void;
+    forgetProofMock.mockReturnValueOnce(
+      new Promise((r) => {
+        resolve = r;
+      }),
+    );
+    const user = userEvent.setup();
+    render(<CheckForm shopName="Kaya" vendorId="v1" />);
+    await user.click(
+      screen.getByRole("button", { name: "Forget saved card on this browser" }),
+    );
+    await user.click(screen.getByRole("button", { name: "Forget card" }));
+    const trigger = await screen.findByRole("button", {
+      name: "Forgetting saved card…",
+    });
+    expect(trigger).toHaveAttribute("aria-disabled", "true");
+    await user.click(trigger);
+    expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();
+    resolve({ success: true });
+    expect(await screen.findByRole("status")).toBeInTheDocument();
+  });
+
   it("keeps the saved card when the forget confirmation is cancelled", async () => {
     const user = userEvent.setup();
     render(<CheckForm shopName="Kaya" vendorId="v1" />);
