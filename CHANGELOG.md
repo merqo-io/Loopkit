@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
+- `/dashboard/plan` renders the shared `PricingLadder` from merqo's `/api/plans` catalog (server-side fetch, calm fallback line when unavailable); `@merqo/ui` bumped to v0.39.0. loopkit stores no plan prices, and the local feature table and its `--color-status-ready` override are gone.
 - `POST /api/merqo/entitlement` receives merqo's pushed subscription entitlement (bearer `MERQO_PROVISION_SECRET`) and stores it in the new `loopkit.vendor_entitlements` cache. Pushes older than the stored `issued_at` are ignored. Migrations `0066` to `0070`.
 
 ### Removed
