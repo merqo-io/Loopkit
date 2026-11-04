@@ -122,7 +122,9 @@ describe("createReferralHostAction", () => {
         qr: "<svg></svg>",
       },
     });
-    expect(revalidatePathMock).toHaveBeenCalledWith("/dashboard/referrals");
+    expect(revalidatePathMock).toHaveBeenCalledWith(
+      "/dashboard/customers/referrals",
+    );
   });
 
   it("defaults an empty label to null", async () => {

@@ -34,6 +34,7 @@ Vendor console root: the Overview (a daily briefing: regulars and cadence, self-
 - `program-display.ts` — exports `PROGRAM_TYPE_BADGE` map and `describeProgram()` (one-line reward-mechanic blurb per program type); used by `counter/page.tsx` for the program header
 - `program-switcher.dom.test.tsx` — jsdom tests for `ProgramSwitcher`: renders "All programs" plus each program, preserves other URL params, hides itself with only one program
 - `program-switcher.tsx` — client `ProgramSwitcher`: same-page Select control that switches the `p` query param across Stats/Activity/Customers/Counter views, preserving other params; accepts optional `triggerId`/`triggerClassName` to render as a bare standalone control (Customers, Stats — the default) or as one field among others sharing a card's border/background (Activity, via `ActivityFilters`)
+- `redirects.test.ts` — tests that the moved `settings/` and `referrals/` routes redirect
 - `referrals/`
 - `points-offset-form.dom.test.tsx` — jsdom tests for `PointsOffsetForm`: input defaults to the card's full balance and Apply calls through, Apply disables once the entered amount exceeds the card's balance
 - `points-offset-form.tsx` — client `PointsOffsetForm`: a small inline apply-points form (not an AlertDialog like `redeem-button.tsx`/`redeem-voucher/`'s confirm screen, since there's a number to pick here) — calls `applyPointsOffsetAction` and reports the updated card plus the dollar figure back to the caller for the vendor to apply manually at their own register

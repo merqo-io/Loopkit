@@ -24,6 +24,7 @@ import { EmptyState } from "@/components/empty-state";
 
 import { VendorCustomerList } from "./vendor-customer-list";
 import { CustomerControls } from "./customer-controls";
+import { CustomersTabs } from "./customers-tabs";
 import { OverviewCohortList } from "./overview-cohort";
 import { parseOverviewCohort } from "@/lib/overview-cohorts";
 
@@ -86,6 +87,7 @@ export default async function CustomersPage({
         <PageHeader eyebrow="Your regulars" title="Customers" className="mb-0">
           Everyone who has a card at your shop, across every program.
         </PageHeader>
+        <CustomersTabs current="customers" />
         <CustomerSearchToolbar programs={programs} currentId="" query={q} />
         <div className="flex flex-wrap items-center gap-2">
           {CUSTOMER_SEGMENTS.map((value) => (
@@ -123,6 +125,7 @@ export default async function CustomersPage({
       <PageHeader eyebrow="Your regulars" title="Customers" className="mb-0">
         Everyone who has a {program.name} card.
       </PageHeader>
+      <CustomersTabs current="customers" />
 
       <CustomerSearchToolbar
         programs={programs}
