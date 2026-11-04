@@ -4,8 +4,8 @@ Shared UI is pinned to audited commit `989d934c1cc8d957ff383934debf8ef083b6b6a4`
 
 Digital stamp-card loyalty for SG small vendors. A Merqo kit — owns the
 `loopkit` schema in the shared Merqo Supabase project, reports metrics to
-merqo over HTTP. Browser-tab title follows the cross-kit "Name | Tagline"
-Title Case convention: "Loopkit | Loyalty Cards". Display font is Fraunces
+merqo over HTTP. Browser-tab title is "loopkit | Loyalty cards", and
+pages with their own title use a `title.template` of "loopkit | %s". Display font is Fraunces
 (`src/app/layout.tsx`), the shared family face every Merqo kit now uses —
 see `docs/business/2026-08-13-typography-family-standard.md` in the
 workspace root for why. The landing page's
@@ -205,8 +205,8 @@ primary copy to one short line, pushing rationale/edge-case detail into a
 shared tap-to-open `(i)` info tooltip (`@merqo/ui`'s `InfoTooltip`).
 The login form (`src/features/auth/components/login-form.tsx`) runs on
 React Hook Form + Zod (a `loginSchema` in `src/lib/schemas.ts`) with a
-`zodResolver`, surfacing auth/server errors via sonner toasts rather than
-an inline alert paragraph; its post-navigation success branches `await`
+`zodResolver`, surfacing auth/server errors as inline `role="alert"`
+messages with generic copy (the raw error is logged); its post-navigation success branches `await`
 `navigatingAway()` (`src/hooks/use-async-action.ts`) so the submit button
 doesn't visibly re-enable mid-transition to `/dashboard`. Google OAuth
 sign-in forces the consent screen to English (`hl=en`), matching the

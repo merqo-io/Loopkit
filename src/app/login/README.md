@@ -9,7 +9,8 @@ Vendor sign-in/sign-up route entry — the actual UI lives in
 
 - `page.tsx` — `LoginPage`: thin route entry that wraps `LoginForm` (from
   `@/features/auth`) in a `Suspense` boundary, needed because the form reads
-  `useSearchParams()` (`?mode=signup`)
+  `useSearchParams()` (`?mode=signup`); exports `metadata` with the page
+  title "Sign in", which the root `title.template` prefixes with "loopkit |"
 
 ## Parent
 

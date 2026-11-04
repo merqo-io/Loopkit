@@ -11,7 +11,8 @@ terms/privacy versions are behind `@merqo/ui`'s `LEGAL_VERSIONS`.
 - `page.tsx` — `LegalAcceptPage`. Reads the `next` search param (through
   `safeRedirectPath` from `@merqo/ui`) and renders the client form.
   Deliberately runs **no** legal-gate check itself — it is what the gate
-  redirects to, so gating it would loop.
+  redirects to, so gating it would loop. Exports `metadata` with the page
+  title "Review updated terms".
 - `page.dom.test.tsx` — jsdom tests asserting the heading renders and that a
   safe `next` param passes through to `AcceptForm` unchanged while an
   unsafe/missing one falls back to `/dashboard`.
