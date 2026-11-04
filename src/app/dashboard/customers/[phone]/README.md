@@ -10,6 +10,7 @@ reason, and their full activity history in one place.
 
 ## Contents
 
+- The `page.tsx` header is the shared `PageHeader` (eyebrow "Customer").
 - `page.tsx` — `CustomerDetailPage`: resolves the `[phone]` route param
   (URL-decoded, then re-validated through `normalizePhone` — `notFound()`
   on anything malformed), loads `getCustomerDetail` (`@/lib/customers`) and

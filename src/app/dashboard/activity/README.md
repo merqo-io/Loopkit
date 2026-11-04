@@ -6,6 +6,7 @@ Vendor-facing activity feed at `/dashboard/activity` — a paginated, filterable
 
 ## Contents
 
+- `page.tsx` and `activity-table.tsx` use the shared `PageHeader` (eyebrow "History") and `EmptyState` (with a Clear filters link) from `@/components`.
 - `activity-filters.dom.test.tsx` — jsdom tests for `ActivityFilters`: renders the type/from/to fields and an Apply filters button, shows a Clear filters link and preserves the program id when a filter is active, renders the Program field as one of the card's fields for a multi-program vendor, and omits it entirely for a single-program vendor.
 - `activity-filters.tsx` — `ActivityFilters`, a GET `<form>` with Program/type/from/to controls (`ProgramSwitcher` rendered as this card's first field, styled to match its siblings via `triggerClassName`, hidden for a single-program vendor — then a type select, two date inputs, Apply/Clear) that resubmits the page with query params. Previously `ProgramSwitcher` rendered as a separate, differently-styled control (no label, no shared card border/shadow) next to this form; folding it in as a field fixes that visual mismatch.
 - `activity-page.dom.test.tsx` — jsdom test asserting `ActivityTable` shows phone/program badge with `showProgram`, hides the Program column when `showProgram` is false, and renders an empty state with zero rows.
