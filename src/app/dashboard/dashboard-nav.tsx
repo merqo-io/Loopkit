@@ -30,7 +30,7 @@ function isActive(path: string, href: string): boolean {
 
 /** Stable anchor id for the onboarding tour, e.g. "/dashboard/customers" → "nav-customers". */
 function tourAnchor(href: string): string {
-  return `nav-${href === "/dashboard" ? "dashboard" : href.split("/").pop()}`;
+  return `nav-${href.split("/").pop()}`;
 }
 
 const TIER_BADGE_CLASS: Record<Tier, string> = {
@@ -98,9 +98,7 @@ export function DashboardNav({
         </a>
       }
       navLinks={LINKS}
-      isActiveHref={(href) =>
-        href === "/dashboard" ? path === "/dashboard" : isActive(path, href)
-      }
+      isActiveHref={(href) => isActive(path, href)}
       tourAnchor={tourAnchor}
       vendor={{
         name: label,

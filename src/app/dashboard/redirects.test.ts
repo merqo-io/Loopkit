@@ -17,7 +17,7 @@ describe("moved dashboard routes", () => {
     );
   });
 
-  it("sends /dashboard/referrals to the Referrals tab under Customers", () => {
+  it("sends /dashboard/referrals to the Referrals page under Customers", () => {
     expect(() => ReferralsRedirectPage()).toThrow(
       "REDIRECT:/dashboard/customers/referrals",
     );

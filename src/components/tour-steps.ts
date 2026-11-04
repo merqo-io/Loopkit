@@ -37,7 +37,7 @@ const DESKTOP: TourStep[] = [
     element: sel("nav-customers"),
     title: "Customers",
     description:
-      "Search a customer by phone number to check their progress, and find your referral links in the Referrals tab.",
+      "Search a customer by phone number to check their progress, and find your referral links in Referrals under Customers.",
   },
   {
     element: sel("nav-activity"),

@@ -4,7 +4,7 @@ import { render, screen } from "@testing-library/react";
 import { CustomersTabs } from "./customers-tabs";
 
 describe("CustomersTabs", () => {
-  it("links Customers and Referrals and marks the current tab", () => {
+  it("links Customers and Referrals and marks the current link", () => {
     render(<CustomersTabs current="referrals" />);
     expect(screen.getByRole("link", { name: "Customers" })).toHaveAttribute(
       "href",

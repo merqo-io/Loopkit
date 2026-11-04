@@ -10,7 +10,7 @@ const TABS = [
   },
 ] as const;
 
-/** Sub-navigation shared by the Customers list and its Referrals tab. */
+/** Sub-navigation shared by the Customers list and its Referrals link. */
 export function CustomersTabs({
   current,
 }: {
