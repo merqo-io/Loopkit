@@ -3,6 +3,10 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
+// Heavy RHF and user-event interactions exceed vitest's 5s default when suites
+// run in parallel under load (e.g. pre-push); they pass alone.
+vi.setConfig({ testTimeout: 20_000 });
+
 const { saveMock } = vi.hoisted(() => ({
   saveMock: vi.fn().mockResolvedValue({}),
 }));
