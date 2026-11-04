@@ -27,7 +27,7 @@ describe("PageHeader", () => {
     const { container } = render(
       <PageHeader eyebrow="History" title="Activity" data-tour="x" />,
     );
-    expect(container.querySelector("h1 + p")).toBeNull();
+    expect(container.querySelector("h1 + div")).toBeNull();
     expect(container.querySelector("header")).toHaveAttribute("data-tour", "x");
   });
 });

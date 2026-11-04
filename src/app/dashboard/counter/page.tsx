@@ -19,6 +19,7 @@ import { ServeCustomer } from "@/app/dashboard/serve-customer";
 import { ProgramSwitcher } from "@/app/dashboard/program-switcher";
 import { BackButton, qrSvg } from "@merqo/ui";
 import { PageHeader } from "@/components/page-header";
+import { Badge } from "@/components/ui/badge";
 
 type CounterPageProps = {
   searchParams: Promise<{ p?: string; phone?: string }>;
@@ -78,7 +79,12 @@ export default async function CounterPage({ searchParams }: CounterPageProps) {
           />
         }
       >
-        {program.name} · {describeProgram(program)} · {badge.label}
+        <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
+          <span>
+            {program.name} · {describeProgram(program)}
+          </span>
+          <Badge variant={badge.variant}>{badge.label}</Badge>
+        </span>
       </PageHeader>
 
       <RememberProgram id={program.id} />

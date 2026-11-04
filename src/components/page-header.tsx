@@ -37,7 +37,7 @@ export function PageHeader({
           {title}
         </h1>
         {children && (
-          <p className="mt-2 text-sm text-muted-foreground">{children}</p>
+          <div className="mt-2 text-sm text-muted-foreground">{children}</div>
         )}
       </div>
       {action}

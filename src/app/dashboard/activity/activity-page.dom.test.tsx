@@ -60,11 +60,25 @@ describe("ActivityTable", () => {
     expect(screen.queryByText("Coffee Stamps")).not.toBeInTheDocument();
   });
 
-  it("shows an empty state with zero activity", () => {
-    render(<ActivityTable activity={[]} showProgram />);
+  it("offers a Clear filters link when a filter hides every row", () => {
+    render(<ActivityTable activity={[]} showProgram filtered />);
+    expect(screen.getByText("No matching activity")).toBeInTheDocument();
     expect(
       screen.getByText(/no activity matches these filters/i),
     ).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Clear filters" })).toHaveAttribute(
+      "href",
+      "/dashboard/activity",
+    );
+  });
+
+  it("points to the Counter when there is no activity at all", () => {
+    render(<ActivityTable activity={[]} showProgram />);
+    expect(screen.getByText("No activity yet.")).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: "Open the Counter" }),
+    ).toHaveAttribute("href", "/dashboard/counter");
+    expect(screen.queryByText(/matches these filters/i)).toBeNull();
   });
 
   it("shows a manual adjustment's label and reason distinctly", () => {
@@ -97,9 +111,7 @@ describe("ActivityPage", () => {
       screen.getByRole("heading", { name: "Activity" }),
     ).toBeInTheDocument();
     expect(screen.getByText(/across every program/i)).toBeInTheDocument();
-    expect(
-      screen.getByText(/no activity matches these filters/i),
-    ).toBeInTheDocument();
+    expect(screen.getByText("No activity yet.")).toBeInTheDocument();
   });
 
   it("renders the program-scoped view and its activity table when ?p= is set", async () => {

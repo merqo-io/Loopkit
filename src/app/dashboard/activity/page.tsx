@@ -37,6 +37,10 @@ function onlyProgramRedirectHref(
   return `${basePath}?${params.toString()}`;
 }
 
+function hasActiveFilter(...values: (string | undefined)[]): boolean {
+  return values.some(Boolean);
+}
+
 function paginationHref(
   basePath: string,
   current: Record<string, string | undefined>,
@@ -143,7 +147,11 @@ export default async function ActivityPage({
         from={from}
         to={to}
       />
-      <ActivityTable activity={rows} showProgram={!program} />
+      <ActivityTable
+        activity={rows}
+        showProgram={!program}
+        filtered={hasActiveFilter(type, from, to)}
+      />
       <PaginationNav
         basePath={basePath}
         params={paginationParams}

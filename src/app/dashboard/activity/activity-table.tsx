@@ -26,24 +26,36 @@ function activityIcon(event: VendorActivityRow) {
 export function ActivityTable({
   activity,
   showProgram,
+  filtered = false,
 }: {
   activity: VendorActivityRow[];
   showProgram: boolean;
+  filtered?: boolean;
 }) {
   if (activity.length === 0) {
-    return (
+    const linkClass =
+      "rounded-lg border bg-card px-4 py-2 text-sm font-semibold hover:bg-muted";
+    return filtered ? (
       <EmptyState
-        title="No activity yet."
+        title="No matching activity"
         actions={
-          <Link
-            href="/dashboard/activity"
-            className="rounded-lg border bg-card px-4 py-2 text-sm font-semibold hover:bg-muted"
-          >
+          <Link href="/dashboard/activity" className={linkClass}>
             Clear filters
           </Link>
         }
       >
         No activity matches these filters. Clear them to see everything.
+      </EmptyState>
+    ) : (
+      <EmptyState
+        title="No activity yet."
+        actions={
+          <Link href="/dashboard/counter" className={linkClass}>
+            Open the Counter
+          </Link>
+        }
+      >
+        Stamps, plays and redemptions show up here as you serve customers.
       </EmptyState>
     );
   }
