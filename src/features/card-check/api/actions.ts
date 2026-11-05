@@ -163,7 +163,7 @@ async function checkStatusActionImpl(
   const payload = parsedPayload.data;
   const rows = payload.cards as VendorJoinRow[];
   if (rows.length === 0) {
-    return { status: "none", message: "We couldn't find any rewards here." };
+    return { status: "none", message: "We could not find any rewards here." };
   }
 
   const proofToken = rows[0]!.card_token;

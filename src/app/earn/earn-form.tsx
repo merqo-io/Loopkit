@@ -82,7 +82,7 @@ export function EarnForm({
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="earn-token">Saved card token (if needed)</Label>
+          <Label htmlFor="earn-token">Card code (if needed)</Label>
           <Input
             id="earn-token"
             name="token"
@@ -91,8 +91,8 @@ export function EarnForm({
             maxLength={36}
           />
           <p className="text-xs text-muted-foreground">
-            Existing cards need the saved card on this browser or its token. Ask
-            the shop for help if you have lost it.
+            Existing cards need the saved card on this browser or its card code.
+            Ask the shop for help if you have lost it.
           </p>
         </div>
         <MarketingOptIn id="earn-marketing" shopName={shopName} />

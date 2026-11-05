@@ -6,6 +6,7 @@
 - birthday-field.tsx submits an optional birthday through the proof-checked action.
 - marketing-consent-toggle.tsx is the card-view switch for offers by message. It shows the consent wording, withdraws or opts in through setMarketingConsentAction, and flags a failed save from the join.
 - erase-data.tsx is the two-step "Delete my data at this shop" control. It calls eraseMyDataAction after an explicit confirm and, on success, check-form returns to the join form.
+- check-form.tsx asks for confirmation (AlertDialog: Keep card / Forget card) before forgetting the saved card on this browser, and its summary link reads "Not you? Change number".
 - check-form.tsx also renders the shared unticked MarketingOptIn checkbox on the join form and the toggle once cards are found.
 
 Component tests verify rendering, form payloads, retry states and the expired-cycle reset boundary. Capability cookie and direct SQL authorization regressions live in src/lib/customer-proof.test.ts and supabase/tests/customer-capability.test.sql.

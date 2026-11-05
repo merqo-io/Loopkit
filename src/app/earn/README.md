@@ -8,7 +8,7 @@ Customer-facing stamp claims reached through a completed qkit order link.
 - `actions.test.ts` covers enrollment, saved and manual proof, denied recovery, malformed responses, transport failures, cookie failures and the marketing opt-in.
 - `earn-form.tsx` renders phone, optional name and optional saved card token inputs. Lost cards use vendor-assisted recovery. A `DataCollectionNotice` from `@merqo/ui` states why phone and name are collected and links to `/legal/privacy` (PDPA Notification Obligation; display only, no consent record). An unticked `MarketingOptIn` checkbox carries the exact consent wording. Successful claims show stamp progress and reward copy.
 - `earn-form.dom.test.tsx` covers rendering, submission, progress and visible errors.
-- `page.tsx` reads the order search parameter and renders the form or missing-reference copy. It resolves the shop name (order to vendor via `qkit_earn_vendor`, then `getShopName`) for the greeting and passes it to the form as `shopName` for the consent wording.
+- `page.tsx` reads the order search parameter and renders the form or incomplete-link copy inside `CustomerShell`. It resolves the shop name (order to vendor via `qkit_earn_vendor`, then `getShopName`) for the greeting and passes it to the form as `shopName` for the consent wording.
 
 Migration `0056` closes direct access to the legacy phone-only lookup and commit functions. The guarded SQL wrapper preserves persisted stamp limits and idempotency. Database authorization and conflict regressions are in `supabase/tests/earn-customer-capability.test.sql`; these require a disposable local database.
 

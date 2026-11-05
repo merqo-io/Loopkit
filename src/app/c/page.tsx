@@ -1,4 +1,4 @@
-import { Wordmark } from "@/components/landing/wordmark";
+import { CustomerShell } from "@/components/customer-shell";
 import { createServerClient } from "@/lib/supabase/server";
 import { CheckForm } from "@/features/card-check";
 import { getShopName } from "@/lib/shop-name";
@@ -30,33 +30,31 @@ export default async function CheckPage({ searchParams }: CheckPageProps) {
   const shopName = v && programs.length > 0 ? await getShopName(v) : null;
 
   return (
-    <main className="flex min-h-screen items-center justify-center p-5">
-      <div className="w-full max-w-md">
-        <div className="mb-8 text-center">
-          <Wordmark className="text-3xl" />
-          <h1 className="mt-3 font-display text-2xl font-bold tracking-tight">
-            Loyalty card
-          </h1>
-          <p className="mt-1 text-sm text-muted-foreground">
+    <CustomerShell
+      eyebrow="Loyalty card"
+      title={shopName ?? "Your loyalty card"}
+      description={
+        <>
+          <p>
             {programs.length > 0
               ? `Join: ${programs.map((p) => p.name).join(", ")}`
               : "Check your rewards."}
           </p>
-          <p className="mt-1 text-xs text-muted-foreground">
+          <p className="mt-1 text-xs">
             New here? Enter your phone to join, no app needed.
           </p>
-        </div>
-
-        <div className="rounded-2xl border bg-card px-7 py-9 shadow-sm">
-          {v ? (
-            <CheckForm vendorId={v} referralCode={ref} shopName={shopName} />
-          ) : (
-            <p className="text-sm text-muted-foreground">
-              Ask the shop for their loyalty link.
-            </p>
-          )}
-        </div>
+        </>
+      }
+    >
+      <div className="rounded-2xl border bg-card px-6 py-8 shadow-sm">
+        {v ? (
+          <CheckForm vendorId={v} referralCode={ref} shopName={shopName} />
+        ) : (
+          <p className="text-sm text-muted-foreground">
+            Ask the shop for their loyalty link.
+          </p>
+        )}
       </div>
-    </main>
+    </CustomerShell>
   );
 }

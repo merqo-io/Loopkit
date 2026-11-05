@@ -35,6 +35,7 @@ describe("CheckForm", () => {
     await user.click(
       screen.getByRole("button", { name: "Forget saved card on this browser" }),
     );
+    await user.click(screen.getByRole("button", { name: "Forget card" }));
     expect(forgetProofMock).toHaveBeenCalledWith("v1");
     expect(await screen.findByRole("status")).toHaveTextContent(
       "Saved card forgotten",
@@ -55,11 +56,65 @@ describe("CheckForm", () => {
       name: "Forget saved card on this browser",
     });
     await user.click(button);
+    await user.click(screen.getByRole("button", { name: "Forget card" }));
     expect(await screen.findByRole("status")).toHaveTextContent(
       "Could not forget",
     );
     expect(button).not.toBeDisabled();
     await user.click(button);
+    await user.click(screen.getByRole("button", { name: "Forget card" }));
+    expect(await screen.findByRole("status")).toHaveTextContent(
+      "Saved card forgotten",
+    );
+  });
+
+  it("does not open the confirmation while a forget is in flight", async () => {
+    let resolve!: (v: { success: true }) => void;
+    forgetProofMock.mockReturnValueOnce(
+      new Promise((r) => {
+        resolve = r;
+      }),
+    );
+    const user = userEvent.setup();
+    render(<CheckForm shopName="Kaya" vendorId="v1" />);
+    await user.click(
+      screen.getByRole("button", { name: "Forget saved card on this browser" }),
+    );
+    await user.click(screen.getByRole("button", { name: "Forget card" }));
+    const trigger = await screen.findByRole("button", {
+      name: "Forgetting saved card…",
+    });
+    expect(trigger).toHaveAttribute("aria-disabled", "true");
+    await user.click(trigger);
+    expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();
+    resolve({ success: true });
+    expect(await screen.findByRole("status")).toBeInTheDocument();
+  });
+
+  it("keeps the saved card when the forget confirmation is cancelled", async () => {
+    const user = userEvent.setup();
+    render(<CheckForm shopName="Kaya" vendorId="v1" />);
+    await user.click(
+      screen.getByRole("button", { name: "Forget saved card on this browser" }),
+    );
+    expect(
+      screen.getByRole("alertdialog", { name: "Forget this card?" }),
+    ).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Keep card" }));
+    expect(forgetProofMock).not.toHaveBeenCalled();
+    expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();
+    expect(screen.queryByRole("status")).not.toBeInTheDocument();
+  });
+
+  it("clears the saved card only after the forget confirmation is accepted", async () => {
+    const user = userEvent.setup();
+    render(<CheckForm shopName="Kaya" vendorId="v1" />);
+    await user.click(
+      screen.getByRole("button", { name: "Forget saved card on this browser" }),
+    );
+    expect(forgetProofMock).not.toHaveBeenCalled();
+    await user.click(screen.getByRole("button", { name: "Forget card" }));
+    expect(forgetProofMock).toHaveBeenCalledWith("v1");
     expect(await screen.findByRole("status")).toHaveTextContent(
       "Saved card forgotten",
     );
@@ -139,7 +194,7 @@ describe("CheckForm", () => {
   it("shows a role=alert message when the action finds nothing", async () => {
     checkStatusActionMock.mockResolvedValue({
       status: "none",
-      message: "We couldn't find any rewards here.",
+      message: "We could not find any rewards here.",
     });
     const user = userEvent.setup();
     render(<CheckForm shopName="Kaya" vendorId="v1" />);
@@ -147,7 +202,7 @@ describe("CheckForm", () => {
     await user.click(screen.getByRole("button", { name: "Check my card" }));
 
     expect(await screen.findByRole("alert")).toHaveTextContent(
-      "We couldn't find any rewards here.",
+      "We could not find any rewards here.",
     );
   });
 

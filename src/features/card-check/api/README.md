@@ -14,4 +14,6 @@ Responses are schema validated. Transport and malformed-response failures produc
 
 Service-client imports carry an eslint-disable reason: the card or voucher token is the credential.
 
+User-facing messages say "could not", never "couldn't" (for example, "We could not find any rewards here.").
+
 `syncMarketingConsent` and `readOrGrantMarketingConsent` take a `CardIdentity` (`vendorId`, `phone`, `token`) as their first argument.
