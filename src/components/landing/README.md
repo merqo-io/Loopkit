@@ -12,6 +12,7 @@ landing page.
 - `footer.test.tsx` — also covers `showSignIn={false}` dropping the sign-in link. Asserts the wordmark link, tagline, copyright line, the About link, Terms/Privacy links, and sign-in link all render.
 - `faq.tsx` — `Faq`: eyebrow ("Questions") + `h2` heading, `border-t` section wrapper matching `how-it-works.tsx`'s pattern, above an accordion of `<details>`-based `FaqItem`s (setup, app-free claim, reward redemption, cost via the pilot pricing line), anchored `id="faq"`
 - `hero.tsx` — `Hero`: "In build" readiness badge with its explainer line, headline/subhead, CTA, trust bullets and the `StampCard` illustration; the CTA is "Go to dashboard" when `authed`, else "Join the waitlist" (`WAITLIST_URL`)
+- `hero.test.tsx`: pins the signed-out "In build" badge and the "Join the waitlist" CTA (and its `WAITLIST_URL` href), the same CTA label in the nav, and the swap to the dashboard link when signed in
 - `waitlist.ts` — `WAITLIST_URL` (the merqo waitlist link for loopkit) and `PRICING_LINE`, the only pricing statement allowed on public pages
 - `guardrails.test.tsx` — renders the real landing sections and asserts no `$`, em dash or banned word, the badge, the retired-card and redemption copy of the public card components, the layout description, the exact pricing line and the waitlist href on every signup CTA
 - `how-it-works.tsx` — `HowItWorks`: numbered 3-step explainer (set up card → stamp by phone → they come back), anchored `id="how"`
