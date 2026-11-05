@@ -10,11 +10,11 @@ repo's AGENTS.md these should not be hand-edited outside the shadcn CLI.
 - `alert-dialog.tsx` — Radix `AlertDialog` wrapper (Root/Trigger/Portal/Overlay/Content/Header/Footer/Title/Description/Action/Cancel), used by `RewardCelebration`'s confirmation modal
 - `avatar.tsx` — Radix `Avatar` wrapper: `Avatar`/`AvatarImage`/`AvatarFallback` plus `AvatarBadge`/`AvatarGroup`/`AvatarGroupCount` for stacked-avatar UI, sized via a `size` data-attribute
 - `badge.tsx` — `Badge` (cva variants: default/secondary/gold/destructive/outline/ghost/link), `asChild`-capable via Radix `Slot`
-- `button.tsx` — `Button`/`buttonVariants` (cva: 6 variants × 8 sizes including icon/xs/sm/lg), `asChild`-capable via Radix `Slot`
+- `button.tsx` — `Button`/`buttonVariants` (cva: 6 variants × 8 sizes including icon/xs/sm/lg, 8px radius), `asChild`-capable via Radix `Slot`; on coarse pointers default/sm/icon sizes are at least 44px and `xs` keeps its size with an invisible 44px hit area (rules in `src/app/globals.css`, as are the `.tap-area` utility and the `--text-2xs`/`--text-xs-plus` tokens)
 - `card.tsx` — plain-div `Card` composition: `Card`/`CardHeader`/`CardTitle`/`CardDescription`/`CardAction`/`CardContent`/`CardFooter`
 - `checkbox.tsx`: Radix `Checkbox` wrapper with a check indicator; used by `MarketingOptIn`
 - `dropdown-menu.tsx` — Radix `DropdownMenu` wrapper: full primitive set (Trigger/Content/Group/Item/CheckboxItem/RadioGroup/RadioItem/Label/Separator/Shortcut/Sub/SubTrigger/SubContent)
-- `input.tsx` — `Input`: styled native `<input>` with focus-ring and `aria-invalid` styling
+- `input.tsx` — `Input`: 12px-radius native `<input>` (16px text, 14px from `md`, 44px tall on coarse pointers) with focus-ring and `aria-invalid` styling
 - `label.tsx` — `Label`: Radix `Label` wrapper, disabled-peer/group styling
 - `popover.tsx` — Radix `Popover` wrapper: `Popover`/`PopoverTrigger`/`PopoverContent`/`PopoverAnchor`; used by `color-picker.tsx` (the app's own tap-triggered `InfoTooltip` now comes from `@merqo/ui`, which vendors its own separate Popover primitive)
 - `select.tsx` — Radix `Select` wrapper: `Select`/`SelectGroup`/`SelectValue`/`SelectTrigger`/`SelectContent`/`SelectLabel`/`SelectItem`/`SelectSeparator`/`SelectScrollUpButton`/`SelectScrollDownButton`

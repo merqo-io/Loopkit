@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Changed
 
 - Sign-in, sign-up and password-reset errors now show inline (announced as alerts, with the missing-email case attached to the email field) instead of only as toasts. Browser titles use a `loopkit | <page>` template, and the error, not-found and global-error pages use theme tokens with plainer copy.
+- Shared UI: touch devices get 44px minimum controls and a `.tap-area` utility, inputs are 16px text with a 12px radius, buttons use an 8px radius, `FormCard` is a flat paper surface with a 2px printed bottom edge instead of a blurred shadow, and `text-2xs` / `text-xs-plus` tokens replace ad-hoc 10px and 0.65rem sizes.
 - Internal: the AI harness follows templateCentral 7.2.2. `block-no-verify.sh` judges a strict `&&` chain only by the directories git runs in, `session-context.sh` no longer prints `AGENTS.md`, `engines.node` is `>=24.22.1` with CI pinned to `24.22.1`, and `security.yml` runs the fail-closed `.claude/deps-gate.sh` (expiring suppressions only in `.claude/dep-audit-allow.txt`).
 
 ### Added
