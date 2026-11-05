@@ -18,6 +18,8 @@ The back nav here renders `@merqo/ui`'s `BackButton` with no
 boundary (the interactive `BackButton` is a Client Component), which Next rejects
 at render. `BackButton` falls back to a plain `<a>`.
 
+- `loading.tsx` — `RedeemVoucherLoading`, a static skeleton (`role="status"`, `aria-busy`, sr-only label) mirroring the page layout while the route streams in.
+
 ## Parent
 
 [dashboard](../README.md)

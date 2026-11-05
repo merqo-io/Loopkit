@@ -48,6 +48,7 @@ reason, and their full activity history in one place.
   (migration `0061`).
 - `marketing-consent-panel.dom.test.tsx`, `actions.test.ts`: status copy,
   confirm flow, success/error toasts, phone validation and error mapping.
+- `loading.tsx` — `CustomerDetailLoading`, a static skeleton (`role="status"`, `aria-busy`, sr-only label) mirroring the page layout while the route streams in.
 
 ## Parent
 

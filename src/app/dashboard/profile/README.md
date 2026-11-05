@@ -28,6 +28,8 @@ The avatar upload's resize step now calls `@merqo/ui`'s `resizeToWebp` (v0.31.0)
 
 The avatar save handler deletes the image it orphans: after a successful save, the previous avatar (including on Remove); after a failed save, the fresh upload, which is then referenced nowhere. On a failed save it also restores the previous avatar in state rather than keep showing an image that was never saved.
 
+- `loading.tsx` — `ProfileLoading`, a static skeleton (`role="status"`, `aria-busy`, sr-only label) mirroring the page layout while the route streams in.
+
 ## Parent
 
 [dashboard](../README.md)

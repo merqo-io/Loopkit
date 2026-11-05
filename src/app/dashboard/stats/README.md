@@ -14,6 +14,8 @@ Vendor stats page at `/dashboard/stats` — enrollment, retention, and visit met
 
 `visits-chart.tsx` delegates the 30-day visual to `../visits-bars.tsx`, retaining raw date titles and local axis spacing.
 
+- `loading.tsx` — `StatsLoading`, a static skeleton (`role="status"`, `aria-busy`, sr-only label) mirroring the page layout while the route streams in.
+
 ## Parent
 
 [dashboard](../README.md)

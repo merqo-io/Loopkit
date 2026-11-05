@@ -24,6 +24,8 @@ that takes plain rows as props — same pattern as
 
 `activity-filters.tsx` uses the local `FormCard` for card chrome and retains its native GET fields and filtering behavior.
 
+- `loading.tsx` — `ActivityLoading`, a static skeleton (`role="status"`, `aria-busy`, sr-only label) mirroring the page layout while the route streams in.
+
 ## Parent
 
 [dashboard](../README.md)
