@@ -306,11 +306,9 @@ setup, the env model and the rollout checklist live in merqo's
   request's own host.
 
 Vercel Deployment Protection must be off on this project (it still challenges
-a branch-assigned domain), and the sync workflow needs the repo secret
-`VERCEL_STAGING_DEPLOY_HOOK`: Vercel does not git-deploy a commit it already
-built for production, so the workflow calls the deploy hook instead. The
-`staging` branch also falls under `"**": false` in `vercel.json`, so it
-deploys only through that hook, never from a git push.
+a branch-assigned domain), and `vercel.json` enables git deploys for
+`staging` (every other branch stays off), so each push to `staging` deploys
+automatically.
 
 Load the `loopkit` schema on staging with `scripts/staging-migrate.sh`, after
 merqo's and qkit's, not with `supabase db push`: every kit shares one

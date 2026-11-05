@@ -11,11 +11,10 @@ security scanning.
 - `security.yml` — secret scan (gitleaks, full history) + the fail-closed `.claude/deps-gate.sh` dependency audit (`pnpm audit --prod`, high/critical severity); no CodeQL job, since code scanning requires GitHub Advanced Security which isn't available on this private repo's plan The gitleaks job installs the pinned release binary and checks its SHA-256, because gitleaks-action needs a paid license on organization-owned repos. It scans the PR commits, or the pushed range on `main`.
 
 - `staging-sync.yml`: on push to `main` (or a manual run), fast-forwards the
-  `staging` branch to `main`, then POSTs the project's Vercel deploy hook (repo
-  secret `VERCEL_STAGING_DEPLOY_HOOK`) so `loopkit-staging.merqo.io` runs main's
-  code; Vercel does not git-deploy a commit it already built for production.
+  `staging` branch to `main`, so after a `staging` -> `main` promotion (merge
+  commit) the two stay identical. Vercel deploys `staging` itself on every push.
   Fast-forward only: a diverged `staging` fails the job instead of being
-  overwritten. Without the secret it only warns. The push uses the
+  overwritten. The push uses the
   merqo-staging-sync GitHub App token, because a ruleset limits `staging`
   pushes to that app; the job's own `GITHUB_TOKEN` is read only.
 
