@@ -8,7 +8,8 @@ recovery-session callback — the actual UI lives in `@/features/auth`.
 ## Contents
 
 - `page.tsx` — `ResetPasswordPage`: thin route entry rendering
-  `ResetPasswordForm` (from `@/features/auth`)
+  `ResetPasswordForm` (from `@/features/auth`); exports `metadata` with the
+  page title "Reset password" for the root `title.template`
 
 ## Parent
 

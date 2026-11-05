@@ -10,7 +10,8 @@ The public Terms of Service page.
   `@merqo/ui`'s `<LegalDocument doc="terms" kit="loopkit" />` (the component
   brings its own `mx-auto max-w-3xl` prose container, so there's no local
   layout). The `kit` prop scopes the rendered Annex to loopkit's own
-  schedule only, not every sibling kit's.
+  schedule only, not every sibling kit's. Exports `metadata` with the page
+  title "Terms of service".
 - `page.dom.test.tsx` — jsdom test asserting `TermsPage` renders
   `LegalDocument` with `doc="terms"`.
 

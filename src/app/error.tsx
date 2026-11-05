@@ -22,14 +22,12 @@ export default function RouteError({
   return (
     <div className="mx-auto flex min-h-screen max-w-sm flex-col items-center justify-center gap-4 px-6 text-center">
       <Wordmark className="text-2xl" />
-      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
         Something went wrong
       </p>
-      <h1 className="font-display text-3xl font-semibold">
-        That didn&apos;t load
-      </h1>
+      <h1 className="font-display text-3xl font-semibold">That did not load</h1>
       <p className="text-sm text-muted-foreground">
-        A hiccup on our end, it&apos;s usually a flaky connection. Try again.
+        This is usually a flaky connection. Try again in a moment.
       </p>
       <Button onClick={reset} className="h-11 rounded-xl px-6 font-semibold">
         Try again

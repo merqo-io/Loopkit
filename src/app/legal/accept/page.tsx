@@ -8,6 +8,8 @@ export const revalidate = 0;
 // so gating it the same way is an infinite redirect loop. acceptLegalTerms
 // (actions.ts) re-checks for a signed-in user on submit and sends a
 // signed-out visitor to /login.
+export const metadata = { title: "Review updated terms" };
+
 export default async function LegalAcceptPage({
   searchParams,
 }: {

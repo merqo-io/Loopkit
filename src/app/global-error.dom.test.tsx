@@ -5,19 +5,20 @@ import userEvent from "@testing-library/user-event";
 import GlobalError from "./global-error";
 
 describe("GlobalError", () => {
-  it("renders the heading, message, and a Try again button matching the theme's hex fallbacks", () => {
+  it("renders the heading, message, and a Try again button", () => {
     const reset = vi.fn();
     render(<GlobalError error={new Error("boom")} reset={reset} />);
 
     expect(
-      screen.getByRole("heading", { name: "Something went wrong" }),
+      screen.getByRole("heading", { name: "That did not load" }),
     ).toBeInTheDocument();
     expect(
       screen.getByText(/an unexpected error interrupted the page/i),
     ).toBeInTheDocument();
 
-    const button = screen.getByRole("button", { name: "Try again" });
-    expect(button).toHaveStyle({ background: "#d93f5a" });
+    expect(screen.getByRole("button", { name: "Try again" })).toHaveClass(
+      "bg-primary",
+    );
   });
 
   it("calls reset when Try again is clicked", async () => {

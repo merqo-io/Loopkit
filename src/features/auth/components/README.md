@@ -11,8 +11,8 @@ Client-side auth UI.
   email/password sign-in/sign-up on react-hook-form + `loginSchema`
   (`@/lib/schemas`) with a "check your email" state for signup confirmation
   and password-reset links; auth/server errors (Google OAuth, sign-in/up,
-  forgot-password) surface via sonner toasts, field-validation errors
-  render inline. The wordmark above the card is a home link with a
+  forgot-password) and field-validation errors all render inline
+  (`role="alert"`), with generic copy and the raw error logged. The wordmark above the card is a home link with a
   mode-independent tagline ("Loyalty for Singapore's small vendors."),
   matching qkit's reference login pattern exactly — same two sign-in paths,
   no third. A 2026-07-11 name+phone onboarding option (anonymous Supabase

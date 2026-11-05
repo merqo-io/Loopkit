@@ -69,7 +69,7 @@ describe("ResetPasswordForm", () => {
     await user.click(screen.getByRole("button", { name: "Update password" }));
 
     expect(await screen.findByRole("alert")).toHaveTextContent(
-      "Password too weak",
+      "Could not update your password. Try again.",
     );
     expect(routerPush).not.toHaveBeenCalled();
   });

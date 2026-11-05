@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 
+- Sign-in, sign-up and password-reset errors now show inline (announced as alerts, with the missing-email case attached to the email field) instead of only as toasts. Browser titles use a `loopkit | <page>` template, and the error, not-found and global-error pages use theme tokens with plainer copy.
 - Internal: the AI harness follows templateCentral 7.2.2. `block-no-verify.sh` judges a strict `&&` chain only by the directories git runs in, `session-context.sh` no longer prints `AGENTS.md`, `engines.node` is `>=24.22.1` with CI pinned to `24.22.1`, and `security.yml` runs the fail-closed `.claude/deps-gate.sh` (expiring suppressions only in `.claude/dep-audit-allow.txt`).
 
 ### Added

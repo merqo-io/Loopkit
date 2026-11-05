@@ -2,7 +2,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { toast } from "sonner";
 
 const { routerPush, routerRefresh, searchParamsValue, authMock } = vi.hoisted(
   () => ({
@@ -26,8 +25,6 @@ vi.mock("next/navigation", () => ({
 vi.mock("@/lib/supabase/client", () => ({
   createClient: () => ({ auth: authMock }),
 }));
-
-vi.mock("sonner", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
 
 import { LoginForm } from "./login-form";
 
@@ -75,7 +72,7 @@ describe("LoginForm", () => {
     });
   });
 
-  it("shows a toast when Google sign-in fails to start", async () => {
+  it("shows an inline alert when Google sign-in fails to start", async () => {
     authMock.signInWithOAuth.mockResolvedValue({
       error: { message: "OAuth unavailable" },
     });
@@ -84,8 +81,8 @@ describe("LoginForm", () => {
     await user.click(
       screen.getByRole("button", { name: /Continue with Google/ }),
     );
-    await waitFor(() =>
-      expect(toast.error).toHaveBeenCalledWith("OAuth unavailable"),
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "Could not start Google sign-in. Try again.",
     );
   });
 
@@ -106,7 +103,7 @@ describe("LoginForm", () => {
     expect(routerRefresh).toHaveBeenCalled();
   });
 
-  it("shows a toast when sign-in fails", async () => {
+  it("shows an inline alert when sign-in fails", async () => {
     authMock.signInWithPassword.mockResolvedValue({
       error: { message: "Invalid credentials" },
     });
@@ -116,8 +113,8 @@ describe("LoginForm", () => {
     await user.type(screen.getByLabelText("Password"), "wrong");
     await user.click(screen.getByRole("button", { name: "Sign in" }));
 
-    await waitFor(() =>
-      expect(toast.error).toHaveBeenCalledWith("Invalid credentials"),
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "Could not sign in. Check your email and password and try again.",
     );
     expect(routerPush).not.toHaveBeenCalled();
   });
@@ -175,7 +172,7 @@ describe("LoginForm", () => {
     await waitFor(() => expect(routerPush).toHaveBeenCalledWith("/dashboard"));
   });
 
-  it("shows a toast when signup fails", async () => {
+  it("shows an inline alert when signup fails", async () => {
     authMock.signUp.mockResolvedValue({
       data: { session: null },
       error: { message: "Email already registered" },
@@ -187,8 +184,8 @@ describe("LoginForm", () => {
     await user.type(screen.getByLabelText("Password"), "hunter2");
     await user.click(screen.getByRole("button", { name: "Create account" }));
 
-    await waitFor(() =>
-      expect(toast.error).toHaveBeenCalledWith("Email already registered"),
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "Could not create your account.",
     );
   });
 
@@ -210,14 +207,30 @@ describe("LoginForm", () => {
     expect(screen.getByText(/password reset link/)).toBeInTheDocument();
   });
 
-  it("shows a toast and does not send when Forgot password is clicked with no email", async () => {
+  it("shows an inline email error and does not send when Forgot password is clicked with no email", async () => {
     const user = userEvent.setup();
     render(<LoginForm />);
     await user.click(screen.getByRole("button", { name: "Forgot password?" }));
-    await waitFor(() =>
-      expect(toast.error).toHaveBeenCalledWith("Enter your email first."),
+    const msg = await screen.findByText(/Enter your email above/);
+    expect(msg).toHaveAttribute("id", "email-error");
+    expect(msg).toHaveAttribute("role", "alert");
+    expect(screen.getByLabelText("Email")).toHaveAttribute(
+      "aria-describedby",
+      "email-error",
     );
     expect(authMock.resetPasswordForEmail).not.toHaveBeenCalled();
+  });
+
+  it("clears the email error once the user edits the email", async () => {
+    const user = userEvent.setup();
+    render(<LoginForm />);
+    await user.click(screen.getByRole("button", { name: "Forgot password?" }));
+    await screen.findByText(/Enter your email above/);
+
+    await user.type(screen.getByLabelText("Email"), "v");
+    expect(
+      screen.queryByText(/Enter your email above/),
+    ).not.toBeInTheDocument();
   });
 
   it("returns to sign-in from the check-your-email state", async () => {
