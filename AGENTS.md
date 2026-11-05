@@ -110,15 +110,19 @@ Template adoption history (6.0.4 review, adopted / not adopted):
 
 ## Git Workflow
 
-**Branch source:** Always fork from an up-to-date `main`.
-Before branching: `git fetch -p` then update `main` (`git checkout main &&
-git pull --ff-only`). Fork the feature FROM the freshly-pulled `main`.
+**Branch source:** fork `feat/*` or `fix/*` from an up-to-date `staging`
+(`git fetch -p`, then `git checkout staging && git pull --ff-only`).
 
-loopkit is a single-branch trunk: `main` is the only long-lived branch, and
-Vercel auto-deploys on every push to it. Every change lands via a
-feature-branch PR into `main` — there is no `uat`/`develop` stage. The
-seeded hooks protect `main` from direct commits and force-push regardless
-of this route (see "AI Harness" above).
+Release flow: `feat/*` | `fix/*` -> `staging` -> `main`.
+
+- Open the PR into `staging` (squash is fine). CI runs on the PR.
+- After merge, Vercel deploys `staging` to `loopkit-staging.merqo.io`. Test
+  there, not on `*.vercel.app` previews: the sign-in cookie only works on
+  `merqo.io` hosts, and branch previews are disabled.
+- Promote with a PR `staging` -> `main`, merged with a **merge commit** (never
+  squash or rebase) so `staging-sync` can fast-forward `staging` to `main`.
+- Never commit directly to `main` or `staging`. The seeded hooks protect
+  `main` from direct commits and force-push (see "AI Harness" above).
 
 ## Skill capture
 
