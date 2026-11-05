@@ -38,6 +38,8 @@ at render. `BackButton` falls back to a plain `<a>`.
 
 `use-serve-customer.ts` owns lookup, scan routing, visit/redeem/undo state and recovered capability delivery. The `../serve-customer.tsx` component composes counter panels. Per-mechanic handlers retain separate result mapping and stamp undo behavior; the shared visit helper reports failed mutations without clearing customer input.
 
+- `loading.tsx` — `CounterLoading`, a static skeleton (`role="status"`, `aria-busy`, sr-only label) mirroring the page layout while the route streams in.
+
 ## Parent
 
 [dashboard](../README.md)

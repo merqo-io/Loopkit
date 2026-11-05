@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added
+
+- Loading skeletons for the activity, stats, counter, plan, profile, redeem-voucher and customer-detail pages, so navigating between dashboard pages no longer shows a blank frame. Each is announced to screen readers as a busy status.
+
 ### Changed
 
 - Sign-in, sign-up and password-reset errors now show inline (announced as alerts, with the missing-email case attached to the email field) instead of only as toasts. Browser titles use a `loopkit | <page>` template, and the error, not-found and global-error pages use theme tokens with plainer copy.

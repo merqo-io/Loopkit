@@ -279,7 +279,7 @@ pnpm format         # prettier --write
 ## File layout
 
 ```
-src/app/dashboard/     — vendor console (programs, cards, stats)
+src/app/dashboard/     — vendor console (programs, cards, stats; routes have loading skeletons)
 src/app/c/              — customer-facing card view (QR entry point)
 src/app/admin/          — Merqo-team admin console
 src/app/setup/          — vendor onboarding
