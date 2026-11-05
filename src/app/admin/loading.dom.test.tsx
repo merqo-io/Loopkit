@@ -22,7 +22,6 @@ describe.each([
     expect(container.querySelectorAll(".animate-pulse").length).toBeGreaterThan(
       0,
     );
-    // Stat tiles plus the one list card.
-    expect(container.querySelectorAll(".rounded-2xl")).toHaveLength(tiles + 1);
+    expect(screen.queryAllByTestId("skeleton-tile")).toHaveLength(tiles);
   });
 });
