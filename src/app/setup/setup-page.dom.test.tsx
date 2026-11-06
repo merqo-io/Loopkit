@@ -8,6 +8,16 @@ const { listProgramsMock, isProMock } = vi.hoisted(() => ({
   isProMock: vi.fn(),
 }));
 
+vi.mock("next/navigation", () => ({
+  redirect: vi.fn((url: string) => {
+    throw new Error(`REDIRECT:${url}`);
+  }),
+  notFound: vi.fn(() => {
+    throw new Error("NOT_FOUND");
+  }),
+  useRouter: () => ({ push: vi.fn() }),
+  useSearchParams: () => new URLSearchParams(),
+}));
 vi.mock("@/features/auth", () => ({
   requireVendor: vi.fn(async () => ({ user: { id: "v1", email: "v@x.com" } })),
 }));
@@ -29,9 +39,33 @@ vi.mock("@/app/setup/actions", () => ({
 vi.mock("@/lib/cards", () => ({
   programCardCount: vi.fn(async () => 0),
 }));
+function formMode({
+  isEdit,
+  prepping,
+  replacingId,
+}: {
+  isEdit: boolean;
+  prepping?: boolean;
+  replacingId: string | null;
+}) {
+  if (isEdit) return "edit-mode";
+  if (prepping) return "prep-mode";
+  return replacingId ? "migrate-mode" : "create-mode";
+}
+
 vi.mock("@/app/setup/setup-form", () => ({
-  SetupForm: ({ isEdit }: { isEdit: boolean }) => (
-    <div data-testid="setup-form">{isEdit ? "edit-mode" : "create-mode"}</div>
+  SetupForm: ({
+    isEdit,
+    prepping,
+    replacingId,
+  }: {
+    isEdit: boolean;
+    prepping?: boolean;
+    replacingId: string | null;
+  }) => (
+    <div data-testid="setup-form">
+      {formMode({ isEdit, prepping, replacingId })}
+    </div>
   ),
 }));
 vi.mock("@/app/setup/schedule-retirement-form", () => ({
@@ -41,6 +75,11 @@ vi.mock("@/app/setup/schedule-retirement-form", () => ({
 }));
 
 import SetupPage from "./page";
+import NewProgramPage from "./new/page";
+import EditProgramPage from "./[programId]/edit/page";
+import MigrateProgramPage from "./[programId]/migrate/page";
+import PrepProgramPage from "./[programId]/prep/page";
+import ScheduleProgramPage from "./[programId]/schedule/page";
 
 function program(overrides: Partial<Program>): Program {
   return {
@@ -61,12 +100,93 @@ function program(overrides: Partial<Program>): Program {
   };
 }
 
-describe("SetupPage", () => {
-  it("shows the create form and a Manage-programs link when a Pro vendor with an existing program visits bare /setup", async () => {
+const idParams = (programId: string) => ({
+  params: Promise.resolve({ programId }),
+});
+
+describe("/setup (programs list)", () => {
+  it("shows only the programs list, with a + New program link to /setup/new", async () => {
     listProgramsMock.mockResolvedValue([program({})]);
     isProMock.mockResolvedValue(true);
 
     render(await SetupPage({ searchParams: Promise.resolve({}) }));
+
+    expect(
+      screen.getByRole("heading", { level: 1, name: "Programs" }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Coffee Stamps")).toBeInTheDocument();
+    expect(screen.queryByTestId("setup-form")).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /\+ new program/i }),
+    ).toHaveAttribute("href", "/setup/new");
+    expect(screen.getByRole("link", { name: "Edit" })).toHaveAttribute(
+      "href",
+      "/setup/p1/edit",
+    );
+    expect(screen.getByRole("link", { name: "Change type" })).toHaveAttribute(
+      "href",
+      "/setup/p1/migrate",
+    );
+  });
+
+  it("links Prep replacement for a free vendor and Schedule retirement for a Pro vendor with two active programs", async () => {
+    listProgramsMock.mockResolvedValue([program({})]);
+    isProMock.mockResolvedValue(false);
+    const { unmount } = render(
+      await SetupPage({ searchParams: Promise.resolve({}) }),
+    );
+    expect(
+      screen.getByRole("link", { name: "Prep replacement" }),
+    ).toHaveAttribute("href", "/setup/p1/prep");
+    unmount();
+
+    listProgramsMock.mockResolvedValue([
+      program({}),
+      program({ id: "p2", name: "Bakery Stamps" }),
+    ]);
+    isProMock.mockResolvedValue(true);
+    render(await SetupPage({ searchParams: Promise.resolve({}) }));
+    expect(
+      screen.getAllByRole("link", { name: "Schedule retirement" })[0],
+    ).toHaveAttribute("href", "/setup/p1/schedule");
+  });
+
+  it("sends a vendor with no programs to /setup/new", async () => {
+    listProgramsMock.mockResolvedValue([]);
+    isProMock.mockResolvedValue(false);
+
+    await expect(
+      SetupPage({ searchParams: Promise.resolve({}) }),
+    ).rejects.toThrow("REDIRECT:/setup/new");
+  });
+
+  it.each([
+    ["edit", "/setup/p1/edit"],
+    ["migrate", "/setup/p1/migrate"],
+    ["prep", "/setup/p1/prep"],
+    ["schedule", "/setup/p1/schedule"],
+  ])("redirects the old ?%s=p1 URL to %s", async (mode, target) => {
+    await expect(
+      SetupPage({ searchParams: Promise.resolve({ [mode]: "p1" }) }),
+    ).rejects.toThrow(`REDIRECT:${target}`);
+  });
+
+  it("still shows the list for the old ?manage=1 URL", async () => {
+    listProgramsMock.mockResolvedValue([program({})]);
+    isProMock.mockResolvedValue(true);
+
+    render(await SetupPage({ searchParams: Promise.resolve({ manage: "1" }) }));
+
+    expect(screen.getByText("Your programs")).toBeInTheDocument();
+  });
+});
+
+describe("/setup/new", () => {
+  it("shows the create form and a Manage-programs link for a Pro vendor with an existing program", async () => {
+    listProgramsMock.mockResolvedValue([program({})]);
+    isProMock.mockResolvedValue(true);
+
+    render(await NewProgramPage());
 
     expect(
       screen.getByRole("heading", { level: 1, name: "Create a program" }),
@@ -74,14 +194,14 @@ describe("SetupPage", () => {
     expect(screen.getByTestId("setup-form")).toHaveTextContent("create-mode");
     expect(
       screen.getByRole("link", { name: /manage your programs/i }),
-    ).toHaveAttribute("href", "/setup?manage=1");
+    ).toHaveAttribute("href", "/setup");
   });
 
-  it("shows the upsell card (not the create form) and still shows a Manage-programs link for a free-tier vendor at their cap", async () => {
+  it("shows the upsell card (not the create form) for a free-tier vendor at their cap", async () => {
     listProgramsMock.mockResolvedValue([program({})]);
     isProMock.mockResolvedValue(false);
 
-    render(await SetupPage({ searchParams: Promise.resolve({}) }));
+    render(await NewProgramPage());
 
     expect(
       screen.getByRole("heading", { level: 1, name: "Add a program" }),
@@ -89,41 +209,34 @@ describe("SetupPage", () => {
     expect(screen.queryByTestId("setup-form")).not.toBeInTheDocument();
     expect(
       screen.getByRole("link", { name: /manage your programs/i }),
-    ).toHaveAttribute("href", "/setup?manage=1");
+    ).toHaveAttribute("href", "/setup");
   });
 
-  it("shows only the create form (no upsell, no Manage link) for a first-run vendor with zero programs", async () => {
+  it("shows only the create form (no Manage link) for a first-run vendor", async () => {
     listProgramsMock.mockResolvedValue([]);
     isProMock.mockResolvedValue(false);
 
-    render(await SetupPage({ searchParams: Promise.resolve({}) }));
+    render(await NewProgramPage());
 
-    expect(screen.getByText("Set up your loyalty card")).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        level: 1,
+        name: "Set up your loyalty card",
+      }),
+    ).toBeInTheDocument();
     expect(screen.getByTestId("setup-form")).toHaveTextContent("create-mode");
     expect(
       screen.queryByRole("link", { name: /manage your programs/i }),
     ).not.toBeInTheDocument();
   });
+});
 
-  it("shows only the management list (not the create form) at /setup?manage=1, with a + New program link", async () => {
+describe("/setup/[programId]/*", () => {
+  it("edit: shows only the edit form", async () => {
     listProgramsMock.mockResolvedValue([program({})]);
     isProMock.mockResolvedValue(true);
 
-    render(await SetupPage({ searchParams: Promise.resolve({ manage: "1" }) }));
-
-    expect(screen.getByText("Your programs")).toBeInTheDocument();
-    expect(screen.getByText("Coffee Stamps")).toBeInTheDocument();
-    expect(screen.queryByTestId("setup-form")).not.toBeInTheDocument();
-    expect(
-      screen.getByRole("link", { name: /\+ new program/i }),
-    ).toHaveAttribute("href", "/setup");
-  });
-
-  it("shows only the edit form (not the list) at /setup?edit=<id>", async () => {
-    listProgramsMock.mockResolvedValue([program({})]);
-    isProMock.mockResolvedValue(true);
-
-    render(await SetupPage({ searchParams: Promise.resolve({ edit: "p1" }) }));
+    render(await EditProgramPage(idParams("p1")));
 
     expect(
       screen.getByRole("heading", { level: 1, name: "Edit your card" }),
@@ -132,44 +245,66 @@ describe("SetupPage", () => {
     expect(screen.queryByText("Your programs")).not.toBeInTheDocument();
   });
 
-  it("shows only the prep form (not the list) at /setup?prep=<id>", async () => {
+  it("prep: shows only the replacement form, named after the program", async () => {
     listProgramsMock.mockResolvedValue([program({})]);
     isProMock.mockResolvedValue(false);
 
-    render(await SetupPage({ searchParams: Promise.resolve({ prep: "p1" }) }));
+    render(await PrepProgramPage(idParams("p1")));
 
-    expect(screen.getByText("Set up the replacement")).toBeInTheDocument();
-    expect(screen.queryByText("Your programs")).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        level: 1,
+        name: "Set up Coffee Stamps's replacement",
+      }),
+    ).toBeInTheDocument();
+    expect(screen.getByTestId("setup-form")).toHaveTextContent("prep-mode");
   });
 
-  it("shows the schedule form (not the create form) at /setup?schedule=<id> for a Pro vendor — regression test for the fix where canCreate made schedule unreachable", async () => {
+  it("schedule: shows the schedule form for a Pro vendor", async () => {
     listProgramsMock.mockResolvedValue([
       program({ id: "p1", name: "Coffee Stamps" }),
       program({ id: "p2", name: "Bakery Stamps" }),
     ]);
     isProMock.mockResolvedValue(true);
 
-    render(
-      await SetupPage({ searchParams: Promise.resolve({ schedule: "p1" }) }),
-    );
+    render(await ScheduleProgramPage(idParams("p1")));
 
-    expect(screen.getByText("Schedule retirement")).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        level: 1,
+        name: "Schedule Coffee Stamps's retirement",
+      }),
+    ).toBeInTheDocument();
     expect(screen.getByTestId("schedule-form")).toHaveTextContent(
       "Coffee Stamps",
     );
     expect(screen.queryByTestId("setup-form")).not.toBeInTheDocument();
   });
 
-  it("shows only the migrate form (not the list) at /setup?migrate=<id>", async () => {
+  it("migrate: shows the new-type form replacing the program", async () => {
     listProgramsMock.mockResolvedValue([program({})]);
     isProMock.mockResolvedValue(true);
 
-    render(
-      await SetupPage({ searchParams: Promise.resolve({ migrate: "p1" }) }),
-    );
+    render(await MigrateProgramPage(idParams("p1")));
 
-    expect(screen.getByText("Pick a new card type")).toBeInTheDocument();
-    expect(screen.getByTestId("setup-form")).toHaveTextContent("create-mode");
-    expect(screen.queryByText("Your programs")).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        level: 1,
+        name: "Change Coffee Stamps's type",
+      }),
+    ).toBeInTheDocument();
+    expect(screen.getByTestId("setup-form")).toHaveTextContent("migrate-mode");
+  });
+
+  it.each([
+    ["edit", EditProgramPage],
+    ["migrate", MigrateProgramPage],
+    ["prep", PrepProgramPage],
+    ["schedule", ScheduleProgramPage],
+  ])("%s: 404s for an id that is not the vendor's program", async (_, Page) => {
+    listProgramsMock.mockResolvedValue([program({})]);
+    isProMock.mockResolvedValue(true);
+
+    await expect(Page(idParams("someone-elses"))).rejects.toThrow("NOT_FOUND");
   });
 });

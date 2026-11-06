@@ -25,7 +25,7 @@ import type { Database } from "@/lib/types";
 type ProgramUpdate = Database["loopkit"]["Tables"]["programs"]["Update"];
 
 const UPSELL_ERROR =
-  "You're on the free plan — 1 program. Ask an admin for Pro.";
+  "You are on the free plan with 1 program. Ask an admin for Pro.";
 const STYLE_UPSELL_ERROR = "That card style needs Pro. Upgrade to unlock it.";
 
 // Shared by create/edit/change-type/prep: null if the mechanic/style/color is allowed, else the upsell error.
@@ -94,7 +94,7 @@ export async function saveProgramAction(
   let lockedType: string | null = null;
   if (isEdit) {
     const existing = await getProgramById(id);
-    if (!existing) return { error: "Couldn't save your card. Try again." };
+    if (!existing) return { error: "Could not save your card. Try again." };
     lockedType = existing.type;
   }
 
@@ -139,7 +139,7 @@ export async function saveProgramAction(
       .from("programs")
       .update(update)
       .eq("id", id);
-    if (error) return { error: "Couldn't save your card. Try again." };
+    if (error) return { error: "Could not save your card. Try again." };
     revalidatePath("/dashboard");
     redirect(`/dashboard?p=${id}`);
   }
@@ -174,10 +174,10 @@ export async function saveProgramAction(
     });
     if (error) {
       if (error.code === "42501") return { error: UPSELL_ERROR };
-      return { error: "Couldn't create your card. Try again." };
+      return { error: "Could not create your card. Try again." };
     }
     if (!created) {
-      return { error: "Couldn't create your card. Try again." };
+      return { error: "Could not create your card. Try again." };
     }
 
     revalidatePath("/dashboard");
@@ -201,7 +201,7 @@ export async function changeTypeAction(
 
   const replacingId = String(formData.get("replacing") ?? "").trim();
   const existing = replacingId ? await getProgramById(replacingId) : null;
-  if (!existing) return { error: "Couldn't find that card." };
+  if (!existing) return { error: "Could not find that card." };
 
   const parsed = saveProgramSchema.safeParse({
     ...programFormFields(formData),
@@ -247,7 +247,7 @@ export async function changeTypeAction(
     p_head_start_percent: headStartPercent,
   });
   if (error || !created) {
-    return { error: "Couldn't change your card. Try again." };
+    return { error: "Could not change your card. Try again." };
   }
 
   revalidatePath("/setup");
@@ -255,7 +255,7 @@ export async function changeTypeAction(
 }
 
 const PREP_UPSELL_ERROR =
-  "You already have a card and a prepped replacement — activate or replace one first.";
+  "You already have a card and a prepped replacement. Activate or replace one first.";
 
 // Free-tier prep flow: create a second program that starts inactive
 // (hidden from customers — enroll_card gates on active) alongside the
@@ -312,14 +312,14 @@ export async function prepProgramAction(
   });
   if (error) {
     if (error.code === "42501") return { error: PREP_UPSELL_ERROR };
-    return { error: "Couldn't create your card. Try again." };
+    return { error: "Could not create your card. Try again." };
   }
   if (!created) {
-    return { error: "Couldn't create your card. Try again." };
+    return { error: "Could not create your card. Try again." };
   }
 
   revalidatePath("/setup");
-  redirect(`/setup?edit=${created}`);
+  redirect(`/setup/${created}/edit`);
 }
 
 // Free-tier "flip the switch" action: activates a prepped program,
@@ -333,14 +333,14 @@ export async function activateProgramAction(
   await requireVendor();
 
   const id = String(formData.get("id") ?? "").trim();
-  if (!id) return { error: "Couldn't find that card." };
+  if (!id) return { error: "Could not find that card." };
 
   const supabase = await createServerClient();
   const { data, error } = await supabase.rpc("activate_program", {
     p_program: id,
   });
   if (error || !data) {
-    return { error: "Couldn't activate that card. Try again." };
+    return { error: "Could not activate that card. Try again." };
   }
 
   revalidatePath("/setup");
@@ -380,7 +380,7 @@ export async function scheduleRetirementAction(
     if (error?.code === "42501") {
       return { error: "Scheduled retirement is a Pro feature." };
     }
-    return { error: "Couldn't schedule that. Try again." };
+    return { error: "Could not schedule that. Try again." };
   }
 
   revalidatePath("/setup");

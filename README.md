@@ -171,7 +171,7 @@ cards from a phone-friendly `/c` flow via QR. A vendor's day-2 correction
 tool for a classic Stamp card — a reasoned `+`/`-` adjustment, not a full
 card reset — lives on each customer's own `/dashboard/customers/[phone]`
 detail page, alongside their cards across every program and full activity
-history. First-run program creation at `/setup` walks through a real
+history. First-run program creation at `/setup/new` walks through a real
 Type → Basics → Rules step sequence instead of one long page — editing an
 existing program keeps the original single-page layout. Includes a
 scratch-card /
@@ -283,7 +283,7 @@ pnpm format         # prettier --write
 src/app/dashboard/     — vendor console (programs, cards, stats; routes have loading skeletons)
 src/app/c/              — customer-facing card view (QR entry point)
 src/app/admin/          — Merqo-team admin console
-src/app/setup/          — vendor onboarding
+src/app/setup/          — vendor onboarding: /setup programs list, /setup/new, /setup/[programId]/{edit,migrate,prep,schedule}
 src/app/login/          — auth pages
 src/lib/engine/         — stamp/points/lucky-reward core logic
 src/lib/program.ts      — program CRUD + rules

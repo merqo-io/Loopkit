@@ -59,7 +59,7 @@ describe("prepProgramAction", () => {
   it("creates an inactive replacement program and redirects to edit it", async () => {
     await expect(
       prepProgramAction({}, form({ ...stampFields, reward_expiry_days: "30" })),
-    ).rejects.toThrow("REDIRECT:/setup?edit=prep-id");
+    ).rejects.toThrow("REDIRECT:/setup/prep-id/edit");
 
     expect(rpcMock).toHaveBeenCalledWith(
       "create_program",
@@ -85,7 +85,7 @@ describe("prepProgramAction", () => {
           pity_ceiling: "5",
         }),
       ),
-    ).rejects.toThrow("REDIRECT:/setup?edit=prep-id");
+    ).rejects.toThrow("REDIRECT:/setup/prep-id/edit");
 
     expect(rpcMock).toHaveBeenCalledWith(
       "create_program",
@@ -134,7 +134,7 @@ describe("prepProgramAction", () => {
 
     const res = await prepProgramAction({}, form(stampFields));
 
-    expect(res.error).toMatch(/couldn't create your card/i);
+    expect(res.error).toMatch(/could not create your card/i);
   });
 
   it("rejects invalid input with an error state", async () => {

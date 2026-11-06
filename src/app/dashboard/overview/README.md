@@ -21,7 +21,7 @@ composes them.
 - `recent-activity.dom.test.tsx` — jsdom: the list caps at 6, a visit row shows a Serve link when the id resolves, a reward row does not, the phone is masked
 - `reward-cost-panel.tsx` — `RewardCostPanel({ cost, manageHref })`: rewards redeemed this month with `formatSgd(knownCostCents)` (`+` and a "programs have no cost set" note when a program's cost is unset), the pending-return-soon count, expired-unclaimed breakage, and a `<details>` per-program breakdown linking to `/setup`, wrapped in `@merqo/ui`'s `ElevatedCard`
 - `reward-cost-panel.dom.test.tsx` — jsdom: the summary numbers render, the missing-cost note and the `+` suffix appear only when a program has no cost, the breakdown lists every program
-- `your-programs.tsx` — `YourPrograms({ programs })`: renders nothing below 2 programs; otherwise a row per program (colour seed dot, name, `"{n}% come back"` or `"not enough data"`, an Edit `Link` to `/setup?id=<id>`, a Serve `Link` to `/dashboard/counter?p=<id>`) plus an "Add another program" link to `/setup`
+- `your-programs.tsx` — `YourPrograms({ programs })`: renders nothing below 2 programs; otherwise a row per program (colour seed dot, name, `"{n}% come back"` or `"not enough data"`, an Edit `Link` to `/setup/<id>/edit`, a Serve `Link` to `/dashboard/counter?p=<id>`) plus an "Add another program" link to `/setup`
 - `your-programs.dom.test.tsx` — jsdom: one program renders nothing, two render an Edit + Serve link each, a null return rate shows the fallback copy
 
 ## Reuse and ownership

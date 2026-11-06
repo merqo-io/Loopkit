@@ -1,61 +1,41 @@
-import { describe, it, expect } from "vitest";
-import { resolveSetupView } from "./setup-view";
+import { describe, expect, it } from "vitest";
+import { legacySetupPath, resolveNewView } from "@/app/setup/setup-view";
 
-const base = {
-  migrating: false,
-  isEdit: false,
-  prepping: false,
-  scheduling: false,
-  managing: false,
-  canCreate: false,
-};
+describe("legacySetupPath", () => {
+  it.each(["edit", "migrate", "prep", "schedule"])(
+    "maps ?%s=<id> to the sub-route",
+    (mode) => {
+      expect(legacySetupPath({ [mode]: "p1" })).toBe(`/setup/p1/${mode}`);
+    },
+  );
 
-describe("resolveSetupView", () => {
-  it("returns 'migrate' when migrating, regardless of everything else", () => {
-    expect(
-      resolveSetupView({ ...base, migrating: true, canCreate: true }),
-    ).toBe("migrate");
+  it("returns null for the plain list and for ?manage=1", () => {
+    expect(legacySetupPath({})).toBeNull();
+    expect(legacySetupPath({ manage: "1" })).toBeNull();
   });
 
-  it("returns 'edit' when isEdit, regardless of canCreate", () => {
-    expect(resolveSetupView({ ...base, isEdit: true, canCreate: true })).toBe(
-      "edit",
+  it("keeps the old precedence when several modes are present", () => {
+    expect(legacySetupPath({ edit: "a", migrate: "b" })).toBe(
+      "/setup/b/migrate",
     );
   });
 
-  it("returns 'prep' when prepping, regardless of canCreate", () => {
-    expect(resolveSetupView({ ...base, prepping: true, canCreate: true })).toBe(
-      "prep",
-    );
+  it("uses the first value of a repeated param and ignores empty ones", () => {
+    expect(legacySetupPath({ edit: ["a", "b"] })).toBe("/setup/a/edit");
+    expect(legacySetupPath({ edit: "" })).toBeNull();
   });
 
-  it("returns 'schedule' when scheduling, regardless of canCreate — regression guard for the Pro-vendor bug where canCreate (always true for Pro) made schedule unreachable", () => {
-    expect(
-      resolveSetupView({ ...base, scheduling: true, canCreate: true }),
-    ).toBe("schedule");
+  it("encodes ids so they cannot escape the path", () => {
+    expect(legacySetupPath({ edit: "a/b?c" })).toBe("/setup/a%2Fb%3Fc/edit");
+  });
+});
+
+describe("resolveNewView", () => {
+  it("shows the create form when the plan allows another program", () => {
+    expect(resolveNewView(true)).toBe("create");
   });
 
-  it("returns 'manage' when managing and nothing else is set", () => {
-    expect(resolveSetupView({ ...base, managing: true })).toBe("manage");
-  });
-
-  it("returns 'create' when nothing is set and canCreate is true", () => {
-    expect(resolveSetupView({ ...base, canCreate: true })).toBe("create");
-  });
-
-  it("returns 'upsell' when nothing is set and canCreate is false", () => {
-    expect(resolveSetupView({ ...base })).toBe("upsell");
-  });
-
-  it("prioritizes migrate over edit when both are somehow set", () => {
-    expect(resolveSetupView({ ...base, migrating: true, isEdit: true })).toBe(
-      "migrate",
-    );
-  });
-
-  it("prioritizes prep over schedule when both are somehow set", () => {
-    expect(
-      resolveSetupView({ ...base, prepping: true, scheduling: true }),
-    ).toBe("prep");
+  it("shows the upsell at the plan limit", () => {
+    expect(resolveNewView(false)).toBe("upsell");
   });
 });
