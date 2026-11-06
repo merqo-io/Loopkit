@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Vendor onboarding and program-management routes: `/setup` (programs list), `/setup/new` (create), and `/setup/[programId]/{edit,migrate,prep,schedule}`. Old `/setup?edit|migrate|prep|schedule=<id>` URLs redirect to the matching route. Includes a live animated preview of the customer card.
+Vendor onboarding and program-management routes: `/setup` (programs list), `/setup/new` (create), and `/setup/[programId]/{edit,migrate,prep,schedule}`. Old `/setup?edit|migrate|prep|schedule=<id>` URLs redirect to the matching route. Includes a live animated preview of the customer card. Server actions call `revalidatePath("/setup", "layout")` so every sub-route refreshes.
 
 ## Contents
 
