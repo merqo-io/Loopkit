@@ -31,7 +31,7 @@ function luckyResultMessage(
   if (result.won) {
     return (
       <p className="mt-1 text-sm font-semibold text-gold-accent">
-        🎉 Won {rewardText}!
+        Won {rewardText}!
       </p>
     );
   }
@@ -309,7 +309,7 @@ function ChanceBlock({
           <p className="text-sm text-muted-foreground">{result.label}</p>
           {result.wonThisTime && (
             <p className="text-sm font-semibold text-gold-accent">
-              🎉 Won {result.rewardText}!
+              Won {result.rewardText}!
             </p>
           )}
         </div>

@@ -43,7 +43,7 @@ describe("scanner lifecycle", () => {
         }),
     );
     const view = render(<ScanButton onResolved={vi.fn()} />);
-    fireEvent.click(screen.getByRole("button", { name: "Scan to serve" }));
+    fireEvent.click(screen.getByRole("button", { name: "Serve a customer" }));
     await waitFor(() => expect(mocks.decode).toHaveBeenCalled());
     view.unmount();
     await act(async () => finish({ stop }));
@@ -69,7 +69,7 @@ describe("scanner lifecycle", () => {
       programId: "p",
     });
     render(<ScanButton onResolved={resolved} />);
-    fireEvent.click(screen.getByRole("button", { name: "Scan to serve" }));
+    fireEvent.click(screen.getByRole("button", { name: "Serve a customer" }));
     await waitFor(() => expect(mocks.decode).toHaveBeenCalled());
     await act(async () => callback({ getText: () => "token" }, null, { stop }));
     await act(async () => finish({ stop }));
@@ -95,7 +95,7 @@ describe("scanner lifecycle", () => {
     );
     mocks.resolve.mockResolvedValue(voucher);
     render(<ScanButton onResolved={resolved} />);
-    fireEvent.click(screen.getByRole("button", { name: "Scan to serve" }));
+    fireEvent.click(screen.getByRole("button", { name: "Serve a customer" }));
     await waitFor(() => expect(mocks.decode).toHaveBeenCalled());
     await act(async () => {
       await callback({ getText: () => "voucher-token" }, null, { stop });
@@ -118,11 +118,22 @@ describe("scanner lifecycle", () => {
     );
     mocks.resolve.mockRejectedValue(new Error("offline"));
     render(<ScanButton onResolved={vi.fn()} />);
-    fireEvent.click(screen.getByRole("button", { name: "Scan to serve" }));
+    fireEvent.click(screen.getByRole("button", { name: "Serve a customer" }));
     await waitFor(() => expect(mocks.decode).toHaveBeenCalled());
     await act(async () => callback({ getText: () => "token" }, null, { stop }));
     expect(mocks.toast).toHaveBeenCalledWith(
-      "Couldn't read that code. Try again.",
+      "Could not read that code. Try again.",
+    );
+    expect(screen.queryByRole("button", { name: "Cancel" })).toBeNull();
+  });
+  it("closes the scanner and reports a camera that cannot be opened", async () => {
+    mocks.decode.mockRejectedValue(new Error("denied"));
+    render(<ScanButton onResolved={vi.fn()} />);
+    fireEvent.click(screen.getByRole("button", { name: "Serve a customer" }));
+    await waitFor(() =>
+      expect(mocks.toast).toHaveBeenCalledWith(
+        "Could not open the camera. Check permissions.",
+      ),
     );
     expect(screen.queryByRole("button", { name: "Cancel" })).toBeNull();
   });

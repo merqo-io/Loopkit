@@ -144,7 +144,7 @@ export function useServeCustomer({
     const res = await visit(formData);
     if (!res) return false;
     if (res.rewardUnlocked) {
-      toast.success(`🎉 ${res.phone} won ${res.reward_text}!`);
+      toast.success(`${res.phone} won ${res.reward_text}!`);
       setCelebration({ phone: res.phone, rewardText: res.reward_text });
     } else {
       toast(`No win this time for ${res.phone}.`);
@@ -187,7 +187,7 @@ export function useServeCustomer({
     if (!res) return false;
     if (res.progress.view.kind !== "chance") return false;
     if (res.rewardUnlocked) {
-      toast.success(`🎉 ${res.phone} won ${res.reward_text}!`);
+      toast.success(`${res.phone} won ${res.reward_text}!`);
       setCelebration({ phone: res.phone, rewardText: res.reward_text });
     } else {
       toast(`No win this time for ${res.phone}.`);

@@ -37,7 +37,7 @@ export function ShopJoinPoster({
         {showBranding && (
           <p className="mt-4 text-xs text-neutral-500">via LoopKit</p>
         )}
-        <code className="mt-2 block truncate text-[10px] text-neutral-400">
+        <code className="mt-2 block truncate text-xs text-neutral-600">
           {link}
         </code>
       </div>
