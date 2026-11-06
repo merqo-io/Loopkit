@@ -1,9 +1,9 @@
 "use client";
 import { ProgressVisual } from "@/components/progress-visual";
 
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { regenerateCardAction } from "../api/actions";
+import { regenerateCardAction } from "../api/card-actions";
 import type { CardStatus } from "../types";
 
 import { PointsCatalogPicker } from "./points-catalog-picker";
@@ -13,14 +13,13 @@ import { Button } from "@/components/ui/button";
 import {
   AlertDialog,
   AlertDialogAction,
-  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { ConfirmDialog } from "@merqo/ui";
 
 // One customer's progress card for a single program, at the vendor-level
 // /c page. Each instance owns its own regenerate-dialog state — necessary
@@ -36,8 +35,6 @@ export function ProgramCardStatus({
   vendorId?: string;
   vendorAvatarUrl?: string | null;
 }) {
-  const [regenOpen, setRegenOpen] = useState(false);
-  const [regenerating, startRegenerate] = useTransition();
   const view = card.view;
 
   // Retired-card notices are dismissible on this device.
@@ -102,23 +99,17 @@ export function ProgramCardStatus({
     return <div className="flex flex-col items-center gap-2">{visual}</div>;
   }
 
-  function confirmRegenerate() {
-    startRegenerate(async () => {
-      const fd = new FormData();
-      fd.set("program", card.programId);
-      fd.set("phone", phone);
-      fd.set("vendor", vendorId);
-      const res = await regenerateCardAction(fd).catch(() => ({
-        success: false as const,
-        error: "Could not start a new card. Try again.",
-      }));
-      if (!res.success) {
-        toast.error(res.error);
-        return;
-      }
-      toast.success("New card issued, check your card again to see it.");
-      setRegenOpen(false);
-    });
+  async function confirmRegenerate() {
+    const fd = new FormData();
+    fd.set("program", card.programId);
+    fd.set("phone", phone);
+    fd.set("vendor", vendorId);
+    const res = await regenerateCardAction(fd).catch(() => ({
+      success: false as const,
+      error: "Could not start a new card. Try again.",
+    }));
+    if (!res.success) throw new Error(res.error);
+    toast.success("New card issued, check your card again to see it.");
   }
 
   return (
@@ -180,8 +171,13 @@ export function ProgramCardStatus({
         </div>
       )}
       {card.expired && (
-        <AlertDialog open={regenOpen} onOpenChange={setRegenOpen}>
-          <AlertDialogTrigger asChild>
+        <ConfirmDialog
+          title="Get a new card?"
+          description="This starts a fresh expired cycle and resets its progress to zero. Any reward you have already earned should be redeemed at the shop first."
+          confirmLabel="Get a new card"
+          pendingLabel="Issuing…"
+          onConfirm={confirmRegenerate}
+          trigger={
             <Button
               type="button"
               variant="ghost"
@@ -190,32 +186,8 @@ export function ProgramCardStatus({
             >
               {card.expired ? "Get a new card" : "Start a new cycle"}
             </Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Get a new card?</AlertDialogTitle>
-              <AlertDialogDescription>
-                This starts a fresh expired cycle and resets its progress to
-                zero. Any reward you have already earned should be redeemed at
-                the shop first.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel disabled={regenerating}>
-                Cancel
-              </AlertDialogCancel>
-              <AlertDialogAction
-                disabled={regenerating}
-                onClick={(e) => {
-                  e.preventDefault();
-                  confirmRegenerate();
-                }}
-              >
-                {regenerating ? "Issuing…" : "Get a new card"}
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+          }
+        />
       )}
       {card.replacedByName && (
         <AlertDialog

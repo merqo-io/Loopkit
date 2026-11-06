@@ -71,7 +71,7 @@ link this folder generates is consumed by `src/app/c/page.tsx`'s `?ref=`
 query param, and the actual per-guest crediting logic lives in
 `loopkit.vendor_join_referred`/`apply_referral_credit`
 (`supabase/migrations/0040_loopkit_referral_hosts.sql`) and
-`src/features/card-check/api/actions.ts`'s `checkStatusAction` — none of
+`src/features/card-check/api/check-status-action.ts`'s `checkStatusAction` — none of
 that logic lives in this folder.
 
 ## Server-component note
@@ -95,3 +95,5 @@ Labels are validated as returned form errors before insertion. Reward crediting 
 The panel's `dangerouslySetInnerHTML` is `qrSvg()` output over a server-minted link.
 
 Each page exports its own `metadata.title`, shown through the root `loopkit | %s` template. UI copy is plain: no emoji, no em dashes, no contractions in errors.
+
+This folder now imports its shared page and dialog components from `@merqo/ui` (v0.42.1) instead of local copies.

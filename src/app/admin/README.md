@@ -7,7 +7,7 @@ figure/badge helpers used by the overview, programs, and vendors screens.
 
 ## Contents
 
-- `admin-page-header.tsx` — `AdminPageHeader`: the admin pages' title row, a thin wrapper over the shared `@/components/page-header` `PageHeader` (eyebrow "Internal").
+- `admin-page-header.tsx` — `AdminPageHeader`: the admin pages' title row, a thin wrapper over the `@merqo/ui` `PageHeader` (eyebrow "Internal").
 - `actions.ts`: Server Actions (all admin-only via `requireAdmin()`): `setProgramActive`, `removeCard`, each writing via the service-role client and appending an `admin_audit` row via `recordAudit` (`@/lib/admin-audit`, shared with `vendor-provision/route.ts`).
 - `activity/` — `AdminActivityPage`: read-only viewer over `admin_audit` (`listAdminAudit`, `@/lib/admin-data`), rendered via `@merqo/ui`'s `AuditLogTable` with a `formatAction` map for the real action strings `actions.ts`/`vendor-provision/route.ts` write, and the `detail.actor === "merqo_system"` sentinel surfaced as "Merqo (system)" instead of a raw vendor id.
 - `admin-nav.tsx` — `AdminNav` client component: the Overview/Programs/Vendors/Activity tab bar, highlighting the active section by path.
@@ -16,7 +16,6 @@ figure/badge helpers used by the overview, programs, and vendors screens.
 - `loading.tsx` / `loading-skeleton.tsx` — route skeleton for the overview (and `AdminLoadingShell`, shared by each admin route's own `loading.tsx`): `aria-busy`, an sr-only "Loading" status, header, optional stat tiles and one card.
 - `page.tsx`: `AdminOverviewPage`: platform-wide totals (programs, customers, stamps, rewards), and a recent cross-shop activity feed, wrapped in `@merqo/ui`'s `ElevatedCard`.
 - `programs/`
-- `stat.tsx` — `Stat`: a labeled-value tile styled like the dashboard's stat tiles (`ElevatedCard` + reversed `StatTile`, mono tabular value) used across the admin overview and program detail pages.
 - `vendors/`
 
 ## Connectivity
@@ -24,14 +23,14 @@ figure/badge helpers used by the overview, programs, and vendors screens.
 `programs/`, `vendors/`, and `activity/` are the admin sections linked from
 `admin-nav.tsx`'s tab bar; all render inside `layout.tsx`'s gated shell.
 `programs/`'s and `vendors/`'s page/detail components pull shared pieces from
-this folder — `stat.tsx` for figure tiles, `health-badge.tsx` for health
+this folder — `StatCard` from `@merqo/ui` for figure tiles, `health-badge.tsx` for health
 badges, and `actions.ts` for the Server Actions their client components call
 (`Manage` in `programs/[id]`). `activity/` reads the audit trail those same
 actions write via `recordAudit`.
 
 ## Reuse and ownership
 
-`admin-page-header.tsx` supplies the common title and description chrome across admin list pages. `stat.tsx` wraps shared `StatTile` inside `ElevatedCard`, using the dashboard's mono, value-above-label style and accepting number or string values. Admin pages share the dashboard's `max-w-7xl px-5 py-7` container, and empty lists use `@/components/empty-state`.
+`admin-page-header.tsx` supplies the common title and description chrome across admin list pages. Figure tiles are `@merqo/ui` `StatCard` with `reverse` and a mono tabular value. Admin pages share the dashboard's `max-w-7xl px-5 py-7` container, and empty lists use `@merqo/ui` `EmptyState`.
 
 ## Parent
 

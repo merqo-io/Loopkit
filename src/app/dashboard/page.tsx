@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { PageHeader, EmptyState } from "@merqo/ui";
 import { requireVendor } from "@/features/auth";
 import { listPrograms, applyDueCutovers } from "@/lib/program";
 import { getVendorProfile } from "@/lib/vendor";
@@ -28,8 +29,6 @@ import { RecentActivity } from "@/app/dashboard/overview/recent-activity";
 import { RewardCostPanel } from "@/app/dashboard/overview/reward-cost-panel";
 import { YourPrograms } from "@/app/dashboard/overview/your-programs";
 import Link from "next/link";
-import { PageHeader } from "@/components/page-header";
-import { EmptyState } from "@/components/empty-state";
 
 export const metadata = { title: "Overview" };
 
@@ -105,6 +104,7 @@ export default async function DashboardPage() {
 
   const head = (
     <PageHeader
+      responsive
       data-tour="shop-qr"
       className="mb-0"
       eyebrow="Today"

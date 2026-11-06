@@ -11,14 +11,16 @@ const { stampMock, recordVisitMock, lookupMock, redeemPlantMock } = vi.hoisted(
     redeemPlantMock: vi.fn(),
   }),
 );
-vi.mock("@/app/dashboard/actions", () => ({
+vi.mock("@/app/dashboard/stamp-actions", () => ({
   stampAction: stampMock,
   recordVisitAction: recordVisitMock,
-  lookupAction: lookupMock,
   redeemPlantAction: redeemPlantMock,
-  redeemAction: vi.fn(),
+}));
+vi.mock("@/app/dashboard/lookup-actions", () => ({
+  lookupAction: lookupMock,
   resolveTokenAction: vi.fn(),
 }));
+vi.mock("@/app/dashboard/redeem-actions", () => ({ redeemAction: vi.fn() }));
 
 const { toast, toastSuccess, toastError } = vi.hoisted(() => {
   const success = vi.fn();

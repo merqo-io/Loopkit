@@ -26,7 +26,7 @@ reason, and their full activity history in one place.
   the two `notFound()` paths (invalid phone param, unknown customer).
 - `adjust-stamp-form.tsx` — `AdjustStampForm({programId, phone})`: collapsed
   behind an "Adjust stamps" trigger; opened, it's a `±` delta + required
-  reason form calling `adjustStampAction` (`@/app/dashboard/actions`), via
+  reason form calling `adjustStampAction` (`@/app/dashboard/stamp-actions`), via
   `loopkit.adjust_stamp` (`supabase/migrations/0042_loopkit_adjust_stamp.sql`).
   Clamped at 0, never creates a card, logged as its own `stamp_events.kind`
   ('adjust') distinct from a real stamp — surfaced in the activity feed with
@@ -57,3 +57,5 @@ reason, and their full activity history in one place.
 The phone form field is length-checked by Zod before `normalizePhone`.
 
 Each page exports its own `metadata.title`, shown through the root `loopkit | %s` template. UI copy is plain: no emoji, no em dashes, no contractions in errors.
+
+This folder now imports its shared page and dialog components from `@merqo/ui` (v0.42.1) instead of local copies.

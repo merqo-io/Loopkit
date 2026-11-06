@@ -53,14 +53,18 @@ vi.mock("@/lib/merqo-customer-notify", () => ({
 import {
   stampAction,
   adjustStampAction,
-  lookupAction,
-  redeemAction,
   redeemPlantAction,
   recordVisitAction,
-  applyPointsOffsetAction,
+} from "@/app/dashboard/stamp-actions";
+import {
+  lookupAction,
   resolveTokenAction,
+} from "@/app/dashboard/lookup-actions";
+import {
+  redeemAction,
+  applyPointsOffsetAction,
   redeemVoucherAction,
-} from "@/app/dashboard/actions";
+} from "@/app/dashboard/redeem-actions";
 import { buildPlantConfig } from "@/lib/program";
 
 function form(fields: Record<string, string>): FormData {

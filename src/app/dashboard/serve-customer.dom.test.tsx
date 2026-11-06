@@ -25,14 +25,14 @@ const {
   servedProps: { current: null as null | Record<string, unknown> },
 }));
 
-vi.mock("@/app/dashboard/actions", () => ({
+vi.mock("@/app/dashboard/stamp-actions", () => ({
   stampAction,
   recordVisitAction,
-  lookupAction,
   redeemPlantAction,
   regenerateCardAction,
   adjustStampAction,
 }));
+vi.mock("@/app/dashboard/lookup-actions", () => ({ lookupAction }));
 vi.mock("sonner", () => ({
   toast: Object.assign(vi.fn(), { success: vi.fn(), error: vi.fn() }),
 }));

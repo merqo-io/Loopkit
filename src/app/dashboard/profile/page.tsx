@@ -1,4 +1,5 @@
 import { requireVendor } from "@/features/auth";
+import { PageHeader } from "@merqo/ui";
 import { getVendorProfile } from "@/lib/vendor";
 import { createServerClient } from "@/lib/supabase/server";
 import { getOrCreateVendorProfile } from "@/lib/merqo-vendor-profile";
@@ -6,7 +7,6 @@ import { ProfileForm } from "@/app/dashboard/profile/profile-form";
 import { listPrograms, isPro } from "@/lib/program";
 import { QkitEarnSettings } from "@/app/dashboard/qkit-earn-settings";
 import { CustomerNotifySettings } from "@/app/dashboard/customer-notify-settings";
-import { PageHeader } from "@/components/page-header";
 import type { SocialLinks } from "@/lib/types";
 
 export const metadata = { title: "Profile" };
@@ -55,7 +55,12 @@ export default async function ProfilePage() {
 
   return (
     <div className="mx-auto max-w-lg space-y-8 md:max-w-4xl">
-      <PageHeader eyebrow="Your account" title="Profile" className="mb-0">
+      <PageHeader
+        responsive
+        eyebrow="Your account"
+        title="Profile"
+        className="mb-0"
+      >
         Your stall name, social links, profile icon, how we address you, your
         sign-in password, and the tools loopkit connects to. Each section saves
         on its own.

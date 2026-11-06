@@ -30,6 +30,7 @@ export default defineConfig({
         "**/*.test.ts",
         "**/*.d.ts",
         "src/lib/types.ts",
+        "src/lib/db-types/**",
         "src/lib/engine/types.ts",
       ],
     },

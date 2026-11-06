@@ -2,8 +2,7 @@
 
 import { Gift, Stamp, Pencil } from "lucide-react";
 import Link from "next/link";
-import { DataTable, type DataTableColumn } from "@merqo/ui";
-import { EmptyState } from "@/components/empty-state";
+import { DataTable, type DataTableColumn, EmptyState } from "@merqo/ui";
 import { Badge } from "@/components/ui/badge";
 import { formatSgtDateTime } from "@/lib/format";
 import type { VendorActivityRow } from "@/lib/activity";

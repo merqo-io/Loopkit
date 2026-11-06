@@ -1,5 +1,7 @@
-import { PageHeader } from "@/components/page-header";
+import { PageHeader } from "@merqo/ui";
 
 export function AdminPageHeader({ title }: { title: string }) {
-  return <PageHeader eyebrow="Internal" title={title} className="mb-0" />;
+  return (
+    <PageHeader responsive eyebrow="Internal" title={title} className="mb-0" />
+  );
 }

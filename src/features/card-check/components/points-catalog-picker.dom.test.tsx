@@ -4,7 +4,9 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 const { selectMock } = vi.hoisted(() => ({ selectMock: vi.fn() }));
-vi.mock("../api/actions", () => ({ selectPointsRewardAction: selectMock }));
+vi.mock("../api/card-actions", () => ({
+  selectPointsRewardAction: selectMock,
+}));
 
 import { PointsCatalogPicker } from "./points-catalog-picker";
 
@@ -71,4 +73,22 @@ it("allows retry after a rejected reward request", async () => {
   await user.click(screen.getByRole("button", { name: "Redeem" }));
   expect(await screen.findByRole("button", { name: "Redeem" })).toBeEnabled();
   expect(onSelected).not.toHaveBeenCalled();
+});
+
+it("shows a friendly inline error when the reward request is rejected", async () => {
+  selectMock.mockRejectedValueOnce(Error("offline"));
+  const user = userEvent.setup();
+  render(
+    <PointsCatalogPicker
+      programId="p1"
+      phone="+6591234567"
+      items={items}
+      onSelected={vi.fn()}
+    />,
+  );
+  await user.click(screen.getByRole("button", { name: /free drink/i }));
+  await user.click(screen.getByRole("button", { name: "Redeem" }));
+  expect(await screen.findByRole("alert")).toHaveTextContent(
+    "Could not redeem your reward. Try again.",
+  );
 });

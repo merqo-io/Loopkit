@@ -2,9 +2,7 @@ import { headers } from "next/headers";
 import { requireVendor } from "@/features/auth";
 import { listPrograms } from "@/lib/program";
 import { listReferralHosts, referralLink } from "@/lib/referrals";
-import { qrSvg } from "@merqo/ui";
-import { PageHeader } from "@/components/page-header";
-import { EmptyState } from "@/components/empty-state";
+import { qrSvg, PageHeader, EmptyState } from "@merqo/ui";
 import { CustomersTabs } from "../customers-tabs";
 import { ReferralsPanel } from "./referrals-panel";
 
@@ -46,7 +44,12 @@ export default async function ReferralsPage() {
 
   return (
     <div className="mx-auto max-w-2xl space-y-8">
-      <PageHeader eyebrow="Customers" title="Referrals" className="mb-0">
+      <PageHeader
+        responsive
+        eyebrow="Customers"
+        title="Referrals"
+        className="mb-0"
+      >
         A wedding or event guest is a one-off visit, but the host who chose you,
         the bride, groom, or organizer, is a real repeat relationship. Give a
         host their own link on one of your programs: every guest who joins

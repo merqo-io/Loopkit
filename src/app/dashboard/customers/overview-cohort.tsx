@@ -1,8 +1,6 @@
 import { CustomerSearchToolbar } from "./customer-search-toolbar";
 import Link from "next/link";
-import { ElevatedCard } from "@merqo/ui";
-import { PageHeader } from "@/components/page-header";
-import { EmptyState } from "@/components/empty-state";
+import { ElevatedCard, PageHeader, EmptyState } from "@merqo/ui";
 import { listCards } from "@/lib/cards";
 import { getVendorOverviewInputs } from "@/lib/stats";
 import {
@@ -57,6 +55,7 @@ export async function OverviewCohortList({
   return (
     <div className="space-y-6">
       <PageHeader
+        responsive
         eyebrow="Your regulars"
         title={titles[cohort]}
         className="mb-0"

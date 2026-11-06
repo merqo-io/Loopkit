@@ -5,9 +5,8 @@ import { getCustomerDetail, getMarketingConsentStatus } from "@/lib/customers";
 import { listActivity } from "@/lib/activity";
 import { normalizePhone } from "@/lib/phone";
 import { formatSgtDate } from "@/lib/format";
-import { ElevatedCard } from "@merqo/ui";
+import { ElevatedCard, PageHeader } from "@merqo/ui";
 import { Badge } from "@/components/ui/badge";
-import { PageHeader } from "@/components/page-header";
 import { ActivityTable } from "@/app/dashboard/activity/activity-table";
 import { AdjustStampForm } from "./adjust-stamp-form";
 import { MarketingConsentPanel } from "./marketing-consent-panel";
@@ -49,6 +48,7 @@ export default async function CustomerDetailPage({
   return (
     <div className="space-y-8">
       <PageHeader
+        responsive
         eyebrow="Customer"
         title={detail.name ?? phone}
         className="mb-0"

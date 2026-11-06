@@ -246,9 +246,9 @@ through `StatusBadge` (gold-tinted `active` keeps the reward motif). v0.31.1 fix
 filename yielded the whole name as its extension. Which kit uses which
 shared export is tracked in `../merqo-ui/docs/usage-matrix.md`.
 
-Bumped `@merqo/ui` to v0.41.0 (pinned by commit `e641d60`): the nav badge, `/dashboard/plan` and the admin vendors table take their tier text from the shared `tierLabel` (Free / Starter / Pro); stored tier values are unchanged. Earlier, v0.39.0: `/dashboard/plan` now fetches merqo's plan catalog (`/api/plans`) server-side and renders the shared `PricingLadder` instead of a local feature table; loopkit stores no plan prices and shows a calm fallback line when the catalog is unavailable.
+Bumped `@merqo/ui` to v0.42.1 (pinned by commit `53ec5ba`), which also supplies `PageHeader`, `StatCard`, `ConfirmDialog`, `EmptyState` and `TierChip`. Earlier, v0.41.0: the nav badge, `/dashboard/plan` and the admin vendors table take their tier text from the shared `tierLabel` (Free / Starter / Pro); stored tier values are unchanged. Earlier, v0.39.0: `/dashboard/plan` now fetches merqo's plan catalog (`/api/plans`) server-side and renders the shared `PricingLadder` instead of a local feature table; loopkit stores no plan prices and shows a calm fallback line when the catalog is unavailable.
 
-Dashboard pages now share a local `PageHeader` and `EmptyState` (`src/components/`), so every screen opens with the same eyebrow, single h1 and action, and every empty list offers a next step.
+Dashboard pages use `@merqo/ui`'s `PageHeader` and `EmptyState` (v0.42.1, pinned by commit `53ec5ba`; no local copies), so every screen opens with the same eyebrow, single h1 and action, and every empty list offers a next step.
 
 ## Stack
 
@@ -398,7 +398,7 @@ sixth engine `type` — `loopkit.referral_hosts` (`vendor_id`, `program_id`,
 `host_phone`, `label`, a unique `referral_code`, `guest_count`) names one of
 the vendor's own active programs plus a host phone, and the vendor shares
 the resulting `/c?v=<vendorId>&ref=<code>` link. `checkStatusAction`
-(`src/features/card-check/api/actions.ts`) calls the service-only `customer_join`
+(`src/features/card-check/api/check-status-action.ts`) calls the service-only `customer_join`
 RPC with the vendor, normalized phone, saved card proof and optional referral
 code. Existing customers must prove possession of a card before receiving card
 or voucher tokens; fresh enrollment saves an HttpOnly proof cookie. A referral

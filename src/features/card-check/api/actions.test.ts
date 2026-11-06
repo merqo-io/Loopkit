@@ -41,14 +41,16 @@ beforeEach(() => {
   profileMock.mockResolvedValue({ stall_name: "Kaya Toast" });
 });
 
+import { checkStatusAction } from "./check-status-action";
 import {
-  checkStatusAction,
   setCustomerBirthdayAction,
   selectPointsRewardAction,
   regenerateCardAction,
+} from "./card-actions";
+import {
   setMarketingConsentAction,
   eraseMyDataAction,
-} from "./actions";
+} from "./consent-actions";
 import { STATUS_IDLE } from "../types";
 import { marketingConsentText } from "@/lib/marketing-consent";
 import { buildPlantConfig } from "@/lib/program-config";
