@@ -7,6 +7,7 @@ import {
   getSwitchKits,
   tierLabel,
 } from "@merqo/ui";
+import { LayoutList } from "lucide-react";
 import { Wordmark } from "@/components/landing/wordmark";
 import { cn } from "@/lib/utils";
 import { submitFeedbackAction } from "@/app/actions/feedback";
@@ -17,11 +18,10 @@ import type { SupportMessageInput } from "@/lib/schemas";
 type Tier = "free" | "pro";
 
 const LINKS = [
-  { href: "/dashboard", label: "Dashboard" },
+  { href: "/dashboard/counter", label: "Counter" },
   { href: "/dashboard/customers", label: "Customers" },
   { href: "/dashboard/activity", label: "Activity" },
   { href: "/dashboard/stats", label: "Stats" },
-  { href: "/dashboard/referrals", label: "Referrals" },
 ];
 
 function isActive(path: string, href: string): boolean {
@@ -30,12 +30,12 @@ function isActive(path: string, href: string): boolean {
 
 /** Stable anchor id for the onboarding tour, e.g. "/dashboard/customers" → "nav-customers". */
 function tourAnchor(href: string): string {
-  return `nav-${href === "/dashboard" ? "dashboard" : href.split("/").pop()}`;
+  return `nav-${href.split("/").pop()}`;
 }
 
 const TIER_BADGE_CLASS: Record<Tier, string> = {
   free: "bg-gold/10 text-gold-accent ring-gold/40",
-  pro: "bg-emerald-500/15 text-emerald-700 ring-emerald-500/30 dark:bg-emerald-400/15 dark:text-emerald-400 dark:ring-emerald-400/30",
+  pro: "bg-primary/10 text-primary ring-primary/30",
 };
 
 function TierBadge({ tier }: { tier: Tier }) {
@@ -98,9 +98,7 @@ export function DashboardNav({
         </a>
       }
       navLinks={LINKS}
-      isActiveHref={(href) =>
-        href === "/dashboard" ? path === "/dashboard" : isActive(path, href)
-      }
+      isActiveHref={(href) => isActive(path, href)}
       tourAnchor={tourAnchor}
       vendor={{
         name: label,
@@ -109,7 +107,7 @@ export function DashboardNav({
         subtitle: vendorName?.trim() || "Your stall",
       }}
       signOutAction={signOut}
-      kitLocalSettingsHref="/dashboard/settings"
+      extraLink={{ href: "/setup", label: "Programs", icon: LayoutList }}
       showPlanItem
       tierBadge={<TierBadge tier={tier} />}
       switchKits={getSwitchKits("loopkit")}

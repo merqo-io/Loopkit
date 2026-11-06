@@ -66,6 +66,7 @@ test.describe("signed-in render smoke", () => {
       "/dashboard/plan",
       "/dashboard/profile",
       "/dashboard/redeem-voucher",
+      "/dashboard/customers/referrals",
       "/dashboard/referrals",
       "/dashboard/settings",
       "/dashboard/stats",

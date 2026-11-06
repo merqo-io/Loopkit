@@ -3,7 +3,10 @@ import { getVendorProfile } from "@/lib/vendor";
 import { createServerClient } from "@/lib/supabase/server";
 import { getOrCreateVendorProfile } from "@/lib/merqo-vendor-profile";
 import { ProfileForm } from "@/app/dashboard/profile/profile-form";
-import { BackButton } from "@merqo/ui";
+import { listPrograms, isPro } from "@/lib/program";
+import { QkitEarnSettings } from "@/app/dashboard/qkit-earn-settings";
+import { CustomerNotifySettings } from "@/app/dashboard/customer-notify-settings";
+import { PageHeader } from "@/components/page-header";
 import type { SocialLinks } from "@/lib/types";
 
 export default async function ProfilePage() {
@@ -13,6 +16,23 @@ export default async function ProfilePage() {
   const profile = await getVendorProfile();
 
   const supabase = await createServerClient();
+  const [programs, pro, qkitEarnConfigResult, notifySettingsResult] =
+    await Promise.all([
+      listPrograms(),
+      isPro(),
+      supabase
+        .from("qkit_earn_config")
+        .select("program_id, enabled")
+        .eq("vendor_id", user.id)
+        .maybeSingle(),
+      supabase
+        .from("vendor_notify_settings")
+        .select("customer_telegram_notify_enabled")
+        .eq("vendor_id", user.id)
+        .maybeSingle(),
+    ]);
+  const qkitEarnConfig = qkitEarnConfigResult.data;
+  const notifySettings = notifySettingsResult.data;
   // Same cross-schema, degrade-to-empty-on-failure pattern as /setup's page
   // (src/app/setup/page.tsx) — social links are a nice-to-have, not worth
   // hard-failing the whole profile page over a merqo hiccup.
@@ -33,14 +53,11 @@ export default async function ProfilePage() {
 
   return (
     <div className="mx-auto max-w-lg space-y-8 md:max-w-4xl">
-      <BackButton href="/dashboard" label="Back to dashboard" />
-      <div>
-        <h1 className="font-display text-2xl font-bold">Profile</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Your stall name, social links, profile icon, how we address you, and
-          your sign-in password. Each section saves on its own.
-        </p>
-      </div>
+      <PageHeader eyebrow="Your account" title="Profile" className="mb-0">
+        Your stall name, social links, profile icon, how we address you, your
+        sign-in password, and the tools loopkit connects to. Each section saves
+        on its own.
+      </PageHeader>
       <ProfileForm
         vendorId={user.id}
         email={user.email ?? ""}
@@ -49,6 +66,39 @@ export default async function ProfilePage() {
         displayName={displayName}
         socialLinks={socialLinks}
       />
+      <section id="integrations" className="space-y-8">
+        <div>
+          <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+            qkit integration
+          </h2>
+          <QkitEarnSettings
+            programs={programs
+              .filter((prog) => prog.type === "stamp")
+              .map((prog) => ({ id: prog.id, name: prog.name }))}
+            current={
+              qkitEarnConfig
+                ? {
+                    programId: qkitEarnConfig.program_id,
+                    enabled: qkitEarnConfig.enabled,
+                  }
+                : null
+            }
+            isPro={pro}
+          />
+        </div>
+        <div>
+          <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+            Customer notifications
+          </h2>
+          <CustomerNotifySettings
+            current={
+              notifySettings
+                ? { enabled: notifySettings.customer_telegram_notify_enabled }
+                : null
+            }
+          />
+        </div>
+      </section>
     </div>
   );
 }

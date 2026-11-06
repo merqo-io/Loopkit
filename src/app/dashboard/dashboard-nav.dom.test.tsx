@@ -34,8 +34,12 @@ describe("DashboardNav", () => {
     tier: "free" as const,
   };
 
-  it("renders Customers, Activity, Stats, and Referrals as inline nav links", () => {
+  it("renders Counter, Customers, Activity, and Stats as inline nav links", () => {
     render(<DashboardNav {...baseProps} />);
+    expect(screen.getByRole("link", { name: "Counter" })).toHaveAttribute(
+      "href",
+      "/dashboard/counter",
+    );
     expect(screen.getByRole("link", { name: "Customers" })).toHaveAttribute(
       "href",
       "/dashboard/customers",
@@ -48,30 +52,22 @@ describe("DashboardNav", () => {
       "href",
       "/dashboard/stats",
     );
-    expect(screen.getByRole("link", { name: "Referrals" })).toHaveAttribute(
-      "href",
-      "/dashboard/referrals",
-    );
+    expect(
+      screen.queryByRole("link", { name: "Referrals" }),
+    ).not.toBeInTheDocument();
   });
 
-  it("renders Dashboard as the first inline nav link", () => {
+  it("orders the inline nav Counter, Customers, Activity, Stats and links the logo home", () => {
     render(<DashboardNav {...baseProps} />);
     const links = screen.getAllByRole("link");
-    const navLabels = [
-      "Dashboard",
-      "Customers",
-      "Activity",
-      "Stats",
-      "Referrals",
-    ];
+    const navLabels = ["Counter", "Customers", "Activity", "Stats"];
     const navLinks = links.filter((l) =>
       navLabels.includes(l.textContent ?? ""),
     );
     expect(navLinks.map((l) => l.textContent)).toEqual(navLabels);
-    expect(screen.getByRole("link", { name: "Dashboard" })).toHaveAttribute(
-      "href",
-      "/dashboard",
-    );
+    expect(
+      screen.getByRole("link", { name: /loopkit dashboard home/i }),
+    ).toHaveAttribute("href", "/dashboard");
   });
 
   it("renders a mobile menu toggle", () => {
@@ -89,9 +85,9 @@ describe("DashboardNav", () => {
     expect(
       screen.getByRole("button", { name: /account menu/i }),
     ).toHaveAttribute("data-tour", "nav-account");
-    expect(screen.getByRole("link", { name: "Dashboard" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "Counter" })).toHaveAttribute(
       "data-tour",
-      "nav-dashboard",
+      "nav-counter",
     );
     expect(screen.getByRole("link", { name: "Customers" })).toHaveAttribute(
       "data-tour",
@@ -105,13 +101,9 @@ describe("DashboardNav", () => {
       "data-tour",
       "nav-stats",
     );
-    expect(screen.getByRole("link", { name: "Referrals" })).toHaveAttribute(
-      "data-tour",
-      "nav-referrals",
-    );
   });
 
-  it("account menu has Switch products, Profile, Settings, Plan, Get help, Feedback, Theme, then Sign out, in order", async () => {
+  it("account menu has Switch products, Profile, Plan, Get help, Feedback, Programs, Theme, then Sign out, in order", async () => {
     const user = userEvent.setup();
     render(<DashboardNav {...baseProps} />);
     await user.click(screen.getByRole("button", { name: /account menu/i }));
@@ -119,10 +111,10 @@ describe("DashboardNav", () => {
     expect(menuItems.map((item) => item.textContent)).toEqual([
       "Switch products",
       "Profile",
-      "Settings",
       "Plan · Free",
       "Get help",
       "Feedback",
+      "Programs",
       "Theme · System",
       "Sign out",
     ]);
