@@ -126,4 +126,15 @@ describe("scanner lifecycle", () => {
     );
     expect(screen.queryByRole("button", { name: "Cancel" })).toBeNull();
   });
+  it("closes the scanner and reports a camera that cannot be opened", async () => {
+    mocks.decode.mockRejectedValue(new Error("denied"));
+    render(<ScanButton onResolved={vi.fn()} />);
+    fireEvent.click(screen.getByRole("button", { name: "Serve a customer" }));
+    await waitFor(() =>
+      expect(mocks.toast).toHaveBeenCalledWith(
+        "Could not open the camera. Check permissions.",
+      ),
+    );
+    expect(screen.queryByRole("button", { name: "Cancel" })).toBeNull();
+  });
 });
