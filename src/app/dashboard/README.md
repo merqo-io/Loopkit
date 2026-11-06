@@ -75,3 +75,5 @@ saved card possession.
 `buildOverviewPrograms({ programs, cards, activityEvents, rewardEvents }, nowMs)` takes its rows as one object.
 
 Each page exports its own `metadata.title`, shown through the root `loopkit | %s` template. UI copy is plain: no emoji, no em dashes, no contractions in errors.
+
+card-link test pins the clipboard-failure copy.

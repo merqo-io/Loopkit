@@ -22,3 +22,5 @@ Supabase clients and `@/lib` collaborators mocked via `vi.mock`/`vi.hoisted`.
 [test](../README.md)
 
 serve-customer test asserts the plain "Reward unlocked!" heading (no emoji).
+
+dashboard-actions test covers the resolveTokenAction read-failure and not-for-this-shop copy.
