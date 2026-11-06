@@ -251,7 +251,7 @@ describe("ServeCustomer", () => {
     await user.click(screen.getByRole("button", { name: "Play" }));
 
     await waitFor(() => expect(recordVisitMock).toHaveBeenCalled());
-    expect(screen.getByText("🎉 Won A prize!")).toBeInTheDocument();
+    expect(screen.getByText("Won A prize!")).toBeInTheDocument();
     expect(
       screen.getByRole("heading", { name: "🎉 Reward unlocked!" }),
     ).toBeInTheDocument();
