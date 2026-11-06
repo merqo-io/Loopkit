@@ -71,7 +71,7 @@ link this folder generates is consumed by `src/app/c/page.tsx`'s `?ref=`
 query param, and the actual per-guest crediting logic lives in
 `loopkit.vendor_join_referred`/`apply_referral_credit`
 (`supabase/migrations/0040_loopkit_referral_hosts.sql`) and
-`src/features/card-check/api/actions.ts`'s `checkStatusAction` — none of
+`src/features/card-check/api/check-status-action.ts`'s `checkStatusAction` — none of
 that logic lives in this folder.
 
 ## Server-component note

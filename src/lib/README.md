@@ -86,7 +86,7 @@ route handler, the two service-role callers of `auth.admin.listUsers()`.
 so a freshly created host's link is built identically to an existing one's;
 the actual referral-crediting logic lives in the `vendor_join_referred`/
 `apply_referral_credit` SQL functions and `checkStatusAction`
-(`src/features/card-check/api/actions.ts`), not here.
+(`src/features/card-check/api/check-status-action.ts`), not here.
 `admin-audit.ts` is the single write path into `loopkit.admin_audit`, called
 by every `/admin` Server Action and by `vendor-provision/route.ts` (the one
 merqo→loopkit write path that mutates a vendor's access without a signed-in
@@ -101,7 +101,7 @@ no row for a vendor who hasn't yet visited `/profile`.
 contract with the merqo parent app, reusing the same Supabase client
 generically across schemas. `merqo-customer-notify.ts` is a different kind
 of cross-kit call — a plain HTTP `fetch` (kit → merqo, not merqo → kit),
-called by `redeemAction` (`src/app/dashboard/actions.ts`) for both its
+called by `redeemAction` (`src/app/dashboard/redeem-actions.ts`) for both its
 customer notify (`notifyCustomerByPhone`) and vendor alert (`notifyVendor`)
 calls — loopkit no longer runs its own Telegram bot, both routes go through
 merqo's shared one. `merqo-vendor-profile.ts`, `merqo-vendor-feedback.ts`,
