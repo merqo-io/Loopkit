@@ -28,10 +28,16 @@ const DESKTOP: TourStep[] = [
       `<div class="tour-example"><div class="tour-example-label">Example card</div><div class="tour-example-row" style="margin-top:0.35rem"><strong>${exampleProgressLabel}</strong></div></div>`,
   },
   {
-    element: sel("nav-customers"),
-    title: "Start here: Customers",
+    element: sel("nav-counter"),
+    title: "Start here: Counter",
     description:
-      "Scanning your QR only joins a customer to your programs; it doesn't add a stamp by itself. Search a customer by phone number here to add one, or check their progress. Tap into a program to open its counter, where every stamp gets added.",
+      "Scanning your QR only joins a customer to your programs; it doesn't add a stamp by itself. Open the Counter to stamp a card or redeem a reward, every time a customer visits.",
+  },
+  {
+    element: sel("nav-customers"),
+    title: "Customers",
+    description:
+      "Search a customer by phone number to check their progress, and find your referral links in Referrals under Customers.",
   },
   {
     element: sel("nav-activity"),
@@ -47,9 +53,9 @@ const DESKTOP: TourStep[] = [
   },
   {
     element: sel("nav-account"),
-    title: "Your account",
+    title: "Profile",
     description:
-      "Update your stall name, profile icon, and social links here. Shared across every Merqo kit you use.",
+      "Open the account menu for Profile, where you update your stall name, profile icon, social links, and integrations, and for your Programs. Shared across every Merqo kit you use.",
   },
   {
     element: sel("tour-replay"),
@@ -67,7 +73,7 @@ const MOBILE: TourStep[] = [
     element: sel("nav-menu"),
     title: "Your sections",
     description:
-      "Customers, Activity, and Stats all live in here. Start with Customers to add your first stamp.",
+      "Counter, Customers, Activity, and Stats all live in here. Start with the Counter to add your first stamp.",
   },
   DESKTOP[DESKTOP.length - 1],
 ];

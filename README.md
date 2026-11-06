@@ -474,6 +474,7 @@ must also add a DNC Registry check, as set out in
 - Source: `github.com/merqo-io/loopkit`; `@merqo/ui` installs from `github:merqo-io/merqo-ui`, pinned to the commit tagged `v0.34.2` (its `AccountMenu` treats the sign-out action's `redirect()` as navigation, not an error); `pnpm-workspace.yaml` allows its build for that commit only
 - Plans/specs: `docs/superpowers/`
 - Release history: `CHANGELOG.md`
+- Dashboard nav: Counter, Customers (with a Referrals link strip), Activity, Stats; Settings lives in Profile and Programs in the account menu (see `CHANGELOG.md`)
 - Dependency security overrides (force-patched transitive CVEs, each
   scoped/commented with its advisory ID, e.g. browserslist
   GHSA-c83g-rgw3-j3cx): `pnpm-workspace.yaml`. `.claude/deps-gate.sh`
