@@ -45,6 +45,8 @@ const SEGMENT_LABELS: Record<CustomerSegment, string> = {
   lapsed: "Not seen 30d+",
 };
 
+export const metadata = { title: "Customers" };
+
 export default async function CustomersPage({
   searchParams,
 }: CustomersPageProps) {
@@ -145,7 +147,8 @@ export default async function CustomersPage({
             </Link>
           }
         >
-          Customers appear here once they join {program.name} with your QR code.
+          Customers appear here once they join {program.name} with your join
+          code.
         </EmptyState>
       ) : (
         <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">

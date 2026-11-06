@@ -173,7 +173,7 @@ export async function recordVisitAction(
     .maybeSingle();
 
   if (readError) {
-    return { success: false, error: "Couldn't read this card. Try again." };
+    return { success: false, error: "Could not read this card. Try again." };
   }
   const now = new Date();
   if (
@@ -314,7 +314,7 @@ export async function resolveTokenAction(formData: FormData): Promise<
   });
   if (error) {
     console.error("card_by_token failed", error.message);
-    return { success: false, error: "Couldn't read that code." };
+    return { success: false, error: "Could not read that code." };
   }
   const cardRow = data?.[0];
   if (cardRow) {
@@ -332,11 +332,11 @@ export async function resolveTokenAction(formData: FormData): Promise<
   );
   if (voucherError) {
     console.error("voucher_by_token failed", voucherError.message);
-    return { success: false, error: "Couldn't read that code." };
+    return { success: false, error: "Could not read that code." };
   }
   const voucherRow = voucherData?.[0];
   if (!voucherRow) {
-    return { success: false, error: "That card isn't for this shop." };
+    return { success: false, error: "That card is not for this shop." };
   }
   return {
     success: true,

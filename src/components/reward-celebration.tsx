@@ -28,7 +28,7 @@ export function RewardCelebration({
         <CardBurst active={open} />
         <AlertDialogHeader>
           <AlertDialogTitle className="text-center text-2xl">
-            🎉 Reward unlocked!
+            Reward unlocked!
           </AlertDialogTitle>
           <AlertDialogDescription className="text-center">
             {phone} just earned {rewardText}.

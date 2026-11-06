@@ -23,3 +23,5 @@ at render. `BackButton` falls back to a plain `<a>`.
 ## Parent
 
 [dashboard](../README.md)
+
+Each page exports its own `metadata.title`, shown through the root `loopkit | %s` template. UI copy is plain: no emoji, no em dashes, no contractions in errors. The redeem-voucher page renders a `PageHeader` h1.

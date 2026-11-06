@@ -31,6 +31,8 @@ import Link from "next/link";
 import { PageHeader } from "@/components/page-header";
 import { EmptyState } from "@/components/empty-state";
 
+export const metadata = { title: "Overview" };
+
 export default async function DashboardPage() {
   await requireVendor();
   await applyDueCutovers();
@@ -134,7 +136,7 @@ export default async function DashboardPage() {
             </Link>
           }
         >
-          Share your join QR from the Counter to start enrolling.
+          Share your join code from the Counter to start enrolling.
         </EmptyState>
       </div>
     );

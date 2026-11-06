@@ -12,6 +12,8 @@ import { Manage } from "@/app/admin/programs/[id]/manage";
 
 export const revalidate = 0;
 
+export const metadata = { title: "Program" };
+
 export default async function AdminProgramDetailPage({
   params,
 }: {
@@ -62,7 +64,7 @@ export default async function AdminProgramDetailPage({
         <Stat label="Rewards redeemed" value={rewardsRedeemed} />
         <Stat
           label="Last activity"
-          value={lastActivityAt ? formatSgtDate(lastActivityAt) : "—"}
+          value={lastActivityAt ? formatSgtDate(lastActivityAt) : "Not set"}
         />
       </div>
 
@@ -99,7 +101,7 @@ export default async function AdminProgramDetailPage({
                           {event.kind}
                         </span>
                         <span className="ml-2 text-muted-foreground">
-                          {event.phone ?? "—"}
+                          {event.phone ?? "Not set"}
                         </span>
                       </span>
                     </span>

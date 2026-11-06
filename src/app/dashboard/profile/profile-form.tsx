@@ -110,7 +110,7 @@ export function ProfileForm({
       // The upload landed but the save did not, so the new object is
       // referenced nowhere.
       if (url && url !== previousAvatar) void removeReplacedAvatar(url);
-      toast.error("Couldn't save your photo. Try again.");
+      toast.error("Could not save your photo. Try again.");
       return;
     }
     if (previousAvatar && previousAvatar !== url)
@@ -126,7 +126,7 @@ export function ProfileForm({
         data: { display_name: trimmed },
       });
       if (error) {
-        toast.error("Couldn't save your display name. Try again.");
+        toast.error("Could not save your display name. Try again.");
         return;
       }
       setDisplay(trimmed);
@@ -137,7 +137,7 @@ export function ProfileForm({
 
   function savePassword() {
     if (password !== confirm) {
-      toast.error("Passwords don't match.");
+      toast.error("Passwords do not match.");
       return;
     }
     return runPassword(async () => {
@@ -231,7 +231,7 @@ export function ProfileForm({
                 className="h-11 rounded-xl bg-muted/40"
               />
               <p className="text-xs text-muted-foreground">
-                Your sign-in email. It can&apos;t be changed here.
+                Your sign-in email. It cannot be changed here.
               </p>
             </div>
             <div className="space-y-2">

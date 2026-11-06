@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 
+- Copy sweep: emoji removed from celebration, wheel and redeemed messages; error copy spells out "could not" and "do not"; empty table cells read "Not set"; the shop QR is called the "join code" in the dashboard and customer lists. Every dashboard and admin page now sets its own browser title, and the redeem-voucher page has a heading.
 - Landing: tests now pin the "In build" badge and the "Join the waitlist" CTA shared by the hero and nav. loopkit is in build and not yet live with vendors.
 - Release flow: PRs merge into `staging`, which Vercel deploys to `loopkit-staging.merqo.io` through its git integration, then `staging` is promoted to `main` with a merge commit. CI also runs on pushes to `staging`, `vercel.json` enables git deploys for `staging`, and the `staging sync` workflow no longer calls a Vercel deploy hook (`VERCEL_STAGING_DEPLOY_HOOK` is unused).
 - Sign-in, sign-up and password-reset errors now show inline (announced as alerts, with the missing-email case attached to the email field) instead of only as toasts. Browser titles use a `loopkit | <page>` template, and the error, not-found and global-error pages use theme tokens with plainer copy.

@@ -137,6 +137,8 @@ type StatsPageProps = {
   searchParams: Promise<{ p?: string }>;
 };
 
+export const metadata = { title: "Stats" };
+
 export default async function StatsPage({ searchParams }: StatsPageProps) {
   await requireVendor();
 

@@ -10,14 +10,14 @@ describe("EmptyState", () => {
         title="No customers yet."
         actions={<a href="/x">Open the Counter</a>}
       >
-        Share your join QR to start enrolling.
+        Share your join code to start enrolling.
       </EmptyState>,
     );
     expect(
       screen.getByRole("heading", { name: "No customers yet." }),
     ).toBeInTheDocument();
     expect(
-      screen.getByText("Share your join QR to start enrolling."),
+      screen.getByText("Share your join code to start enrolling."),
     ).toBeInTheDocument();
     expect(
       screen.getByRole("link", { name: "Open the Counter" }),

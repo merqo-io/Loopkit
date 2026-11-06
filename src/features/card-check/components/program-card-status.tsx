@@ -130,9 +130,7 @@ export function ProgramCardStatus({
         Reward: {card.reward_text}
       </p>
       {card.rewardReady && (
-        <p className="text-sm font-semibold text-gold-accent">
-          🎉 Reward ready!
-        </p>
+        <p className="text-sm font-semibold text-gold-accent">Reward ready!</p>
       )}
       {card.expired && (
         <p className="text-sm font-semibold text-destructive">
@@ -143,7 +141,7 @@ export function ProgramCardStatus({
         <p className="text-xs text-muted-foreground">
           {card.replacedByName
             ? `This card is retired. Check your rewards again to see your new ${card.replacedByName} card.`
-            : "This program is no longer joinable, but you can still redeem what you've earned."}
+            : "This program is no longer joinable, but you can still redeem what you have earned."}
         </p>
       )}
       {card.qr && (
@@ -198,8 +196,8 @@ export function ProgramCardStatus({
               <AlertDialogTitle>Get a new card?</AlertDialogTitle>
               <AlertDialogDescription>
                 This starts a fresh expired cycle and resets its progress to
-                zero. Any reward you&apos;ve already earned should be redeemed
-                at the shop first.
+                zero. Any reward you have already earned should be redeemed at
+                the shop first.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
