@@ -90,7 +90,7 @@ export const stampStrategy: Strategy<StampConfig, StampState> = {
       const stageName = FLAME_STAGE_NAMES[stage];
       return {
         stage: rewardReady ? "ready" : "collecting",
-        label: `${stageName} — ${filled}/${total}`,
+        label: `${stageName}: ${filled}/${total}`,
         view: {
           kind: "flame",
           filled,

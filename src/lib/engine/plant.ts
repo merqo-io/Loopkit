@@ -59,8 +59,8 @@ export const plantStrategy: Strategy<PlantConfig, PlantState> = {
     return {
       stage: config.stages[idx].name,
       label: wilting
-        ? "Wilting — visit to revive it"
-        : `${config.stages[idx].name} — ${filled}/${total}`,
+        ? "Wilting, visit to revive it"
+        : `${config.stages[idx].name}: ${filled}/${total}`,
       view: {
         kind: "plant",
         stage: idx,

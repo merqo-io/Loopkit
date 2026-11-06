@@ -53,7 +53,7 @@ export function mapActivityRow(
     id: event.id,
     phone: card.phone,
     programId: card.program_id,
-    programName: programNameById[card.program_id] ?? "—",
+    programName: programNameById[card.program_id] ?? "-",
     kind: event.kind,
     isReward,
     isAdjust,

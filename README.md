@@ -5,7 +5,7 @@ Shared UI is pinned to audited commit `989d934c1cc8d957ff383934debf8ef083b6b6a4`
 Digital stamp-card loyalty for SG small vendors. A Merqo kit — owns the
 `loopkit` schema in the shared Merqo Supabase project, reports metrics to
 merqo over HTTP. Browser-tab title is "loopkit | Loyalty cards", and
-pages with their own title use a `title.template` of "loopkit | %s". Display font is Fraunces
+pages with their own title use a `title.template` of "loopkit | %s" (every dashboard and admin page now sets one; UI copy has no emoji, em dashes or error contractions, and the shop QR is called the "join code"). Display font is Fraunces
 (`src/app/layout.tsx`), the shared family face every Merqo kit now uses —
 see `docs/business/2026-08-13-typography-family-standard.md` in the
 workspace root for why. The landing page's

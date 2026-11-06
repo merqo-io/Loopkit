@@ -161,7 +161,7 @@ describe("Wheel", () => {
       for (let i = 0; i < 50; i++) raf.advance(200);
 
       const overlay = screen.getByTestId("wheel-result");
-      expect(overlay).toHaveTextContent("🎉 You won!");
+      expect(overlay).toHaveTextContent("You won!");
     });
 
     it("renders a 'Try again' overlay once settled on a non-reward segment", () => {
@@ -210,9 +210,7 @@ describe("Wheel", () => {
       raf.advance(1400);
       rerender(<Wheel segments={SEGMENTS} landedId="b" spinning={false} />);
       for (let i = 0; i < 50; i++) raf.advance(200);
-      expect(screen.getByTestId("wheel-result")).toHaveTextContent(
-        "🎉 You won!",
-      );
+      expect(screen.getByTestId("wheel-result")).toHaveTextContent("You won!");
 
       // A brand new spin begins (landedId masked back to null, spinning true).
       rerender(<Wheel segments={SEGMENTS} landedId={null} spinning />);

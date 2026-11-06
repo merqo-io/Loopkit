@@ -7,6 +7,8 @@ import { ProgramsTable } from "@/app/admin/programs/programs-table";
 
 export const revalidate = 0;
 
+export const metadata = { title: "Programs" };
+
 export default async function AdminProgramsPage() {
   await requireAdmin();
 

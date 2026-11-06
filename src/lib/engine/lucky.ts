@@ -15,7 +15,7 @@ export const luckyStrategy: Strategy<LuckyConfig, LuckyState> = {
   progress(state, config) {
     return {
       stage: "play",
-      label: `Tap to play — win by visit ${config.pity_ceiling}`,
+      label: `Tap to play, win by visit ${config.pity_ceiling}`,
       view: {
         kind: "lucky",
         visitsSinceWin: state.visits_since_win,

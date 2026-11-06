@@ -24,7 +24,7 @@ export function VendorCustomerList({
           </Link>
         }
       >
-        Customers appear here once they join with your QR code.
+        Customers appear here once they join with your join code.
       </EmptyState>
     );
   }

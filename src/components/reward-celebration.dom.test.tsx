@@ -15,7 +15,7 @@ describe("RewardCelebration", () => {
     );
     // AlertDialog content is portal-rendered to document.body — query via
     // screen, not the local render() container.
-    expect(await screen.findByText("🎉 Reward unlocked!")).toBeInTheDocument();
+    expect(await screen.findByText("Reward unlocked!")).toBeInTheDocument();
     expect(
       document.querySelectorAll(".card-burst-piece").length,
     ).toBeGreaterThan(0);
@@ -30,7 +30,7 @@ describe("RewardCelebration", () => {
         onOpenChange={() => {}}
       />,
     );
-    expect(screen.queryByText("🎉 Reward unlocked!")).not.toBeInTheDocument();
+    expect(screen.queryByText("Reward unlocked!")).not.toBeInTheDocument();
     expect(document.querySelectorAll(".card-burst-piece")).toHaveLength(0);
   });
 });

@@ -71,7 +71,7 @@ export async function saveStallName(name: string): Promise<{ error?: string }> {
       stallName: parsed.data.name,
     });
   } catch {
-    return { error: "Couldn't save your stall name. Try again." };
+    return { error: "Could not save your stall name. Try again." };
   }
   return {};
 }

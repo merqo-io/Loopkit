@@ -37,7 +37,7 @@ export function RedeemVoucherConfirm({
   if (redeemedText) {
     return (
       <div className="space-y-3 rounded-xl border border-gold bg-gold/10 p-5 text-center">
-        <p className="text-sm font-semibold text-gold-accent">Redeemed! 🎉</p>
+        <p className="text-sm font-semibold text-gold-accent">Redeemed!</p>
         <p className="text-sm text-muted-foreground">{redeemedText}</p>
         <BackButton
           href="/dashboard"

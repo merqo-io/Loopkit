@@ -9,6 +9,8 @@ import { EmptyState } from "@/components/empty-state";
 
 export const revalidate = 0;
 
+export const metadata = { title: "Overview" };
+
 export default async function AdminOverviewPage() {
   await requireAdmin();
 
@@ -59,10 +61,10 @@ export default async function AdminOverviewPage() {
                       </span>
                       <span className="min-w-0 truncate">
                         <span className="font-medium">
-                          {event.program_name ?? "—"}
+                          {event.program_name ?? "Not set"}
                         </span>
                         <span className="ml-2 text-muted-foreground">
-                          {event.phone ?? "—"}
+                          {event.phone ?? "Not set"}
                         </span>
                       </span>
                     </span>

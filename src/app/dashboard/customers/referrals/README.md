@@ -93,3 +93,5 @@ at render. `BackButton` falls back to a plain `<a>`.
 Labels are validated as returned form errors before insertion. Reward crediting uses trusted snapshots and compare-and-swap commits; database concurrency tests remain separate from the form regressions.
 
 The panel's `dangerouslySetInnerHTML` is `qrSvg()` output over a server-minted link.
+
+Each page exports its own `metadata.title`, shown through the root `loopkit | %s` template. UI copy is plain: no emoji, no em dashes, no contractions in errors.
