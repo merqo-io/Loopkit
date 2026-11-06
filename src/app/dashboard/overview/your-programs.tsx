@@ -57,7 +57,7 @@ export function YourPrograms({ programs }: { programs: OverviewProgram[] }) {
       ))}
 
       <Link
-        href="/setup"
+        href="/setup/new"
         className="flex items-center justify-center gap-2 rounded-md border border-dashed border-muted-foreground/45 p-2.5 text-sm font-semibold text-muted-foreground transition-colors hover:border-primary hover:text-primary"
       >
         <Plus className="size-3.5" />

@@ -250,7 +250,7 @@ export async function changeTypeAction(
     return { error: "Could not change your card. Try again." };
   }
 
-  revalidatePath("/setup");
+  revalidatePath("/setup", "layout");
   redirect(`/dashboard?p=${created}`);
 }
 
@@ -318,7 +318,7 @@ export async function prepProgramAction(
     return { error: "Could not create your card. Try again." };
   }
 
-  revalidatePath("/setup");
+  revalidatePath("/setup", "layout");
   redirect(`/setup/${created}/edit`);
 }
 
@@ -343,7 +343,7 @@ export async function activateProgramAction(
     return { error: "Could not activate that card. Try again." };
   }
 
-  revalidatePath("/setup");
+  revalidatePath("/setup", "layout");
   revalidatePath("/dashboard");
   redirect(`/dashboard?p=${id}`);
 }
@@ -383,6 +383,6 @@ export async function scheduleRetirementAction(
     return { error: "Could not schedule that. Try again." };
   }
 
-  revalidatePath("/setup");
+  revalidatePath("/setup", "layout");
   redirect("/setup");
 }

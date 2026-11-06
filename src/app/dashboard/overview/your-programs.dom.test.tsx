@@ -36,6 +36,9 @@ describe("YourPrograms", () => {
     const serves = screen.getAllByRole("link", { name: "Serve" });
     expect(serves).toHaveLength(2);
     expect(serves[1]).toHaveAttribute("href", "/dashboard/counter?p=p2");
+    expect(
+      screen.getByRole("link", { name: /add another program/i }),
+    ).toHaveAttribute("href", "/setup/new");
   });
 
   it("shows the fallback copy when a program has no return rate", () => {
