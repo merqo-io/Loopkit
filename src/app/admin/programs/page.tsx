@@ -1,6 +1,5 @@
 import { AdminPageHeader } from "@/app/admin/admin-page-header";
-import { ElevatedCard } from "@merqo/ui";
-import { EmptyState } from "@/components/empty-state";
+import { ElevatedCard, EmptyState } from "@merqo/ui";
 import { requireAdmin } from "@/lib/admin";
 import { listProgramsOverview } from "@/lib/admin-data";
 import { ProgramsTable } from "@/app/admin/programs/programs-table";

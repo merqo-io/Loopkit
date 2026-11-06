@@ -83,6 +83,9 @@ describe("MarketingConsentPanel", () => {
       />,
     );
     await confirmOptOut();
-    await waitFor(() => expect(toastMock.error).toHaveBeenCalledWith("Nope"));
+    expect(
+      await within(screen.getByRole("alertdialog")).findByText("Nope"),
+    ).toBeInTheDocument();
+    expect(toastMock.success).not.toHaveBeenCalled();
   });
 });

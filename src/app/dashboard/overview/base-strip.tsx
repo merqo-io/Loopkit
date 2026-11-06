@@ -1,6 +1,6 @@
 "use client";
 
-import { StatTile, InfoTooltip, ElevatedCard } from "@merqo/ui";
+import { StatCard, InfoTooltip } from "@merqo/ui";
 import type { BaseStat } from "@/app/dashboard/dashboard-view";
 
 const TONE_CLASS: Record<BaseStat["tone"], string> = {
@@ -9,33 +9,31 @@ const TONE_CLASS: Record<BaseStat["tone"], string> = {
   soft: "text-muted-foreground",
 };
 
-function StatCard({ stat }: { stat: BaseStat }) {
+function BaseStatCard({ stat }: { stat: BaseStat }) {
   return (
-    <ElevatedCard className="p-4">
-      <StatTile
-        reverse
-        label={stat.label}
-        value={stat.display}
-        valueClassName={`font-mono tracking-tight ${TONE_CLASS[stat.tone]}`}
-        deltaSlot={
-          <InfoTooltip
-            trigger="tap"
-            ariaLabel={stat.title}
-            content={
-              <span className="block">
-                <strong className="block text-sm font-bold text-foreground">
-                  {stat.title}
-                </strong>
-                <span className="mt-1 block">{stat.body}</span>
-                <span className="mt-1.5 block border-t border-border pt-1.5 text-xs">
-                  {stat.hint}
-                </span>
+    <StatCard
+      reverse
+      label={stat.label}
+      value={stat.display}
+      valueClassName={`font-mono tracking-tight ${TONE_CLASS[stat.tone]}`}
+      deltaSlot={
+        <InfoTooltip
+          trigger="tap"
+          ariaLabel={stat.title}
+          content={
+            <span className="block">
+              <strong className="block text-sm font-bold text-foreground">
+                {stat.title}
+              </strong>
+              <span className="mt-1 block">{stat.body}</span>
+              <span className="mt-1.5 block border-t border-border pt-1.5 text-xs">
+                {stat.hint}
               </span>
-            }
-          />
-        }
-      />
-    </ElevatedCard>
+            </span>
+          }
+        />
+      }
+    />
   );
 }
 
@@ -52,7 +50,7 @@ export function BaseStrip({
     <div className="flex flex-col gap-3">
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {stats.map((stat) => (
-          <StatCard key={stat.key} stat={stat} />
+          <BaseStatCard key={stat.key} stat={stat} />
         ))}
       </div>
 

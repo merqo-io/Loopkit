@@ -1,23 +1,10 @@
 "use client";
 
-import { useState } from "react";
 import { toast } from "sonner";
-import { ElevatedCard } from "@merqo/ui";
-import { useAsyncAction } from "@/hooks/use-async-action";
+import { ConfirmDialog, ElevatedCard } from "@merqo/ui";
 import type { MarketingConsentStatus } from "@/lib/customers";
 import { formatSgtDate } from "@/lib/format";
 import { Button } from "@/components/ui/button";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { withdrawMarketingConsentAction } from "./actions";
 
 function describe(status: MarketingConsentStatus): string {
@@ -37,55 +24,30 @@ export function MarketingConsentPanel({
   phone: string;
   status: MarketingConsentStatus;
 }) {
-  const { pending, run } = useAsyncAction();
-  const [open, setOpen] = useState(false);
-
-  function withdraw() {
-    run(async () => {
-      const fd = new FormData();
-      fd.set("phone", phone);
-      const res = await withdrawMarketingConsentAction(fd);
-      if (!res.success) {
-        toast.error(res.error);
-        return;
-      }
-      setOpen(false);
-      toast.success("Opt-out recorded. No offers will go to this customer.");
-    });
+  async function withdraw() {
+    const fd = new FormData();
+    fd.set("phone", phone);
+    const res = await withdrawMarketingConsentAction(fd);
+    if (!res.success) throw new Error(res.error);
+    toast.success("Opt-out recorded. No offers will go to this customer.");
   }
 
   return (
     <ElevatedCard className="space-y-3 p-4">
       <p className="text-sm">{describe(status)}</p>
       {status?.granted && (
-        <AlertDialog open={open} onOpenChange={setOpen}>
-          <AlertDialogTrigger asChild>
+        <ConfirmDialog
+          title="Record opt-out?"
+          description={`Use this when ${phone} asks you to stop sending offers. It takes effect at once. Only the customer can opt in again.`}
+          confirmLabel="Record opt-out"
+          pendingLabel="Recording…"
+          onConfirm={withdraw}
+          trigger={
             <Button type="button" variant="outline" size="sm">
               Record opt-out
             </Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Record opt-out?</AlertDialogTitle>
-              <AlertDialogDescription>
-                Use this when {phone} asks you to stop sending offers. It takes
-                effect at once. Only the customer can opt in again.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel disabled={pending}>Cancel</AlertDialogCancel>
-              <AlertDialogAction
-                disabled={pending}
-                onClick={(e) => {
-                  e.preventDefault();
-                  withdraw();
-                }}
-              >
-                {pending ? "Recording…" : "Record opt-out"}
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+          }
+        />
       )}
     </ElevatedCard>
   );

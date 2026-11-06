@@ -27,3 +27,5 @@ at render. `BackButton` falls back to a plain `<a>`.
 Each page exports its own `metadata.title`, shown through the root `loopkit | %s` template. UI copy is plain: no emoji, no em dashes, no contractions in errors. The redeem-voucher page renders a `PageHeader` h1.
 
 page test pins the page title and h1.
+
+This folder now imports its shared page and dialog components from `@merqo/ui` (v0.42.0) instead of local copies.

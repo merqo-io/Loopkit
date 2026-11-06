@@ -31,3 +31,5 @@ composes them.
 ## Parent
 
 [dashboard](../README.md)
+
+This folder now imports its shared page and dialog components from `@merqo/ui` (v0.42.0) instead of local copies.

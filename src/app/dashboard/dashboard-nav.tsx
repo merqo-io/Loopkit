@@ -5,11 +5,10 @@ import Link from "next/link";
 import {
   DashboardNav as SharedDashboardNav,
   getSwitchKits,
-  tierLabel,
+  TierChip,
 } from "@merqo/ui";
 import { LayoutList } from "lucide-react";
 import { Wordmark } from "@/components/landing/wordmark";
-import { cn } from "@/lib/utils";
 import { submitFeedbackAction } from "@/app/actions/feedback";
 import { submitSupportMessageAction } from "@/app/actions/support";
 import { SUPPORT_CATEGORY_LABELS } from "@/lib/schemas";
@@ -31,26 +30,6 @@ function isActive(path: string, href: string): boolean {
 /** Stable anchor id for the onboarding tour, e.g. "/dashboard/customers" → "nav-customers". */
 function tourAnchor(href: string): string {
   return `nav-${href.split("/").pop()}`;
-}
-
-const TIER_BADGE_CLASS: Record<Tier, string> = {
-  free: "bg-gold/10 text-gold-accent ring-gold/40",
-  pro: "bg-primary/10 text-primary ring-primary/30",
-};
-
-function TierBadge({ tier }: { tier: Tier }) {
-  const className = TIER_BADGE_CLASS[tier];
-  const label = tierLabel(tier);
-  return (
-    <span
-      className={cn(
-        "shrink-0 rounded-full px-1.5 py-0.5 font-mono text-[0.6rem] font-semibold uppercase tracking-wider ring-1 ring-inset",
-        className,
-      )}
-    >
-      {label}
-    </span>
-  );
 }
 
 const HELP_CATEGORY_VALUES = Object.keys(
@@ -109,7 +88,7 @@ export function DashboardNav({
       signOutAction={signOut}
       extraLink={{ href: "/setup", label: "Programs", icon: LayoutList }}
       showPlanItem
-      tierBadge={<TierBadge tier={tier} />}
+      tierBadge={<TierChip tier={tier} />}
       switchKits={getSwitchKits("loopkit")}
       getHelp={{
         type: "form",

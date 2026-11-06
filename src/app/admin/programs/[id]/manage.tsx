@@ -1,24 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { ConfirmDialog, EmptyState } from "@merqo/ui";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Trash2 } from "lucide-react";
-import { EmptyState } from "@/components/empty-state";
-import { useAsyncAction } from "@/hooks/use-async-action";
 import { setProgramActive, removeCard } from "@/app/admin/actions";
 import { Button } from "@/components/ui/button";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 
 type ManageCard = {
   id: string;
@@ -78,35 +65,35 @@ function ActiveToggle({
 }: {
   program: { id: string; name: string; active: boolean };
 }) {
-  const [open, setOpen] = useState(false);
   const router = useRouter();
-  const { pending, run } = useAsyncAction();
   const nextActive = !program.active;
 
-  function confirm() {
-    run(async () => {
-      const fd = new FormData();
-      fd.set("programId", program.id);
-      fd.set("active", String(nextActive));
-      const result = await setProgramActive(fd);
-      if (!result.success) {
-        toast.error(result.error);
-        return;
-      }
-      toast.success(
-        `${program.name} is now ${nextActive ? "active" : "inactive"}.`,
-      );
-      router.refresh();
-      setOpen(false);
-    });
+  async function confirm() {
+    const fd = new FormData();
+    fd.set("programId", program.id);
+    fd.set("active", String(nextActive));
+    const result = await setProgramActive(fd);
+    if (!result.success) throw new Error(result.error);
+    toast.success(
+      `${program.name} is now ${nextActive ? "active" : "inactive"}.`,
+    );
+    router.refresh();
   }
 
   const activeActionLabel = program.active ? "Deactivate" : "Reactivate";
-  const actionLabel = pending ? "Saving…" : activeActionLabel;
 
   return (
-    <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogTrigger asChild>
+    <ConfirmDialog
+      title={`${activeActionLabel} ${program.name}?`}
+      description={
+        program.active
+          ? "Customers will not be able to check their stamps until it is reactivated."
+          : "Customers will be able to check their stamps again."
+      }
+      confirmLabel={activeActionLabel}
+      pendingLabel="Saving…"
+      onConfirm={confirm}
+      trigger={
         <Button
           variant={program.active ? "outline" : "default"}
           size="sm"
@@ -114,58 +101,31 @@ function ActiveToggle({
         >
           {program.active ? "Deactivate program" : "Reactivate program"}
         </Button>
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>
-            {activeActionLabel} {program.name}?
-          </AlertDialogTitle>
-          <AlertDialogDescription>
-            {program.active
-              ? "Customers will not be able to check their stamps until it is reactivated."
-              : "Customers will be able to check their stamps again."}
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel disabled={pending}>Cancel</AlertDialogCancel>
-          <AlertDialogAction
-            disabled={pending}
-            onClick={(e) => {
-              e.preventDefault();
-              confirm();
-            }}
-          >
-            {actionLabel}
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+      }
+    />
   );
 }
 
 function RemoveCardButton({ card }: { card: ManageCard }) {
-  const [open, setOpen] = useState(false);
   const router = useRouter();
-  const { pending, run } = useAsyncAction();
 
-  function confirm() {
-    run(async () => {
-      const fd = new FormData();
-      fd.set("cardId", card.id);
-      const result = await removeCard(fd);
-      if (!result.success) {
-        toast.error(result.error);
-        return;
-      }
-      toast.success(`Removed ${card.phone}'s card.`);
-      router.refresh();
-      setOpen(false);
-    });
+  async function confirm() {
+    const fd = new FormData();
+    fd.set("cardId", card.id);
+    const result = await removeCard(fd);
+    if (!result.success) throw new Error(result.error);
+    toast.success(`Removed ${card.phone}'s card.`);
+    router.refresh();
   }
 
   return (
-    <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogTrigger asChild>
+    <ConfirmDialog
+      title="Remove this card?"
+      description={`Remove ${card.phone}'s card? This deletes their stamps and history for this shop. It cannot be undone.`}
+      confirmLabel="Remove"
+      pendingLabel="Removing…"
+      onConfirm={confirm}
+      trigger={
         <Button
           variant="ghost"
           size="sm"
@@ -174,28 +134,7 @@ function RemoveCardButton({ card }: { card: ManageCard }) {
           <Trash2 className="size-4" />
           <span className="sr-only">Remove card</span>
         </Button>
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Remove this card?</AlertDialogTitle>
-          <AlertDialogDescription>
-            Remove {card.phone}&apos;s card? This deletes their stamps and
-            history for this shop. It cannot be undone.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel disabled={pending}>Cancel</AlertDialogCancel>
-          <AlertDialogAction
-            disabled={pending}
-            onClick={(e) => {
-              e.preventDefault();
-              confirm();
-            }}
-          >
-            {pending ? "Removing…" : "Remove"}
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+      }
+    />
   );
 }

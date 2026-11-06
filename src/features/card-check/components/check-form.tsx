@@ -9,17 +9,7 @@ import { BirthdayField } from "./birthday-field";
 import { MarketingConsentToggle } from "./marketing-consent-toggle";
 import { EraseData } from "./erase-data";
 import { MarketingOptIn } from "@/components/marketing-opt-in";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import { ConfirmDialog } from "@merqo/ui";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -114,8 +104,13 @@ export function CheckForm({
             </p>
           </div>
           <MarketingOptIn id="card-check-marketing" shopName={shopName} />
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
+          <ConfirmDialog
+            title="Forget this card?"
+            description="This browser will stop showing your saved card. You will need your card code to see it again."
+            confirmLabel="Forget card"
+            cancelLabel="Keep card"
+            onConfirm={switchCustomer}
+            trigger={
               <Button
                 type="button"
                 variant="outline"
@@ -130,23 +125,8 @@ export function CheckForm({
                   ? "Forgetting saved card…"
                   : "Forget saved card on this browser"}
               </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Forget this card?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  This browser will stop showing your saved card. You will need
-                  your card code to see it again.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Keep card</AlertDialogCancel>
-                <AlertDialogAction onClick={switchCustomer}>
-                  Forget card
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+            }
+          />
           {switchMessage && (
             <p role="status" className="text-sm text-muted-foreground">
               {switchMessage}

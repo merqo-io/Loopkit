@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { StatTile, ElevatedCard } from "@merqo/ui";
+import { StatTile, ElevatedCard, PageHeader, EmptyState } from "@merqo/ui";
 import { requireVendor } from "@/features/auth";
 import { listPrograms, currentProgram } from "@/lib/program";
 import {
@@ -12,8 +12,6 @@ import {
 } from "@/lib/stats";
 import { ProgramSwitcher } from "@/app/dashboard/program-switcher";
 import { VisitsChart } from "@/app/dashboard/stats/visits-chart";
-import { PageHeader } from "@/components/page-header";
-import { EmptyState } from "@/components/empty-state";
 
 /** Wraps @merqo/ui's shared StatTile (value-above-label) in loopkit's own card shell. */
 function Tile({
@@ -159,7 +157,12 @@ export default async function StatsPage({ searchParams }: StatsPageProps) {
 
     return (
       <div className="space-y-8">
-        <PageHeader eyebrow="Performance" title="Stats" className="mb-0">
+        <PageHeader
+          responsive
+          eyebrow="Performance"
+          title="Stats"
+          className="mb-0"
+        >
           How your shop is performing across every program.
         </PageHeader>
 
@@ -228,7 +231,12 @@ export default async function StatsPage({ searchParams }: StatsPageProps) {
 
   return (
     <div className="space-y-8">
-      <PageHeader eyebrow="Performance" title="Stats" className="mb-0">
+      <PageHeader
+        responsive
+        eyebrow="Performance"
+        title="Stats"
+        className="mb-0"
+      >
         How {program.name} is performing.
       </PageHeader>
 
