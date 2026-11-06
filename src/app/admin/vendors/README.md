@@ -7,6 +7,7 @@ Merqo tier. Plans are changed in the Merqo admin, not here.
 
 ## Contents
 
+- `loading.tsx` — route skeleton (`AdminLoadingShell`): `aria-busy`, sr-only "Loading" status, header and card placeholders.
 - `page.tsx`: `AdminVendorsPage`: fetches `listVendors()` and renders the vendor table via `VendorsTable`, wrapped in `@merqo/ui`'s `ElevatedCard`.
 - `vendors-table.tsx`: `VendorsTable` client component: renders `@merqo/ui`'s shared `DataTable` with tier badges (labels via the shared `tierLabel`), owning the `columns` cell renderers and `getRowKey`, function props a Client Component can't be handed from the Server Component page.
 

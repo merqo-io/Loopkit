@@ -52,7 +52,7 @@ export default async function AdminActivityPage() {
   const rows = await listAdminAudit(100);
 
   return (
-    <main className="mx-auto max-w-5xl space-y-8 px-5 py-8">
+    <main className="mx-auto w-full max-w-7xl space-y-8 px-5 py-7">
       <AdminPageHeader title="Activity" />
 
       <AdminActivityLog entries={rows.map(toEntry)} />

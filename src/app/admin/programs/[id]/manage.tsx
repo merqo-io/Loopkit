@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Trash2 } from "lucide-react";
+import { EmptyState } from "@/components/empty-state";
 import { useAsyncAction } from "@/hooks/use-async-action";
 import { setProgramActive, removeCard } from "@/app/admin/actions";
 import { Button } from "@/components/ui/button";
@@ -44,9 +45,9 @@ export function Manage({
           Cards
         </div>
         {cards.length === 0 ? (
-          <p className="px-5 py-6 text-sm text-muted-foreground">
-            No cards yet.
-          </p>
+          <EmptyState title="No cards yet." className="m-4 py-6">
+            Customers who join this program will show here.
+          </EmptyState>
         ) : (
           <ul className="divide-y">
             {cards.map((card) => (
