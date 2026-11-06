@@ -10,6 +10,8 @@ import { Badge } from "@/components/ui/badge";
 // from a Server Component, so this page keeps its own copy of the labels.
 const TIER_LABEL = { free: "Free", starter: "Starter", pro: "Pro" } as const;
 
+export const metadata = { title: "Plan" };
+
 export default async function PlanPage({
   searchParams,
 }: {
@@ -53,7 +55,7 @@ export default async function PlanPage({
             <strong className="font-semibold">
               {Math.round(stats.repeatVisitRate * 100)}%
             </strong>{" "}
-            of your customers have come back for a second visit, and you&apos;ve
+            of your customers have come back for a second visit, and you have
             handed out{" "}
             <strong className="font-semibold">{stats.rewardsTotal}</strong>{" "}
             reward

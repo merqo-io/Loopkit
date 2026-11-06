@@ -122,7 +122,7 @@ function ActiveToggle({
           </AlertDialogTitle>
           <AlertDialogDescription>
             {program.active
-              ? "Customers won't be able to check their stamps until it's reactivated."
+              ? "Customers will not be able to check their stamps until it is reactivated."
               : "Customers will be able to check their stamps again."}
           </AlertDialogDescription>
         </AlertDialogHeader>
@@ -180,7 +180,7 @@ function RemoveCardButton({ card }: { card: ManageCard }) {
           <AlertDialogTitle>Remove this card?</AlertDialogTitle>
           <AlertDialogDescription>
             Remove {card.phone}&apos;s card? This deletes their stamps and
-            history for this shop. It can&apos;t be undone.
+            history for this shop. It cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

@@ -9,6 +9,8 @@ import { CustomerNotifySettings } from "@/app/dashboard/customer-notify-settings
 import { PageHeader } from "@/components/page-header";
 import type { SocialLinks } from "@/lib/types";
 
+export const metadata = { title: "Profile" };
+
 export default async function ProfilePage() {
   const { user } = await requireVendor();
   const rawDisplayName = user.user_metadata?.display_name;

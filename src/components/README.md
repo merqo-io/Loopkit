@@ -74,3 +74,5 @@ tilt treatment regardless of which visual they host.
 `cup.tsx`, `flame-layers.tsx`, `scratch-card.tsx` and `wheel.tsx` take their colours from `@/lib/tokens/mechanic-art`.
 
 On coarse pointers the shared controls reach 44px via the `@media (pointer: coarse)` rules in `src/app/globals.css`; use `.tap-area` to grow only the touch area of a small control.
+
+Celebration and game copy (reward-celebration, wheel) carries no emoji.

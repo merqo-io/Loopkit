@@ -94,7 +94,7 @@ describe("saveStallName", () => {
   it("returns an error without throwing when the merqo write fails", async () => {
     patchVendorProfileMock.mockRejectedValueOnce(new Error("db down"));
     const res = await saveStallName("Kopi Corner");
-    expect(res.error).toMatch(/couldn't save/i);
+    expect(res.error).toMatch(/could not save/i);
   });
 
   it("rejects an invalid name without calling merqo", async () => {

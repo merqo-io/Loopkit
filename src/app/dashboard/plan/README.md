@@ -12,3 +12,5 @@ Vendor billing/plan page at `/dashboard/plan`, shows Free vs. Pro feature compar
 ## Parent
 
 [dashboard](../README.md)
+
+Each page exports its own `metadata.title`, shown through the root `loopkit | %s` template. UI copy is plain: no emoji, no em dashes, no contractions in errors.

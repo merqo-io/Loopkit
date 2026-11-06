@@ -89,6 +89,8 @@ function PaginationNav({
   );
 }
 
+export const metadata = { title: "Activity" };
+
 export default async function ActivityPage({
   searchParams,
 }: ActivityPageProps) {

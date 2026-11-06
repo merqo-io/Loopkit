@@ -45,6 +45,8 @@ function toEntry(row: AdminAuditRow): AuditLogEntry {
   };
 }
 
+export const metadata = { title: "Activity" };
+
 export default async function AdminActivityPage() {
   await requireAdmin();
   const rows = await listAdminAudit(100);

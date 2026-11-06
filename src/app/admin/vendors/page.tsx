@@ -7,6 +7,8 @@ import { VendorsTable } from "@/app/admin/vendors/vendors-table";
 
 export const revalidate = 0;
 
+export const metadata = { title: "Vendors" };
+
 export default async function AdminVendorsPage() {
   await requireAdmin();
 
