@@ -137,6 +137,14 @@ describe("prepProgramAction", () => {
     expect(res.error).toMatch(/could not create your card/i);
   });
 
+  it("returns a generic error when create_program returns no id", async () => {
+    rpcMock.mockResolvedValue({ data: null, error: null });
+
+    const res = await prepProgramAction({}, form(stampFields));
+
+    expect(res.error).toMatch(/could not create your card/i);
+  });
+
   it("rejects invalid input with an error state", async () => {
     const res = await prepProgramAction({}, form({ ...stampFields, name: "" }));
 
