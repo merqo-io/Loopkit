@@ -8,7 +8,7 @@ const { stampMock, toastSuccess, toastError } = vi.hoisted(() => ({
   toastSuccess: vi.fn(),
   toastError: vi.fn(),
 }));
-vi.mock("@/app/dashboard/actions", () => ({ stampAction: stampMock }));
+vi.mock("@/app/dashboard/stamp-actions", () => ({ stampAction: stampMock }));
 vi.mock("sonner", () => ({
   toast: { success: toastSuccess, error: toastError },
 }));

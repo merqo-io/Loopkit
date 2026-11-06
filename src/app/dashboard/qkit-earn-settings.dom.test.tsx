@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { QkitEarnSettings } from "./qkit-earn-settings";
 
-vi.mock("./actions", () => ({
+vi.mock("./settings-actions", () => ({
   saveQkitEarnConfigAction: vi.fn().mockResolvedValue({ success: true }),
 }));
 

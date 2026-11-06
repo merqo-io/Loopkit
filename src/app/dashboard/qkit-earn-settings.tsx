@@ -2,7 +2,7 @@
 import { FormCard } from "@/components/form-card";
 
 import { useSaveSettings } from "@/hooks/use-save-settings";
-import { saveQkitEarnConfigAction } from "./actions";
+import { saveQkitEarnConfigAction } from "./settings-actions";
 import {
   Select,
   SelectContent,

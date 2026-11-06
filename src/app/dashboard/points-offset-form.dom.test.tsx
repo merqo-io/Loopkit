@@ -4,7 +4,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 const { applyMock } = vi.hoisted(() => ({ applyMock: vi.fn() }));
-vi.mock("@/app/dashboard/actions", () => ({
+vi.mock("@/app/dashboard/redeem-actions", () => ({
   applyPointsOffsetAction: applyMock,
 }));
 

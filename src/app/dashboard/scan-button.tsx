@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { Camera, X } from "lucide-react";
-import { resolveTokenAction } from "@/app/dashboard/actions";
+import { resolveTokenAction } from "@/app/dashboard/lookup-actions";
 import { Button } from "@/components/ui/button";
 import { ScanLine } from "lucide-react";
 

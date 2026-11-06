@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { useAsyncAction } from "@/hooks/use-async-action";
-import { applyPointsOffsetAction } from "@/app/dashboard/actions";
+import { applyPointsOffsetAction } from "@/app/dashboard/redeem-actions";
 import type { StampCard } from "@/app/dashboard/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
