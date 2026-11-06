@@ -13,7 +13,7 @@ export function ScanHero({
   return (
     <ScanButton
       variant="hero"
-      label="Scan the customer's card"
+      label="Serve a customer"
       sublabel="Camera opens when you tap"
       onResolved={onResolved}
     />

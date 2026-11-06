@@ -9,7 +9,7 @@ describe("ScanHero", () => {
   it("renders the scan target label and sub copy as a button", () => {
     render(<ScanHero onResolved={vi.fn()} />);
     const target = screen.getByRole("button", {
-      name: /scan the customer's card/i,
+      name: /serve a customer/i,
     });
     expect(target).toBeInTheDocument();
     expect(screen.getByText("Camera opens when you tap")).toBeInTheDocument();
@@ -18,7 +18,7 @@ describe("ScanHero", () => {
   it("renders the hero frame chrome (cornered dashed target)", () => {
     render(<ScanHero onResolved={vi.fn()} />);
     const target = screen.getByRole("button", {
-      name: /scan the customer's card/i,
+      name: /serve a customer/i,
     });
     expect(target.className).toContain("border-dashed");
   });

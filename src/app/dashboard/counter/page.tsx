@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { requireVendor } from "@/features/auth";
@@ -20,6 +21,8 @@ import { ProgramSwitcher } from "@/app/dashboard/program-switcher";
 import { BackButton, qrSvg } from "@merqo/ui";
 import { PageHeader } from "@/components/page-header";
 import { Badge } from "@/components/ui/badge";
+
+export const metadata: Metadata = { title: "Counter" };
 
 type CounterPageProps = {
   searchParams: Promise<{ p?: string; phone?: string }>;
