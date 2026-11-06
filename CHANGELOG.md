@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 
+- Internal: the six files over the 500-line lint baseline are split by responsibility (`flame-layers`, `scratch-card`, `stats`, `types`, the dashboard actions and the card-check actions), the baseline lint override is removed, and `checkStatusAction` is under the complexity and function-length limits. Server actions now live in `stamp-actions.ts`, `lookup-actions.ts`, `redeem-actions.ts` and `settings-actions.ts` (dashboard) and `check-status-action.ts`, `card-actions.ts` and `consent-actions.ts` (card-check). `Database` types are maintained under `src/lib/db-types/`.
 - Setup: the query modes on `/setup` are now real routes, `/setup` (programs list), `/setup/new`, and `/setup/[programId]/{edit,migrate,prep,schedule}`, each with its own title. Old `/setup?edit=` style links redirect. Setup copy drops em dashes, emoji and "Couldn't".
 - Copy sweep: emoji removed from celebration, wheel and redeemed messages; error copy spells out "could not" and "do not"; empty table cells read "Not set"; the shop QR is called the "join code" in the dashboard and customer lists. Every dashboard and admin page now sets its own browser title, and the redeem-voucher page has a heading.
 - Landing: tests now pin the "In build" badge and the "Join the waitlist" CTA shared by the hero and nav. loopkit is in build and not yet live with vendors.

@@ -15,12 +15,8 @@ import {
 } from "./stats-metrics";
 import { computeCardStats, computeMechanicBreakdown } from "./stats-compute";
 
-// Impure shell for the dashboard Overview's raw reads. Issues its own
-// cards + stamp_events query (an independent query, not shared with
-// getVendorStats, whose public shape stays unchanged) and returns the
-// classified event arrays plus the per-card fields the Overview helpers need
-// (program_id, stamp_count, created_at). RLS scopes both reads to the
-// signed-in vendor, same as getVendorStats.
+// Raw cards + stamp_events reads for the Overview, independent of getVendorStats
+// (RLS scopes both to the signed-in vendor).
 export async function getVendorOverviewInputs(programIds: string[]): Promise<{
   activityEvents: StatsEvent[];
   rewardEvents: StatsEvent[];
@@ -178,13 +174,8 @@ export const getProgramStats = cache(async function getProgramStats(
   };
 });
 
-// Impure shell: count of `reward_vouchers` that flipped to `expired` in the
-// last 30 days, across the given programs. Separately sourced from (and
-// added alongside, not replacing) rewards30d/redemptionRate above — those
-// stay on their existing stamp_events/chance-win source per
-// docs/superpowers/specs/2026-07-16-reward-voucher-ledger-design.md's
-// explicit decision not to risk a regression migrating them onto the newer
-// reward_vouchers ledger.
+// Count of reward_vouchers that expired in the last 30 days; sourced apart from
+// rewards30d/redemptionRate, which stay on stamp_events to avoid a regression.
 export async function countExpiredVouchers(
   programIds: string[],
 ): Promise<number> {

@@ -11,11 +11,7 @@ import {
 import type { ActionResult } from "@/lib/action-result";
 import type { CardResult } from "./actions-shared";
 
-// Fire-and-forget alert: routed through merqo's shared Telegram bot
-// (Phase A2) rather than a local table lookup — loopkit no longer runs
-// its own bot, vendors connect once via merqo's profile page instead.
-// Any failure is caught and logged — this must NEVER affect
-// redeemAction's own returned result.
+// Fire-and-forget alert via merqo's shared Telegram bot; a failure must never affect redeemAction's result.
 async function notifyRedemptionOnTelegram(
   vendorId: string,
   card: { phone: string; stamp_count: number },
@@ -72,12 +68,7 @@ export async function redeemAction(formData: FormData): Promise<CardResult> {
     stamp_count: card.stamp_count,
   });
 
-  // Sibling fire-and-forget call: notifyCustomerByPhone already catches its
-  // own errors internally, but this wraps the call site too so a mocked or
-  // unforeseen rejection still can't change redeemAction's own result —
-  // same "never affects redemption itself" rule as the vendor alert above.
-  // Gated on the vendor's own on/off toggle: only skip the call when a row
-  // exists AND the flag is explicitly false — a missing row still means on.
+  // A notify failure must never change the redemption result.
   try {
     if (await customerNotifyEnabled(supabase, user.id)) {
       await notifyCustomerByPhone(

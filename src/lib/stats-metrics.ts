@@ -73,13 +73,8 @@ export function avgDaysBetweenVisits(
   return gapsDays.reduce((sum, g) => sum + g, 0) / gapsDays.length;
 }
 
-// Of cards active in the last 90 days (latest activity event within the
-// window), the fraction that have 2 or more lifetime activity events. This
-// is the vendor-facing "% come back" headline. The denominator is
-// 90-day-active cards, not all-time enrolled: a long-dead card is not
-// evidence the program stopped working, so it must not drag the rate down.
-// null when no card is 90-day-active (mirrors avgDaysBetweenVisits' null
-// convention: no signal, not a misleading 0).
+// Fraction of cards active in the last 90 days with 2+ lifetime events (the "% come back" headline).
+// Long-dead cards stay out of the denominator; null when no card is 90-day-active.
 export function returnRate90d(
   activityEvents: StatsEvent[],
   nowMs: number,
