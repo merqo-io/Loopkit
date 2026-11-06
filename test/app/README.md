@@ -20,3 +20,5 @@ Supabase clients and `@/lib` collaborators mocked via `vi.mock`/`vi.hoisted`.
 ## Parent
 
 [test](../README.md)
+
+serve-customer test asserts the plain "Reward unlocked!" heading (no emoji).
