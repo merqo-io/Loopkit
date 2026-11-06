@@ -4,7 +4,9 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 const { selectMock } = vi.hoisted(() => ({ selectMock: vi.fn() }));
-vi.mock("../api/actions", () => ({ selectPointsRewardAction: selectMock }));
+vi.mock("../api/card-actions", () => ({
+  selectPointsRewardAction: selectMock,
+}));
 
 import { PointsCatalogPicker } from "./points-catalog-picker";
 

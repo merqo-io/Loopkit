@@ -9,9 +9,11 @@ const { checkStatusActionMock, forgetProofMock } = vi.hoisted(() => ({
   checkStatusActionMock: vi.fn(),
 }));
 
-vi.mock("../api/actions", () => ({
+vi.mock("../api/check-status-action", () => ({
   checkStatusAction: checkStatusActionMock,
 }));
+vi.mock("../api/card-actions", () => ({}));
+vi.mock("../api/consent-actions", () => ({}));
 
 vi.mock("@/lib/customer-proof-actions", () => ({
   forgetCustomerProof: forgetProofMock,

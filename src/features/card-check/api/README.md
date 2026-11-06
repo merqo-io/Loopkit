@@ -10,6 +10,18 @@ Marketing consent: `checkStatusAction` records a grant only when the join form's
 
 Responses are schema validated. Transport and malformed-response failures produce retry messages. Referral completion is best effort after successful enrollment. Tests cover scoped proof, enrollment conflicts, recovery, mutation failures and referral delivery; direct SQL authorization tests live in supabase/tests/customer-capability.test.sql.
 
+## Contents
+
+- `check-status-action.ts` — `checkStatusAction`: validates the join form, rate limits, calls `customer_join`, saves the proof cookie, syncs marketing consent, credits a pending referral and builds the card view
+- `card-actions.ts` — `regenerateCardAction`, `setCustomerBirthdayAction` and `selectPointsRewardAction`: proof-checked card mutations that each return a generic retry message on failure
+- `consent-actions.ts` — `setMarketingConsentAction` (the card-view switch) and `eraseMyDataAction` (self-service erase with one generic failure message)
+- `join-payload.ts` — `joinPayloadSchema` and `VendorJoinRow` for the `customer_join` response, plus the best-effort referral credit helpers
+- `card-status-builder.ts` — `buildCardStatus`: turns one joined row into a `CardStatus` with progress, QR, expiry and active-voucher QRs
+- `marketing-sync.ts` — `syncMarketingConsent`: records a ticked opt-in at join time, then reads the current consent state for the card view
+- `referral-credit.ts` — `completeReferralCredit`: delivers the referral credit to the host after a guest joins
+- `actions.test.ts` — behavior tests for all of the action files above
+- `referral-credit.test.ts` — tests for referral delivery
+
 [Parent](../README.md)
 
 Service-client imports carry an eslint-disable reason: the card or voucher token is the credential.
