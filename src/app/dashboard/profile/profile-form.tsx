@@ -267,6 +267,7 @@ export function ProfileForm({
                 type="button"
                 onClick={savePassword}
                 disabled={savingPassword || !passwordsFilled}
+                variant="outline"
                 className="h-10 rounded-xl font-semibold"
               >
                 {savingPassword ? "Updating…" : "Update password"}
@@ -303,6 +304,7 @@ export function ProfileForm({
                 disabled={
                   savingDisplay || display.trim() === initialDisplayName.trim()
                 }
+                variant="outline"
                 className="h-10 rounded-xl font-semibold"
               >
                 {savingDisplay ? "Saving…" : "Save"}
@@ -312,7 +314,7 @@ export function ProfileForm({
 
           <Section
             icon={<Share2 className="size-4" />}
-            eyebrow="Shown to customers"
+            eyebrow="Public links"
             title="Social & website"
             description="Shown on your customer's card. Each link is optional."
           >
@@ -326,6 +328,7 @@ export function ProfileForm({
                 type="button"
                 onClick={saveLinks}
                 disabled={savingLinks}
+                variant="outline"
                 className="h-10 rounded-xl font-semibold"
               >
                 {savingLinks ? "Saving…" : "Save links"}

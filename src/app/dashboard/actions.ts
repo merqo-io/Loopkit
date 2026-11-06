@@ -598,7 +598,7 @@ export async function saveQkitEarnConfigAction(
     return { success: false, error: "Something went wrong." };
   }
 
-  revalidatePath("/dashboard/settings");
+  revalidatePath("/dashboard/profile");
   return { success: true, enabled, programId };
 }
 
@@ -627,6 +627,6 @@ export async function saveCustomerNotifySettingsAction(
     return { success: false, error: "Something went wrong." };
   }
 
-  revalidatePath("/dashboard/settings");
+  revalidatePath("/dashboard/profile");
   return { success: true, enabled };
 }

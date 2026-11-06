@@ -76,7 +76,7 @@ export async function createReferralHostAction(
     `https://${h.get("x-forwarded-host") ?? h.get("host")}`;
   const link = referralLink(origin, user.id, data.referral_code);
 
-  revalidatePath("/dashboard/referrals");
+  revalidatePath("/dashboard/customers/referrals");
   return {
     status: "created",
     host: {
