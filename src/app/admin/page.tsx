@@ -5,6 +5,7 @@ import { platformTotals, recentActivity } from "@/lib/admin-data";
 import { formatSgtDateTime } from "@/lib/format";
 import { Stat } from "@/app/admin/stat";
 import { ElevatedCard } from "@merqo/ui";
+import { EmptyState } from "@/components/empty-state";
 
 export const revalidate = 0;
 
@@ -17,7 +18,7 @@ export default async function AdminOverviewPage() {
   ]);
 
   return (
-    <main className="mx-auto max-w-5xl space-y-8 px-5 py-8">
+    <main className="mx-auto w-full max-w-7xl space-y-8 px-5 py-7">
       <AdminPageHeader title="Overview" />
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
@@ -72,8 +73,10 @@ export default async function AdminOverviewPage() {
                 );
               })
             ) : (
-              <li className="text-sm text-muted-foreground">
-                No activity yet.
+              <li>
+                <EmptyState title="No activity yet." className="py-6">
+                  Stamps and redemptions across all shops will show here.
+                </EmptyState>
               </li>
             )}
           </ul>

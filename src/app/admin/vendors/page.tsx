@@ -1,6 +1,8 @@
 import { requireAdmin } from "@/lib/admin";
 import { listVendors } from "@/lib/admin-data";
 import { ElevatedCard } from "@merqo/ui";
+import { EmptyState } from "@/components/empty-state";
+import { PageHeader } from "@/components/page-header";
 import { VendorsTable } from "@/app/admin/vendors/vendors-table";
 
 export const revalidate = 0;
@@ -11,22 +13,16 @@ export default async function AdminVendorsPage() {
   const vendors = await listVendors();
 
   return (
-    <main className="mx-auto max-w-5xl space-y-8 px-5 py-8">
-      <div>
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-          Internal
-        </p>
-        <h1 className="text-3xl font-bold tracking-tight">Vendors</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Plans are managed in the Merqo admin; the tier shown is the last one
-          Merqo pushed.
-        </p>
-      </div>
+    <main className="mx-auto w-full max-w-7xl space-y-8 px-5 py-7">
+      <PageHeader eyebrow="Internal" title="Vendors" className="mb-0">
+        Plans are managed in the Merqo admin; the tier shown is the last one
+        Merqo pushed.
+      </PageHeader>
 
       {vendors.length === 0 ? (
-        <p className="rounded-2xl border border-dashed px-4 py-10 text-center text-sm text-muted-foreground">
-          No vendors yet.
-        </p>
+        <EmptyState title="No vendors yet.">
+          Vendors appear here once they sign up.
+        </EmptyState>
       ) : (
         <ElevatedCard className="overflow-x-auto">
           <VendorsTable rows={vendors} />

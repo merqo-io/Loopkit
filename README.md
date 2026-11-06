@@ -282,7 +282,7 @@ pnpm format         # prettier --write
 ```
 src/app/dashboard/     — vendor console (programs, cards, stats; routes have loading skeletons)
 src/app/c/              — customer-facing card view (QR entry point)
-src/app/admin/          — Merqo-team admin console
+src/app/admin/          — Merqo-team admin console (shares the dashboard layout, page header, stat tiles and empty states; routes have loading skeletons)
 src/app/setup/          — vendor onboarding
 src/app/login/          — auth pages
 src/lib/engine/         — stamp/points/lucky-reward core logic
