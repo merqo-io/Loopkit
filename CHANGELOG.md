@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 
+- Setup: the query modes on `/setup` are now real routes, `/setup` (programs list), `/setup/new`, and `/setup/[programId]/{edit,migrate,prep,schedule}`, each with its own title. Old `/setup?edit=` style links redirect. Setup copy drops em dashes, emoji and "Couldn't".
 - Copy sweep: emoji removed from celebration, wheel and redeemed messages; error copy spells out "could not" and "do not"; empty table cells read "Not set"; the shop QR is called the "join code" in the dashboard and customer lists. Every dashboard and admin page now sets its own browser title, and the redeem-voucher page has a heading.
 - Landing: tests now pin the "In build" badge and the "Join the waitlist" CTA shared by the hero and nav. loopkit is in build and not yet live with vendors.
 - Release flow: PRs merge into `staging`, which Vercel deploys to `loopkit-staging.merqo.io` through its git integration, then `staging` is promoted to `main` with a merge commit. CI also runs on pushes to `staging`, `vercel.json` enables git deploys for `staging`, and the `staging sync` workflow no longer calls a Vercel deploy hook (`VERCEL_STAGING_DEPLOY_HOOK` is unused).
