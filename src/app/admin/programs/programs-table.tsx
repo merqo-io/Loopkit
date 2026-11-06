@@ -39,7 +39,9 @@ export function ProgramsTable({
     {
       header: "Vendor",
       cell: (p) => (
-        <span className="text-muted-foreground">{p.vendor_email ?? "—"}</span>
+        <span className="text-muted-foreground">
+          {p.vendor_email ?? "Not set"}
+        </span>
       ),
     },
     {
@@ -75,7 +77,7 @@ export function ProgramsTable({
       header: "Last activity",
       cell: (p) => (
         <span className="text-muted-foreground">
-          {p.last_activity_at ? formatSgtDate(p.last_activity_at) : "—"}
+          {p.last_activity_at ? formatSgtDate(p.last_activity_at) : "Not set"}
         </span>
       ),
     },

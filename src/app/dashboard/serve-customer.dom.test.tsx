@@ -88,12 +88,12 @@ describe("ServeCustomer (scan-first)", () => {
     expect(input.closest("details")).not.toBeNull();
   });
 
-  it("toggles the New customer and Shop join QR panels one at a time", async () => {
+  it("toggles the New customer and Join code panels one at a time", async () => {
     const user = userEvent.setup();
     render(<ServeCustomer {...baseProps} />);
 
     const newBtn = screen.getByRole("button", { name: "New customer" });
-    const qrBtn = screen.getByRole("button", { name: "Shop join QR" });
+    const qrBtn = screen.getByRole("button", { name: "Join code" });
 
     expect(newBtn).toHaveAttribute("aria-expanded", "false");
     await user.click(newBtn);

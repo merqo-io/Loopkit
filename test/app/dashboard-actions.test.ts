@@ -594,6 +594,33 @@ describe("resolveTokenAction falls back to a voucher lookup", () => {
     expect(rpcMock).not.toHaveBeenCalled();
   });
 
+  it("reports a read failure on the card lookup", async () => {
+    rpcMock.mockResolvedValue({ data: null, error: { message: "db down" } });
+    const res = await resolveTokenAction(form({ token: "t" }));
+    expect(res).toEqual({ success: false, error: "Could not read that code." });
+  });
+
+  it("reports a read failure on the voucher lookup", async () => {
+    rpcMock.mockImplementation((name: string) =>
+      Promise.resolve(
+        name === "card_by_token"
+          ? { data: [], error: null }
+          : { data: null, error: { message: "db down" } },
+      ),
+    );
+    const res = await resolveTokenAction(form({ token: "t" }));
+    expect(res).toEqual({ success: false, error: "Could not read that code." });
+  });
+
+  it("says a code from another shop is not for this shop", async () => {
+    rpcMock.mockResolvedValue({ data: [], error: null });
+    const res = await resolveTokenAction(form({ token: "nope" }));
+    expect(res).toEqual({
+      success: false,
+      error: "That card is not for this shop.",
+    });
+  });
+
   it("errors when neither a card nor a voucher matches", async () => {
     rpcMock.mockResolvedValue({ data: [], error: null });
     const res = await resolveTokenAction(form({ token: "nope" }));

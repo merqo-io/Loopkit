@@ -6,7 +6,7 @@ import { ShopJoinPoster } from "@/app/dashboard/counter/shop-join-poster";
 import type { StampCard } from "@/app/dashboard/card";
 import { Button } from "@/components/ui/button";
 
-// The "New customer" / "Shop join QR" row under the scan hero. One panel open
+// The "New customer" / "Join code" row under the scan hero. One panel open
 // at a time; creating a customer closes the row.
 export function CounterActions({
   programId,
@@ -53,7 +53,7 @@ export function CounterActions({
           onClick={() => toggle("qr")}
           className="h-11 rounded-xl font-semibold"
         >
-          Shop join QR
+          Join code
         </Button>
       </div>
 

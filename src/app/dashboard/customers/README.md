@@ -24,3 +24,5 @@ Vendor-facing customer list at `/dashboard/customers` — a searchable directory
 [dashboard](../README.md)
 
 Overview cohort links retain program/search/cohort parameters and render exact card-level cohort rows. Explicit segment or sort choices do not take the automatic single-program redirect.
+
+Each page exports its own `metadata.title`, shown through the root `loopkit | %s` template. UI copy is plain: no emoji, no em dashes, no contractions in errors.

@@ -7,6 +7,7 @@ activity, linking into the per-program detail route.
 
 ## Contents
 
+- `loading.tsx` — route skeleton (`AdminLoadingShell`): `aria-busy`, sr-only "Loading" status, header and card placeholders.
 - `[id]/`
 - `page.tsx` — `AdminProgramsPage`: fetches `listProgramsOverview()`, sorts rows by last activity, renders a table (wrapped in `ElevatedCard`, `overflow-x-auto` for mobile) of shop/vendor/customers/stamps/rewards/health/last-activity with links to each program's detail page, via `@merqo/ui`'s shared `DataTable` (the wrapping `ElevatedCard` also now from `@merqo/ui`).
 
@@ -30,3 +31,5 @@ The list page uses `../admin-page-header.tsx`. Program queries, health badges an
 ## Parent
 
 [admin](../README.md)
+
+Each page exports its own `metadata.title`, shown through the root `loopkit | %s` template. UI copy is plain: no emoji, no em dashes, no contractions in errors.

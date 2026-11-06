@@ -383,7 +383,7 @@ export function Wheel({
               : "bg-background/85 text-muted-foreground",
           )}
         >
-          {result.won ? "🎉 You won!" : "Try again"}
+          {result.won ? "You won!" : "Try again"}
         </div>
       )}
     </div>

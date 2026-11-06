@@ -5,7 +5,7 @@ Shared UI is pinned to audited commit `989d934c1cc8d957ff383934debf8ef083b6b6a4`
 Digital stamp-card loyalty for SG small vendors. A Merqo kit — owns the
 `loopkit` schema in the shared Merqo Supabase project, reports metrics to
 merqo over HTTP. Browser-tab title is "loopkit | Loyalty cards", and
-pages with their own title use a `title.template` of "loopkit | %s". Display font is Fraunces
+pages with their own title use a `title.template` of "loopkit | %s" (every dashboard and admin page now sets one; UI copy has no emoji, em dashes or error contractions, and the shop QR is called the "join code"). Display font is Fraunces
 (`src/app/layout.tsx`), the shared family face every Merqo kit now uses —
 see `docs/business/2026-08-13-typography-family-standard.md` in the
 workspace root for why. The landing page's
@@ -161,7 +161,7 @@ optional per-program reward cost (SGD, migration 0045); `/dashboard`
 rebuilt as the vendor Overview (briefing, self-explaining base stats,
 7/14-day visits trend, worth-a-look, reward-cost panel); a scan-first
 Counter (empty-until-loaded active card, inline new-customer, printable
-join poster, one-level Undo); and Customers segment chips + sort + a
+join poster, one-level Undo; 44px touch controls and a "Serve a customer" primary action); and Customers segment chips + sort + a
 per-row Serve. Phase 1 shipped ungated
 (`src/app/dashboard/{overview,counter,customers}/README.md`). Editing a card that customers already hold now confirms the change first, and newly earned rewards expire after 90 days unless the vendor clears that field. Program mechanics, stamp visual styles, custom stamp color, and the shop-poster's "via LoopKit" line are now Pro-gated (`src/lib/program.ts`'s `Entitlement`); a free vendor still previews every option, only Save is blocked server-side.
 
@@ -282,8 +282,8 @@ pnpm format         # prettier --write
 ```
 src/app/dashboard/     — vendor console (programs, cards, stats; routes have loading skeletons)
 src/app/c/              — customer-facing card view (QR entry point)
-src/app/admin/          — Merqo-team admin console
 src/app/setup/          — vendor onboarding: /setup programs list, /setup/new, /setup/[programId]/{edit,migrate,prep,schedule}
+src/app/admin/          — Merqo-team admin console (shares the dashboard layout, page header, stat tiles and empty states; routes have loading skeletons)
 src/app/login/          — auth pages
 src/lib/engine/         — stamp/points/lucky-reward core logic
 src/lib/program.ts      — program CRUD + rules

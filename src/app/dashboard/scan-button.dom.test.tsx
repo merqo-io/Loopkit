@@ -9,7 +9,7 @@ describe("ScanButton", () => {
   it("renders the default label", () => {
     render(<ScanButton onResolved={vi.fn()} />);
     expect(
-      screen.getByRole("button", { name: /scan to serve/i }),
+      screen.getByRole("button", { name: /serve a customer/i }),
     ).toBeInTheDocument();
   });
 
@@ -24,13 +24,13 @@ describe("ScanButton", () => {
     render(
       <ScanButton
         variant="hero"
-        label="Scan the customer's card"
+        label="Serve a customer"
         sublabel="Camera opens when you tap"
         onResolved={vi.fn()}
       />,
     );
     const target = screen.getByRole("button", {
-      name: /scan the customer's card/i,
+      name: /serve a customer/i,
     });
     expect(target.className).toContain("border-dashed");
     expect(screen.getByText("Camera opens when you tap")).toBeInTheDocument();

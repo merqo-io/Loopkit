@@ -18,3 +18,5 @@ Component tests verify rendering, form payloads, retry states and the expired-cy
 `program-card-status.tsx` delegates pure progress rendering to `components/progress-visual.tsx`. It retains customer plant seeding, catalog redemption, voucher state and recovery/regeneration actions.
 
 Every `dangerouslySetInnerHTML` here is `qrSvg()` output over a server-minted token.
+
+Customer-facing copy has no emoji or contractions.

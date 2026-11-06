@@ -27,7 +27,7 @@ export async function updatePasswordAction(
 
   const supabase = await createServerClient();
   const { error } = await supabase.auth.updateUser({ password: parsed.data });
-  if (error) return { error: "Couldn't update your password. Try again." };
+  if (error) return { error: "Could not update your password. Try again." };
   return {};
 }
 

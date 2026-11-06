@@ -151,7 +151,7 @@ describe("ServeCustomer", () => {
       expect(screen.getByText("Reward ready!")).toBeInTheDocument(),
     );
     expect(
-      screen.getByRole("heading", { name: "🎉 Reward unlocked!" }),
+      screen.getByRole("heading", { name: "Reward unlocked!" }),
     ).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Nice!" }));
 
@@ -251,9 +251,9 @@ describe("ServeCustomer", () => {
     await user.click(screen.getByRole("button", { name: "Play" }));
 
     await waitFor(() => expect(recordVisitMock).toHaveBeenCalled());
-    expect(screen.getByText("🎉 Won A prize!")).toBeInTheDocument();
+    expect(screen.getByText("Won A prize!")).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { name: "🎉 Reward unlocked!" }),
+      screen.getByRole("heading", { name: "Reward unlocked!" }),
     ).toBeInTheDocument();
   });
 
@@ -280,7 +280,7 @@ describe("ServeCustomer", () => {
 
     await waitFor(() => expect(recordVisitMock).toHaveBeenCalled());
     expect(
-      screen.queryByRole("heading", { name: "🎉 Reward unlocked!" }),
+      screen.queryByRole("heading", { name: "Reward unlocked!" }),
     ).not.toBeInTheDocument();
   });
 
@@ -456,7 +456,7 @@ describe("ServeCustomer", () => {
 
     await waitFor(() => expect(recordVisitMock).toHaveBeenCalled());
     expect(
-      screen.getByRole("heading", { name: "🎉 Reward unlocked!" }),
+      screen.getByRole("heading", { name: "Reward unlocked!" }),
     ).toBeInTheDocument();
   });
 
@@ -494,7 +494,7 @@ describe("ServeCustomer", () => {
 
     await waitFor(() => expect(recordVisitMock).toHaveBeenCalled());
     expect(
-      screen.queryByRole("heading", { name: "🎉 Reward unlocked!" }),
+      screen.queryByRole("heading", { name: "Reward unlocked!" }),
     ).not.toBeInTheDocument();
   });
 
@@ -529,7 +529,7 @@ describe("ServeCustomer", () => {
 
     await waitFor(() => expect(recordVisitMock).toHaveBeenCalled());
     expect(
-      screen.getByRole("heading", { name: "🎉 Reward unlocked!" }),
+      screen.getByRole("heading", { name: "Reward unlocked!" }),
     ).toBeInTheDocument();
   });
 
@@ -564,7 +564,7 @@ describe("ServeCustomer", () => {
 
     await waitFor(() => expect(recordVisitMock).toHaveBeenCalled());
     expect(
-      screen.queryByRole("heading", { name: "🎉 Reward unlocked!" }),
+      screen.queryByRole("heading", { name: "Reward unlocked!" }),
     ).not.toBeInTheDocument();
   });
 
@@ -588,7 +588,7 @@ describe("ServeCustomer", () => {
     await user.click(screen.getByRole("button", { name: "Add stamp" }));
     await waitFor(() =>
       expect(
-        screen.getByRole("heading", { name: "🎉 Reward unlocked!" }),
+        screen.getByRole("heading", { name: "Reward unlocked!" }),
       ).toBeInTheDocument(),
     );
     await user.click(screen.getByRole("button", { name: "Nice!" }));
@@ -597,7 +597,7 @@ describe("ServeCustomer", () => {
     await user.click(screen.getByRole("button", { name: "Add stamp" }));
     await waitFor(() => expect(stampMock).toHaveBeenCalledTimes(2));
     expect(
-      screen.queryByRole("heading", { name: "🎉 Reward unlocked!" }),
+      screen.queryByRole("heading", { name: "Reward unlocked!" }),
     ).not.toBeInTheDocument();
   });
 

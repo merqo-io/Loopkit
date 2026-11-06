@@ -13,9 +13,10 @@ figure/badge helpers used by the overview, programs, and vendors screens.
 - `admin-nav.tsx` — `AdminNav` client component: the Overview/Programs/Vendors/Activity tab bar, highlighting the active section by path.
 - `health-badge.tsx` — `ProgramHealthBadge`: `ProgramHealth` rendered through `@merqo/ui`'s `StatusBadge`, shared by the programs list and the program detail header.
 - `layout.tsx` — `AdminLayout`: gates every `/admin` route with `requireAdmin()`, renders the header (wordmark, Admin badge, sign-out) and `AdminNav`.
+- `loading.tsx` / `loading-skeleton.tsx` — route skeleton for the overview (and `AdminLoadingShell`, shared by each admin route's own `loading.tsx`): `aria-busy`, an sr-only "Loading" status, header, optional stat tiles and one card.
 - `page.tsx`: `AdminOverviewPage`: platform-wide totals (programs, customers, stamps, rewards), and a recent cross-shop activity feed, wrapped in `@merqo/ui`'s `ElevatedCard`.
 - `programs/`
-- `stat.tsx` — `Stat`: a small labeled-value tile (`@merqo/ui`'s `ElevatedCard`-based) used across the admin overview and program detail pages.
+- `stat.tsx` — `Stat`: a labeled-value tile styled like the dashboard's stat tiles (`ElevatedCard` + reversed `StatTile`, mono tabular value) used across the admin overview and program detail pages.
 - `vendors/`
 
 ## Connectivity
@@ -30,7 +31,7 @@ actions write via `recordAudit`.
 
 ## Reuse and ownership
 
-`admin-page-header.tsx` supplies the common title and description chrome across admin list pages. `stat.tsx` wraps shared `StatTile` inside `ElevatedCard`, retaining admin spacing, typography and number/string values.
+`admin-page-header.tsx` supplies the common title and description chrome across admin list pages. `stat.tsx` wraps shared `StatTile` inside `ElevatedCard`, using the dashboard's mono, value-above-label style and accepting number or string values. Admin pages share the dashboard's `max-w-7xl px-5 py-7` container, and empty lists use `@/components/empty-state`.
 
 ## Parent
 
@@ -39,3 +40,5 @@ actions write via `recordAudit`.
 Admin writes patch only the intended owned profile fields and preserve unrelated shared Merqo profile data. Authorization checks precede service-role mutations.
 
 Every page and action is gated by `requireAdmin()`, which needs `aal2`; a password-only session is redirected to `/mfa`. Service-client imports carry an eslint-disable reason.
+
+Each page exports its own `metadata.title`, shown through the root `loopkit | %s` template. UI copy is plain: no emoji, no em dashes, no contractions in errors.

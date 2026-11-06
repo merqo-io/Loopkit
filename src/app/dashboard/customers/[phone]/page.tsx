@@ -18,6 +18,8 @@ type CustomerDetailPageProps = {
   params: Promise<{ phone: string }>;
 };
 
+export const metadata = { title: "Customer" };
+
 export default async function CustomerDetailPage({
   params,
 }: CustomerDetailPageProps) {

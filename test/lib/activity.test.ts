@@ -124,7 +124,7 @@ describe("mapActivityRow", () => {
     expect(row).toBeNull();
   });
 
-  it("falls back to '—' when the card's program has no name entry", () => {
+  it("falls back to '-' when the card's program has no name entry", () => {
     const row = mapActivityRow(
       {
         id: "e6",
@@ -135,6 +135,6 @@ describe("mapActivityRow", () => {
       { id: "c1", phone: "+6591234567", program_id: "unknown-program" },
       programNameById,
     );
-    expect(row?.programName).toBe("—");
+    expect(row?.programName).toBe("-");
   });
 });
