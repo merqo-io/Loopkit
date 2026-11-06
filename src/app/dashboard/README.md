@@ -6,7 +6,7 @@ Vendor console root: the Overview (a daily briefing: regulars and cadence, self-
 
 ## Contents
 
-- Pages here (`page.tsx`, `activity/`, `counter/`, `customers/`, `stats/`) open with the shared `PageHeader` and show `EmptyState` with a call to action when there is nothing to list; `layout.tsx`'s `<main>` padding is `px-5 py-7`.
+- Pages here (`page.tsx`, `activity/`, `counter/`, `customers/`, `stats/`) open with `@merqo/ui`'s `PageHeader` and show its `EmptyState` with a call to action when there is nothing to list; `layout.tsx`'s `<main>` padding is `px-5 py-7`.
 - `actions-shared.ts` — `programFromForm` (resolves the counter form's hidden `program_id` via the RLS-scoped `getProgramById`) and the `CardResult` type shared by the stamp and redeem action files; not a `"use server"` file, so it can export a type
 - `stamp-actions.ts` — server actions that change a card: `stampAction` (`add_stamp`, `rewardReady` via `getProgress` so every type's engine decides), `adjustStampAction` (manual `±` correction with a required reason via `loopkit.adjust_stamp`, free-tier), `recordVisitAction` (engine play path for Lucky Tap/Sprout with a server-side roll and `record_visit_checked`), `redeemPlantAction` and `regenerateCardAction` (credential rotation that keeps progress)
 - `lookup-actions.ts` — read-only server actions: `resolveTokenAction` (scanned token to a `kind: "card" | "voucher"` result, falling back to `voucher_by_token` on a card miss) and `lookupAction` (a card's per-type progress by phone, no visit recorded)
@@ -45,7 +45,7 @@ Vendor console root: the Overview (a daily briefing: regulars and cadence, self-
 - `qkit-earn-settings.dom.test.tsx` — jsdom tests for `QkitEarnSettings`: shows upgrade prompt when not Pro (and that its copy never claims the stamp is awarded automatically), lets a Pro vendor pick a program and toggle the switch
 - `qkit-earn-settings.tsx` — client `QkitEarnSettings` form: Pro-gated switch + program picker that calls `saveQkitEarnConfigAction`; the non-Pro upsell copy describes the real claim-link flow (customer taps a link on their qkit order, enters their phone number on `/earn`) rather than overselling it as automatic. Wrapped in `@merqo/ui`'s `ElevatedCard`
 - `redeem-button.dom.test.tsx` — jsdom test asserting `RedeemButton`'s confirm dialog shows the exact stamp count and carryover wording
-- `redeem-button.tsx` — client `RedeemButton`: AlertDialog-confirmed redeem control that calls `redeemAction` and reports the reset card back to the caller
+- `redeem-button.tsx` — client `RedeemButton`: ConfirmDialog-confirmed redeem control that calls `redeemAction` and reports the reset card back to the caller
 - `redeem-voucher/`
 - `scan-button.dom.test.tsx` — jsdom tests for `ScanButton`'s default and custom label rendering, plus a voucher-kind `resolveTokenAction` result passing straight through to `onResolved`
 - `scan-button.tsx` — client `ScanButton` (default label "Serve a customer"): opens a camera modal, decodes a QR via `@zxing/browser`, resolves the token through `resolveTokenAction`, and reports its discriminated-union result (exported as `ScanResolved`) — `{kind:"card"; phone; programId}` or `{kind:"voucher"; phone; voucherToken; rewardText}` — straight through to `onResolved`; `variant` picks the trigger's chrome — `"button"` (default) is the full-width primary trigger, `"link"` is a small secondary text trigger, `"hero"` is the large cornered scan target the Counter mounts via `counter/scan-hero.tsx` (optional `sublabel` second line)

@@ -18,8 +18,7 @@ import { pickDefaultCounterProgram } from "@/app/dashboard/counter/counter-view"
 import { RememberProgram } from "@/app/dashboard/counter/remember-program";
 import { ServeCustomer } from "@/app/dashboard/serve-customer";
 import { ProgramSwitcher } from "@/app/dashboard/program-switcher";
-import { BackButton, qrSvg } from "@merqo/ui";
-import { PageHeader } from "@/components/page-header";
+import { BackButton, qrSvg, PageHeader } from "@merqo/ui";
 import { Badge } from "@/components/ui/badge";
 
 export const metadata: Metadata = { title: "Counter" };
@@ -68,6 +67,7 @@ export default async function CounterPage({ searchParams }: CounterPageProps) {
       <BackButton href="/dashboard" label="Back to dashboard" />
 
       <PageHeader
+        responsive
         eyebrow="Daily work"
         title="Counter"
         className="mb-0"

@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
+import { PageHeader } from "@merqo/ui";
 import { Wordmark } from "@/components/landing/wordmark";
-import { PageHeader } from "@/components/page-header";
 
 /**
  * The frame shared by the pages a shop's customers open from a QR code or
@@ -21,7 +21,7 @@ export function CustomerShell({
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-md flex-col px-5 py-8 sm:py-12">
       <Wordmark className="mb-8 text-2xl" />
-      <PageHeader eyebrow={eyebrow} title={title}>
+      <PageHeader responsive eyebrow={eyebrow} title={title}>
         {description}
       </PageHeader>
       {children}

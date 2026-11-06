@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
-import { PageHeader } from "@/components/page-header";
-import { BackButton } from "@merqo/ui";
+import { BackButton, PageHeader } from "@merqo/ui";
 
 export function SetupShell({
   vendorName,
@@ -23,7 +22,7 @@ export function SetupShell({
         <div className="mb-4">
           <BackButton href={backHref} label={backLabel} />
         </div>
-        <PageHeader eyebrow={vendorName} title={title}>
+        <PageHeader responsive eyebrow={vendorName} title={title}>
           {description}
         </PageHeader>
         {children}

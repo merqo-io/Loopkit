@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { BackButton } from "@merqo/ui";
+import { BackButton, PageHeader, EmptyState, StatCard } from "@merqo/ui";
 import { Gift, Stamp } from "lucide-react";
 import { requireAdmin } from "@/lib/admin";
 import { getProgramDetail } from "@/lib/admin-data";
@@ -7,10 +7,7 @@ import { programHealth } from "@/lib/program-health";
 import { ProgramHealthBadge } from "@/app/admin/health-badge";
 import { formatSgtDate, formatSgtDateTime } from "@/lib/format";
 import { Badge } from "@/components/ui/badge";
-import { PageHeader } from "@/components/page-header";
-import { EmptyState } from "@/components/empty-state";
 import { ElevatedCard } from "@merqo/ui";
-import { Stat } from "@/app/admin/stat";
 import { Manage } from "@/app/admin/programs/[id]/manage";
 
 export const revalidate = 0;
@@ -48,7 +45,12 @@ export default async function AdminProgramDetailPage({
     <main className="mx-auto w-full max-w-7xl space-y-8 px-5 py-7">
       <div className="space-y-3">
         <BackButton href="/admin/programs" label="All programs" />
-        <PageHeader eyebrow="Internal" title={program.name} className="mb-0">
+        <PageHeader
+          responsive
+          eyebrow="Internal"
+          title={program.name}
+          className="mb-0"
+        >
           <div className="flex flex-wrap items-center gap-2">
             <ProgramHealthBadge health={health} />
             <Badge variant={program.active ? "default" : "outline"}>
@@ -63,12 +65,29 @@ export default async function AdminProgramDetailPage({
       </div>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <Stat label="Customers" value={cards.length} />
-        <Stat label="Stamps issued" value={stampsIssued} />
-        <Stat label="Rewards redeemed" value={rewardsRedeemed} />
-        <Stat
+        <StatCard
+          reverse
+          label="Customers"
+          value={String(cards.length)}
+          valueClassName="font-mono tracking-tight tabular-nums"
+        />
+        <StatCard
+          reverse
+          label="Stamps issued"
+          value={String(stampsIssued)}
+          valueClassName="font-mono tracking-tight tabular-nums"
+        />
+        <StatCard
+          reverse
+          label="Rewards redeemed"
+          value={String(rewardsRedeemed)}
+          valueClassName="font-mono tracking-tight tabular-nums"
+        />
+        <StatCard
+          reverse
           label="Last activity"
           value={lastActivityAt ? formatSgtDate(lastActivityAt) : "Not set"}
+          valueClassName="font-mono tracking-tight tabular-nums"
         />
       </div>
 

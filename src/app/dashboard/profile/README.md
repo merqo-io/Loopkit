@@ -39,3 +39,5 @@ Shared name and social-link writes use field-specific patch_vendor_profile updat
 Each page exports its own `metadata.title`, shown through the root `loopkit | %s` template. UI copy is plain: no emoji, no em dashes, no contractions in errors.
 
 profile-form.errors test pins the "Could not save" and "do not match" copy.
+
+This folder now imports its shared page and dialog components from `@merqo/ui` (v0.42.1) instead of local copies.

@@ -18,9 +18,7 @@ import {
 import { formatSgtDate } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
-import { ElevatedCard } from "@merqo/ui";
-import { PageHeader } from "@/components/page-header";
-import { EmptyState } from "@/components/empty-state";
+import { ElevatedCard, PageHeader, EmptyState } from "@merqo/ui";
 
 import { VendorCustomerList } from "./vendor-customer-list";
 import { CustomerControls } from "./customer-controls";
@@ -86,7 +84,12 @@ export default async function CustomersPage({
 
     return (
       <div className="space-y-8">
-        <PageHeader eyebrow="Your regulars" title="Customers" className="mb-0">
+        <PageHeader
+          responsive
+          eyebrow="Your regulars"
+          title="Customers"
+          className="mb-0"
+        >
           Everyone who has a card at your shop, across every program.
         </PageHeader>
         <CustomersTabs current="customers" />
@@ -124,7 +127,12 @@ export default async function CustomersPage({
 
   return (
     <div className="space-y-8">
-      <PageHeader eyebrow="Your regulars" title="Customers" className="mb-0">
+      <PageHeader
+        responsive
+        eyebrow="Your regulars"
+        title="Customers"
+        className="mb-0"
+      >
         Everyone who has a {program.name} card.
       </PageHeader>
       <CustomersTabs current="customers" />

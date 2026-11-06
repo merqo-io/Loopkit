@@ -11,7 +11,7 @@ being found duplicated across 2+ sibling kits) rather than living here.
 
 ## Contents
 
-- `page-header.tsx` / `empty-state.tsx` (+ `.dom.test.tsx`) — `PageHeader` (eyebrow, single h1, muted line, action slot) and `EmptyState` (dashed card, headline, one sentence, up to two actions): the shared page chrome for the dashboard and admin pages.
+- `PageHeader` and `EmptyState` come from `@merqo/ui`; there are no local copies.
 - `customer-shell.tsx` (+ `.dom.test.tsx`) — `CustomerShell`: the shared frame (wordmark, `max-w-md` column, `PageHeader`) for the customer-facing `/c` and `/earn` pages.
 - `card-burst.dom.test.tsx` — jsdom tests: `CardBurst` renders nothing when inactive; renders 40 absolutely (not fixed) positioned particles when active
 - `card-burst.tsx` — `CardBurst`: client component rendering a container-relative fireworks-style particle burst (40 randomized-size pieces, mixed square/circle shapes, wider spread), used inside `RewardCelebration`

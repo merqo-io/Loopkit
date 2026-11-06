@@ -3,9 +3,7 @@ import { Gift, Stamp } from "lucide-react";
 import { requireAdmin } from "@/lib/admin";
 import { platformTotals, recentActivity } from "@/lib/admin-data";
 import { formatSgtDateTime } from "@/lib/format";
-import { Stat } from "@/app/admin/stat";
-import { ElevatedCard } from "@merqo/ui";
-import { EmptyState } from "@/components/empty-state";
+import { ElevatedCard, EmptyState, StatCard } from "@merqo/ui";
 
 export const revalidate = 0;
 
@@ -24,11 +22,36 @@ export default async function AdminOverviewPage() {
       <AdminPageHeader title="Overview" />
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-        <Stat label="Programs" value={totals.programs} />
-        <Stat label="Active programs" value={totals.active_programs} />
-        <Stat label="Customers" value={totals.customers} />
-        <Stat label="Stamps issued" value={totals.stamps_issued} />
-        <Stat label="Rewards redeemed" value={totals.rewards_redeemed} />
+        <StatCard
+          reverse
+          label="Programs"
+          value={String(totals.programs)}
+          valueClassName="font-mono tracking-tight tabular-nums"
+        />
+        <StatCard
+          reverse
+          label="Active programs"
+          value={String(totals.active_programs)}
+          valueClassName="font-mono tracking-tight tabular-nums"
+        />
+        <StatCard
+          reverse
+          label="Customers"
+          value={String(totals.customers)}
+          valueClassName="font-mono tracking-tight tabular-nums"
+        />
+        <StatCard
+          reverse
+          label="Stamps issued"
+          value={String(totals.stamps_issued)}
+          valueClassName="font-mono tracking-tight tabular-nums"
+        />
+        <StatCard
+          reverse
+          label="Rewards redeemed"
+          value={String(totals.rewards_redeemed)}
+          valueClassName="font-mono tracking-tight tabular-nums"
+        />
       </div>
 
       <section className="space-y-3">

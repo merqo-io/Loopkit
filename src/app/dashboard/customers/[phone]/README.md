@@ -57,3 +57,5 @@ reason, and their full activity history in one place.
 The phone form field is length-checked by Zod before `normalizePhone`.
 
 Each page exports its own `metadata.title`, shown through the root `loopkit | %s` template. UI copy is plain: no emoji, no em dashes, no contractions in errors.
+
+This folder now imports its shared page and dialog components from `@merqo/ui` (v0.42.1) instead of local copies.

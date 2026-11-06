@@ -3,8 +3,7 @@ import type { VendorCustomerRow } from "@/lib/customers";
 import { formatSgtDate } from "@/lib/format";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ElevatedCard } from "@merqo/ui";
-import { EmptyState } from "@/components/empty-state";
+import { ElevatedCard, EmptyState } from "@merqo/ui";
 
 export function VendorCustomerList({
   customers,

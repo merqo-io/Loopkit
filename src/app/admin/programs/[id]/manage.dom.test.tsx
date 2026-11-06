@@ -83,4 +83,29 @@ describe("Manage", () => {
     await user.click(screen.getByRole("button", { name: "Remove" }));
     expect(removeCardMock).toHaveBeenCalled();
   });
+
+  it("shows a remove failure inline and keeps the dialog open", async () => {
+    const user = userEvent.setup();
+    removeCardMock.mockResolvedValue({
+      success: false,
+      error: "Could not remove",
+    });
+    render(
+      <Manage
+        program={{ id: "p1", name: "Coffee Stamps", active: true }}
+        cards={[
+          { id: "c1", phone: "+6591234567", stamp_count: 3, reward_count: 1 },
+        ]}
+        stampsRequired={8}
+      />,
+    );
+    await user.click(screen.getByRole("button", { name: "Remove card" }));
+    await user.click(screen.getByRole("button", { name: "Remove" }));
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "Could not remove",
+    );
+    expect(
+      screen.getByRole("heading", { name: "Remove this card?" }),
+    ).toBeInTheDocument();
+  });
 });
