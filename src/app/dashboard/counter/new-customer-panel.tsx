@@ -81,7 +81,7 @@ export function NewCustomerPanel({
       </p>
       <p className="text-xs text-muted-foreground">
         Offers by message need the customer&rsquo;s own opt-in. Point them to
-        your shop QR to turn it on.
+        your shop join code to turn it on.
       </p>
     </form>
   );

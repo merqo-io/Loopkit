@@ -40,7 +40,7 @@ export function ServedStrip({
                 variant="ghost"
                 size="sm"
                 onClick={() => onUndo(entry)}
-                className="h-7 shrink-0 rounded-lg px-2 text-xs"
+                className="shrink-0 rounded-lg px-2"
               >
                 Undo
               </Button>

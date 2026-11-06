@@ -58,4 +58,18 @@ describe("ShopJoinPoster", () => {
     expect(poster?.className).toContain("bg-white");
     expect(poster?.className).not.toContain("bg-card");
   });
+
+  it("renders the join link at a readable size and contrast", () => {
+    render(
+      <ShopJoinPoster
+        shopName="Kopi Corner"
+        qrSvgMarkup={svg}
+        link="https://loopkit.app/c?v=v1"
+      />,
+    );
+    const link = screen.getByText("https://loopkit.app/c?v=v1");
+    expect(link.className).toContain("text-xs");
+    expect(link.className).not.toContain("text-[10px]");
+    expect(link.className).not.toContain("text-neutral-400");
+  });
 });

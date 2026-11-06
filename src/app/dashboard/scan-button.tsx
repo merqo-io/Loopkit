@@ -17,7 +17,7 @@ export type ScanResolved =
     };
 
 export function ScanButton({
-  label = "Scan to serve",
+  label = "Serve a customer",
   sublabel,
   variant = "button",
   onResolved,
@@ -60,7 +60,7 @@ export function ScanButton({
               else toast.error(res.error);
             } catch {
               if (!cancelled)
-                toast.error("Couldn't read that code. Try again.");
+                toast.error("Could not read that code. Try again.");
             } finally {
               if (!cancelled) setOpen(false);
             }
@@ -70,7 +70,7 @@ export function ScanButton({
         if (cancelled || handled) stop();
       } catch {
         if (cancelled) return;
-        toast.error("Couldn't open the camera. Check permissions.");
+        toast.error("Could not open the camera. Check permissions.");
         setOpen(false);
       }
     })();
