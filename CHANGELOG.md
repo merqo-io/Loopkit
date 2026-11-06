@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.4.1] - 2026-11-06
+
 ### Added
 
 - Loading skeletons for the activity, stats, counter, plan, profile, redeem-voucher and customer-detail pages, so navigating between dashboard pages no longer shows a blank frame. Each is announced to screen readers as a busy status.
