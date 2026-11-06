@@ -102,15 +102,7 @@ export function ScratchCard({
               )}
             />
           )}
-          {/* Cover + "Scratch to reveal" text, masked by 3 overlapping,
-              rough-edged scratch strokes instead of the plain opacity-fade
-              this used to be. Punching real transparent holes along the
-              strokes (rather than fading the whole cover's opacity
-              uniformly) is what actually reads as "scratched off" instead
-              of a generic wipe/dissolve. This is also the guaranteed
-              fallback: it's what renders whenever the canvas above isn't
-              usable (jsdom, or a caller-managed reveal like the setup
-              preview, which never mounts the canvas at all). */}
+          {/* Guaranteed fallback when the canvas is unusable (jsdom, setup preview). */}
           {!canvasUsable && (
             <ScratchCardOverlay
               maskId={maskId}

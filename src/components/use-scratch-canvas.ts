@@ -7,16 +7,7 @@ const BRUSH_RADIUS = 13;
 // Real scratch cards don't need full coverage to feel "revealed."
 const SETTLE_FRACTION = 0.55;
 
-// Real drag-to-scratch: a genuine pointer-driven canvas erase (how every
-// production scratch-card widget actually works), layered over the SVG
-// strokes above as a progressive enhancement — not a replacement for
-// them. Only attempted for the real customer card (autoManaged); the
-// setup preview already runs its own externally-timed reveal cycle, and
-// dragging through a simulated preview tick isn't a real interaction
-// worth wiring up. If a 2D context isn't available (jsdom has none,
-// which is exactly why the SVG path above has to stay the guaranteed
-// fallback, not an afterthought) this effect leaves `canvasUsable` false
-// and the SVG strokes keep doing the job, unaffected, exactly as before.
+// Pointer-driven canvas erase layered over the SVG fallback; stays unusable (no 2D context) in jsdom.
 export function useScratchCanvas({
   enabled,
   coverStyle,
