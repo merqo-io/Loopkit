@@ -28,4 +28,4 @@ Each page exports its own `metadata.title`, shown through the root `loopkit | %s
 
 page test pins the page title and h1.
 
-This folder now imports its shared page and dialog components from `@merqo/ui` (v0.42.0) instead of local copies.
+This folder now imports its shared page and dialog components from `@merqo/ui` (v0.42.1) instead of local copies.

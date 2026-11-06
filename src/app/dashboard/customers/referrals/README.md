@@ -96,4 +96,4 @@ The panel's `dangerouslySetInnerHTML` is `qrSvg()` output over a server-minted l
 
 Each page exports its own `metadata.title`, shown through the root `loopkit | %s` template. UI copy is plain: no emoji, no em dashes, no contractions in errors.
 
-This folder now imports its shared page and dialog components from `@merqo/ui` (v0.42.0) instead of local copies.
+This folder now imports its shared page and dialog components from `@merqo/ui` (v0.42.1) instead of local copies.

@@ -246,9 +246,9 @@ through `StatusBadge` (gold-tinted `active` keeps the reward motif). v0.31.1 fix
 filename yielded the whole name as its extension. Which kit uses which
 shared export is tracked in `../merqo-ui/docs/usage-matrix.md`.
 
-Bumped `@merqo/ui` to v0.42.0 (pinned by commit `942ba9e`), which also supplies `PageHeader`, `StatCard`, `ConfirmDialog`, `EmptyState` and `TierChip`. Earlier, v0.41.0: the nav badge, `/dashboard/plan` and the admin vendors table take their tier text from the shared `tierLabel` (Free / Starter / Pro); stored tier values are unchanged. Earlier, v0.39.0: `/dashboard/plan` now fetches merqo's plan catalog (`/api/plans`) server-side and renders the shared `PricingLadder` instead of a local feature table; loopkit stores no plan prices and shows a calm fallback line when the catalog is unavailable.
+Bumped `@merqo/ui` to v0.42.1 (pinned by commit `53ec5ba`), which also supplies `PageHeader`, `StatCard`, `ConfirmDialog`, `EmptyState` and `TierChip`. Earlier, v0.41.0: the nav badge, `/dashboard/plan` and the admin vendors table take their tier text from the shared `tierLabel` (Free / Starter / Pro); stored tier values are unchanged. Earlier, v0.39.0: `/dashboard/plan` now fetches merqo's plan catalog (`/api/plans`) server-side and renders the shared `PricingLadder` instead of a local feature table; loopkit stores no plan prices and shows a calm fallback line when the catalog is unavailable.
 
-Dashboard pages use `@merqo/ui`'s `PageHeader` and `EmptyState` (v0.42.0, pinned by commit `942ba9e`; no local copies), so every screen opens with the same eyebrow, single h1 and action, and every empty list offers a next step.
+Dashboard pages use `@merqo/ui`'s `PageHeader` and `EmptyState` (v0.42.1, pinned by commit `53ec5ba`; no local copies), so every screen opens with the same eyebrow, single h1 and action, and every empty list offers a next step.
 
 ## Stack
 
