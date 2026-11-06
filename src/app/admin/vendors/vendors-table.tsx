@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 const columns: DataTableColumn<VendorRow>[] = [
   {
     header: "Vendor",
-    cell: (v) => <span className="font-medium">{v.email ?? "—"}</span>,
+    cell: (v) => <span className="font-medium">{v.email ?? "Not set"}</span>,
   },
   {
     header: "Programs",

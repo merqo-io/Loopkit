@@ -24,3 +24,5 @@ Plant timing imports its day constant from `../time.ts`; mechanic rules, transit
 ## Parent
 
 [lib](../README.md)
+
+Engine card labels use a colon or comma instead of an em dash.

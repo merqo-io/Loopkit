@@ -7,10 +7,15 @@ import { programHealth } from "@/lib/program-health";
 import { ProgramHealthBadge } from "@/app/admin/health-badge";
 import { formatSgtDate, formatSgtDateTime } from "@/lib/format";
 import { Badge } from "@/components/ui/badge";
+import { PageHeader } from "@/components/page-header";
+import { EmptyState } from "@/components/empty-state";
+import { ElevatedCard } from "@merqo/ui";
 import { Stat } from "@/app/admin/stat";
 import { Manage } from "@/app/admin/programs/[id]/manage";
 
 export const revalidate = 0;
+
+export const metadata = { title: "Program" };
 
 export default async function AdminProgramDetailPage({
   params,
@@ -40,20 +45,21 @@ export default async function AdminProgramDetailPage({
   );
 
   return (
-    <main className="mx-auto max-w-3xl space-y-8 px-5 py-8">
+    <main className="mx-auto w-full max-w-7xl space-y-8 px-5 py-7">
       <div className="space-y-3">
         <BackButton href="/admin/programs" label="All programs" />
-        <div className="flex flex-wrap items-center gap-3">
-          <h1 className="text-3xl font-bold tracking-tight">{program.name}</h1>
-          <ProgramHealthBadge health={health} />
-          <Badge variant={program.active ? "default" : "outline"}>
-            {program.active ? "Active" : "Inactive"}
-          </Badge>
-        </div>
-        <p className="text-sm text-muted-foreground">
-          Buy {program.stamps_required}, get 1 {program.reward_text}
-          {vendor_email && <> · {vendor_email}</>}
-        </p>
+        <PageHeader eyebrow="Internal" title={program.name} className="mb-0">
+          <div className="flex flex-wrap items-center gap-2">
+            <ProgramHealthBadge health={health} />
+            <Badge variant={program.active ? "default" : "outline"}>
+              {program.active ? "Active" : "Inactive"}
+            </Badge>
+          </div>
+          <p className="mt-2">
+            Buy {program.stamps_required}, get 1 {program.reward_text}
+            {vendor_email && <> · {vendor_email}</>}
+          </p>
+        </PageHeader>
       </div>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -62,7 +68,7 @@ export default async function AdminProgramDetailPage({
         <Stat label="Rewards redeemed" value={rewardsRedeemed} />
         <Stat
           label="Last activity"
-          value={lastActivityAt ? formatSgtDate(lastActivityAt) : "—"}
+          value={lastActivityAt ? formatSgtDate(lastActivityAt) : "Not set"}
         />
       </div>
 
@@ -70,7 +76,7 @@ export default async function AdminProgramDetailPage({
         <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
           Recent activity
         </h2>
-        <div className="rounded-2xl border bg-card p-6 shadow-sm">
+        <ElevatedCard className="p-6">
           <ul className="space-y-2.5">
             {events.length > 0 ? (
               events.slice(0, 15).map((event) => {
@@ -99,7 +105,7 @@ export default async function AdminProgramDetailPage({
                           {event.kind}
                         </span>
                         <span className="ml-2 text-muted-foreground">
-                          {event.phone ?? "—"}
+                          {event.phone ?? "Not set"}
                         </span>
                       </span>
                     </span>
@@ -110,12 +116,14 @@ export default async function AdminProgramDetailPage({
                 );
               })
             ) : (
-              <li className="text-sm text-muted-foreground">
-                No activity yet.
+              <li>
+                <EmptyState title="No activity yet." className="py-6">
+                  Stamps and redemptions will show here.
+                </EmptyState>
               </li>
             )}
           </ul>
-        </div>
+        </ElevatedCard>
       </section>
 
       <section className="space-y-3">

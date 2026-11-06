@@ -31,7 +31,7 @@ const DESKTOP: TourStep[] = [
     element: sel("nav-counter"),
     title: "Start here: Counter",
     description:
-      "Scanning your QR only joins a customer to your programs; it doesn't add a stamp by itself. Open the Counter to stamp a card or redeem a reward, every time a customer visits.",
+      "Scanning your QR only joins a customer to your programs; it does not add a stamp by itself. Open the Counter to stamp a card or redeem a reward, every time a customer visits.",
   },
   {
     element: sel("nav-customers"),

@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { requireVendor } from "@/features/auth";
 import { getVoucherByToken, type VoucherLookup } from "@/lib/program";
 import { BackButton } from "@merqo/ui";
+import { PageHeader } from "@/components/page-header";
 import { RedeemVoucherConfirm } from "@/app/dashboard/redeem-voucher/redeem-voucher-confirm";
 
 function VoucherBody({
@@ -14,7 +15,7 @@ function VoucherBody({
   if (!voucher) {
     return (
       <p className="text-sm text-muted-foreground">
-        That code isn&apos;t for this shop.
+        That code is not for this shop.
       </p>
     );
   }
@@ -34,6 +35,8 @@ function VoucherBody({
   );
 }
 
+export const metadata = { title: "Redeem voucher" };
+
 export default async function RedeemVoucherPage({
   searchParams,
 }: {
@@ -48,6 +51,7 @@ export default async function RedeemVoucherPage({
   return (
     <div className="mx-auto max-w-md space-y-6">
       <BackButton href="/dashboard" label="Back to dashboard" />
+      <PageHeader eyebrow="Rewards" title="Redeem voucher" className="mb-0" />
       <VoucherBody token={token} voucher={voucher} />
     </div>
   );

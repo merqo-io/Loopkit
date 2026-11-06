@@ -8,6 +8,8 @@ import { EmptyState } from "@/components/empty-state";
 import { CustomersTabs } from "../customers-tabs";
 import { ReferralsPanel } from "./referrals-panel";
 
+export const metadata = { title: "Referrals" };
+
 export default async function ReferralsPage() {
   const { user } = await requireVendor();
 
