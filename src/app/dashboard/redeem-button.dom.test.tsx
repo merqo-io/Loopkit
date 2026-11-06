@@ -4,7 +4,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 const { redeemMock } = vi.hoisted(() => ({ redeemMock: vi.fn() }));
-vi.mock("@/app/dashboard/actions", () => ({ redeemAction: redeemMock }));
+vi.mock("@/app/dashboard/redeem-actions", () => ({ redeemAction: redeemMock }));
 
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ refresh: vi.fn() }),

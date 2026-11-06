@@ -3,7 +3,7 @@ import { ProgressVisual } from "@/components/progress-visual";
 
 import { useEffect, useState, useTransition } from "react";
 import { toast } from "sonner";
-import { regenerateCardAction } from "../api/actions";
+import { regenerateCardAction } from "../api/card-actions";
 import type { CardStatus } from "../types";
 
 import { PointsCatalogPicker } from "./points-catalog-picker";

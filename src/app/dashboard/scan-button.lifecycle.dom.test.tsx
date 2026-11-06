@@ -20,7 +20,7 @@ vi.mock("@zxing/browser", () => ({
     }
   },
 }));
-vi.mock("@/app/dashboard/actions", () => ({
+vi.mock("@/app/dashboard/lookup-actions", () => ({
   resolveTokenAction: mocks.resolve,
 }));
 vi.mock("sonner", () => ({ toast: { error: mocks.toast } }));

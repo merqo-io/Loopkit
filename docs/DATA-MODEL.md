@@ -12,7 +12,7 @@ loopkit no longer runs its own Telegram bot. Phase A (deep-link QR in
 `loopkit.telegram_link_tokens` from migration `0036`) was retired in full:
 those tables were dropped by migration `0037`, and every file above was
 deleted. `redeemAction`'s vendor alert (`notifyRedemptionOnTelegram`,
-`src/app/dashboard/actions.ts`) now calls `notifyVendor`
+`src/app/dashboard/redeem-actions.ts`) now calls `notifyVendor`
 (`src/lib/merqo-customer-notify.ts`), which posts to merqo's shared bot via
 `POST /api/merqo/notify-vendor`. A vendor who had linked loopkit's own bot
 must reconnect once via merqo's own profile page; no data carried over. A
@@ -47,7 +47,7 @@ connecting Telegram; this is a vendor brand-preference gate, never a consent
 gate, and it never touches merqo's own connection data. RLS is `for all`
 own-row (not service-role-only like `vendor_telegram`/`telegram_link_tokens`
 used to be): a vendor upserts their own row directly under RLS from
-`saveCustomerNotifySettingsAction` (`src/app/dashboard/actions.ts`, same
+`saveCustomerNotifySettingsAction` (`src/app/dashboard/settings-actions.ts`, same
 upsert-on-`vendor_id` shape as `saveQkitEarnConfigAction`), surfaced as a
 switch in `/dashboard/settings`
 (`src/app/dashboard/customer-notify-settings.tsx`). `redeemAction` reads the

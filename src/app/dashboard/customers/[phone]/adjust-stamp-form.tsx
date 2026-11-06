@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { useAsyncAction } from "@/hooks/use-async-action";
-import { adjustStampAction } from "@/app/dashboard/actions";
+import { adjustStampAction } from "@/app/dashboard/stamp-actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

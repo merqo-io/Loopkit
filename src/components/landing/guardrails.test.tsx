@@ -18,7 +18,7 @@ const { selectMock, toastSuccess } = vi.hoisted(() => ({
   selectMock: vi.fn(),
   toastSuccess: vi.fn(),
 }));
-vi.mock("@/features/card-check/api/actions", () => ({
+vi.mock("@/features/card-check/api/card-actions", () => ({
   regenerateCardAction: vi.fn(),
   selectPointsRewardAction: selectMock,
 }));

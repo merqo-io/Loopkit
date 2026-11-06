@@ -398,7 +398,7 @@ sixth engine `type` — `loopkit.referral_hosts` (`vendor_id`, `program_id`,
 `host_phone`, `label`, a unique `referral_code`, `guest_count`) names one of
 the vendor's own active programs plus a host phone, and the vendor shares
 the resulting `/c?v=<vendorId>&ref=<code>` link. `checkStatusAction`
-(`src/features/card-check/api/actions.ts`) calls the service-only `customer_join`
+(`src/features/card-check/api/check-status-action.ts`) calls the service-only `customer_join`
 RPC with the vendor, normalized phone, saved card proof and optional referral
 code. Existing customers must prove possession of a card before receiving card
 or voucher tokens; fresh enrollment saves an HttpOnly proof cookie. A referral

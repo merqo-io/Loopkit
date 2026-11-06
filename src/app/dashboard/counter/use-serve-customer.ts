@@ -6,11 +6,11 @@ import { useAsyncAction } from "@/hooks/use-async-action";
 import {
   stampAction,
   recordVisitAction,
-  lookupAction,
   redeemPlantAction,
   regenerateCardAction,
   adjustStampAction,
-} from "@/app/dashboard/actions";
+} from "@/app/dashboard/stamp-actions";
+import { lookupAction } from "@/app/dashboard/lookup-actions";
 import type { ScanResolved } from "@/app/dashboard/scan-button";
 
 import type { ServeResult } from "@/app/dashboard/counter/serve-result";

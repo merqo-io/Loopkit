@@ -3,7 +3,9 @@ import { describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { ScanHero } from "./scan-hero";
 
-vi.mock("@/app/dashboard/actions", () => ({ resolveTokenAction: vi.fn() }));
+vi.mock("@/app/dashboard/lookup-actions", () => ({
+  resolveTokenAction: vi.fn(),
+}));
 
 describe("ScanHero", () => {
   it("renders the scan target label and sub copy as a button", () => {

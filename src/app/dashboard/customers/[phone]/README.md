@@ -26,7 +26,7 @@ reason, and their full activity history in one place.
   the two `notFound()` paths (invalid phone param, unknown customer).
 - `adjust-stamp-form.tsx` — `AdjustStampForm({programId, phone})`: collapsed
   behind an "Adjust stamps" trigger; opened, it's a `±` delta + required
-  reason form calling `adjustStampAction` (`@/app/dashboard/actions`), via
+  reason form calling `adjustStampAction` (`@/app/dashboard/stamp-actions`), via
   `loopkit.adjust_stamp` (`supabase/migrations/0042_loopkit_adjust_stamp.sql`).
   Clamped at 0, never creates a card, logged as its own `stamp_events.kind`
   ('adjust') distinct from a real stamp — surfaced in the activity feed with

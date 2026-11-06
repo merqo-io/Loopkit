@@ -9,7 +9,7 @@ import type { CardStatus } from "../types";
 const { regenerateCardActionMock } = vi.hoisted(() => ({
   regenerateCardActionMock: vi.fn(),
 }));
-vi.mock("../api/actions", () => ({
+vi.mock("../api/card-actions", () => ({
   regenerateCardAction: regenerateCardActionMock,
 }));
 

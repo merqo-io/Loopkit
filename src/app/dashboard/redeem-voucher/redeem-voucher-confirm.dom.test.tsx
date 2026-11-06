@@ -4,7 +4,9 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 const { redeemMock } = vi.hoisted(() => ({ redeemMock: vi.fn() }));
-vi.mock("@/app/dashboard/actions", () => ({ redeemVoucherAction: redeemMock }));
+vi.mock("@/app/dashboard/redeem-actions", () => ({
+  redeemVoucherAction: redeemMock,
+}));
 
 import { RedeemVoucherConfirm } from "./redeem-voucher-confirm";
 

@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { useAsyncAction } from "@/hooks/use-async-action";
-import { redeemVoucherAction } from "@/app/dashboard/actions";
+import { redeemVoucherAction } from "@/app/dashboard/redeem-actions";
 import { Button } from "@/components/ui/button";
 import { BackButton } from "@merqo/ui";
 

@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
-import { eraseMyDataAction } from "../api/actions";
+import { eraseMyDataAction } from "../api/consent-actions";
 import { Button } from "@/components/ui/button";
 
 // Two steps on purpose: erasure is permanent and the card is the only copy of

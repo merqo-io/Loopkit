@@ -6,7 +6,7 @@ import userEvent from "@testing-library/user-event";
 const { adjustStampAction } = vi.hoisted(() => ({
   adjustStampAction: vi.fn(),
 }));
-vi.mock("@/app/dashboard/actions", () => ({ adjustStampAction }));
+vi.mock("@/app/dashboard/stamp-actions", () => ({ adjustStampAction }));
 vi.mock("sonner", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
 
 import { AdjustStampForm } from "./adjust-stamp-form";

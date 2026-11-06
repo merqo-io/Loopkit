@@ -2,7 +2,7 @@
 import { FormCard } from "@/components/form-card";
 
 import { useSaveSettings } from "@/hooks/use-save-settings";
-import { saveCustomerNotifySettingsAction } from "./actions";
+import { saveCustomerNotifySettingsAction } from "./settings-actions";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";

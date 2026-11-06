@@ -24,8 +24,8 @@ Lost capability recovery requires the owning shop, which rotates credentials whi
 `src/app/c/page.tsx` imports `CheckForm` through it. `api/` and
 `components/` are private implementation, consumed internally by
 `index.ts` and by each other (`components/check-form.tsx` imports
-`checkStatusAction` from `../api/actions`, `components/program-card-status.tsx`
-imports `regenerateCardAction` from `../api/actions`).
+`checkStatusAction` from `../api/check-status-action`, `components/program-card-status.tsx`
+imports `regenerateCardAction` from `../api/card-actions`).
 
 ## Parent
 
