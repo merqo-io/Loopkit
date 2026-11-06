@@ -19,7 +19,8 @@ src/lib/stats.ts        — vendor-facing metrics
 src/lib/merqo-customer-notify.ts — notifyCustomerByPhone/notifyVendor: kit → merqo HTTP calls (customer Telegram reuse + vendor alerts via merqo's shared bot)
 src/lib/merqo-vendor-status.ts — reports status/metrics to merqo over HTTP
 src/lib/supabase/       — browser / server / service clients + middleware helper
-src/lib/types.ts        — DB types (mirror of supabase/migrations)
+src/lib/types.ts        — type-only re-export of src/lib/db-types/ (DB types, mirror of supabase/migrations)
+src/lib/db-types/       — Database types split by domain: tables, RPC functions, shared types
 src/lib/utils.ts        — cn() + shared formatting helpers
 src/components/         — wheel, scratch-card, flame-layers, cup, points-bar, stamp-dots, etc.
 src/components/ui/      — shadcn primitives (CLI-managed, do not hand-edit)
