@@ -41,7 +41,7 @@ export function YourPrograms({ programs }: { programs: OverviewProgram[] }) {
             </span>
           </div>
           <Link
-            href={`/setup?id=${program.id}`}
+            href={`/setup/${program.id}/edit`}
             aria-label={`Edit ${program.name}`}
             className="grid size-8 shrink-0 place-items-center rounded-md border text-muted-foreground transition-colors hover:border-primary hover:text-primary"
           >
@@ -57,7 +57,7 @@ export function YourPrograms({ programs }: { programs: OverviewProgram[] }) {
       ))}
 
       <Link
-        href="/setup"
+        href="/setup/new"
         className="flex items-center justify-center gap-2 rounded-md border border-dashed border-muted-foreground/45 p-2.5 text-sm font-semibold text-muted-foreground transition-colors hover:border-primary hover:text-primary"
       >
         <Plus className="size-3.5" />

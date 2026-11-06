@@ -32,10 +32,13 @@ describe("YourPrograms", () => {
     );
     expect(
       screen.getByRole("link", { name: "Edit Stamp Card" }),
-    ).toHaveAttribute("href", "/setup?id=p1");
+    ).toHaveAttribute("href", "/setup/p1/edit");
     const serves = screen.getAllByRole("link", { name: "Serve" });
     expect(serves).toHaveLength(2);
     expect(serves[1]).toHaveAttribute("href", "/dashboard/counter?p=p2");
+    expect(
+      screen.getByRole("link", { name: /add another program/i }),
+    ).toHaveAttribute("href", "/setup/new");
   });
 
   it("shows the fallback copy when a program has no return rate", () => {

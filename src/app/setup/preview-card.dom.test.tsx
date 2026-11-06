@@ -179,7 +179,7 @@ describe("PreviewCard", () => {
     };
     render(<PreviewCard progress={progress} name="" rewardText="" />);
     expect(screen.getByText("Your card")).toBeInTheDocument();
-    expect(screen.getByText("Reward: —")).toBeInTheDocument();
+    expect(screen.getByText("Reward: not set yet")).toBeInTheDocument();
   });
 
   it("reveals the scratch card result from the real engine view, not a hardcoded placeholder", () => {
@@ -270,7 +270,7 @@ describe("PreviewCard", () => {
         lastChanceResult={{ won: true }}
       />,
     );
-    expect(screen.getByText("🎉 You won!")).toBeInTheDocument();
+    expect(screen.getByText("You won!")).toBeInTheDocument();
   });
 
   it("shows a lose popup for a non-wheel chance result that lost", () => {
@@ -319,7 +319,7 @@ describe("PreviewCard", () => {
         lastChanceResult={{ won: true }}
       />,
     );
-    expect(screen.queryByText("🎉 You won!")).not.toBeInTheDocument();
+    expect(screen.queryByText("You won!")).not.toBeInTheDocument();
   });
 
   it("passes spinning to Wheel while revealing (before a result lands)", () => {
@@ -374,7 +374,7 @@ describe("PreviewCard", () => {
     );
     expect(screen.getByText("Tap for a surprise")).toBeInTheDocument();
     expect(screen.getByText("Guaranteed win by visit 3/8")).toBeInTheDocument();
-    expect(screen.getByText("🎉 You won!")).toBeInTheDocument();
+    expect(screen.getByText("You won!")).toBeInTheDocument();
   });
 
   it("passes scratching to ScratchCard while revealing", () => {

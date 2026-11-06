@@ -69,7 +69,7 @@ export function PreviewCard({
       </div>
       <p className="font-mono text-sm font-medium">{progress.label}</p>
       <p className="text-sm text-muted-foreground">
-        Reward: {rewardText || "—"}
+        Reward: {rewardText || "not set yet"}
       </p>
 
       <CardBurst active={celebrating && (!isWheel || wheelSettled)} />
@@ -86,7 +86,7 @@ export function PreviewCard({
                 : "bg-muted text-muted-foreground",
             )}
           >
-            {lastChanceResult.won ? "🎉 You won!" : "Try again"}
+            {lastChanceResult.won ? "You won!" : "Try again"}
           </div>
         )}
     </CardShell>

@@ -7,7 +7,7 @@ agent session. Paths are repo-relative.
 src/app/dashboard/      — vendor console (programs, cards, stats)
 src/app/c/              — customer-facing card view (QR entry point)
 src/app/admin/          — Merqo-team admin console
-src/app/setup/          — vendor onboarding
+src/app/setup/          — vendor onboarding (/setup list, /setup/new, /setup/[programId]/*)
 src/app/login/, auth/   — auth pages
 src/app/api/            — route handlers (merqo metrics, etc.)
 src/proxy.ts            — Supabase session refresh + /dashboard,/setup guard (Next 16)

@@ -71,6 +71,7 @@ test.describe("signed-in render smoke", () => {
       "/dashboard/settings",
       "/dashboard/stats",
       "/setup",
+      "/setup/new",
       "/admin",
       "/admin/activity",
       "/admin/programs",
