@@ -7,7 +7,7 @@ const { setMarketingConsentAction, toastMock } = vi.hoisted(() => ({
   setMarketingConsentAction: vi.fn(),
   toastMock: { success: vi.fn(), error: vi.fn() },
 }));
-vi.mock("../api/actions", () => ({ setMarketingConsentAction }));
+vi.mock("../api/consent-actions", () => ({ setMarketingConsentAction }));
 vi.mock("sonner", () => ({ toast: toastMock }));
 
 import { MarketingConsentToggle } from "./marketing-consent-toggle";

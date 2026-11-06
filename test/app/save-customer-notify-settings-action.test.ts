@@ -13,7 +13,7 @@ vi.mock("@/lib/supabase/server", () => ({
   createServerClient: vi.fn(async () => ({ from: fromMock })),
 }));
 
-import { saveCustomerNotifySettingsAction } from "@/app/dashboard/actions";
+import { saveCustomerNotifySettingsAction } from "@/app/dashboard/settings-actions";
 
 function form(fields: Record<string, string>): FormData {
   const fd = new FormData();

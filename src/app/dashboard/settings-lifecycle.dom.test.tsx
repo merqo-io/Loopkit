@@ -14,7 +14,7 @@ const mocks = vi.hoisted(() => ({
   error: vi.fn(),
   success: vi.fn(),
 }));
-vi.mock("./actions", () => ({
+vi.mock("./settings-actions", () => ({
   saveCustomerNotifySettingsAction: mocks.notify,
   saveQkitEarnConfigAction: mocks.earn,
 }));

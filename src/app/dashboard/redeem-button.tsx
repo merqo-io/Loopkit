@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { redeemAction } from "@/app/dashboard/actions";
+import { redeemAction } from "@/app/dashboard/redeem-actions";
 import type { StampCard } from "@/app/dashboard/card";
 import { Button } from "@/components/ui/button";
 import { ConfirmDialog } from "@merqo/ui";

@@ -7,7 +7,7 @@ const { eraseMyDataAction, toastMock } = vi.hoisted(() => ({
   eraseMyDataAction: vi.fn(),
   toastMock: { success: vi.fn(), error: vi.fn() },
 }));
-vi.mock("../api/actions", () => ({ eraseMyDataAction }));
+vi.mock("../api/consent-actions", () => ({ eraseMyDataAction }));
 vi.mock("sonner", () => ({ toast: toastMock }));
 
 import { EraseData } from "./erase-data";

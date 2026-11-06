@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState, useState, useTransition } from "react";
-import { checkStatusAction } from "../api/actions";
+import { checkStatusAction } from "../api/check-status-action";
 import { forgetCustomerProof } from "@/lib/customer-proof-actions";
 import { STATUS_IDLE } from "../types";
 import { ProgramCardStatus } from "./program-card-status";

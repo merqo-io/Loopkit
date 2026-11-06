@@ -92,22 +92,6 @@ const eslintConfig = [
     },
   },
   {
-    // Over the size and complexity limits until Task K5 (split long files) shrinks them.
-    files: [
-      "src/app/dashboard/actions.ts",
-      "src/components/flame-layers.tsx",
-      "src/components/scratch-card.tsx",
-      "src/features/card-check/api/actions.ts",
-      "src/lib/stats.ts",
-      "src/lib/types.ts",
-    ],
-    rules: {
-      "max-lines": "off",
-      complexity: "off",
-      "max-lines-per-function": "off",
-    },
-  },
-  {
     // Over the complexity or function-length limit; split with their pages and hooks later.
     files: [
       "src/app/dashboard/counter/use-serve-customer.ts",

@@ -1,7 +1,7 @@
 "use client";
 
 import { toast } from "sonner";
-import { selectPointsRewardAction } from "../api/actions";
+import { selectPointsRewardAction } from "../api/card-actions";
 import { Button } from "@/components/ui/button";
 import { ConfirmDialog } from "@merqo/ui";
 

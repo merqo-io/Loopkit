@@ -6,7 +6,7 @@ import userEvent from "@testing-library/user-event";
 const { setCustomerBirthdayAction } = vi.hoisted(() => ({
   setCustomerBirthdayAction: vi.fn(),
 }));
-vi.mock("../api/actions", () => ({ setCustomerBirthdayAction }));
+vi.mock("../api/card-actions", () => ({ setCustomerBirthdayAction }));
 vi.mock("sonner", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
 
 import { BirthdayField } from "./birthday-field";
