@@ -1,4 +1,5 @@
 import type { EngineEvent, Progress } from "@/lib/engine/types";
+import type { ProgramType } from "@/lib/program-config";
 import {
   stampStrategy,
   type StampConfig,
@@ -85,46 +86,103 @@ function resolveChanceState(
   return makeChanceStrategy(variant).defaults({} as ChanceConfig);
 }
 
+type VisitResult = { state: unknown; rewardUnlocked: boolean };
+
+type MechanicStrategy = {
+  applyVisit(
+    program: ProgramLike,
+    card: CardLike,
+    event: EngineEvent,
+    now: Date,
+  ): VisitResult;
+  getProgress(program: ProgramLike, card: CardLike, now: Date): Progress;
+};
+
+function chanceMechanic(variant: "wheel" | "scratch"): MechanicStrategy {
+  const strategy = makeChanceStrategy(variant);
+  return {
+    applyVisit: (program, card, event, now) =>
+      strategy.apply(
+        event,
+        resolveChanceState(card, variant),
+        resolveChanceConfig(program),
+        now,
+      ),
+    getProgress: (program, card, now) =>
+      strategy.progress(
+        resolveChanceState(card, variant),
+        resolveChanceConfig(program),
+        now,
+      ),
+  };
+}
+
+// Typed over the full ProgramType union so adding a mechanic fails typecheck
+// until it is registered here.
+const STRATEGIES: Record<ProgramType, MechanicStrategy> = {
+  stamp: {
+    applyVisit: (program, card, event, now) =>
+      stampStrategy.apply(
+        event,
+        resolveStampState(card),
+        resolveStampConfig(program),
+        now,
+      ),
+    getProgress: (program, card, now) =>
+      stampStrategy.progress(
+        resolveStampState(card),
+        resolveStampConfig(program),
+        now,
+      ),
+  },
+  lucky: {
+    applyVisit: (program, card, event, now) =>
+      luckyStrategy.apply(
+        event,
+        resolveLuckyState(card),
+        resolveLuckyConfig(program),
+        now,
+      ),
+    getProgress: (program, card, now) =>
+      luckyStrategy.progress(
+        resolveLuckyState(card),
+        resolveLuckyConfig(program),
+        now,
+      ),
+  },
+  plant: {
+    applyVisit: (program, card, event, now) =>
+      plantStrategy.apply(
+        event,
+        resolvePlantState(card),
+        resolvePlantConfig(program),
+        now,
+      ),
+    getProgress: (program, card, now) =>
+      plantStrategy.progress(
+        resolvePlantState(card),
+        resolvePlantConfig(program),
+        now,
+      ),
+  },
+  wheel: chanceMechanic("wheel"),
+  scratch: chanceMechanic("scratch"),
+};
+
+// Rows with a legacy or unrecognised type keep behaving as stamp cards.
+function strategyFor(type: string): MechanicStrategy {
+  return Object.hasOwn(STRATEGIES, type)
+    ? STRATEGIES[type as ProgramType]
+    : STRATEGIES.stamp;
+}
+
 export function applyVisit(
   program: ProgramLike,
   card: CardLike,
   event: EngineEvent,
   now: Date,
-): { state: unknown; rewardUnlocked: boolean } {
-  switch (program.type) {
-    case "lucky":
-      return luckyStrategy.apply(
-        event,
-        resolveLuckyState(card),
-        resolveLuckyConfig(program),
-        now,
-      );
-    case "plant":
-      return plantStrategy.apply(
-        event,
-        resolvePlantState(card),
-        resolvePlantConfig(program),
-        now,
-      );
-    case "wheel":
-    case "scratch": {
-      const variant = program.type as "wheel" | "scratch";
-      return makeChanceStrategy(variant).apply(
-        event,
-        resolveChanceState(card, variant),
-        resolveChanceConfig(program),
-        now,
-      );
-    }
-    case "stamp":
-    default:
-      return stampStrategy.apply(
-        event,
-        resolveStampState(card),
-        resolveStampConfig(program),
-        now,
-      );
-  }
+): VisitResult {
+  return strategyFor(program.type).applyVisit(program, card, event, now);
 }
 
 export function getProgress(
@@ -132,34 +190,5 @@ export function getProgress(
   card: CardLike,
   now: Date,
 ): Progress {
-  switch (program.type) {
-    case "lucky":
-      return luckyStrategy.progress(
-        resolveLuckyState(card),
-        resolveLuckyConfig(program),
-        now,
-      );
-    case "plant":
-      return plantStrategy.progress(
-        resolvePlantState(card),
-        resolvePlantConfig(program),
-        now,
-      );
-    case "wheel":
-    case "scratch": {
-      const variant = program.type as "wheel" | "scratch";
-      return makeChanceStrategy(variant).progress(
-        resolveChanceState(card, variant),
-        resolveChanceConfig(program),
-        now,
-      );
-    }
-    case "stamp":
-    default:
-      return stampStrategy.progress(
-        resolveStampState(card),
-        resolveStampConfig(program),
-        now,
-      );
-  }
+  return strategyFor(program.type).getProgress(program, card, now);
 }
