@@ -51,6 +51,11 @@ function customersQuery() {
   const chain = {
     select: () => chain,
     order: () => chain,
+    range: (start: number, end: number) =>
+      Promise.resolve({
+        data: rows.sort(byRecency).slice(start, end + 1),
+        error: null,
+      }),
     limit: (n: number) => {
       max = n;
       return chain;
@@ -108,6 +113,7 @@ vi.mock("@/lib/supabase/server", () => ({
 import {
   decodeCustomerCursor,
   encodeCustomerCursor,
+  listAllVendorCustomers,
   listVendorCustomers,
 } from "./customers";
 
@@ -216,5 +222,53 @@ describe("listVendorCustomers search", () => {
   it("still matches plain digits", async () => {
     const page = await listVendorCustomers({ q: "0000001" });
     expect(page.rows.map((r) => r.phone)).toContain("+6590000001");
+  });
+});
+
+describe("listAllVendorCustomers", () => {
+  beforeEach(() => {
+    m.customers = [];
+    for (let i = 0; i < 1200; i++) {
+      m.customers.push(
+        customer(
+          `+659${String(i).padStart(7, "0")}`,
+          `2026-10-01T00:00:${String(i % 60).padStart(2, "0")}.000000+00:00`,
+        ),
+      );
+    }
+    m.cards = [
+      {
+        id: "c1",
+        phone: "+6590001199",
+        program_id: "p1",
+        stamp_count: 5,
+        reward_count: 0,
+        updated_at: TIE,
+      },
+    ];
+  });
+
+  it("reads past the first page and the first 1000 rows", async () => {
+    const rows = await listAllVendorCustomers();
+    expect(rows).toHaveLength(1200);
+    expect(rows.find((r) => r.phone === "+6590001199")?.rewardReady).toBe(true);
+  });
+
+  it("applies the escaped search pattern", async () => {
+    const rows = await listAllVendorCustomers("%");
+    expect(rows).toHaveLength(0);
+    expect(m.calls).toContainEqual(["ilike", ["phone", "%\\%%"]]);
+  });
+
+  it("matches the union of every page of listVendorCustomers", async () => {
+    const all = await listAllVendorCustomers();
+    const paged: string[] = [];
+    let cursor: string | undefined;
+    do {
+      const page = await listVendorCustomers({ cursor });
+      paged.push(...page.rows.map((r) => r.phone));
+      cursor = page.nextCursor ?? undefined;
+    } while (cursor);
+    expect(paged).toEqual(all.map((r) => r.phone));
   });
 });

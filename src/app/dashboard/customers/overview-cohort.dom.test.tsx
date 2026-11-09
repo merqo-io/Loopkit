@@ -19,6 +19,7 @@ vi.mock("@/lib/program", () => ({
 vi.mock("@/lib/cards", () => ({ listCards: vi.fn() }));
 vi.mock("@/lib/customers", () => ({
   listVendorCustomers: vi.fn(async () => ({ rows: [], nextCursor: null })),
+  listAllVendorCustomers: vi.fn(async () => []),
 }));
 vi.mock("@/lib/stats", async () => ({
   ...(await vi.importActual<typeof import("@/lib/stats")>("@/lib/stats")),
