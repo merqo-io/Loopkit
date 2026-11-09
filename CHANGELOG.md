@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Changed
+
+- Re-pinned `@merqo/ui` to v0.44.0: new legal text (terms and privacy version 2026-11-08), so vendors are asked to re-accept the terms on next sign-in.
+
 ## [0.4.1] - 2026-11-06
 
 ### Added
