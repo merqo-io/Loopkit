@@ -1,3 +1,4 @@
+import { containsPattern } from "@/lib/ilike";
 import { createServerClient } from "@/lib/supabase/server";
 import type { Json } from "@/lib/types";
 
@@ -32,7 +33,7 @@ export async function listCards(
       .order("updated_at", { ascending: false })
       .order("id", { ascending: false })
       .limit(CARD_PAGE_SIZE);
-    if (term) query = query.ilike("phone", `%${term}%`);
+    if (term) query = query.ilike("phone", containsPattern(term));
     if (cursor) {
       query = query.or(
         `updated_at.lt.${cursor.updated_at},and(updated_at.eq.${cursor.updated_at},id.lt.${cursor.id})`,

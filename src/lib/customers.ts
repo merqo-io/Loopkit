@@ -1,4 +1,6 @@
-import { readAllRows, readRowsForIds } from "@/lib/read-all-rows";
+import { z } from "zod";
+import { containsPattern } from "@/lib/ilike";
+import { readRowsForIds } from "@/lib/read-all-rows";
 import { createServerClient } from "@/lib/supabase/server";
 import { listPrograms, type Program } from "@/lib/program";
 
@@ -84,17 +86,67 @@ export function aggregateCustomers(
     };
   });
 
-  return rows.sort((a, b) => (a.lastSeenAt < b.lastSeenAt ? 1 : -1));
+  return rows.sort((a, b) => {
+    if (a.lastSeenAt !== b.lastSeenAt)
+      return a.lastSeenAt < b.lastSeenAt ? 1 : -1;
+    return a.phone < b.phone ? -1 : 1;
+  });
 }
 
-// Impure shell: the signed-in vendor's customers across every program, most
-// recently active first. RLS scopes both `customers` and `cards` to the
-// vendor automatically (owns_program / customers_own), so no explicit
-// vendor_id filter is needed here, only the program-id narrowing for the
-// cards join.
-export async function listVendorCustomers(
-  q?: string,
-): Promise<VendorCustomerRow[]> {
+export const CUSTOMER_PAGE_SIZE = 50;
+
+const customerCursorSchema = z.tuple([
+  z.iso.datetime({ offset: true }),
+  z.string().regex(/^\+?\d{1,20}$/),
+]);
+
+export function encodeCustomerCursor(row: {
+  last_seen_at: string;
+  phone: string;
+}): string {
+  return Buffer.from(JSON.stringify([row.last_seen_at, row.phone])).toString(
+    "base64url",
+  );
+}
+
+// The cursor arrives from a URL, so anything that is not a well-formed
+// (timestamp, phone) pair is dropped rather than interpolated into the
+// PostgREST filter.
+export function decodeCustomerCursor(
+  raw: string | undefined,
+): { lastSeenAt: string; phone: string } | null {
+  if (!raw) return null;
+  try {
+    const parsed = customerCursorSchema.safeParse(
+      JSON.parse(Buffer.from(raw, "base64url").toString("utf8")),
+    );
+    if (!parsed.success) return null;
+    return { lastSeenAt: parsed.data[0], phone: parsed.data[1] };
+  } catch {
+    return null;
+  }
+}
+
+export type VendorCustomerPage = {
+  rows: VendorCustomerRow[];
+  nextCursor: string | null;
+};
+
+// Impure shell: one page of the signed-in vendor's customers across every
+// program, most recently active first (ties broken by phone so the keyset is
+// total). RLS scopes both `customers` and `cards` to the vendor
+// automatically (owns_program / customers_own), so no explicit vendor_id
+// filter is needed here, only the program-id narrowing for the cards join.
+// Cards are read only for the phones on the returned page.
+export async function listVendorCustomers({
+  q,
+  cursor,
+  limit = CUSTOMER_PAGE_SIZE,
+}: {
+  q?: string;
+  cursor?: string;
+  limit?: number;
+} = {}): Promise<VendorCustomerPage> {
   const supabase = await createServerClient();
   const programs = await listPrograms();
   const programsById = Object.fromEntries(
@@ -108,34 +160,50 @@ export async function listVendorCustomers(
   let customersQuery = supabase
     .from("customers")
     .select("phone,name,first_seen_at,last_seen_at")
-    .order("last_seen_at", { ascending: false });
+    .order("last_seen_at", { ascending: false })
+    .order("phone", { ascending: true })
+    .limit(limit + 1);
   const term = q?.trim();
-  if (term) customersQuery = customersQuery.ilike("phone", `%${term}%`);
+  if (term)
+    customersQuery = customersQuery.ilike("phone", containsPattern(term));
+  const after = decodeCustomerCursor(cursor);
+  if (after) {
+    customersQuery = customersQuery.or(
+      `last_seen_at.lt."${after.lastSeenAt}",and(last_seen_at.eq."${after.lastSeenAt}",phone.gt."${after.phone}")`,
+    );
+  }
 
-  const { data: customersData, error: customersError } = await readAllRows(
-    (start, end) =>
-      customersQuery.order("phone", { ascending: true }).range(start, end),
-  );
+  const { data, error: customersError } = await customersQuery;
   if (customersError)
     throw new Error(`listVendorCustomers: ${customersError.message}`);
 
-  if (programIds.length === 0) {
-    return aggregateCustomers(customersData ?? [], [], programsById);
+  const fetched = data ?? [];
+  const pageRows = fetched.slice(0, limit);
+  const last = pageRows.at(-1);
+  const nextCursor =
+    fetched.length > limit && last ? encodeCustomerCursor(last) : null;
+
+  if (programIds.length === 0 || pageRows.length === 0) {
+    return { rows: aggregateCustomers(pageRows, [], programsById), nextCursor };
   }
 
   const { data: cardsData, error: cardsError } = await readRowsForIds(
-    programIds,
+    pageRows.map((c) => c.phone),
     (batch, start, end) =>
       supabase
         .from("cards")
         .select("phone,program_id,stamp_count,reward_count,updated_at")
-        .in("program_id", batch)
+        .in("phone", batch)
+        .in("program_id", programIds)
         .order("id", { ascending: true })
         .range(start, end),
   );
   if (cardsError) throw new Error(`listVendorCustomers: ${cardsError.message}`);
 
-  return aggregateCustomers(customersData ?? [], cardsData ?? [], programsById);
+  return {
+    rows: aggregateCustomers(pageRows, cardsData ?? [], programsById),
+    nextCursor,
+  };
 }
 
 export type CustomerCardRow = {

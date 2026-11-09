@@ -33,8 +33,12 @@ type CustomersPageProps = {
     seg?: string;
     sort?: string;
     cohort?: string;
+    c?: string;
   }>;
 };
+
+const PAGER_LINK_CLASS =
+  "inline-flex h-11 items-center rounded-xl border bg-card px-6 text-sm font-semibold hover:bg-muted";
 
 const SEGMENT_LABELS: Record<CustomerSegment, string> = {
   all: "All",
@@ -57,6 +61,7 @@ export default async function CustomersPage({
     seg: segRaw,
     sort: sortRaw,
     cohort: cohortRaw,
+    c,
   } = await searchParams;
   const cohort = parseOverviewCohort(cohortRaw);
   if (cohort) return OverviewCohortList({ programs, cohort, p, q });
@@ -70,17 +75,22 @@ export default async function CustomersPage({
     const seg = parseSegment(segRaw);
     const sort = parseSort(sortRaw);
     const nowMs = new Date().getTime();
-    const all = await listVendorCustomers(q);
+    const { rows: all, nextCursor } = await listVendorCustomers({
+      q,
+      cursor: c,
+    });
     const counts = segmentCounts(all, nowMs);
     const customers = sortCustomers(filterBySegment(all, seg, nowMs), sort);
 
-    const chipHref = (value: CustomerSegment) => {
+    const listHref = (value: CustomerSegment, pageCursor?: string) => {
       const params = new URLSearchParams();
       if (q) params.set("q", q);
       params.set("seg", value);
       params.set("sort", sort);
+      if (pageCursor) params.set("c", pageCursor);
       return `/dashboard/customers?${params.toString()}`;
     };
+    const chipHref = (value: CustomerSegment) => listHref(value);
 
     return (
       <div className="space-y-8">
@@ -115,6 +125,27 @@ export default async function CustomersPage({
           </div>
         </div>
         <VendorCustomerList customers={customers} />
+        {(c || nextCursor) && (
+          <nav
+            aria-label="Customer pages"
+            className="flex flex-wrap items-center gap-3"
+          >
+            {c && (
+              <Link href={listHref(seg)} className={PAGER_LINK_CLASS}>
+                Back to first page
+              </Link>
+            )}
+            {nextCursor && (
+              <Link
+                href={listHref(seg, nextCursor)}
+                rel="next"
+                className={cn(PAGER_LINK_CLASS, "ml-auto")}
+              >
+                Next page
+              </Link>
+            )}
+          </nav>
+        )}
       </div>
     );
   }

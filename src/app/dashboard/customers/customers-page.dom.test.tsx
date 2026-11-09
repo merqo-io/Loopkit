@@ -5,7 +5,7 @@ import type { VendorCustomerRow } from "@/lib/customers";
 
 vi.mock("@/features/auth", () => ({ requireVendor: vi.fn(async () => ({})) }));
 vi.mock("@/lib/customers", () => ({
-  listVendorCustomers: vi.fn(async () => []),
+  listVendorCustomers: vi.fn(async () => ({ rows: [], nextCursor: null })),
 }));
 vi.mock("next/navigation", () => ({
   redirect: vi.fn((url: string) => {
@@ -123,7 +123,10 @@ describe("VendorCustomerList", () => {
 describe("CustomersPage (vendor-wide)", () => {
   it("renders the merged list, segment chips with counts, and the search form", async () => {
     const { listVendorCustomers } = await import("@/lib/customers");
-    vi.mocked(listVendorCustomers).mockResolvedValueOnce([jane, bob, cara]);
+    vi.mocked(listVendorCustomers).mockResolvedValueOnce({
+      rows: [jane, bob, cara],
+      nextCursor: null,
+    });
 
     render(await CustomersPage({ searchParams: Promise.resolve({}) }));
 
@@ -146,7 +149,10 @@ describe("CustomersPage (vendor-wide)", () => {
 
   it("filters to only the lapsed rows when ?seg=lapsed", async () => {
     const { listVendorCustomers } = await import("@/lib/customers");
-    vi.mocked(listVendorCustomers).mockResolvedValueOnce([jane, bob, cara]);
+    vi.mocked(listVendorCustomers).mockResolvedValueOnce({
+      rows: [jane, bob, cara],
+      nextCursor: null,
+    });
 
     render(
       await CustomersPage({
@@ -161,7 +167,10 @@ describe("CustomersPage (vendor-wide)", () => {
 
   it("orders rows oldest-last-seen-first when ?sort=away", async () => {
     const { listVendorCustomers } = await import("@/lib/customers");
-    vi.mocked(listVendorCustomers).mockResolvedValueOnce([jane, bob, cara]);
+    vi.mocked(listVendorCustomers).mockResolvedValueOnce({
+      rows: [jane, bob, cara],
+      nextCursor: null,
+    });
 
     render(
       await CustomersPage({ searchParams: Promise.resolve({ sort: "away" }) }),
@@ -176,7 +185,10 @@ describe("CustomersPage (vendor-wide)", () => {
 
   it("every shown row has a Serve link to its program at the counter", async () => {
     const { listVendorCustomers } = await import("@/lib/customers");
-    vi.mocked(listVendorCustomers).mockResolvedValueOnce([jane, bob, cara]);
+    vi.mocked(listVendorCustomers).mockResolvedValueOnce({
+      rows: [jane, bob, cara],
+      nextCursor: null,
+    });
 
     render(await CustomersPage({ searchParams: Promise.resolve({}) }));
 
@@ -187,6 +199,49 @@ describe("CustomersPage (vendor-wide)", () => {
         /^\/dashboard\/counter\?p=p[12]&phone=%2B65\d+$/,
       );
     }
+  });
+
+  it("passes q and cursor through and links to the next page keeping q", async () => {
+    const { listVendorCustomers } = await import("@/lib/customers");
+    vi.mocked(listVendorCustomers).mockResolvedValueOnce({
+      rows: [jane],
+      nextCursor: "abc_-123",
+    });
+
+    render(
+      await CustomersPage({
+        searchParams: Promise.resolve({ q: "65", c: "prev" }),
+      }),
+    );
+
+    expect(listVendorCustomers).toHaveBeenLastCalledWith({
+      q: "65",
+      cursor: "prev",
+    });
+    const next = screen.getByRole("link", { name: "Next page" });
+    const nextParams = new URL(next.getAttribute("href") ?? "", "http://x")
+      .searchParams;
+    expect(nextParams.get("q")).toBe("65");
+    expect(nextParams.get("c")).toBe("abc_-123");
+    const first = screen.getByRole("link", { name: "Back to first page" });
+    const firstParams = new URL(first.getAttribute("href") ?? "", "http://x")
+      .searchParams;
+    expect(firstParams.get("q")).toBe("65");
+    expect(firstParams.has("c")).toBe(false);
+  });
+
+  it("shows no pager on a single first page", async () => {
+    const { listVendorCustomers } = await import("@/lib/customers");
+    vi.mocked(listVendorCustomers).mockResolvedValueOnce({
+      rows: [jane],
+      nextCursor: null,
+    });
+
+    render(await CustomersPage({ searchParams: Promise.resolve({}) }));
+
+    expect(
+      screen.queryByRole("navigation", { name: "Customer pages" }),
+    ).not.toBeInTheDocument();
   });
 
   it("shows an empty state when the vendor has no customers on any program", async () => {

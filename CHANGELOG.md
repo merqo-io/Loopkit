@@ -8,6 +8,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 
+- The vendor customers list now loads 50 customers at a time with Next page and Back to first page links that keep your search. Segment counts and sorting apply to the customers on the current page.
+- Phone search treats `%`, `_` and `\` as plain characters on the customers and program card lists.
+- Engine visit and progress logic dispatches through one typed registry of mechanics instead of two parallel switches.
 - Re-pinned `@merqo/ui` to v0.44.0: new legal text (terms and privacy version 2026-11-08), so vendors are asked to re-accept the terms on next sign-in.
 
 ## [0.4.1] - 2026-11-06
