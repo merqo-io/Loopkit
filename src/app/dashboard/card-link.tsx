@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { Check, Copy, Printer } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@merqo/ui/primitives";
 
 export function CardLinkActions({ link }: { link: string }) {
   const [copied, setCopied] = useState(false);

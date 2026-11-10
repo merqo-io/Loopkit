@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { Camera, X } from "lucide-react";
 import { resolveTokenAction } from "@/app/dashboard/lookup-actions";
-import { Button } from "@/components/ui/button";
+import { Button } from "@merqo/ui/primitives";
 import { ScanLine } from "lucide-react";
 
 export type ScanResolved =

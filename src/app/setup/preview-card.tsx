@@ -7,7 +7,7 @@ import type { Progress } from "@/lib/engine/types";
 import { CardBurst } from "@/components/card-burst";
 
 import { CardShell } from "@/components/card-shell";
-import { cn } from "@/lib/utils";
+import { cn } from "@merqo/ui/primitives";
 
 const CHANCE_RESULT_VISIBLE_MS = 1500;
 

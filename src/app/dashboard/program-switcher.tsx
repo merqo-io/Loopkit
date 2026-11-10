@@ -7,7 +7,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@merqo/ui/primitives";
 
 const ALL_PROGRAMS = "all";
 const BARE_TRIGGER_CLASS =

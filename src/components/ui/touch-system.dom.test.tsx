@@ -4,9 +4,7 @@ import { join } from "node:path";
 import { describe, it, expect } from "vitest";
 import { render } from "@testing-library/react";
 
-import { Button } from "./button";
-import { Input } from "./input";
-import { SelectTrigger, Select } from "./select";
+import { Button, Input, SelectTrigger, Select } from "@merqo/ui/primitives";
 import { ToggleGroup, ToggleGroupItem } from "./toggle-group";
 import { FormCard } from "../form-card";
 
@@ -99,16 +97,16 @@ describe("fine-pointer density and radii", () => {
     expect(button.dataset.variant).toBe("default");
     expect(button.dataset.size).toBe(size);
     expect(button.className).toContain(h);
-    expect(button.className).toContain("rounded-sm");
+    expect(button.className).toContain("rounded-md");
   });
 
-  it("Input is h-9, 16px on mobile, 14px from md, 12px radius", () => {
+  it("Input is h-9, 16px on mobile, 14px from md, shared radius", () => {
     const { container } = render(<Input />);
     const cls = container.querySelector("input")!.className;
     expect(cls).toContain("h-9");
     expect(cls).toContain("text-base");
     expect(cls).toContain("md:text-sm");
-    expect(cls).toContain("rounded-lg");
+    expect(cls).toContain("rounded-md");
   });
 
   it("SelectTrigger matches Input's radius", () => {
@@ -120,7 +118,7 @@ describe("fine-pointer density and radii", () => {
     const cls = container.querySelector(
       "[data-slot=select-trigger]",
     )!.className;
-    expect(cls).toContain("rounded-lg");
+    expect(cls).toContain("rounded-md");
     expect(cls).toContain("data-[size=default]:h-9");
   });
 

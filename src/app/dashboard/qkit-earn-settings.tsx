@@ -9,10 +9,10 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
+  Switch,
+  Label,
+  Button,
+} from "@merqo/ui/primitives";
 import { ElevatedCard } from "@merqo/ui";
 import { ProLock } from "@/components/pro-lock";
 

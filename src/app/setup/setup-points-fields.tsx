@@ -1,7 +1,7 @@
 "use client";
 
 import { MoneyInput } from "@merqo/ui";
-import { Input } from "@/components/ui/input";
+import { Input } from "@merqo/ui/primitives";
 
 import { Section } from "@/components/section";
 

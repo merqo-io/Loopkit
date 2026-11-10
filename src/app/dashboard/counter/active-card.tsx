@@ -8,7 +8,7 @@ import { Plant } from "@/components/plant";
 import { Cup } from "@/components/cup";
 import { Wheel } from "@/components/wheel";
 import { ScratchCard } from "@/components/scratch-card";
-import { Button } from "@/components/ui/button";
+import { Button } from "@merqo/ui/primitives";
 import {
   AlertDialog,
   AlertDialogAction,

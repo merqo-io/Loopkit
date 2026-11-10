@@ -253,7 +253,7 @@ Dashboard pages use `@merqo/ui`'s `PageHeader` and `EmptyState` (v0.42.1, pinned
 ## Stack
 
 Next.js 16.3.4 · App Router · Turbopack · TypeScript strict · Tailwind v4 ·
-shadcn/ui (new-york) · React Hook Form · Zod · Supabase (`@supabase/ssr`) ·
+shadcn/ui (new-york; button, card, checkbox, input, label, select and switch come from `@merqo/ui/primitives` v0.44.1, the rest stay in `src/components/ui/`) · React Hook Form · Zod · Supabase (`@supabase/ssr`) ·
 Vitest 4 · pnpm 11 · Node ≥24.22.1 · deploy target: Vercel
 
 Vercel deploys only `main` (`git.deploymentEnabled` in `vercel.json`), so PR

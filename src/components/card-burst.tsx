@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, type CSSProperties } from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "@merqo/ui/primitives";
 
 const COLORS = [
   "bg-gold",

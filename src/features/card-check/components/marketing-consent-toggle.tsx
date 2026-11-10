@@ -5,8 +5,7 @@ import { toast } from "sonner";
 import { setMarketingConsentAction } from "../api/consent-actions";
 import type { MarketingStatus } from "../types";
 import { marketingConsentText } from "@/lib/marketing-consent";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
+import { Label, Switch } from "@merqo/ui/primitives";
 
 export function MarketingConsentToggle({
   vendorId,

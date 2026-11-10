@@ -4,7 +4,7 @@ import { requireAdmin } from "@/lib/admin";
 import { createServerClient } from "@/lib/supabase/server";
 import { Wordmark } from "@/components/landing/wordmark";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button } from "@merqo/ui/primitives";
 import { AdminNav } from "@/app/admin/admin-nav";
 
 export default async function AdminLayout({

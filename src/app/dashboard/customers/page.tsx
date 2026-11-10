@@ -16,7 +16,7 @@ import {
   type CustomerSegment,
 } from "@/lib/customer-segments";
 import { formatSgtDate } from "@/lib/format";
-import { cn } from "@/lib/utils";
+import { cn } from "@merqo/ui/primitives";
 
 import { ElevatedCard, PageHeader, EmptyState } from "@merqo/ui";
 

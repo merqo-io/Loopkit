@@ -10,9 +10,7 @@ import { ServedStrip } from "@/app/dashboard/counter/served-strip";
 
 import { RewardCelebration } from "@/components/reward-celebration";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button, Input, Label } from "@merqo/ui/primitives";
 
 export function ServeCustomer({
   programId,

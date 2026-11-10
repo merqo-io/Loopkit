@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { ConfirmDialog, ElevatedCard } from "@merqo/ui";
 import type { MarketingConsentStatus } from "@/lib/customers";
 import { formatSgtDate } from "@/lib/format";
-import { Button } from "@/components/ui/button";
+import { Button } from "@merqo/ui/primitives";
 import { withdrawMarketingConsentAction } from "./actions";
 
 function describe(status: MarketingConsentStatus): string {

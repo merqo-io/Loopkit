@@ -8,9 +8,7 @@ import { useSetupFormState } from "./use-setup-form-state";
 
 import Link from "next/link";
 
-import { Button } from "@/components/ui/button";
-
-import { cn } from "@/lib/utils";
+import { Button, cn } from "@merqo/ui/primitives";
 
 import { PreviewCard } from "@/app/setup/preview-card";
 import { Section } from "@/components/section";

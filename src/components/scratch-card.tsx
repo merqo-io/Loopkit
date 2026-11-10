@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useMemo, useState } from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "@merqo/ui/primitives";
 import { prefersReducedMotion } from "@/lib/reduced-motion";
 import type { ScratchCoverStyle } from "@/lib/engine/chance";
 import { COVER_STYLES, makeStrokes } from "./scratch-card-cover";

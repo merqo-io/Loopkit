@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Changed
+
+- Moved to `@merqo/ui` 0.44.1 and replaced the local `button`, `card`, `checkbox`, `input`, `label`, `select` and `switch` primitives with `@merqo/ui/primitives`; `cn` now comes from there too. Button, input and select radii follow the shared `rounded-md`, and every control reaches 44px on coarse pointers through the shared classes. The local `badge` stays because it carries the `gold` variant the shared one lacks. Dropped the direct `clsx` and `tailwind-merge` dependencies.
+
 ## [0.4.2] - 2026-11-10
 
 ### Changed

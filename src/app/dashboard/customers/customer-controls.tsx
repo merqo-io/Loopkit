@@ -8,7 +8,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@merqo/ui/primitives";
 
 const SORT_OPTIONS: { value: CustomerSort; label: string }[] = [
   { value: "recent", label: "Last visit" },

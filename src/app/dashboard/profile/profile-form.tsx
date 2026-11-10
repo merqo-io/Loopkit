@@ -4,9 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Store, UserRound, IdCard, KeyRound, Share2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button, Input, Label } from "@merqo/ui/primitives";
 import { Section } from "@/components/section";
 import { ImageUploader, SocialLinksFields, TwoColumnSections } from "@merqo/ui";
 import {

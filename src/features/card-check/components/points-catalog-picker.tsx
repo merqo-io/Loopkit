@@ -2,7 +2,7 @@
 
 import { toast } from "sonner";
 import { selectPointsRewardAction } from "../api/card-actions";
-import { Button } from "@/components/ui/button";
+import { Button } from "@merqo/ui/primitives";
 import { ConfirmDialog } from "@merqo/ui";
 
 type CatalogItem = { id: string; label: string; cost: number };

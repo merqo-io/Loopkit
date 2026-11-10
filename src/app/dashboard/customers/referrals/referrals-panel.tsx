@@ -10,10 +10,10 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
+  Input,
+  Label,
+  Button,
+} from "@merqo/ui/primitives";
 import { ElevatedCard } from "@merqo/ui";
 import { CardLinkActions } from "@/app/dashboard/card-link";
 
