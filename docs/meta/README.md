@@ -12,6 +12,9 @@ implementation history live in `docs/superpowers/`.
 - `ai-harness-reference.md` is the hook-by-hook AI harness reference, and
   `templatecentral-adoption-log.md` is the templateCentral review history (6.0.4 and 7.2.2)
   (adopted / not adopted); both were moved out of `AGENTS.md`.
+- `2026-10-24-fresh-eyes-sweep.md` is the close-out sweep: knip results,
+  duplicates, loading states, coverage, and what was fixed, deferred or needs
+  an owner decision.
 - `archive/2026-10-08-unused-vouchers/` preserves removed, uncalled voucher
   wrappers and their tests outside runtime and test discovery.
 

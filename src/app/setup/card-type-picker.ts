@@ -5,7 +5,7 @@ export type FamilyKey = "stamp" | "growth" | "points" | "chance";
 export type StyleKey =
   "dots" | "flame" | "points" | "plant" | "cup" | "wheel" | "scratch" | "lucky";
 
-export type StyleOption = {
+type StyleOption = {
   key: StyleKey;
   label: string;
   description: string;

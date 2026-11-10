@@ -14,6 +14,8 @@ Shared controls and `cn` used by this folder's modules are imported from `@merqo
   `/admin` so the `aal2` gate cannot loop back), forwards an `aal2` session to
   `/admin`, otherwise passes the verified TOTP factor (or stale unverified ones)
   to the form.
+- `loading.tsx` — skeleton shown while `page.tsx` resolves the admin check and MFA factors; keeps `<main>` as the landmark with a labelled busy status inside.
+- `loading.dom.test.tsx` — renders the skeleton and asserts the landmark, busy status and placeholders.
 - `mfa-form.tsx` — client form: enrol an authenticator (QR plus manual key) or
   verify a 6-digit code with `challengeAndVerify`, then enter `/admin`.
 - `mfa-form.dom.test.tsx` — verify, wrong code, enrol-then-verify, bad input.

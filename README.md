@@ -270,10 +270,11 @@ usage is unchanged.
 ```bash
 pnpm dev            # dev server — http://localhost:3000
 pnpm build          # production build
-pnpm test           # run test suite (vitest, 1679 tests)
+pnpm test           # run test suite (vitest, 1675 tests)
 pnpm test:mutation  # stryker mutation testing (scoped to src/lib; advisory)
 pnpm test:e2e       # playwright e2e smoke (needs local Supabase up)
 pnpm check          # prettier --check + eslint + tsc --noEmit
+pnpm dlx knip@6.44.2 --no-progress  # dead-code scan (config: knip.json)
 pnpm format         # prettier --write
 ```
 
@@ -282,7 +283,7 @@ pnpm format         # prettier --write
 ```
 src/app/dashboard/     — vendor console (programs, cards, stats; routes have loading skeletons)
 src/app/c/              — customer-facing card view (QR entry point)
-src/app/setup/          — vendor onboarding: /setup programs list, /setup/new, /setup/[programId]/{edit,migrate,prep,schedule}
+src/app/setup/          — vendor onboarding (one loading skeleton covers the segment): /setup programs list, /setup/new, /setup/[programId]/{edit,migrate,prep,schedule}
 src/app/admin/          — Merqo-team admin console (shares the dashboard layout, page header, stat tiles and empty states; routes have loading skeletons)
 src/app/login/          — auth pages
 src/lib/engine/         — stamp/points/lucky-reward core logic

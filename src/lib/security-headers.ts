@@ -22,7 +22,7 @@ export function needsNonce(pathname: string): boolean {
 }
 
 // Hash of next-themes' minified inline bootstrap in a production build; e2e/csp.spec.ts fails on any CSP violation if a bump changes it.
-export const THEME_SCRIPT_HASH =
+const THEME_SCRIPT_HASH =
   "'sha256-n46vPwSWuMC0W703pBofImv82Z26xo4LXymv0E9caPk='";
 
 const SUPABASE = ["https://*.supabase.co"];

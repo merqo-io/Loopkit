@@ -7,7 +7,7 @@ export type StampVisualStyle = "dots" | "seal" | "ink" | "punch" | "charm";
 export const DEFAULT_STAMP_COLOR = MECHANIC_ART.stamp.hexc9a36a;
 
 export type PointsRedemptionMode = "catalog" | "offset";
-export type PointsCatalogItem = { id: string; label: string; cost: number };
+type PointsCatalogItem = { id: string; label: string; cost: number };
 export type PointsOffsetRate = { points: number; dollars: number };
 
 export type StampConfig = {

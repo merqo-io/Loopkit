@@ -3,7 +3,7 @@ import type { StampCard } from "@/app/dashboard/card";
 // The Counter's active-card state. Unchanged from the original inline union in
 // serve-customer.tsx, lifted here so both serve-customer and active-card share
 // one definition.
-export type PlantView = {
+type PlantView = {
   kind: "plant";
   stage: number;
   stageName: string;
@@ -12,7 +12,7 @@ export type PlantView = {
   variant: "plant" | "cup";
 };
 
-export type ChanceView = {
+type ChanceView = {
   kind: "chance";
   variant: "wheel" | "scratch";
   segments: { id: string; label: string; reward: boolean }[];

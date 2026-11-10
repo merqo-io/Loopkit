@@ -1,7 +1,7 @@
 import { MS_PER_DAY } from "@/lib/time";
 import { classifyActivity } from "@/lib/stats";
 
-export type VendorActivityMetric = { label: string; value: string };
+type VendorActivityMetric = { label: string; value: string };
 
 export type VendorActivity = {
   active: boolean;

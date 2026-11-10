@@ -63,7 +63,7 @@ export function mapActivityRow(
   };
 }
 
-export type ActivityTypeFilter = "stamps" | "rewards";
+type ActivityTypeFilter = "stamps" | "rewards";
 
 export type ListActivityOptions = {
   programIds: string[];
