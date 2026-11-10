@@ -162,7 +162,7 @@ rebuilt as the vendor Overview (briefing, self-explaining base stats,
 7/14-day visits trend, worth-a-look, reward-cost panel); a scan-first
 Counter (empty-until-loaded active card, inline new-customer, printable
 join poster, one-level Undo; 44px touch controls and a "Serve a customer" primary action); and Customers segment chips + sort + a
-per-row Serve. Phase 1 shipped ungated
+per-row Serve (the default customers view is keyset-paged at 50; other segments and sorts read the full set, see `src/app/dashboard/customers/README.md`). Phase 1 shipped ungated
 (`src/app/dashboard/{overview,counter,customers}/README.md`). Editing a card that customers already hold now confirms the change first, and newly earned rewards expire after 90 days unless the vendor clears that field. Program mechanics, stamp visual styles, custom stamp color, and the shop-poster's "via LoopKit" line are now Pro-gated (`src/lib/program.ts`'s `Entitlement`); a free vendor still previews every option, only Save is blocked server-side.
 
 Vendors run a stamp/points program from `/dashboard` (programs, cards,
@@ -270,7 +270,7 @@ usage is unchanged.
 ```bash
 pnpm dev            # dev server — http://localhost:3000
 pnpm build          # production build
-pnpm test           # run test suite (vitest)
+pnpm test           # run test suite (vitest, 1679 tests)
 pnpm test:mutation  # stryker mutation testing (scoped to src/lib; advisory)
 pnpm test:e2e       # playwright e2e smoke (needs local Supabase up)
 pnpm check          # prettier --check + eslint + tsc --noEmit
@@ -473,7 +473,7 @@ must also add a DNC Registry check, as set out in
 - Staging sync pushes with the merqo-staging-sync GitHub App token, because a ruleset limits `staging` pushes to that app
 - Source: `github.com/merqo-io/loopkit`; `@merqo/ui` installs from `github:merqo-io/merqo-ui`, pinned to the commit tagged `v0.34.2` (its `AccountMenu` treats the sign-out action's `redirect()` as navigation, not an error); `pnpm-workspace.yaml` allows its build for that commit only
 - Plans/specs: `docs/superpowers/`
-- Release history: `CHANGELOG.md`
+- Release history: `CHANGELOG.md` (latest release 0.4.2)
 - Dashboard nav: Counter, Customers (with a Referrals link strip), Activity, Stats; Settings lives in Profile and Programs in the account menu (see `CHANGELOG.md`)
 - Dependency security overrides (force-patched transitive CVEs, each
   scoped/commented with its advisory ID, e.g. browserslist

@@ -6,8 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Fixed
+
+- Test-only LIKE emulator now escapes backslashes (CodeQL incomplete string escaping).
+
+## [0.4.2] - 2026-11-10
+
 ### Changed
 
+- The vendor customers list now loads 50 customers at a time with Next page and Back to first page links that keep your search. The default view (All, most recent) stays paged. Picking a segment other than All, or the Away or Progress sort, reads every matching customer so results are not limited to one page, and shows no paging links. Segment counts always cover every customer matching your search.
+- Phone search treats `%`, `_` and `\` as plain characters on the customers and program card lists.
+- Engine visit and progress logic dispatches through one typed registry of mechanics instead of two parallel switches.
 - Re-pinned `@merqo/ui` to v0.44.0: new legal text (terms and privacy version 2026-11-08), so vendors are asked to re-accept the terms on next sign-in.
 
 ## [0.4.1] - 2026-11-06

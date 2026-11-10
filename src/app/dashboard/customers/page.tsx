@@ -5,7 +5,7 @@ import { requireVendor } from "@/features/auth";
 import { listPrograms, currentProgram } from "@/lib/program";
 import { getProgress } from "@/lib/engine";
 import { listCards } from "@/lib/cards";
-import { listVendorCustomers } from "@/lib/customers";
+import { listAllVendorCustomers, listVendorCustomers } from "@/lib/customers";
 import {
   parseSegment,
   parseSort,
@@ -33,8 +33,12 @@ type CustomersPageProps = {
     seg?: string;
     sort?: string;
     cohort?: string;
+    c?: string;
   }>;
 };
+
+const PAGER_LINK_CLASS =
+  "inline-flex h-11 items-center rounded-xl border bg-card px-6 text-sm font-semibold hover:bg-muted";
 
 const SEGMENT_LABELS: Record<CustomerSegment, string> = {
   all: "All",
@@ -44,6 +48,41 @@ const SEGMENT_LABELS: Record<CustomerSegment, string> = {
 };
 
 export const metadata = { title: "Customers" };
+
+// The default view pages by keyset; segments and the away/progress sorts need
+// card data for every customer, so they read the full set and show no pager.
+// Counts always come from the full set so chips never shrink to one page.
+async function loadVendorWide({
+  q,
+  c,
+  seg,
+  sort,
+  nowMs,
+}: {
+  q: string | undefined;
+  c: string | undefined;
+  seg: CustomerSegment;
+  sort: ReturnType<typeof parseSort>;
+  nowMs: number;
+}) {
+  const all = await listAllVendorCustomers(q);
+  const counts = segmentCounts(all, nowMs);
+  if (seg === "all" && sort === "recent") {
+    const page = await listVendorCustomers({ q, cursor: c });
+    return {
+      counts,
+      customers: page.rows,
+      nextCursor: page.nextCursor,
+      showPager: Boolean(c || page.nextCursor),
+    };
+  }
+  return {
+    counts,
+    customers: sortCustomers(filterBySegment(all, seg, nowMs), sort),
+    nextCursor: null,
+    showPager: false,
+  };
+}
 
 export default async function CustomersPage({
   searchParams,
@@ -57,6 +96,7 @@ export default async function CustomersPage({
     seg: segRaw,
     sort: sortRaw,
     cohort: cohortRaw,
+    c,
   } = await searchParams;
   const cohort = parseOverviewCohort(cohortRaw);
   if (cohort) return OverviewCohortList({ programs, cohort, p, q });
@@ -70,17 +110,23 @@ export default async function CustomersPage({
     const seg = parseSegment(segRaw);
     const sort = parseSort(sortRaw);
     const nowMs = new Date().getTime();
-    const all = await listVendorCustomers(q);
-    const counts = segmentCounts(all, nowMs);
-    const customers = sortCustomers(filterBySegment(all, seg, nowMs), sort);
+    const { counts, customers, nextCursor, showPager } = await loadVendorWide({
+      q,
+      c,
+      seg,
+      sort,
+      nowMs,
+    });
 
-    const chipHref = (value: CustomerSegment) => {
+    const listHref = (value: CustomerSegment, pageCursor?: string) => {
       const params = new URLSearchParams();
       if (q) params.set("q", q);
       params.set("seg", value);
       params.set("sort", sort);
+      if (pageCursor) params.set("c", pageCursor);
       return `/dashboard/customers?${params.toString()}`;
     };
+    const chipHref = (value: CustomerSegment) => listHref(value);
 
     return (
       <div className="space-y-8">
@@ -115,6 +161,27 @@ export default async function CustomersPage({
           </div>
         </div>
         <VendorCustomerList customers={customers} />
+        {showPager && (
+          <nav
+            aria-label="Customer pages"
+            className="flex flex-wrap items-center gap-3"
+          >
+            {c && (
+              <Link href={listHref(seg)} className={PAGER_LINK_CLASS}>
+                Back to first page
+              </Link>
+            )}
+            {nextCursor && (
+              <Link
+                href={listHref(seg, nextCursor)}
+                rel="next"
+                className={cn(PAGER_LINK_CLASS, "ml-auto")}
+              >
+                Next page
+              </Link>
+            )}
+          </nav>
+        )}
       </div>
     );
   }
