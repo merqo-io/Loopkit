@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { VendorCustomerRow } from "@/lib/customers";
 import { formatSgtDate } from "@/lib/format";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button } from "@merqo/ui/primitives";
 import { ElevatedCard, EmptyState } from "@merqo/ui";
 
 export function VendorCustomerList({

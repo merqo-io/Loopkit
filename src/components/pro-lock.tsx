@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Lock } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@merqo/ui/primitives";
 
 /**
  * Inline pill pointing a free-tier vendor at the plan page from wherever they

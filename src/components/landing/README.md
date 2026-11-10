@@ -5,6 +5,8 @@
 Marketing sections composed by `src/app/page.tsx` into the public loopkit
 landing page.
 
+Shared controls and `cn` used by this folder's modules are imported from `@merqo/ui/primitives`; only `badge`, `alert-dialog`, `avatar`, `dropdown-menu`, `popover`, `table`, `toggle` and `toggle-group` remain in `src/components/ui/`.
+
 ## Contents
 
 - `benefits.tsx` — `Benefits`: eyebrow ("Why vendors switch") + `h2` heading above a 3-column value-prop grid ("Regulars, not one-offs" / "Zero friction" / "Built for a stall"), icon + title + body per item — `border-t` section wrapper matches `how-it-works.tsx`'s divider/heading pattern

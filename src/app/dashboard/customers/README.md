@@ -4,6 +4,8 @@
 
 Vendor-facing customer list at `/dashboard/customers` — a searchable directory of everyone with a card at the shop, either merged across all programs or scoped to one via `?p=`.
 
+Shared controls and `cn` used by this folder's modules are imported from `@merqo/ui/primitives`; only `badge`, `alert-dialog`, `avatar`, `dropdown-menu`, `popover`, `table`, `toggle` and `toggle-group` remain in `src/components/ui/`.
+
 ## Contents
 
 - `page.tsx`, `overview-cohort.tsx` and `vendor-customer-list.tsx` use the shared `PageHeader` (eyebrow "Your regulars") and `EmptyState` with an Open the Counter or See all customers link.

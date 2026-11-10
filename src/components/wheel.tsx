@@ -3,7 +3,7 @@
 import { prefersReducedMotion } from "@/lib/reduced-motion";
 
 import { useEffect, useId, useRef, useState } from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "@merqo/ui/primitives";
 import { MECHANIC_ART } from "@/lib/tokens/mechanic-art";
 
 // Continue angular velocity across the reveal handoff; solve deceleration

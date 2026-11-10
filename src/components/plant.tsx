@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "@merqo/ui/primitives";
 
 const SOIL_Y = 74;
 // The stem's own full-length endpoint (never reached — later stages target

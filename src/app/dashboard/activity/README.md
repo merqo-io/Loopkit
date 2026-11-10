@@ -4,6 +4,8 @@
 
 Vendor-facing activity feed at `/dashboard/activity` — a paginated, filterable log of stamps, plays, and redemptions across one or all of a vendor's programs.
 
+Shared controls and `cn` used by this folder's modules are imported from `@merqo/ui/primitives`; only `badge`, `alert-dialog`, `avatar`, `dropdown-menu`, `popover`, `table`, `toggle` and `toggle-group` remain in `src/components/ui/`.
+
 ## Contents
 
 - `page.tsx` and `activity-table.tsx` use the shared `PageHeader` (eyebrow "History") and `EmptyState` from `@/components`; `ActivityTable`'s `filtered` prop picks "No matching activity" with a Clear filters link, otherwise "No activity yet." with an Open the Counter link.

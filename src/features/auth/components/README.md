@@ -4,6 +4,8 @@
 
 Client-side auth UI.
 
+Shared controls and `cn` used by this folder's modules are imported from `@merqo/ui/primitives`; only `badge`, `alert-dialog`, `avatar`, `dropdown-menu`, `popover`, `table`, `toggle` and `toggle-group` remain in `src/components/ui/`.
+
 ## Contents
 
 - `login-form.tsx` — `LoginForm`: `@merqo/ui`'s `ElevatedCard`-wrapped Google OAuth

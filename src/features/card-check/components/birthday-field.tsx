@@ -3,8 +3,7 @@
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
 import { setCustomerBirthdayAction } from "../api/card-actions";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
+import { Button, Label } from "@merqo/ui/primitives";
 
 const MONTHS = [
   "January",

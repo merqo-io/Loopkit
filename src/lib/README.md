@@ -64,7 +64,7 @@ profile/status).
 - `tour-prefs.ts` — `stampTourSeen(supabase, vendorId)`: the single upsert (`vendors.tour_seen_at = now()`, scoped to `vendor_id = auth.uid()` via the `vendors_own` RLS policy) shared by `src/app/api/tour-seen/route.ts`'s client-fired `POST` and `src/app/dashboard/layout.tsx`'s own durable server-render stamp — best-effort, logs (never throws) on failure. Upsert, not update: `loopkit.vendors` is created lazily, so a vendor who never visited `/profile` has no row yet and an update would silently persist nothing
 - `types.ts` — type-only re-export of `db-types/` (`Database`, `Json`, `SocialLinks`, the consent and entitlement unions), so `@/lib/types` imports stay stable
 - `db-types/` — the hand-written `Database["loopkit"]` mirror of `supabase/migrations/`, split into table groups, RPC signatures and shared types (see its README for how to update or regenerate)
-- `utils.ts`: `cn` (clsx+tailwind-merge), `MS_PER_HOUR`/`MS_PER_DAY` constants, general-purpose formatting/shared helpers
+- `utils.ts`: `MS_PER_HOUR`/`MS_PER_DAY` constants, general-purpose formatting/shared helpers
 - `vendor.ts` — `stallNameSchema`, `getVendorProfile`/`saveStallName`: the vendor's stall name, read from and written to the shared `merqo.vendor_profile` table (local `vendors.name` is only a lazy-create seed value)
 
 ## Connectivity

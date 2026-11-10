@@ -3,9 +3,7 @@ import { FormCard } from "@/components/form-card";
 
 import { useSaveSettings } from "@/hooks/use-save-settings";
 import { saveCustomerNotifySettingsAction } from "./settings-actions";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
+import { Switch, Label, Button } from "@merqo/ui/primitives";
 
 // current is null when the vendor has no vendor_notify_settings row yet
 // (never visited this page) — that must still default checked, same

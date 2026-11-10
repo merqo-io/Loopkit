@@ -5,10 +5,10 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
+  Input,
+  Label,
+  Button,
+} from "@merqo/ui/primitives";
 import { ProgramSwitcher } from "@/app/dashboard/program-switcher";
 
 const TYPE_ALL = "all";

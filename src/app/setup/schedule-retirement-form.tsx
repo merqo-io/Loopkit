@@ -3,16 +3,16 @@
 import { useActionState } from "react";
 import { scheduleRetirementAction } from "@/app/setup/actions";
 import type { Program } from "@/lib/program";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
+  Button,
+  Input,
+  Label,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@merqo/ui/primitives";
 
 const labelClass =
   "text-xs font-semibold uppercase tracking-wider text-muted-foreground";

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Trash2 } from "lucide-react";
 import { setProgramActive, removeCard } from "@/app/admin/actions";
-import { Button } from "@/components/ui/button";
+import { Button } from "@merqo/ui/primitives";
 
 type ManageCard = {
   id: string;

@@ -1,7 +1,6 @@
 "use client";
 
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
+import { Checkbox, Label } from "@merqo/ui/primitives";
 import { marketingConsentText } from "@/lib/marketing-consent";
 
 export function MarketingOptIn({

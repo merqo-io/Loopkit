@@ -15,3 +15,5 @@ Migration `0056` closes direct access to the legacy phone-only lookup and commit
 [app](../README.md)
 
 The service-client import carries an eslint-disable reason: the order link is the credential.
+
+Shared controls and `cn` used by this folder's modules are imported from `@merqo/ui/primitives`; only `badge`, `alert-dialog`, `avatar`, `dropdown-menu`, `popover`, `table`, `toggle` and `toggle-group` remain in `src/components/ui/`.

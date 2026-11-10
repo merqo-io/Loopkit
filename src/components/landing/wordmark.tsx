@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@merqo/ui/primitives";
 
 /** LoopKit wordmark. The "oo" are two gold stamp dots — the reward motif that
  *  runs through the brand. PascalCase compound, matching the Merqo kit-family

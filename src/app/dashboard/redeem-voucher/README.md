@@ -4,6 +4,8 @@
 
 Vendor scan-confirm screen for one catalog-mode Points Club reward voucher — distinct from the Counter page, which handles every other stamp/visit/redeem action.
 
+Shared controls and `cn` used by this folder's modules are imported from `@merqo/ui/primitives`; only `badge`, `alert-dialog`, `avatar`, `dropdown-menu`, `popover`, `table`, `toggle` and `toggle-group` remain in `src/components/ui/`.
+
 ## Contents
 
 - `page.tsx` — `RedeemVoucherPage` server component; resolves `?token=` via `getVoucherByToken` (owner-gated), redirects to `/dashboard` with no token, shows a not-found/already-redeemed message or renders `RedeemVoucherConfirm`. Its server-rendered "Back to dashboard" nav uses `@merqo/ui`'s `BackButton` without a function prop.
