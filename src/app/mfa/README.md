@@ -6,6 +6,8 @@ Second-step sign-in for the loopkit admins. `requireAdmin()` redirects any team
 session below `aal2` here, so the operator console is never reachable with a
 password alone.
 
+Shared controls and `cn` used by this folder's modules are imported from `@merqo/ui/primitives`; only `badge`, `alert-dialog`, `avatar`, `dropdown-menu`, `popover`, `table`, `toggle` and `toggle-group` remain in `src/components/ui/`.
+
 ## Contents
 
 - `page.tsx` — server page; `requireTeamMember()` only (it lives outside

@@ -6,6 +6,8 @@ The legal-acceptance interstitial `requireCurrentLegalAcceptance`
 (`@/lib/legal-gate`) redirects a signed-in vendor to when their accepted
 terms/privacy versions are behind `@merqo/ui`'s `LEGAL_VERSIONS`.
 
+Shared controls and `cn` used by this folder's modules are imported from `@merqo/ui/primitives`; only `badge`, `alert-dialog`, `avatar`, `dropdown-menu`, `popover`, `table`, `toggle` and `toggle-group` remain in `src/components/ui/`.
+
 ## Contents
 
 - `page.tsx` — `LegalAcceptPage`. Reads the `next` search param (through

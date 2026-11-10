@@ -5,6 +5,8 @@
 Merqo-team internal admin console — the gated layout, shared nav, and shared
 figure/badge helpers used by the overview, programs, and vendors screens.
 
+Shared controls and `cn` used by this folder's modules are imported from `@merqo/ui/primitives`; only `badge`, `alert-dialog`, `avatar`, `dropdown-menu`, `popover`, `table`, `toggle` and `toggle-group` remain in `src/components/ui/`.
+
 ## Contents
 
 - `admin-page-header.tsx` — `AdminPageHeader`: the admin pages' title row, a thin wrapper over the `@merqo/ui` `PageHeader` (eyebrow "Internal").

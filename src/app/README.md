@@ -6,6 +6,8 @@ App Router root for loopkit — global layout, fonts, and theme; root error/404
 boundaries; the landing page; and the top-level route groups for the vendor,
 customer, and admin surfaces.
 
+Shared controls and `cn` used by this folder's modules are imported from `@merqo/ui/primitives`; only `badge`, `alert-dialog`, `avatar`, `dropdown-menu`, `popover`, `table`, `toggle` and `toggle-group` remain in `src/components/ui/`.
+
 ## Contents
 
 - `actions/`

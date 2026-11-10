@@ -9,6 +9,8 @@ celebration), app-wide providers, and the `landing/` and `ui/` subtrees.
 in `src/lib/`, `qrSvg`) now come from `@merqo/ui` (2026-09-16, promoted after
 being found duplicated across 2+ sibling kits) rather than living here.
 
+Shared controls and `cn` used by this folder's modules are imported from `@merqo/ui/primitives`; only `badge`, `alert-dialog`, `avatar`, `dropdown-menu`, `popover`, `table`, `toggle` and `toggle-group` remain in `src/components/ui/`.
+
 ## Contents
 
 - `PageHeader` and `EmptyState` come from `@merqo/ui`; there are no local copies.

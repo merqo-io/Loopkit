@@ -4,6 +4,8 @@
 
 Vendor console root: the Overview (a daily briefing: regulars and cadence, self-explaining base stats, a visits trend, "worth a look" actions, what the rewards cost this month, recent activity, and your programs) and the account nav/layout, plus the server actions (`stamp-actions.ts`, `lookup-actions.ts`, `redeem-actions.ts`, `settings-actions.ts`) that back stamping, engine "visit" events, redemption, card regeneration, and QR-token resolution for the whole dashboard tree.
 
+Shared controls and `cn` used by this folder's modules are imported from `@merqo/ui/primitives`; only `badge`, `alert-dialog`, `avatar`, `dropdown-menu`, `popover`, `table`, `toggle` and `toggle-group` remain in `src/components/ui/`.
+
 ## Contents
 
 - Pages here (`page.tsx`, `activity/`, `counter/`, `customers/`, `stats/`) open with `@merqo/ui`'s `PageHeader` and show its `EmptyState` with a call to action when there is nothing to list; `layout.tsx`'s `<main>` padding is `px-5 py-7`.
