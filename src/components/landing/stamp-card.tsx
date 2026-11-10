@@ -1,5 +1,5 @@
 import { Check, Gift } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@merqo/ui/primitives";
 
 // 8-slot card: 6 stamped, the 8th is the reward. The hero thesis — the small
 // joy of a nearly-finished card. Pure markup, no image, renders in the HTML.

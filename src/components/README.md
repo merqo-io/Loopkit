@@ -3,11 +3,14 @@
 ## Purpose
 
 Shared React components: the reward-mechanic visualizations (flame, plant,
-cup, wheel, scratch, dots, points bar), general-purpose UI (pro-lock, reward
+cup, wheel, scratch, dots, points bar), general-purpose UI (reward
 celebration), app-wide providers, and the `landing/` and `ui/` subtrees.
 `BackButton`, `ElevatedCard`, `SOCIAL_LINK_FIELDS`/`SocialLinksFields` (and,
 in `src/lib/`, `qrSvg`) now come from `@merqo/ui` (2026-09-16, promoted after
-being found duplicated across 2+ sibling kits) rather than living here.
+being found duplicated across 2+ sibling kits) rather than living here. `ProLock` also comes from `@merqo/ui`; callers pass
+`href="/dashboard/plan"`.
+
+Shared controls and `cn` used by this folder's modules are imported from `@merqo/ui/primitives`; only `badge`, `alert-dialog`, `avatar`, `dropdown-menu`, `popover`, `table`, `toggle` and `toggle-group` remain in `src/components/ui/`.
 
 ## Contents
 
@@ -36,7 +39,6 @@ being found duplicated across 2+ sibling kits) rather than living here.
 - `plant.dom.test.tsx` — jsdom tests: `Plant` renders an svg, the stem grows monotonically stage-to-stage, the seed dot and sprout hook curl each show only at their own stage, exactly 5 persistent leaf slots exist with a growing subset visible per stage (0/0/3/4/5), the bud mounts only from Budding onward (its stage-4 fade delayed to match the stem's grow duration), the bloom mounts only at Bloom with leaves still visible, the same `seed` renders an identical bloom across renders while different seeds can render different bloom types, and dims the color when wilting
 - `plant.tsx` — `Plant`: SVG growing-plant progress visualization driven by `stage`/`totalStages`/`wilting`/an optional `seed`, restaged with a persistent 5-leaf-slot stem (revealed progressively, never swapped, so leaves don't flash/replace across stages) that keeps growing through all 5 stages instead of freezing after Leafing. Each leaf slot is a static positioning `<g transform="translate(50, leaf.y)">` wrapping the CSS-scaled leaf group — a CSS `transform` on an SVG element replaces its `transform` attribute outright rather than composing with it, so the position and the pop-in scale can't live on the same element; without the split the leaf's own geometry (drawn at local origin) rendered at the viewBox's top-left corner instead of its stem slot. The whole stem group also idly sways ±2° (`motion-safe:animate-plant-sway`, `globals.css`), suppressed while `wilting` (which instead holds its own static droop tilt) — the two share the same group so they can't both apply at once. At Budding a capsule bud holds at half scale from its own attach point; at Bloom one of 4 approved flower constructions — tulip, daisy, sakura (a 3-blossom cluster), or pansy — grows from that exact same anchor point while the bud only fades away on a delay once the bloom has visibly grown past it, so removal reads as absorbed rather than an independent fade. `seed` (e.g. a stable per-customer key) deterministically picks the bloom type via a simple hash — never `Math.random()`, so a customer's flower stays the same across page reloads instead of flickering; omitted seed defaults to tulip. All growth still runs over the shared 1600ms `motion-safe:` transition; the stem is a fixed-length line animated via a `scaleY` transform (not a resized line, since `x1/y1/x2/y2` aren't CSS-animatable)
 - `points-bar.tsx` — `PointsBar`: horizontal progress bar with a "filled / total points" caption, for stamp-variant "points" programs
-- `pro-lock.tsx` — `ProLock`: inline pill linking to `/dashboard/plan`, marks a free-tier vendor's Pro-only limit
 - `providers.tsx` — `Providers` client component: wraps `children` with a `sonner` `Toaster` (top-right, rich colors), mounted once in the root layout
 - `reward-celebration.dom.test.tsx` — jsdom tests: `RewardCelebration` renders the "Reward unlocked!" dialog with a `CardBurst` overlay when open (queried via `screen` since content is portal-rendered), renders nothing when closed
 - `reward-celebration.tsx` — `RewardCelebration` client component: `AlertDialog`-based congratulation modal with a `CardBurst` overlay, shows the customer phone and reward text

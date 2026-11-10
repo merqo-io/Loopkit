@@ -1,5 +1,5 @@
 import { Sparkles } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@merqo/ui/primitives";
 
 // Lucky Tap's mystery-box visual — a "tap for a surprise" prompt, not a
 // stamp-style dot grid — since it's now grouped with Wheel/Scratch as a

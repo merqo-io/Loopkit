@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { redeemAction } from "@/app/dashboard/redeem-actions";
 import type { StampCard } from "@/app/dashboard/card";
-import { Button } from "@/components/ui/button";
+import { Button } from "@merqo/ui/primitives";
 import { ConfirmDialog } from "@merqo/ui";
 
 /** Redeem control with a ConfirmDialog: consumes exactly one reward's worth of stamps and carries the rest over to the next card. */

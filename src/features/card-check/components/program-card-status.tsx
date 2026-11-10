@@ -9,7 +9,7 @@ import type { CardStatus } from "../types";
 import { PointsCatalogPicker } from "./points-catalog-picker";
 
 import { CardShell } from "@/components/card-shell";
-import { Button } from "@/components/ui/button";
+import { Button } from "@merqo/ui/primitives";
 import {
   AlertDialog,
   AlertDialogAction,

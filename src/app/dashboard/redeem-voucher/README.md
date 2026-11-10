@@ -4,6 +4,8 @@
 
 Vendor scan-confirm screen for one catalog-mode Points Club reward voucher — distinct from the Counter page, which handles every other stamp/visit/redeem action.
 
+Shared controls and `cn` used by this folder's modules are imported from `@merqo/ui/primitives`; only `badge`, `alert-dialog`, `avatar`, `dropdown-menu`, `popover`, `table`, `toggle` and `toggle-group` remain in `src/components/ui/`.
+
 ## Contents
 
 - `page.tsx` — `RedeemVoucherPage` server component; resolves `?token=` via `getVoucherByToken` (owner-gated), redirects to `/dashboard` with no token, shows a not-found/already-redeemed message or renders `RedeemVoucherConfirm`. Its server-rendered "Back to dashboard" nav uses `@merqo/ui`'s `BackButton` without a function prop.
@@ -19,6 +21,8 @@ boundary (the interactive `BackButton` is a Client Component), which Next reject
 at render. `BackButton` falls back to a plain `<a>`.
 
 - `loading.tsx` — `RedeemVoucherLoading`, a static skeleton (`role="status"`, `aria-busy`, sr-only label) mirroring the page layout while the route streams in.
+
+`useAsyncAction` comes from `@merqo/ui`; call sites pass `(fn: () => Promise<void>) => fn()` as the action.
 
 ## Parent
 

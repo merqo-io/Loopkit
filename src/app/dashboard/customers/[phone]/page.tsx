@@ -6,7 +6,7 @@ import { listActivity } from "@/lib/activity";
 import { normalizePhone } from "@/lib/phone";
 import { formatSgtDate } from "@/lib/format";
 import { ElevatedCard, PageHeader } from "@merqo/ui";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@merqo/ui/primitives";
 import { ActivityTable } from "@/app/dashboard/activity/activity-table";
 import { AdjustStampForm } from "./adjust-stamp-form";
 import { MarketingConsentPanel } from "./marketing-consent-panel";

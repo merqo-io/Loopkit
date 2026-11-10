@@ -4,6 +4,8 @@
 
 The scan-first "serve a customer at the counter" view at `/dashboard/counter?p=<id>&phone=<optional>`. A large scan target is the hero; manual phone entry collapses into a fallback; the active card starts empty; a vendor can add a brand-new customer or print a shop join poster without leaving the page.
 
+Shared controls and `cn` used by this folder's modules are imported from `@merqo/ui/primitives`; only `badge`, `alert-dialog`, `avatar`, `dropdown-menu`, `popover`, `table`, `toggle` and `toggle-group` remain in `src/components/ui/`.
+
 ## Contents
 
 - `page.tsx` header is the shared `PageHeader` (eyebrow "Daily work", h1 "Counter"): the program name, `describeProgram` and badge label sit in its muted line and `ProgramSwitcher` is its action slot.
@@ -22,7 +24,7 @@ The scan-first "serve a customer at the counter" view at `/dashboard/counter?p=<
 - `served-strip.tsx` — `ServedStrip` + `ServedEntry` type: the "Served just now" list. Each row shows a masked phone and a note (`"6 to 7 of 8"` for a stamp, `"reward redeemed, ..."` for a redeem); an "Undo" button appears only on an `undoable` entry. Renders nothing when empty.
 - `served-strip.dom.test.tsx` — jsdom tests: exactly one Undo button for a mixed list, clicking it calls `onUndo` with that entry, nothing rendered when empty.
 - `use-served-strip.ts` — `useServedStrip()` hook owning the served list: `push(phone, note, undoable)` prepends (cap 5) and clears every prior entry's Undo; `markDone(id)` clears one. Keeps this state plumbing out of `serve-customer.tsx`.
-- `serve-result.ts` — the `ServeResult` union (stamp / lucky / plant / chance) plus its `PlantView` / `ChanceView` shapes, lifted verbatim from `serve-customer.tsx` so `serve-customer` and `active-card` share one definition.
+- `serve-result.ts` — the `ServeResult` union (stamp / lucky / plant / chance) plus its file-private `PlantView` / `ChanceView` shapes, lifted verbatim from `serve-customer.tsx` so `serve-customer` and `active-card` share one definition.
 - `active-card.tsx` — client `ActiveCard`: the Counter's right column. An explicit empty state (`data-state="empty"`) until a customer loads, then the per-mechanic result block (`StampBlock` / lucky / `PlantBlock` / `ChanceBlock`) and the regenerate-card dialog. Every block is the original `serve-customer.tsx` markup, moved not rewritten; `RedemptionControl` and `luckyResultMessage` moved here with it.
 - `counter-page.dom.test.tsx` — jsdom tests: with `?p=` set, `ServeCustomer` gets the program + shop-join props (including `showBranding: true` for a free vendor, `false` for a Pro one) and `RememberProgram` gets the program id; a missing `?p=` redirects to the busiest program; an unknown `?p=` redirects to `/dashboard`. Mocks `@merqo/ui`'s `qrSvg` via `importOriginal` (preserving every other export) rather than mocking the whole package.
 
@@ -39,6 +41,8 @@ at render. `BackButton` falls back to a plain `<a>`.
 `use-serve-customer.ts` imports its server actions from `../stamp-actions` and `../lookup-actions` and owns lookup, scan routing, visit/redeem/undo state and recovered capability delivery. The `../serve-customer.tsx` component composes counter panels. Per-mechanic handlers retain separate result mapping and stamp undo behavior; the shared visit helper reports failed mutations without clearing customer input.
 
 - `loading.tsx` — `CounterLoading`, a static skeleton (`role="status"`, `aria-busy`, sr-only label) mirroring the page layout while the route streams in.
+
+`useAsyncAction` comes from `@merqo/ui`; call sites pass `(fn: () => Promise<void>) => fn()` as the action. `Badge` comes from `@merqo/ui/primitives`; gold badges use `GOLD_BADGE` from `@/lib/gold-badge`.
 
 ## Parent
 

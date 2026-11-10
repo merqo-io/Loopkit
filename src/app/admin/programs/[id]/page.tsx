@@ -6,7 +6,7 @@ import { getProgramDetail } from "@/lib/admin-data";
 import { programHealth } from "@/lib/program-health";
 import { ProgramHealthBadge } from "@/app/admin/health-badge";
 import { formatSgtDate, formatSgtDateTime } from "@/lib/format";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@merqo/ui/primitives";
 import { ElevatedCard } from "@merqo/ui";
 import { Manage } from "@/app/admin/programs/[id]/manage";
 

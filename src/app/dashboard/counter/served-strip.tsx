@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@merqo/ui/primitives";
 
 export type ServedEntry = {
   id: string;

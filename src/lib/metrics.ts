@@ -5,7 +5,7 @@ import { MS_PER_DAY } from "@/lib/time";
 // Defined locally rather than imported — cross-repo runtime imports aren't
 // available; the contract test (test/contract/merqo-metrics.contract.test.ts)
 // keeps this in lockstep with merqo's actual schema.
-export type MetricsPayload = {
+type MetricsPayload = {
   product: string;
   generated_at: string;
   revenue_cents_30d: number;

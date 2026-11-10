@@ -1,7 +1,7 @@
 "use client";
 
 import { Printer } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@merqo/ui/primitives";
 
 // The poster prints on its own via the scoped @media print rules in
 // ShopJoinPoster; this is just the trigger.

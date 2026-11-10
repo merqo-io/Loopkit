@@ -10,7 +10,7 @@ import {
 } from "@/lib/customer-proof";
 import { normalizePhone } from "@/lib/phone";
 import { qrSvg } from "@merqo/ui";
-import type { ActionResult } from "@/lib/action-result";
+import type { ActionResult } from "@merqo/ui/kit-api";
 
 // A proved customer may start a fresh cycle only after expiry.
 async function regenerateCardActionImpl(

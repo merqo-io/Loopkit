@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@merqo/ui/primitives";
 import type { ScratchCoverStyle } from "@/lib/engine/chance";
 import type { CoverVisual, Stroke } from "./scratch-card-cover";
 

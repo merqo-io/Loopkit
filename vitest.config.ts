@@ -15,6 +15,9 @@ export default defineConfig({
     globals: true,
     maxWorkers: 2,
     environment: "node",
+    // @merqo/ui entries import extensionless `next/server`, which Node's ESM
+    // loader rejects; inlining lets Vite resolve it.
+    server: { deps: { inline: [/@merqo\/ui/] } },
     setupFiles: ["./test/setup.ts"],
     include: [
       "test/**/*.{test,spec}.{ts,tsx}",

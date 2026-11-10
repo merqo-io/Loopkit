@@ -8,11 +8,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Wordmark } from "@/components/landing/wordmark";
 import { ElevatedCard } from "@merqo/ui";
 import { GoogleMark } from "@merqo/ui";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button, Input, Label } from "@merqo/ui/primitives";
 import { createClient } from "@/lib/supabase/client";
-import { useAsyncAction, navigatingAway } from "@/hooks/use-async-action";
+import { useAsyncAction, navigatingAway } from "@merqo/ui";
 import { loginSchema, type LoginInput } from "@/lib/schemas";
 
 type Mode = "signin" | "signup";
@@ -87,7 +85,9 @@ export function LoginForm() {
   const [mode, setMode] = useState<Mode>(
     searchParams.get("mode") === "signup" ? "signup" : "signin",
   );
-  const { pending: busy, run } = useAsyncAction();
+  const { pending: busy, run } = useAsyncAction((fn: () => Promise<void>) =>
+    fn(),
+  );
   // Set once we've emailed the user and are waiting on their click:
   // "signup" = confirm the new account, "reset" = choose a new password.
   const [sent, setSent] = useState<Sent | null>(null);

@@ -4,6 +4,8 @@
 
 Vendor profile page at `/dashboard/profile` — lets a vendor edit their stall name, social/website links, profile icon, private display name, and sign-in password, each saved independently.
 
+Shared controls and `cn` used by this folder's modules are imported from `@merqo/ui/primitives`; only `badge`, `alert-dialog`, `avatar`, `dropdown-menu`, `popover`, `table`, `toggle` and `toggle-group` remain in `src/components/ui/`.
+
 ## Contents
 
 - `actions.test.ts` — unit tests for `updateSocialLinksAction`: saves valid links while preserving the existing `stall_name`, rejects an invalid URL without calling `patchVendorProfile`, errors when not signed in, and errors (without revalidating) when the field-specific patch fails.
@@ -29,6 +31,8 @@ The avatar upload's resize step now calls `@merqo/ui`'s `resizeToWebp` (v0.31.0)
 The avatar save handler deletes the image it orphans: after a successful save, the previous avatar (including on Remove); after a failed save, the fresh upload, which is then referenced nowhere. On a failed save it also restores the previous avatar in state rather than keep showing an image that was never saved.
 
 - `loading.tsx` — `ProfileLoading`, a static skeleton (`role="status"`, `aria-busy`, sr-only label) mirroring the page layout while the route streams in.
+
+`useAsyncAction` comes from `@merqo/ui`; call sites pass `(fn: () => Promise<void>) => fn()` as the action.
 
 ## Parent
 

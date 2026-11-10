@@ -37,7 +37,7 @@ function hasKeys(o: unknown): o is Record<string, unknown> {
   return typeof o === "object" && o !== null && Object.keys(o).length > 0;
 }
 
-export function resolveStampConfig(program: ProgramLike): StampConfig {
+function resolveStampConfig(program: ProgramLike): StampConfig {
   if (hasKeys(program.config)) return program.config as StampConfig;
   return {
     stamps_required: program.stamps_required,
@@ -69,7 +69,7 @@ function resolvePlantConfig(program: ProgramLike): PlantConfig {
   return program.config as PlantConfig;
 }
 
-export function resolvePlantState(card: CardLike): PlantState {
+function resolvePlantState(card: CardLike): PlantState {
   if (hasKeys(card.state)) return card.state as PlantState;
   return plantStrategy.defaults({} as PlantConfig);
 }

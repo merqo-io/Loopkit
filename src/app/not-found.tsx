@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Wordmark } from "@/components/landing/wordmark";
-import { Button } from "@/components/ui/button";
+import { Button } from "@merqo/ui/primitives";
 
 /** Branded 404 — reached e.g. when a customer opens a stale or mistyped card link. */
 export default function NotFound() {

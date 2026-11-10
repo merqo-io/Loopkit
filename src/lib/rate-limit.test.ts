@@ -107,7 +107,7 @@ describe("allowAnonymousAction", () => {
     rpc.mockResolvedValue({ data: null, error: { message: "down" } });
     expect(await allowAnonymousAction("earn", phone)).toBe(false);
     const logged = JSON.stringify(vi.mocked(console.error).mock.calls);
-    expect(logged).toContain("down");
+    expect(logged).toContain("rate limiter error (earn)");
     expect(logged).not.toContain("91234567");
     expect(logged).not.toContain("1.1.1.1");
   });

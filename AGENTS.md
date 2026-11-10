@@ -56,8 +56,8 @@ same `docs/superpowers/{specs,plans}/` dirs.
   shared Merqo Supabase project and must never read/write another kit's schema
   (e.g. qkit's) directly. Cross-kit data goes over HTTP (the merqo metrics API),
   not a cross-schema query.
-- After every new migration, regenerate `src/lib/types.ts` (`supabase gen types
-typescript`) — keep the `loopkit` schema key in sync everywhere it's referenced.
+- After every new migration, update the matching file in `src/lib/db-types/` by
+  hand — keep the `loopkit` schema key in sync everywhere it's referenced.
 
 ## Skills
 

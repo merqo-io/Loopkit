@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
 import { eraseMyDataAction } from "../api/consent-actions";
-import { Button } from "@/components/ui/button";
+import { Button } from "@merqo/ui/primitives";
 
 // Two steps on purpose: erasure is permanent and the card is the only copy of
 // the customer's stamps and vouchers.

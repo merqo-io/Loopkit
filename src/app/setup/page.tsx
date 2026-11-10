@@ -6,7 +6,7 @@ import { activateProgramAction } from "@/app/setup/actions";
 import { loadSetupContext } from "@/app/setup/setup-context";
 import { SetupShell } from "@/app/setup/setup-shell";
 import { legacySetupPath } from "@/app/setup/setup-view";
-import { cn } from "@/lib/utils";
+import { cn } from "@merqo/ui/primitives";
 
 export const metadata: Metadata = { title: "Programs" };
 

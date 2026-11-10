@@ -29,3 +29,5 @@ Service-client imports carry an eslint-disable reason: the card or voucher token
 User-facing messages say "could not", never "couldn't" (for example, "We could not find any rewards here.").
 
 `syncMarketingConsent` and `readOrGrantMarketingConsent` take a `CardIdentity` (`vendorId`, `phone`, `token`) as their first argument.
+
+Server Actions here return `ActionResult` from `@merqo/ui/kit-api`.

@@ -105,6 +105,3 @@ export function makeChanceStrategy(
     },
   };
 }
-
-export const wheelStrategy = makeChanceStrategy("wheel");
-export const scratchStrategy = makeChanceStrategy("scratch");

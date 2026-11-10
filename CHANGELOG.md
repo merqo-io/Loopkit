@@ -6,6 +6,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Changed
+
+- AGENTS.md now says database types in `src/lib/db-types/` are updated by hand after a migration, not regenerated.
+
+## [0.5.0] - 2026-11-10
+
+### Added
+
+- Loading skeletons for the two-step sign-in page and the `/setup` routes, so they no longer show a blank screen while the page loads.
+
+### Changed
+
+- Adopted more shared `@merqo/ui` pieces and enabled `merqoNoLocalCopies()` in `eslint.config.mjs`. Deleted the local `action-result`, `theme-props`, `use-async-action`, `Badge` and `ProLock` copies and repointed their imports to `@merqo/ui`, `/kit-api`, `/next` and `/primitives`. `ProLock` callers now pass `href="/dashboard/plan"`, and gold badges use `className="bg-gold text-gold-foreground"` because the shared badge has no gold variant. `src/lib/brand-icon.tsx` became `src/lib/brand.ts`, a thin `loopkitIcon` wrapper over the shared `brandIcon`. The Supabase clients, session middleware, rate limiter, legal gate and `needsNonce` are now thin wrappers over the shared pieces, still bound to the `loopkit` schema, this kit's env vars and its `check_rate_limit` RPC. Deliberate vendor-visible changes: the `ProLock` pill is now 44px tall (touch target); `clientIp` returns null for a non-IP header value and no longer falls through to `x-real-ip` when `x-vercel-forwarded-for` is present but invalid; the `/login` redirect now carries the refreshed session cookies; `createServiceClient` throws a named error when `SUPABASE_SECRET_KEY` is missing; the rate-limit error log carries only the error name, not the store message. Gold badges share one `GOLD_BADGE` class constant in `src/lib/gold-badge.ts`, which also keeps the gold hover on link badges.
+- Moved to `@merqo/ui` 0.44.1 and replaced the local `button`, `card`, `checkbox`, `input`, `label`, `select` and `switch` primitives with `@merqo/ui/primitives`; `cn` now comes from there too. Button, input and select radii follow the shared `rounded-md`, and every control reaches 44px on coarse pointers through the shared classes. The local `badge` stays because it carries the `gold` variant the shared one lacks. Dropped the direct `clsx` and `tailwind-merge` dependencies.
+
+### Removed
+
+- Dead code found by knip 6.44.2: the unused `avatar`, `dropdown-menu` and `table` UI primitives, `PopoverAnchor`, the unused `wheelStrategy`/`scratchStrategy` and `EntitlementPayload` exports, `MS_PER_HOUR`, and the unused `@eslint/eslintrc` and `@tailwindcss/typography` dev dependencies. Symbols only used inside their own file are no longer exported. Added a minimal `knip.json`.
+
 ### Fixed
 
 - Test-only LIKE emulator now escapes backslashes (CodeQL incomplete string escaping).

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { canCreateProgram, getEntitlement, isPro } from "@/lib/program";
 import { SetupForm } from "@/app/setup/setup-form";
-import { ProLock } from "@/components/pro-lock";
+import { ProLock } from "@merqo/ui";
 import { loadSetupContext } from "@/app/setup/setup-context";
 import { SetupShell } from "@/app/setup/setup-shell";
 import { resolveNewView, type NewView } from "@/app/setup/setup-view";
@@ -75,7 +75,12 @@ export default async function NewProgramPage() {
             <p className="mt-1.5 text-sm text-muted-foreground">
               You are on the free plan, which includes one loyalty program.
             </p>
-            <ProLock label="Upgrade to Pro" className="mt-4" />
+            <ProLock
+              href="/dashboard/plan"
+              label="Upgrade to Pro"
+              LinkComponent={Link}
+              className="mt-4"
+            />
           </div>
         </div>
       )}

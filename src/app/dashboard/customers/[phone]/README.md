@@ -8,6 +8,8 @@ route is one customer's detail view: every card they hold across the
 vendor's own programs, a targeted manual stamp adjustment with a required
 reason, and their full activity history in one place.
 
+Shared controls and `cn` used by this folder's modules are imported from `@merqo/ui/primitives`; only `badge`, `alert-dialog`, `avatar`, `dropdown-menu`, `popover`, `table`, `toggle` and `toggle-group` remain in `src/components/ui/`.
+
 ## Contents
 
 - The `page.tsx` header is the shared `PageHeader` (eyebrow "Customer").
@@ -49,6 +51,8 @@ reason, and their full activity history in one place.
 - `marketing-consent-panel.dom.test.tsx`, `actions.test.ts`: status copy,
   confirm flow, success/error toasts, phone validation and error mapping.
 - `loading.tsx` — `CustomerDetailLoading`, a static skeleton (`role="status"`, `aria-busy`, sr-only label) mirroring the page layout while the route streams in.
+
+Server Actions here return `ActionResult` from `@merqo/ui/kit-api`. `useAsyncAction` comes from `@merqo/ui`; call sites pass `(fn: () => Promise<void>) => fn()` as the action. `Badge` comes from `@merqo/ui/primitives`; gold badges use `GOLD_BADGE` from `@/lib/gold-badge`.
 
 ## Parent
 

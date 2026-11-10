@@ -9,7 +9,7 @@ export const CUSTOMER_SEGMENTS: CustomerSegment[] = [
   "new",
   "lapsed",
 ];
-export const CUSTOMER_SORTS: CustomerSort[] = ["recent", "away", "progress"];
+const CUSTOMER_SORTS: CustomerSort[] = ["recent", "away", "progress"];
 
 const NEW_WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
 const LAPSED_WINDOW_MS = 30 * 24 * 60 * 60 * 1000;

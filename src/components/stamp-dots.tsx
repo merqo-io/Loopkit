@@ -1,6 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import { Check, Gift, Coffee, Star, Heart } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@merqo/ui/primitives";
 
 export type StampMarkPreset = "gift" | "coffee" | "star" | "heart";
 export type StampMark =

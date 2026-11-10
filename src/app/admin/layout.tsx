@@ -1,10 +1,11 @@
+import { GOLD_BADGE } from "@/lib/gold-badge";
 import { redirect } from "next/navigation";
 import { LogOut } from "lucide-react";
 import { requireAdmin } from "@/lib/admin";
 import { createServerClient } from "@/lib/supabase/server";
 import { Wordmark } from "@/components/landing/wordmark";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Badge } from "@merqo/ui/primitives";
+import { Button } from "@merqo/ui/primitives";
 import { AdminNav } from "@/app/admin/admin-nav";
 
 export default async function AdminLayout({
@@ -28,7 +29,7 @@ export default async function AdminLayout({
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <Wordmark className="text-xl" />
-            <Badge variant="gold" className="tracking-wider uppercase">
+            <Badge className={`${GOLD_BADGE} tracking-wider uppercase`}>
               Admin
             </Badge>
           </div>

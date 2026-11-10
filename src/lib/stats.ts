@@ -1,4 +1,4 @@
-export type { MechanicStats, OverviewCard, ProgramStats } from "./stats-types";
+export type { OverviewCard, ProgramStats } from "./stats-types";
 export * from "./stats-metrics";
 export {
   computeCardStats,

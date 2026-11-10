@@ -1,6 +1,6 @@
 import next from "eslint-config-next";
 import sonarjs from "eslint-plugin-sonarjs";
-import { merqoEslintPreset } from "@merqo/ui/eslint";
+import { merqoEslintPreset, merqoNoLocalCopies } from "@merqo/ui/eslint";
 
 const tsPlugin = next.find((c) => c.plugins?.["@typescript-eslint"]).plugins[
   "@typescript-eslint"
@@ -46,6 +46,24 @@ const eslintConfig = [
   ...merqoEslintPreset({
     sonarjsPlugin: sonarjs.configs.recommended.plugins.sonarjs,
     tsPlugin,
+  }),
+  // Each allowed file is a thin kit wrapper over the shared piece: it binds the
+  // "loopkit" schema, this kit's env vars or its own RPC and table, which the
+  // shared package deliberately does not know. Files that import a wrapper
+  // are covered by the same entry.
+  // security-headers keeps loopkit's own nonce route list and CSP source lists;
+  // only its needsNonce delegates to the shared helper.
+  ...merqoNoLocalCopies({
+    allow: [
+      "supabase-client",
+      "supabase-server",
+      "supabase-middleware",
+      "rate-limit",
+      "legal-gate",
+      "security-headers",
+      "dashboard-nav",
+      "dashboard-tour",
+    ],
   }),
   {
     // Every use of Math.random() in this codebase is either cosmetic

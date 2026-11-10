@@ -4,6 +4,8 @@
 
 Client-side auth UI.
 
+Shared controls and `cn` used by this folder's modules are imported from `@merqo/ui/primitives`; only `badge`, `alert-dialog`, `avatar`, `dropdown-menu`, `popover`, `table`, `toggle` and `toggle-group` remain in `src/components/ui/`.
+
 ## Contents
 
 - `login-form.tsx` — `LoginForm`: `@merqo/ui`'s `ElevatedCard`-wrapped Google OAuth
@@ -25,6 +27,8 @@ Client-side auth UI.
 ## Shared package note
 
 `google-mark.tsx` moved to `@merqo/ui` (v0.31.0) as `GoogleMark` — it was byte-identical in all five repos.
+
+`useAsyncAction` and `navigatingAway` come from `@merqo/ui`.
 
 ## Parent
 

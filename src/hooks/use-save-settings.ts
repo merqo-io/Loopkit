@@ -2,13 +2,13 @@
 
 import { useRef } from "react";
 import { toast } from "sonner";
-import { useAsyncAction } from "./use-async-action";
-import type { ActionResult } from "@/lib/action-result";
+import { useAsyncAction } from "@merqo/ui";
+import type { ActionResult } from "@merqo/ui/kit-api";
 
 export function useSaveSettings(
   action: (data: FormData) => Promise<ActionResult>,
 ) {
-  const { pending, run } = useAsyncAction();
+  const { pending, run } = useAsyncAction((fn: () => Promise<void>) => fn());
   const saving = useRef(false);
   function save(data: FormData) {
     if (saving.current) return;

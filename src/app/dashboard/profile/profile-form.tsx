@@ -4,9 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Store, UserRound, IdCard, KeyRound, Share2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button, Input, Label } from "@merqo/ui/primitives";
 import { Section } from "@/components/section";
 import { ImageUploader, SocialLinksFields, TwoColumnSections } from "@merqo/ui";
 import {
@@ -15,7 +13,7 @@ import {
 } from "@/lib/image-upload-adapter";
 import { resizeToWebp } from "@merqo/ui";
 import { createClient } from "@/lib/supabase/client";
-import { useAsyncAction } from "@/hooks/use-async-action";
+import { useAsyncAction } from "@merqo/ui";
 import type { SocialLinks } from "@/lib/types";
 import {
   updateStallNameAction,
@@ -50,12 +48,16 @@ export function ProfileForm({
   // merqo.vendor_profile row + revalidatePath so the nav picks it up.
   const initialName = name ?? "";
   const [stallName, setStallName] = useState(initialName);
-  const { pending: savingName, run: runName } = useAsyncAction();
+  const { pending: savingName, run: runName } = useAsyncAction(
+    (fn: () => Promise<void>) => fn(),
+  );
 
   // Social/website links — profile-level defaults stored in the shared
   // merqo.vendor_profile row (Task 2's updateSocialLinksAction).
   const [links, setLinks] = useState<SocialLinks>(socialLinks);
-  const { pending: savingLinks, run: runLinks } = useAsyncAction();
+  const { pending: savingLinks, run: runLinks } = useAsyncAction(
+    (fn: () => Promise<void>) => fn(),
+  );
 
   // Photo — the uploader handles the storage upload; we persist the returned
   // URL straight to auth user_metadata client-side, same channel the nav
@@ -67,13 +69,17 @@ export function ProfileForm({
   // the auth user via the browser client, no server action needed.
   const initialDisplayName = displayName;
   const [display, setDisplay] = useState(initialDisplayName);
-  const { pending: savingDisplay, run: runDisplay } = useAsyncAction();
+  const { pending: savingDisplay, run: runDisplay } = useAsyncAction(
+    (fn: () => Promise<void>) => fn(),
+  );
 
   // Password — persisted via the browser auth client's own session, matched
   // client-side against a confirm field before it's ever sent.
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
-  const { pending: savingPassword, run: runPassword } = useAsyncAction();
+  const { pending: savingPassword, run: runPassword } = useAsyncAction(
+    (fn: () => Promise<void>) => fn(),
+  );
 
   function saveStallName() {
     return runName(async () => {

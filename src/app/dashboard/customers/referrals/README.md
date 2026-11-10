@@ -11,6 +11,8 @@ stamp/visit on the named program — credit-routing on an existing program,
 not a sixth engine `type`. See
 `docs/superpowers/specs/2026-08-20-host-referral-mechanic-design.md`.
 
+Shared controls and `cn` used by this folder's modules are imported from `@merqo/ui/primitives`; only `badge`, `alert-dialog`, `avatar`, `dropdown-menu`, `popover`, `table`, `toggle` and `toggle-group` remain in `src/components/ui/`.
+
 ## Contents
 
 - `actions.ts` — `"use server"` `createReferralHostAction`: validates the

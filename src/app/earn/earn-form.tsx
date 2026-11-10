@@ -3,9 +3,7 @@
 import { useActionState } from "react";
 import { claimEarnAction, type EarnState } from "./actions";
 import { DataCollectionNotice, ElevatedCard } from "@merqo/ui";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button, Input, Label } from "@merqo/ui/primitives";
 import { MarketingOptIn } from "@/components/marketing-opt-in";
 
 const initialState: EarnState = { status: "idle" };

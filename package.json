@@ -1,6 +1,6 @@
 {
   "name": "loopkit",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "private": true,
   "packageManager": "pnpm@11.10.0",
   "engines": {
@@ -23,12 +23,11 @@
   },
   "dependencies": {
     "@hookform/resolvers": "5.2.2",
-    "@merqo/ui": "github:merqo-io/merqo-ui#250a4edd5399809b3c182cd381ba310d12dec5a7",
+    "@merqo/ui": "github:merqo-io/merqo-ui#c2c18963872f7d4b65a7ca6a656a126d1bc6bf62",
     "@supabase/ssr": "^0.10.3",
     "@supabase/supabase-js": "2.110.0",
     "@zxing/browser": "^0.2.1",
     "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
     "lucide-react": "^0.468.0",
     "next": "16.4.2",
     "next-themes": "0.4.6",
@@ -38,16 +37,14 @@
     "react-dom": "^19.2.7",
     "react-hook-form": "^7.77.0",
     "sonner": "^1.7.1",
-    "tailwind-merge": "^2.5.5",
     "zod": "4.6.6"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.2.0",
+    "@eslint-community/eslint-plugin-eslint-comments": "4.8.1",
     "@playwright/test": "^1.60.0",
     "@stryker-mutator/core": "^9.6.1",
     "@stryker-mutator/vitest-runner": "^9.6.1",
     "@tailwindcss/postcss": "^4.0.0",
-    "@tailwindcss/typography": "^0.5.15",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
@@ -56,7 +53,6 @@
     "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2",
     "@vitest/coverage-v8": "4.1.12",
-    "@eslint-community/eslint-plugin-eslint-comments": "4.8.1",
     "eslint": "^9.17.0",
     "eslint-config-next": "16.4.2",
     "eslint-plugin-sonarjs": "4.2.2",

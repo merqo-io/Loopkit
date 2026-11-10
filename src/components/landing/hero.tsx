@@ -1,7 +1,8 @@
+import { GOLD_BADGE } from "@/lib/gold-badge";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Badge } from "@merqo/ui/primitives";
+import { Button } from "@merqo/ui/primitives";
 import { WAITLIST_URL } from "./waitlist";
 import { StampCard } from "./stamp-card";
 
@@ -12,7 +13,7 @@ export function Hero({ authed = false }: { authed?: boolean }) {
     <section className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-16 sm:py-24 lg:grid-cols-2">
       <div className="fade-rise">
         <div className="flex flex-wrap items-center gap-3">
-          <Badge variant="gold">In build</Badge>
+          <Badge className={GOLD_BADGE}>In build</Badge>
           <p className="text-sm text-muted-foreground">
             Built, not yet tried with vendors.
           </p>

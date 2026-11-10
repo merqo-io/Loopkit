@@ -9,12 +9,13 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
+  Switch,
+  Label,
+  Button,
+} from "@merqo/ui/primitives";
 import { ElevatedCard } from "@merqo/ui";
-import { ProLock } from "@/components/pro-lock";
+import { ProLock } from "@merqo/ui";
+import Link from "next/link";
 
 type Program = { id: string; name: string };
 
@@ -36,7 +37,11 @@ export function QkitEarnSettings({
           Let customers claim a stamp after completing a qkit order, they get a
           link on their order page and enter their phone number to collect it.
         </p>
-        <ProLock label="Upgrade to Pro" />
+        <ProLock
+          href="/dashboard/plan"
+          label="Upgrade to Pro"
+          LinkComponent={Link}
+        />
       </ElevatedCard>
     );
   }

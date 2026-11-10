@@ -1,10 +1,11 @@
+import { GOLD_BADGE } from "@/lib/gold-badge";
 import { Sparkles } from "lucide-react";
 import { ElevatedCard, PricingLadder, fetchPlanCatalog } from "@merqo/ui";
 import { requireVendor } from "@/features/auth";
 import { isPro, listPrograms, currentProgram } from "@/lib/program";
-import { merqoBaseUrl } from "@/lib/legal-gate";
 import { getProgramStats } from "@/lib/stats";
-import { Badge } from "@/components/ui/badge";
+import { merqoBaseUrl } from "@merqo/ui/kit-api";
+import { Badge } from "@merqo/ui/primitives";
 
 // merqo-ui's tierLabel lives in a client-only module and crashes when called
 // from a Server Component, so this page keeps its own copy of the labels.
@@ -40,7 +41,10 @@ export default async function PlanPage({
         </div>
         <span className="inline-flex items-center gap-1.5">
           {pro && <Sparkles className="size-3.5 text-primary" />}
-          <Badge variant={pro ? "gold" : "secondary"}>
+          <Badge
+            variant={pro ? "default" : "secondary"}
+            className={pro ? GOLD_BADGE : undefined}
+          >
             {pro ? TIER_LABEL.pro : TIER_LABEL.free}
           </Badge>
         </span>

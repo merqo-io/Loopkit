@@ -10,9 +10,7 @@ import { MarketingConsentToggle } from "./marketing-consent-toggle";
 import { EraseData } from "./erase-data";
 import { MarketingOptIn } from "@/components/marketing-opt-in";
 import { ConfirmDialog } from "@merqo/ui";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button, Input, Label } from "@merqo/ui/primitives";
 
 export function CheckForm({
   vendorId,

@@ -36,6 +36,9 @@ describe("server cookie and service isolation", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
   it("reads request cookies and persists refreshed cookies", async () => {
     const set = vi.fn();
     cookies.mockResolvedValue({
@@ -66,6 +69,7 @@ describe("server cookie and service isolation", () => {
     ).not.toThrow();
   });
   it("never reads request cookies for the privileged service client", async () => {
+    vi.stubEnv("SUPABASE_SECRET_KEY", "secret-key");
     await createServiceClient();
     expect(cookies).not.toHaveBeenCalled();
     const options = createServerClient.mock.calls[0][2];

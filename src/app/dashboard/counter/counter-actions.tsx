@@ -4,7 +4,7 @@ import { useState } from "react";
 import { NewCustomerPanel } from "@/app/dashboard/counter/new-customer-panel";
 import { ShopJoinPoster } from "@/app/dashboard/counter/shop-join-poster";
 import type { StampCard } from "@/app/dashboard/card";
-import { Button } from "@/components/ui/button";
+import { Button } from "@merqo/ui/primitives";
 
 // The "New customer" / "Join code" row under the scan hero. One panel open
 // at a time; creating a customer closes the row.

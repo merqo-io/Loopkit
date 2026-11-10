@@ -4,6 +4,8 @@
 
 Vendor console root: the Overview (a daily briefing: regulars and cadence, self-explaining base stats, a visits trend, "worth a look" actions, what the rewards cost this month, recent activity, and your programs) and the account nav/layout, plus the server actions (`stamp-actions.ts`, `lookup-actions.ts`, `redeem-actions.ts`, `settings-actions.ts`) that back stamping, engine "visit" events, redemption, card regeneration, and QR-token resolution for the whole dashboard tree.
 
+Shared controls and `cn` used by this folder's modules are imported from `@merqo/ui/primitives`; only `badge`, `alert-dialog`, `avatar`, `dropdown-menu`, `popover`, `table`, `toggle` and `toggle-group` remain in `src/components/ui/`.
+
 ## Contents
 
 - Pages here (`page.tsx`, `activity/`, `counter/`, `customers/`, `stats/`) open with `@merqo/ui`'s `PageHeader` and show its `EmptyState` with a call to action when there is nothing to list; `layout.tsx`'s `<main>` padding is `px-5 py-7`.
@@ -65,6 +67,8 @@ submenu.
 
 `visits-bars.tsx` supplies pure bars and calendar axes to Overview and Stats; each view retains its own window and captions. `serve-customer.tsx` composes Counter panels around `counter/use-serve-customer.ts`. Customer-notify and qkit-earn settings share `hooks/use-save-settings.ts` and `components/form-card.tsx` while keeping their distinct defaults and entitlement rules.
 
+Server Actions here return `ActionResult` from `@merqo/ui/kit-api`. `useAsyncAction` comes from `@merqo/ui`; call sites pass `(fn: () => Promise<void>) => fn()` as the action. `ProLock` comes from `@merqo/ui` with `href="/dashboard/plan"`; the plan page reads `merqoBaseUrl` from `@merqo/ui/kit-api`.
+
 ## Parent
 
 [app](../README.md)
@@ -81,3 +85,5 @@ saved card possession.
 Each page exports its own `metadata.title`, shown through the root `loopkit | %s` template. UI copy is plain: no emoji, no em dashes, no contractions in errors.
 
 card-link test pins the clipboard-failure copy.
+
+`qkit-earn-settings.tsx` passes `LinkComponent={Link}` to `ProLock` so the upgrade pill keeps client navigation and prefetch.

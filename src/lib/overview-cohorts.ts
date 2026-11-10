@@ -4,7 +4,7 @@ import {
   type OverviewCard,
 } from "@/lib/stats";
 
-export const OVERVIEW_COHORTS = ["gone-quiet", "one-away", "two-away"] as const;
+const OVERVIEW_COHORTS = ["gone-quiet", "one-away", "two-away"] as const;
 export type OverviewCohort = (typeof OVERVIEW_COHORTS)[number];
 
 export function parseOverviewCohort(

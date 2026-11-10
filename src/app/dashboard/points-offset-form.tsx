@@ -2,12 +2,10 @@
 
 import { useState } from "react";
 import { toast } from "sonner";
-import { useAsyncAction } from "@/hooks/use-async-action";
+import { useAsyncAction } from "@merqo/ui";
 import { applyPointsOffsetAction } from "@/app/dashboard/redeem-actions";
 import type { StampCard } from "@/app/dashboard/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button, Input, Label } from "@merqo/ui/primitives";
 
 // Offset-mode redemption control — a small inline form, not an
 // AlertDialog like RedeemButton/RedeemVoucherConfirm: there's a number to
@@ -19,7 +17,7 @@ export function PointsOffsetForm({
   card: StampCard;
   onApplied: (card: StampCard, dollars: number) => void;
 }) {
-  const { pending, run } = useAsyncAction();
+  const { pending, run } = useAsyncAction((fn: () => Promise<void>) => fn());
   const [points, setPoints] = useState(card.stamp_count);
 
   function apply() {

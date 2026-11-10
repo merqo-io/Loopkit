@@ -59,8 +59,8 @@ the profile page's two-column layout, `BackButton`, `ElevatedCard`,
 kits before promoting) all now delegate to `@merqo/ui`'s versions — see
 `docs/FILE-LAYOUT.md` and this README's Data model section below for
 what's still loopkit-local (the upload adapter, step/action wiring, and
-`ProLock`/the activity-page `PaginationNav`, both deliberately left local —
-see `CHANGELOG.md`). Bumped `@merqo/ui` to v0.30.0 (2026-09-16):
+the activity-page `PaginationNav`, deliberately left local — see
+`CHANGELOG.md`). Bumped `@merqo/ui` to v0.30.0 (2026-09-16):
 `/legal/terms` now renders only loopkit's own Annex schedule
 (`<LegalDocument doc="terms" kit="loopkit" />`), not every sibling kit's —
 previously every kit's `/legal/terms` page showed the full multi-kit annex
@@ -199,7 +199,7 @@ cross-kit consistency goal, not a coincidence. Theme is "Sealing Wax" (`src/app/
 oxblood-crimson primary plus an antique-brass counter-tone, pushed
 darker/denser than the prior "Raspberry-Rose Punch & Gold," which itself
 had replaced the earlier, dimmer "Mulberry & Gold" chosen to read as
-celebratory rather than moody-fintech. `src/lib/brand-icon.tsx`'s
+celebratory rather than moody-fintech. `src/lib/brand.ts`'s
 ImageResponse-generated favicon/apple-touch-icon carries the same
 rebrand. Form fields keep their
 primary copy to one short line, pushing rationale/edge-case detail into a
@@ -208,7 +208,7 @@ The login form (`src/features/auth/components/login-form.tsx`) runs on
 React Hook Form + Zod (a `loginSchema` in `src/lib/schemas.ts`) with a
 `zodResolver`, surfacing auth/server errors as inline `role="alert"`
 messages with generic copy (the raw error is logged); its post-navigation success branches `await`
-`navigatingAway()` (`src/hooks/use-async-action.ts`) so the submit button
+`navigatingAway()` (from `@merqo/ui`) so the submit button
 doesn't visibly re-enable mid-transition to `/dashboard`. Google OAuth
 sign-in forces the consent screen to English (`hl=en`), matching the
 same fix in paykit/merqo. The vendor-wide `/dashboard/stats` page now
@@ -253,7 +253,7 @@ Dashboard pages use `@merqo/ui`'s `PageHeader` and `EmptyState` (v0.42.1, pinned
 ## Stack
 
 Next.js 16.3.4 · App Router · Turbopack · TypeScript strict · Tailwind v4 ·
-shadcn/ui (new-york) · React Hook Form · Zod · Supabase (`@supabase/ssr`) ·
+shadcn/ui (new-york; button, card, checkbox, input, label, select and switch come from `@merqo/ui/primitives` v0.44.1, the rest stay in `src/components/ui/`) · React Hook Form · Zod · Supabase (`@supabase/ssr`) ·
 Vitest 4 · pnpm 11 · Node ≥24.22.1 · deploy target: Vercel
 
 Vercel deploys only `main` (`git.deploymentEnabled` in `vercel.json`), so PR
@@ -270,10 +270,11 @@ usage is unchanged.
 ```bash
 pnpm dev            # dev server — http://localhost:3000
 pnpm build          # production build
-pnpm test           # run test suite (vitest, 1679 tests)
+pnpm test           # run test suite (vitest, 1675 tests)
 pnpm test:mutation  # stryker mutation testing (scoped to src/lib; advisory)
 pnpm test:e2e       # playwright e2e smoke (needs local Supabase up)
 pnpm check          # prettier --check + eslint + tsc --noEmit
+pnpm dlx knip@6.44.2 --no-progress  # dead-code scan (config: knip.json)
 pnpm format         # prettier --write
 ```
 
@@ -282,7 +283,7 @@ pnpm format         # prettier --write
 ```
 src/app/dashboard/     — vendor console (programs, cards, stats; routes have loading skeletons)
 src/app/c/              — customer-facing card view (QR entry point)
-src/app/setup/          — vendor onboarding: /setup programs list, /setup/new, /setup/[programId]/{edit,migrate,prep,schedule}
+src/app/setup/          — vendor onboarding (one loading skeleton covers the segment): /setup programs list, /setup/new, /setup/[programId]/{edit,migrate,prep,schedule}
 src/app/admin/          — Merqo-team admin console (shares the dashboard layout, page header, stat tiles and empty states; routes have loading skeletons)
 src/app/login/          — auth pages
 src/lib/engine/         — stamp/points/lucky-reward core logic
@@ -502,8 +503,10 @@ See `AGENTS.md` for engineering rules and skills. `AGENTS.md` is kept under 200 
 
 `src/app/` (App Router pages) composes from `src/lib/` (domain logic, Supabase
 clients, the stamp/points/lucky engine) and `src/components/` (shared UI).
-`supabase/migrations/` is the schema `src/lib/types.ts` mirrors by hand and
-`src/lib/supabase/` connects to at runtime. `test/` mirrors `src/`'s
+`supabase/migrations/` is the schema that `src/lib/db-types/` mirrors by hand
+(`src/lib/types.ts` is the barrel over those files) and `src/lib/supabase/`
+connects to at runtime. The types are not generated, so a migration that
+changes a table needs a matching hand edit there. `test/` mirrors `src/`'s
 structure one-to-one for unit/integration coverage; `e2e/` drives the app
 as a browser would, independent of that structure. `.claude/` and
 `.github/` are the enforcement layer around all of the above — they gate
