@@ -33,14 +33,20 @@ function byRecency(a: Customer, b: Customer): number {
   return a.phone < b.phone ? -1 : 1;
 }
 
+function escapeRegex(ch: string): string {
+  return ch.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
 function like(value: string, pattern: string): boolean {
   let regex = "";
   for (let i = 0; i < pattern.length; i++) {
     const ch = pattern[i];
-    if (ch === "\\") regex += `\\${pattern[++i]}`;
-    else if (ch === "%") regex += ".*";
+    if (ch === "\\") {
+      // An escaped char is a literal; a trailing lone backslash is itself.
+      regex += escapeRegex(i + 1 < pattern.length ? pattern[++i] : ch);
+    } else if (ch === "%") regex += ".*";
     else if (ch === "_") regex += ".";
-    else regex += ch.replace(/[.*+?^${}()|[\]]/g, "\\$&");
+    else regex += escapeRegex(ch);
   }
   return new RegExp(`^${regex}$`, "i").test(value);
 }
@@ -270,5 +276,18 @@ describe("listAllVendorCustomers", () => {
       cursor = page.nextCursor ?? undefined;
     } while (cursor);
     expect(paged).toEqual(all.map((r) => r.phone));
+  });
+});
+
+describe("like emulator escaping", () => {
+  it("treats a char after a backslash as a literal, not a regex class", () => {
+    expect(like("adc", "a\\dc")).toBe(true);
+    expect(like("a1c", "a\\dc")).toBe(false);
+  });
+
+  it("treats an escaped backslash and a trailing lone backslash as literals", () => {
+    expect(like("a\\c", "a\\\\c")).toBe(true);
+    expect(like("a\\", "a\\")).toBe(true);
+    expect(like("ac", "a\\\\c")).toBe(false);
   });
 });
