@@ -170,6 +170,20 @@ it("shows the wrong-code copy when verification throws", async () => {
     "That code did not work",
   );
   expect(mocks.replace).not.toHaveBeenCalled();
+  expect(mocks.refresh).not.toHaveBeenCalled();
+});
+
+it("maps an unknown raw error to the wrong-code copy", async () => {
+  mocks.replace.mockImplementationOnce(() => {
+    throw new Error("raw router failure");
+  });
+  const user = userEvent.setup();
+  render(<MfaForm verifiedFactorId="f1" staleFactorIds={[]} />);
+  await user.type(screen.getByLabelText("6-digit code"), "123456");
+  await user.click(screen.getByRole("button", { name: "Verify" }));
+  const alert = await screen.findByRole("alert");
+  expect(alert).toHaveTextContent("That code did not work");
+  expect(alert).not.toHaveTextContent("raw router failure");
 });
 
 it("asks for the six-digit code when a short code is submitted", async () => {

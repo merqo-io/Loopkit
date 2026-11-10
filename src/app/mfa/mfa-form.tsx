@@ -15,9 +15,11 @@ const COPY = {
   missingFactor: "Enter the 6-digit code from your authenticator app.",
 };
 
-// Every failure becomes one of the fixed strings above before it reaches the
-// shared form, so this identity mapper never shows a raw Supabase message.
-const showAsIs = (message: string) => message;
+// The adapter returns the fixed strings above itself; anything else is a raw
+// thrown error (for example from the router) and must not reach the screen.
+const FIXED_COPY: readonly string[] = Object.values(COPY);
+const toVendorCopy = (message: string) =>
+  FIXED_COPY.includes(message) ? message : COPY.verify;
 
 export function MfaForm({ verifiedFactorId, staleFactorIds }: Props) {
   const router = useRouter();
@@ -64,7 +66,7 @@ export function MfaForm({ verifiedFactorId, staleFactorIds }: Props) {
       hasFactor={verifiedFactorId !== null}
       onEnrol={onEnrol}
       onVerify={onVerify}
-      mapError={showAsIs}
+      mapError={toVendorCopy}
     />
   );
 }
