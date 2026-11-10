@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.4.2] - 2026-11-10
+
 ### Changed
 
 - The vendor customers list now loads 50 customers at a time with Next page and Back to first page links that keep your search. The default view (All, most recent) stays paged. Picking a segment other than All, or the Away or Progress sort, reads every matching customer so results are not limited to one page, and shows no paging links. Segment counts always cover every customer matching your search.
