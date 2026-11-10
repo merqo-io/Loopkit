@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Changed
 
 - AGENTS.md now says database types in `src/lib/db-types/` are updated by hand after a migration, not regenerated.
+- The `/supabase-migrate` skill no longer tells anyone to run `supabase gen types ... > src/lib/types.ts`, which would overwrite the barrel; it now points at hand edits in `src/lib/db-types/`.
 
 ## [0.5.0] - 2026-11-10
 
