@@ -52,7 +52,8 @@ description.
 
 - Branch from `main` (the only long-lived branch — no `uat`/`develop`).
   Protected: no direct commits to `main`.
-- After every new migration, regenerate `src/lib/types.ts` — keep the
+- After every new migration, update the matching file in `src/lib/db-types/`
+  by hand (`src/lib/types.ts` is only the barrel) — keep the
   `loopkit` schema key in sync everywhere it's referenced.
 
 ## 6. Agent Governance Rules
