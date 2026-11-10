@@ -88,3 +88,97 @@ it("rejects a non-numeric code before calling Supabase", async () => {
   await user.click(screen.getByRole("button", { name: "Verify" }));
   expect(mocks.challengeAndVerify).not.toHaveBeenCalled();
 });
+
+it("uses numeric input and one-time-code autocomplete", () => {
+  render(<MfaForm verifiedFactorId="f1" staleFactorIds={[]} />);
+  const input = screen.getByLabelText("6-digit code");
+  expect(input).toHaveAttribute("inputmode", "numeric");
+  expect(input).toHaveAttribute("autocomplete", "one-time-code");
+});
+
+it("verifies by touch tap", async () => {
+  const user = userEvent.setup();
+  render(<MfaForm verifiedFactorId="f1" staleFactorIds={[]} />);
+  await user.type(screen.getByLabelText("6-digit code"), "123456");
+  await user.pointer({
+    keys: "[TouchA]",
+    target: screen.getByRole("button", { name: "Verify" }),
+  });
+  await waitFor(() => expect(mocks.replace).toHaveBeenCalledWith("/admin"));
+  expect(mocks.refresh).toHaveBeenCalled();
+});
+
+it("verifies a pasted code with spaces as six digits", async () => {
+  const user = userEvent.setup();
+  render(<MfaForm verifiedFactorId="f1" staleFactorIds={[]} />);
+  await user.click(screen.getByLabelText("6-digit code"));
+  await user.paste("123 456");
+  await user.click(screen.getByRole("button", { name: "Verify" }));
+  expect(mocks.challengeAndVerify).toHaveBeenCalledWith({
+    factorId: "f1",
+    code: "123456",
+  });
+});
+
+it("shows the wrong-code copy for a rate-limit error and never navigates", async () => {
+  mocks.challengeAndVerify.mockResolvedValue({
+    error: { code: "unlisted_code", message: "Too many requests, rate limit" },
+  });
+  const user = userEvent.setup();
+  render(<MfaForm verifiedFactorId="f1" staleFactorIds={[]} />);
+  await user.type(screen.getByLabelText("6-digit code"), "123456");
+  await user.click(screen.getByRole("button", { name: "Verify" }));
+  expect(await screen.findByRole("alert")).toHaveTextContent(
+    "That code did not work. Check the time on your phone and try again.",
+  );
+  expect(mocks.replace).not.toHaveBeenCalled();
+  expect(mocks.refresh).not.toHaveBeenCalled();
+});
+
+it("shows the setup copy when enrol returns an error", async () => {
+  mocks.enroll.mockResolvedValue({ data: null, error: { message: "boom" } });
+  const user = userEvent.setup();
+  render(<MfaForm verifiedFactorId={null} staleFactorIds={[]} />);
+  await user.click(
+    screen.getByRole("button", { name: "Set up authenticator" }),
+  );
+  expect(await screen.findByRole("alert")).toHaveTextContent(
+    "Could not start setup. Try again.",
+  );
+});
+
+it("shows the setup copy, not the wrong-code copy, when enrol throws", async () => {
+  mocks.unenroll.mockRejectedValue(new Error("network down"));
+  const user = userEvent.setup();
+  render(<MfaForm verifiedFactorId={null} staleFactorIds={["old"]} />);
+  await user.click(
+    screen.getByRole("button", { name: "Set up authenticator" }),
+  );
+  const alert = await screen.findByRole("alert");
+  expect(alert).toHaveTextContent("Could not start setup. Try again.");
+  expect(alert).not.toHaveTextContent("That code did not work");
+  expect(mocks.enroll).not.toHaveBeenCalled();
+});
+
+it("shows the wrong-code copy when verification throws", async () => {
+  mocks.challengeAndVerify.mockRejectedValue(new Error("network down"));
+  const user = userEvent.setup();
+  render(<MfaForm verifiedFactorId="f1" staleFactorIds={[]} />);
+  await user.type(screen.getByLabelText("6-digit code"), "123456");
+  await user.click(screen.getByRole("button", { name: "Verify" }));
+  expect(await screen.findByRole("alert")).toHaveTextContent(
+    "That code did not work",
+  );
+  expect(mocks.replace).not.toHaveBeenCalled();
+});
+
+it("asks for the six-digit code when a short code is submitted", async () => {
+  const user = userEvent.setup();
+  render(<MfaForm verifiedFactorId="f1" staleFactorIds={[]} />);
+  await user.type(screen.getByLabelText("6-digit code"), "123");
+  await user.click(screen.getByRole("button", { name: "Verify" }));
+  expect(await screen.findByRole("alert")).toHaveTextContent(
+    "Enter the 6-digit code from your authenticator app.",
+  );
+  expect(mocks.challengeAndVerify).not.toHaveBeenCalled();
+});

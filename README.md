@@ -2,6 +2,8 @@
 
 Shared UI is pinned to audited commit `989d934c1cc8d957ff383934debf8ef083b6b6a4`. The lockfile and exact build allowlist select this same source, including image lifecycle cleanup, malformed storage-URL handling and bounded money inputs.
 
+The admin MFA form and the landing wordmark are now thin wrappers over `@merqo/ui`'s `MfaForm` and `Wordmark` (`src/app/mfa/README.md`, `src/components/landing/README.md`).
+
 Digital stamp-card loyalty for SG small vendors. A Merqo kit — owns the
 `loopkit` schema in the shared Merqo Supabase project, reports metrics to
 merqo over HTTP. Browser-tab title is "loopkit | Loyalty cards", and

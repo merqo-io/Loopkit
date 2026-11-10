@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 
+- The admin MFA form and the landing wordmark now use `@merqo/ui`'s shared `MfaForm` and `Wordmark`; the local files are thin wrappers. Behaviour and error copy are unchanged. Shared-form differences: pasted text is reduced to six digits and non-digits are stripped as typed; the input gains `pattern="[0-9]*"`, a placeholder, `name="code"` and `aria-invalid`/`aria-describedby`; the input and button are disabled while pending, duplicate taps are ignored and the button reads "Verifying"; the error clears on edit; thrown errors are shown with the fixed copy; the QR renders only for `data:image/` sources.
 - AGENTS.md now says database types in `src/lib/db-types/` are updated by hand after a migration, not regenerated.
 
 ## [0.5.0] - 2026-11-10
