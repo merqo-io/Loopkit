@@ -11,7 +11,7 @@ Merqo tier. Plans are changed in the Merqo admin, not here.
 - `page.tsx`: `AdminVendorsPage`: fetches `listVendors()` and renders the vendor table via `VendorsTable`, wrapped in `@merqo/ui`'s `ElevatedCard`.
 - `vendors-table.tsx`: `VendorsTable` client component: renders `@merqo/ui`'s shared `DataTable` with tier badges (labels via the shared `tierLabel`), owning the `columns` cell renderers and `getRowKey`, function props a Client Component can't be handed from the Server Component page.
 
-`Badge` comes from `@merqo/ui/primitives`; gold badges pass `className="bg-gold text-gold-foreground"`.
+`Badge` comes from `@merqo/ui/primitives`; gold badges use `GOLD_BADGE` from `@/lib/gold-badge`.
 
 ## Parent
 

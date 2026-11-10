@@ -5,7 +5,7 @@
 Radix-backed shadcn primitives that `@merqo/ui/primitives` does not provide.
 button, card, checkbox, input, label, select and switch (and `cn`) are imported
 from `@merqo/ui/primitives`, as is `Badge`. The shared badge has no `gold`
-variant, so gold badges pass `className="bg-gold text-gold-foreground"`.
+variant, so gold badges use `GOLD_BADGE` from `@/lib/gold-badge`.
 
 ## Contents
 

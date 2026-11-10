@@ -15,6 +15,7 @@ import {
 } from "@merqo/ui/primitives";
 import { ElevatedCard } from "@merqo/ui";
 import { ProLock } from "@merqo/ui";
+import Link from "next/link";
 
 type Program = { id: string; name: string };
 
@@ -36,7 +37,11 @@ export function QkitEarnSettings({
           Let customers claim a stamp after completing a qkit order, they get a
           link on their order page and enter their phone number to collect it.
         </p>
-        <ProLock href="/dashboard/plan" label="Upgrade to Pro" />
+        <ProLock
+          href="/dashboard/plan"
+          label="Upgrade to Pro"
+          LinkComponent={Link}
+        />
       </ElevatedCard>
     );
   }

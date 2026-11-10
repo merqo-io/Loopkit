@@ -1,3 +1,4 @@
+import { GOLD_BADGE } from "@/lib/gold-badge";
 import { redirect } from "next/navigation";
 import { LogOut } from "lucide-react";
 import { requireAdmin } from "@/lib/admin";
@@ -28,7 +29,7 @@ export default async function AdminLayout({
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <Wordmark className="text-xl" />
-            <Badge className="bg-gold text-gold-foreground tracking-wider uppercase">
+            <Badge className={`${GOLD_BADGE} tracking-wider uppercase`}>
               Admin
             </Badge>
           </div>

@@ -1,3 +1,4 @@
+import { GOLD_BADGE } from "@/lib/gold-badge";
 import { Sparkles } from "lucide-react";
 import { ElevatedCard, PricingLadder, fetchPlanCatalog } from "@merqo/ui";
 import { requireVendor } from "@/features/auth";
@@ -42,7 +43,7 @@ export default async function PlanPage({
           {pro && <Sparkles className="size-3.5 text-primary" />}
           <Badge
             variant={pro ? "default" : "secondary"}
-            className={pro ? "bg-gold text-gold-foreground" : undefined}
+            className={pro ? GOLD_BADGE : undefined}
           >
             {pro ? TIER_LABEL.pro : TIER_LABEL.free}
           </Badge>

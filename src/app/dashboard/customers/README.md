@@ -21,7 +21,7 @@ Shared controls and `cn` used by this folder's modules are imported from `@merqo
 
 `customer-search-toolbar.tsx` composes program selection and an accessible native GET search form for vendor, program and Overview-cohort views. Each caller retains its own queries and list models; search carries `q`, selected `p` and optional `cohort`.
 
-`Badge` comes from `@merqo/ui/primitives`; gold badges pass `className="bg-gold text-gold-foreground"`. Server Actions here return `ActionResult` from `@merqo/ui/kit-api`.
+`Badge` comes from `@merqo/ui/primitives`; gold badges use `GOLD_BADGE` from `@/lib/gold-badge`. Server Actions here return `ActionResult` from `@merqo/ui/kit-api`.
 
 ## Parent
 

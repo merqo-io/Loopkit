@@ -9,3 +9,5 @@
 - `page.tsx` - server page; picks create vs upsell with `resolveNewView` from `../setup-view.ts`.
 
 `ProLock` comes from `@merqo/ui` with `href="/dashboard/plan"`.
+
+The free-plan `ProLock` passes `LinkComponent={Link}` so the upgrade pill keeps client navigation and prefetch.

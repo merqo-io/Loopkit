@@ -1,5 +1,8 @@
 import { redirect } from "next/navigation";
-import { checkLegalAcceptance as sharedCheckLegalAcceptance } from "@merqo/ui/auth";
+import {
+  checkLegalAcceptance as sharedCheckLegalAcceptance,
+  type LegalGateOptions,
+} from "@merqo/ui/auth";
 import { createServiceClient } from "@/lib/supabase/server";
 
 /**
@@ -10,7 +13,7 @@ import { createServiceClient } from "@/lib/supabase/server";
  */
 export function checkLegalAcceptance(email: string): Promise<boolean> {
   return sharedCheckLegalAcceptance(email, {
-    createClient: createServiceClient as never,
+    createClient: createServiceClient as LegalGateOptions["createClient"],
     customerSecret: process.env.MERQO_CUSTOMER_SECRET,
     merqoBaseUrl: process.env.MERQO_BASE_URL,
   });

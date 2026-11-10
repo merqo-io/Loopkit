@@ -27,7 +27,7 @@ Shared controls and `cn` used by this folder's modules are imported from `@merqo
 
 `back-to-top.tsx` moved to `@merqo/ui` (v0.31.0) as `BackToTop` — it was byte-identical across four kits.
 
-`Badge` comes from `@merqo/ui/primitives`; gold badges pass `className="bg-gold text-gold-foreground"`.
+`Badge` comes from `@merqo/ui/primitives`; gold badges use `GOLD_BADGE` from `@/lib/gold-badge`.
 
 ## Parent
 

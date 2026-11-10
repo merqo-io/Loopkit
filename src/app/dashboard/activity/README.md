@@ -28,7 +28,7 @@ that takes plain rows as props — same pattern as
 
 - `loading.tsx` — `ActivityLoading`, a static skeleton (`role="status"`, `aria-busy`, sr-only label) mirroring the page layout while the route streams in.
 
-`Badge` comes from `@merqo/ui/primitives`; gold badges pass `className="bg-gold text-gold-foreground"`.
+`Badge` comes from `@merqo/ui/primitives`; gold badges use `GOLD_BADGE` from `@/lib/gold-badge`.
 
 ## Parent
 
