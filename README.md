@@ -503,8 +503,10 @@ See `AGENTS.md` for engineering rules and skills. `AGENTS.md` is kept under 200 
 
 `src/app/` (App Router pages) composes from `src/lib/` (domain logic, Supabase
 clients, the stamp/points/lucky engine) and `src/components/` (shared UI).
-`supabase/migrations/` is the schema `src/lib/types.ts` mirrors by hand and
-`src/lib/supabase/` connects to at runtime. `test/` mirrors `src/`'s
+`supabase/migrations/` is the schema that `src/lib/db-types/` mirrors by hand
+(`src/lib/types.ts` is the barrel over those files) and `src/lib/supabase/`
+connects to at runtime. The types are not generated, so a migration that
+changes a table needs a matching hand edit there. `test/` mirrors `src/`'s
 structure one-to-one for unit/integration coverage; `e2e/` drives the app
 as a browser would, independent of that structure. `.claude/` and
 `.github/` are the enforcement layer around all of the above — they gate
