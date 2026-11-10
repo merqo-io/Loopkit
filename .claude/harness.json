@@ -8,7 +8,7 @@
   "richReadme": true,
   "seeded_files": {
     "AGENTS.md": {
-      "origin_hash": "7149d148e81b3646e46b39a62a82d3001821c6b48a267d524be05a29b4bc5e4f",
+      "origin_hash": "eb921107a858d512b9778f925bbd3a47c71a04bb569d807f10b38417037f955c",
       "path": "AGENTS.md"
     },
     ".claude/settings.json": {

@@ -67,7 +67,7 @@ same `docs/superpowers/{specs,plans}/` dirs.
 | ------------------- | ---------------------------------------------------------------- |
 | `/next-verify`      | typecheck + lint + test in one pass                              |
 | `/skill-audit`      | surface repeated workflows worth capturing as skills (usage log) |
-| `/supabase-migrate` | apply `supabase/migrations` + regenerate types (safety gate)     |
+| `/supabase-migrate` | apply `supabase/migrations`, types edited by hand (safety gate)  |
 
 ### templateCentral plugin skills
 
