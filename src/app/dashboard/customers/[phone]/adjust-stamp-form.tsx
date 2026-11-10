@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { toast } from "sonner";
-import { useAsyncAction } from "@/hooks/use-async-action";
+import { useAsyncAction } from "@merqo/ui";
 import { adjustStampAction } from "@/app/dashboard/stamp-actions";
 import { Button, Input, Label } from "@merqo/ui/primitives";
 
@@ -16,7 +16,7 @@ export function AdjustStampForm({
   programId: string;
   phone: string;
 }) {
-  const { pending, run } = useAsyncAction();
+  const { pending, run } = useAsyncAction((fn: () => Promise<void>) => fn());
   const [open, setOpen] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
 

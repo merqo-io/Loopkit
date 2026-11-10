@@ -67,6 +67,8 @@ submenu.
 
 `visits-bars.tsx` supplies pure bars and calendar axes to Overview and Stats; each view retains its own window and captions. `serve-customer.tsx` composes Counter panels around `counter/use-serve-customer.ts`. Customer-notify and qkit-earn settings share `hooks/use-save-settings.ts` and `components/form-card.tsx` while keeping their distinct defaults and entitlement rules.
 
+Server Actions here return `ActionResult` from `@merqo/ui/kit-api`. `useAsyncAction` comes from `@merqo/ui`; call sites pass `(fn: () => Promise<void>) => fn()` as the action. `ProLock` comes from `@merqo/ui` with `href="/dashboard/plan"`; the plan page reads `merqoBaseUrl` from `@merqo/ui/kit-api`.
+
 ## Parent
 
 [app](../README.md)

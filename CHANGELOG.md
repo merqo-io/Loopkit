@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 
+- Adopted more shared `@merqo/ui` pieces and enabled `merqoNoLocalCopies()` in `eslint.config.mjs`. Deleted the local `action-result`, `theme-props`, `use-async-action`, `Badge` and `ProLock` copies and repointed their imports to `@merqo/ui`, `/kit-api`, `/next` and `/primitives`. `ProLock` callers now pass `href="/dashboard/plan"`, and gold badges use `className="bg-gold text-gold-foreground"` because the shared badge has no gold variant. `src/lib/brand-icon.tsx` became `src/lib/brand.ts`, a thin `loopkitIcon` wrapper over the shared `brandIcon`. The Supabase clients, session middleware, rate limiter, legal gate and `needsNonce` are now thin wrappers over the shared pieces, still bound to the `loopkit` schema, this kit's env vars and its `check_rate_limit` RPC. No vendor-visible behaviour changed.
 - Moved to `@merqo/ui` 0.44.1 and replaced the local `button`, `card`, `checkbox`, `input`, `label`, `select` and `switch` primitives with `@merqo/ui/primitives`; `cn` now comes from there too. Button, input and select radii follow the shared `rounded-md`, and every control reaches 44px on coarse pointers through the shared classes. The local `badge` stays because it carries the `gold` variant the shared one lacks. Dropped the direct `clsx` and `tailwind-merge` dependencies.
 
 ### Fixed

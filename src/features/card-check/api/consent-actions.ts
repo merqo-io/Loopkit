@@ -15,7 +15,7 @@ import {
   shownShopName,
 } from "@/lib/marketing-consent";
 import { shownConsentWording } from "@/lib/shop-name";
-import type { ActionResult } from "@/lib/action-result";
+import type { ActionResult } from "@merqo/ui/kit-api";
 
 async function setMarketingConsentActionImpl(
   formData: FormData,

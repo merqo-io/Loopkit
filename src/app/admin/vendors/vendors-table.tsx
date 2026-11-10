@@ -2,7 +2,7 @@
 
 import { DataTable, tierLabel, type DataTableColumn } from "@merqo/ui";
 import type { VendorRow } from "@/lib/admin-data";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@merqo/ui/primitives";
 
 const columns: DataTableColumn<VendorRow>[] = [
   {
@@ -18,7 +18,9 @@ const columns: DataTableColumn<VendorRow>[] = [
     header: "Tier",
     cell: (v) =>
       v.is_pro ? (
-        <Badge variant="gold">{tierLabel("pro")}</Badge>
+        <Badge className="bg-gold text-gold-foreground">
+          {tierLabel("pro")}
+        </Badge>
       ) : (
         <Badge variant="outline">{tierLabel("free")}</Badge>
       ),

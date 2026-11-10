@@ -7,3 +7,5 @@
 ## Contents
 
 - `page.tsx` - server page; picks create vs upsell with `resolveNewView` from `../setup-view.ts`.
+
+`ProLock` comes from `@merqo/ui` with `href="/dashboard/plan"`.

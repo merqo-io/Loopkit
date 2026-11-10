@@ -9,13 +9,12 @@ profile/status).
 
 ## Contents
 
-- `action-result.ts` — `ActionResult<T>`: discriminated `{success:true}&T | {success:false,error}` return type shared by Server Actions
 - `activity.ts` — `mapActivityRow` (pure event→row classifier, including the `'adjust'` kind's `"Adjusted ±N"` label and its `reason` from the event payload) and `listActivity` (paginated, filterable vendor activity feed across programs, optional `phone` narrowing for a single customer's history, fetches `limit+1` rows to detect a next page)
 - `admin-audit.ts` — `recordAudit(actorId, action, targetId, detail)`: best-effort append to `loopkit.admin_audit` (migration `0003`) via the service-role client, logging (never throwing) on an insert failure; shared by every `/admin` Server Action (`src/app/admin/actions.ts`) and `POST /api/merqo/vendor-provision`, which has no signed-in admin and instead passes the provisioned vendor's own id as `actorId` with `detail.actor: "merqo_system"` as a documented sentinel
 - `admin-data.ts`: service-role reads for the `/admin` console: `listProgramsOverview`, `listVendors`, `platformTotals`, `recentActivity`, `getProgramDetail`, `listAdminAudit`; resolves vendor/actor email via `listAllUsers()` (`list-all-users.ts`)
 - `admin.ts` — `isAdmin`/`requireAdmin`: admin membership check via the `admins` table (RLS-gated) and a 404-on-fail gate for `/admin` routes and actions
-- `brand-icon.test.ts` — unit tests for `brandIcon`: renders the "L" letter on the raspberry background/blush foreground, and scales `fontSize`/`borderRadius` proportionally to the requested size
-- `brand-icon.tsx` — `brandIcon(size)`: the shared "L" app-mark construction (wax-red rounded square, blush letter) rendered by `src/app/icon.tsx`/`apple-icon.tsx` via `next/og`'s `ImageResponse`; `BRAND_RASPBERRY`/`BRAND_BLUSH` hex constants approximate the current "Sealing Wax" theme's OKLCH tokens (constant names kept from the prior "Raspberry-Rose Punch & Gold" theme rather than churned again — renamed from `BRAND_MULBERRY` when the theme first moved off plum/magenta; the cross-kit standard doc's "Source token" table still says "Mulberry & Gold," now stale), same shared formula as every other kit's brand-icon (`docs/business/2026-07-21-brand-icon-family-standard.md`)
+- `brand.test.ts` — unit tests for `loopkit`'s `loopkitIcon`: renders the "L" letter on the raspberry background/blush foreground, and scales `fontSize`/`borderRadius` proportionally to the requested size
+- `brand.ts` — `loopkitIcon(size)`: binds loopkit's "L" monogram, colours, serif font and corner radius to `@merqo/ui`'s `brandIcon`, rendered by `src/app/icon.tsx`/`apple-icon.tsx` via `next/og`'s `ImageResponse`; `BRAND_RASPBERRY`/`BRAND_BLUSH` hex constants approximate the "Sealing Wax" theme's OKLCH tokens
 - `cards.ts` — `listCards` (the signed-in vendor's cards for one program, optional phone search, most-recently-updated first), `activeCardCountsByProgram` (cards touched in the last 30 days, counted per program, for the Counter's default-program pick), and `programCardCount` (exact `count(*)` of one program's cards, one row per customer, backing the setup form's edit-impact confirmation)
 - `customer-segments.ts` — pure filtering and ordering for the vendor-wide Customers list: `customerSegments`/`filterBySegment` (all / ready / new / lapsed as independent views), `sortCustomers` (recent / away / progress), `segmentCounts` (one-pass chip counts), and `parseSegment`/`parseSort` which validate an untrusted query value against a fixed allowlist and default otherwise
 - `ilike.ts` — `escapeLike` / `containsPattern`: escape backslash, `%` and `_` so phone search text matches literally in `.ilike()` (used by `customers.ts` and `cards.ts`)
@@ -131,6 +130,8 @@ page + action to validate the `next` redirect target.
 
 `reduced-motion.ts` reads a client-safe preference snapshot; preview animation owns its live subscription. `time.ts` owns hour/day constants so domain reporting and expiry helpers do not depend on UI class utilities; `utils.ts` re-exports the constants for compatibility.
 
+`customer-proof-actions.ts` returns `ActionResult` from `@merqo/ui/kit-api`.
+
 ## Parent
 
 [src](../README.md)
@@ -144,7 +145,7 @@ results. cards.pagination.test.ts exercises page ties, search preservation,
 short pages, batches, errors and the unchanged exact-count helper. Concurrent
 card updates are not a transactional snapshot across separate HTTP reads.
 
-`security-headers.ts` holds the nonce route list and CSP source lists; `theme-props.ts` is shared by the root layout and the CSP; `same-origin.ts` guards cookie-authenticated route handlers; `admin.ts` also requires `aal2` in `requireAdmin()`.
+`security-headers.ts` holds the nonce route list and CSP source lists (its `needsNonce` delegates to `@merqo/ui/security`); the root layout takes its theme props from `@merqo/ui/next`; `ActionResult` and `isActionError` come from `@merqo/ui/kit-api`; `same-origin.ts` guards cookie-authenticated route handlers; `admin.ts` also requires `aal2` in `requireAdmin()`.
 
 `security-headers.ts` also allows the Vercel toolbar origin (`vercel.live`) outside production.
 

@@ -2,7 +2,7 @@
 import { z } from "zod";
 import { createServerClient } from "@/lib/supabase/server";
 import { submitVendorFeedback } from "@/lib/merqo-vendor-feedback";
-import type { ActionResult } from "@/lib/action-result";
+import type { ActionResult } from "@merqo/ui/kit-api";
 
 const feedbackSchema = z.object({
   nps: z.number().int().min(0).max(10),

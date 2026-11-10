@@ -14,11 +14,7 @@ vi.mock("@/features/auth", () => ({ requireVendor: vi.fn() }));
 vi.mock("@merqo/ui", () => ({
   storagePathFromPublicUrl: () => "owner/image.webp",
 }));
-vi.mock("@merqo/ui/legal", () => ({
-  LEGAL_VERSIONS: { terms: "1", privacy: "1" },
-  isLegalCurrent: (x: { terms: string; privacy: string }) =>
-    x.terms === "1" && x.privacy === "1",
-}));
+import { LEGAL_VERSIONS } from "@merqo/ui/legal";
 import { checkLegalAcceptance } from "@/lib/legal-gate";
 import { removeReplacedAvatar } from "@/lib/image-upload-adapter";
 import { listAllUsers } from "@/lib/list-all-users";
@@ -46,7 +42,7 @@ describe("source boundary regressions", () => {
     });
     mocks.fetch.mockResolvedValue({
       ok: true,
-      json: async () => ({ terms: "1", privacy: "1" }),
+      json: async () => LEGAL_VERSIONS,
     });
     expect(await checkLegalAcceptance("vendor@example.com")).toBe(true);
   });

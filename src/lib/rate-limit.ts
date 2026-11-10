@@ -1,5 +1,10 @@
-import { createHash } from "node:crypto";
 import { headers } from "next/headers";
+import {
+  clientIp as sharedClientIp,
+  digest,
+  rateLimitCheck,
+  type RateLimitStore,
+} from "@merqo/ui/kit-api";
 import { createServiceClient } from "@/lib/supabase/server";
 
 /** Requests per client IP per window; high because shops share Wi-Fi and carrier NAT. */
@@ -17,31 +22,27 @@ export const RATE_LIMIT_MESSAGE =
  * x-forwarded-for is client-controlled, so it is never read.
  */
 export function clientIp(hdrs: Headers): string | null {
-  return (
-    hdrs.get("x-vercel-forwarded-for")?.split(",")[0]?.trim() ||
-    hdrs.get("x-real-ip")?.trim() ||
-    null
-  );
-}
-
-// Counter rows are short-lived abuse state, not a PII store, so keys carry
-// only digests of the phone and IP.
-function digest(value: string): string {
-  return createHash("sha256").update(value).digest("hex");
-}
-
-async function hit(
-  supabase: Awaited<ReturnType<typeof createServiceClient>>,
-  key: string,
-  limit: number,
-): Promise<{ allowed: boolean; error?: string }> {
-  const { data, error } = await supabase.rpc("check_rate_limit", {
-    p_key: key,
-    p_limit: limit,
-    p_window_seconds: ANON_WINDOW_SECONDS,
+  return sharedClientIp(hdrs, {
+    trustedHeaders: ["x-vercel-forwarded-for", "x-real-ip"],
   });
-  if (error) return { allowed: false, error: error.message };
-  return { allowed: data === true };
+}
+
+type ServiceClient = Awaited<ReturnType<typeof createServiceClient>>;
+
+// Counter rows live in this kit's own schema, so the shared limiter gets a
+// store bound to the check_rate_limit RPC.
+function rpcStore(supabase: ServiceClient): RateLimitStore {
+  return {
+    async hit(key, limit, windowSeconds) {
+      const { data, error } = await supabase.rpc("check_rate_limit", {
+        p_key: key,
+        p_limit: limit,
+        p_window_seconds: windowSeconds,
+      });
+      if (error) throw new Error(error.message);
+      return data === true;
+    },
+  };
 }
 
 /**
@@ -59,7 +60,7 @@ export async function allowAnonymousAction(
 ): Promise<boolean> {
   try {
     const ip = clientIp(await headers());
-    const supabase = await createServiceClient();
+    const store = rpcStore(await createServiceClient());
     const phoneHash = digest(phone);
     const ipHash = ip ? digest(ip) : "noip";
     const checks: [string, number][] = [];
@@ -69,12 +70,17 @@ export async function allowAnonymousAction(
       [`${action}:phone:${phoneHash}`, ANON_PHONE_LIMIT],
     );
     for (const [key, limit] of checks) {
-      const result = await hit(supabase, key, limit);
-      if (result.error) {
-        console.error(`rate limiter error (${action}): ${result.error}`);
+      const verdict = await rateLimitCheck(
+        store,
+        key,
+        limit,
+        ANON_WINDOW_SECONDS,
+      );
+      if (verdict === "error") {
+        console.error(`rate limiter error (${action})`);
         return false;
       }
-      if (!result.allowed) return false;
+      if (verdict === "limited") return false;
     }
     return true;
   } catch (e) {

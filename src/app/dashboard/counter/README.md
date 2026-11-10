@@ -42,6 +42,8 @@ at render. `BackButton` falls back to a plain `<a>`.
 
 - `loading.tsx` — `CounterLoading`, a static skeleton (`role="status"`, `aria-busy`, sr-only label) mirroring the page layout while the route streams in.
 
+`useAsyncAction` comes from `@merqo/ui`; call sites pass `(fn: () => Promise<void>) => fn()` as the action. `Badge` comes from `@merqo/ui/primitives`; gold badges pass `className="bg-gold text-gold-foreground"`.
+
 ## Parent
 
 [dashboard](../README.md)

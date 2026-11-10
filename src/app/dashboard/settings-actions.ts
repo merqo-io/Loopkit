@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { requireVendor } from "@/features/auth";
 import { isPro } from "@/lib/program";
 import { createServerClient } from "@/lib/supabase/server";
-import type { ActionResult } from "@/lib/action-result";
+import type { ActionResult } from "@merqo/ui/kit-api";
 
 export type QkitEarnConfigResult = ActionResult<{
   enabled: boolean;

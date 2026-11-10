@@ -34,6 +34,8 @@ actions write via `recordAudit`.
 
 `admin-page-header.tsx` supplies the common title and description chrome across admin list pages. Figure tiles are `@merqo/ui` `StatCard` with `reverse` and a mono tabular value. Admin pages share the dashboard's `max-w-7xl px-5 py-7` container, and empty lists use `@merqo/ui` `EmptyState`.
 
+Server Actions here return `ActionResult` from `@merqo/ui/kit-api`. `Badge` comes from `@merqo/ui/primitives`; gold badges pass `className="bg-gold text-gold-foreground"`.
+
 ## Parent
 
 [app](../README.md)

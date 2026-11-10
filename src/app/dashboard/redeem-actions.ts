@@ -8,7 +8,7 @@ import {
   notifyVendor,
   notifyCustomerByPhone,
 } from "@/lib/merqo-customer-notify";
-import type { ActionResult } from "@/lib/action-result";
+import type { ActionResult } from "@merqo/ui/kit-api";
 import type { CardResult } from "./actions-shared";
 
 // Fire-and-forget alert via merqo's shared Telegram bot; a failure must never affect redeemAction's result.

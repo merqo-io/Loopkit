@@ -3,7 +3,7 @@
 import { Gift, Stamp, Pencil } from "lucide-react";
 import Link from "next/link";
 import { DataTable, type DataTableColumn, EmptyState } from "@merqo/ui";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@merqo/ui/primitives";
 import { formatSgtDateTime } from "@/lib/format";
 import type { VendorActivityRow } from "@/lib/activity";
 

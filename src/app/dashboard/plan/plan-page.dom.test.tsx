@@ -6,9 +6,6 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 
 vi.mock("@/features/auth", () => ({ requireVendor: vi.fn(async () => ({})) }));
-vi.mock("@/lib/legal-gate", () => ({
-  merqoBaseUrl: () => "https://merqo.test",
-}));
 
 const program = { id: "p1", name: "Coffee Stamps", type: "stamp" };
 

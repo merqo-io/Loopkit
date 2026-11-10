@@ -28,6 +28,8 @@ Shared controls and `cn` used by this folder's modules are imported from `@merqo
 
 `google-mark.tsx` moved to `@merqo/ui` (v0.31.0) as `GoogleMark` — it was byte-identical in all five repos.
 
+`useAsyncAction` and `navigatingAway` come from `@merqo/ui`.
+
 ## Parent
 
 [auth](../README.md)

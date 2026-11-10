@@ -1,4 +1,7 @@
-import type { CspOptions } from "@merqo/ui/security";
+import {
+  needsNonce as sharedNeedsNonce,
+  type CspOptions,
+} from "@merqo/ui/security";
 
 // Routes that always render per request, so they can carry a CSP nonce.
 export const NONCE_PREFIXES = [
@@ -15,7 +18,7 @@ export const NONCE_PREFIXES = [
 ] as const;
 
 export function needsNonce(pathname: string): boolean {
-  return NONCE_PREFIXES.some((prefix) => pathname.startsWith(prefix));
+  return sharedNeedsNonce(pathname, NONCE_PREFIXES);
 }
 
 // Hash of next-themes' minified inline bootstrap in a production build; e2e/csp.spec.ts fails on any CSP violation if a bump changes it.

@@ -41,3 +41,5 @@ several (`admin-data.test.ts`, `admin.test.ts`, `cards.test.ts`,
 `admin.test.ts` also covers the `aal2` gate (`requireAdmin`) and the membership-only `requireAdminMember`.
 
 activity and vendor tests pin the plain "-" fallback and "could not" error copy.
+
+`source-boundaries.test.ts` runs the legal gate against the shared `LEGAL_VERSIONS`, since `@merqo/ui` reads them internally.

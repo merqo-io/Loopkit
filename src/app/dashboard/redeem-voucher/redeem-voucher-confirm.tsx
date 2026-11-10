@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { toast } from "sonner";
-import { useAsyncAction } from "@/hooks/use-async-action";
+import { useAsyncAction } from "@merqo/ui";
 import { redeemVoucherAction } from "@/app/dashboard/redeem-actions";
 import { Button } from "@merqo/ui/primitives";
 import { BackButton } from "@merqo/ui";
@@ -17,7 +17,7 @@ export function RedeemVoucherConfirm({
   phone: string;
   rewardText: string;
 }) {
-  const { pending, run } = useAsyncAction();
+  const { pending, run } = useAsyncAction((fn: () => Promise<void>) => fn());
   const [redeemedText, setRedeemedText] = useState<string | null>(null);
 
   function confirm() {

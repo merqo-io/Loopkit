@@ -4,7 +4,7 @@ import { requireVendor } from "@/features/auth";
 import { normalizePhone } from "@/lib/phone";
 import { getProgress } from "@/lib/engine";
 import { createServerClient } from "@/lib/supabase/server";
-import type { ActionResult } from "@/lib/action-result";
+import type { ActionResult } from "@merqo/ui/kit-api";
 import type { Progress } from "@/lib/engine/types";
 import type { StampCard } from "@/app/dashboard/card";
 import { programFromForm } from "./actions-shared";

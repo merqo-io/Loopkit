@@ -1,6 +1,6 @@
 "use server";
 import { clearCustomerProof, vendorIdSchema } from "@/lib/customer-proof";
-import type { ActionResult } from "@/lib/action-result";
+import type { ActionResult } from "@merqo/ui/kit-api";
 
 export async function forgetCustomerProof(
   vendorId: string,
