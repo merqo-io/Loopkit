@@ -93,7 +93,7 @@ export function aggregateCustomers(
   });
 }
 
-export const CUSTOMER_PAGE_SIZE = 50;
+const CUSTOMER_PAGE_SIZE = 50;
 
 const customerCursorSchema = z.tuple([
   z.iso.datetime({ offset: true }),
@@ -257,7 +257,7 @@ export async function listAllVendorCustomers(
   return aggregateCustomers(customersData ?? [], cardsData ?? [], programsById);
 }
 
-export type CustomerCardRow = {
+type CustomerCardRow = {
   programId: string;
   programName: string;
   programType: string;

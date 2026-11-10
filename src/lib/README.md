@@ -41,7 +41,7 @@ profile/status).
 - `merqo-vendor-status.test.ts` — vitest tests for `resolveVendorStatus`: active/free, active/pro, case-insensitive email match, inactive-no-user, inactive-no-program cases
 - `merqo-vendor-status.ts`: `resolveVendorStatus`: pure lookup mapping an email + auth-user list + program/pro vendor-id lists to `{active, plan}`, since neither `programs` nor `vendor_entitlements` carries an email column
 - `metrics.ts`: `isWonVisit` (pure) and `computeLoopkitMetrics`: maps loopkit's stamp-card domain onto merqo's qkit-shaped metrics payload (programs→vendors, stamp/visit events→orders, paid unexpired entitlements→pro vendors, no revenue/GMV in v1)
-- `merqo-entitlement-contract.ts`: `entitlementPayloadSchema`/`EntitlementPayload`: Zod wire contract for merqo's entitlement push, copied verbatim from merqo; keep the two in step
+- `merqo-entitlement-contract.ts`: `entitlementPayloadSchema`: Zod wire contract for merqo's entitlement push, copied verbatim from merqo; keep the two in step
 - `merqo-vendor-activity.ts` — `computeVendorActivity`: pure, rolls up one vendor's programs/cards/stamp events into the `{active, plan, status, metrics, lastActivityAt}` shape `GET /api/merqo/vendor-activity` returns; `status` is always `null` (loopkit has no per-vendor health concept yet)
 - `money.ts` — SGD money helpers: `dollarsToCents` (`Math.round(d * 100)`), `centsToDollars`, `formatSgd` (`"$1.20"`). One place for the dollars/cents rounding, since the DB stores integer cents (`programs.reward_cost_cents`) and forms collect dollars
 - `db-types/functions.ts` carries the `customer_erase(p_vendor, p_phone, p_token)` RPC from migration `0065` (boolean result).
@@ -55,7 +55,7 @@ profile/status).
 - `schemas.ts`: `loginSchema`/`LoginInput` (email format + non-empty password) backing `LoginForm`'s react-hook-form resolver; `supportMessageSchema`/`SupportMessageInput` (category enum + 1-2000 char body) and `SUPPORT_CATEGORY_LABELS`, the shared Get-help validation/labels used by `actions/support.ts` and `dashboard-nav.tsx`'s `@merqo/ui` `HelpSheet` wiring
 - `stamp-mark.ts` — `resolveStampMark(view, vendorAvatarUrl)`: pure resolver converting the engine's `ProgressView` dots variant (vendor's chosen mark mode/preset) and vendor avatar URL into the concrete `StampMark` value `StampDots` renders; shared by `/c` and `/setup` live preview so both resolve marks identically
 - `stats.ts` — public entry for vendor metrics; re-exports the stats modules below so `@/lib/stats` imports (and test mocks) stay stable
-- `stats-types.ts` — `ProgramStats`, `MechanicStats`, `OverviewCard` and the `StatsEvent`/`StatsCard` row shapes shared by the stats modules
+- `stats-types.ts` — `ProgramStats`, `MechanicStats` (imported from `stats-types` directly), `OverviewCard` and the `StatsEvent`/`StatsCard` row shapes shared by the stats modules
 - `stats-metrics.ts` — pure event/card helpers: `classifyActivity`, `pctChange`, `bucketVisitsByDay`, `avgDaysBetweenVisits`, `returnRate90d` (the "% come back" headline, `null` when there is no 90-day-active card), `regularsGoneQuiet`, `cardsNearReward`, `sgtMonthStart`, `countRegulars`, `countNewThisMonth`
 - `stats-compute.ts` — pure aggregation: `computeCardStats` (the `ProgramStats` pipeline), `mechanicLabel` and `computeMechanicBreakdown`
 - `stats-queries.ts` — Supabase-backed readers: `getProgramStats`, `getVendorStats`, `getVendorOverviewInputs`, `getVendorMechanicBreakdown` and `countExpiredVouchers`; RLS scopes every read to the signed-in vendor
@@ -64,7 +64,7 @@ profile/status).
 - `tour-prefs.ts` — `stampTourSeen(supabase, vendorId)`: the single upsert (`vendors.tour_seen_at = now()`, scoped to `vendor_id = auth.uid()` via the `vendors_own` RLS policy) shared by `src/app/api/tour-seen/route.ts`'s client-fired `POST` and `src/app/dashboard/layout.tsx`'s own durable server-render stamp — best-effort, logs (never throws) on failure. Upsert, not update: `loopkit.vendors` is created lazily, so a vendor who never visited `/profile` has no row yet and an update would silently persist nothing
 - `types.ts` — type-only re-export of `db-types/` (`Database`, `Json`, `SocialLinks`, the consent and entitlement unions), so `@/lib/types` imports stay stable
 - `db-types/` — the hand-written `Database["loopkit"]` mirror of `supabase/migrations/`, split into table groups, RPC signatures and shared types (see its README for how to update or regenerate)
-- `utils.ts`: `MS_PER_HOUR`/`MS_PER_DAY` constants, general-purpose formatting/shared helpers
+- `utils.ts`: `MS_PER_DAY` constant, general-purpose formatting/shared helpers
 - `vendor.ts` — `stallNameSchema`, `getVendorProfile`/`saveStallName`: the vendor's stall name, read from and written to the shared `merqo.vendor_profile` table (local `vendors.name` is only a lazy-create seed value)
 
 ## Connectivity

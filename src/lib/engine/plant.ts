@@ -2,7 +2,7 @@ import { MS_PER_DAY } from "@/lib/time";
 import type { Strategy } from "@/lib/engine/types";
 import { countThresholdCrossings } from "@/lib/engine/threshold";
 
-export type PlantStage = { name: string; threshold: number };
+type PlantStage = { name: string; threshold: number };
 export type PlantConfig = {
   stages: PlantStage[];
   growth_per_visit: number;
@@ -42,7 +42,7 @@ function stageIndexFor(growth: number, stages: PlantStage[]): number {
   return idx;
 }
 
-export function bloomThreshold(config: PlantConfig): number {
+function bloomThreshold(config: PlantConfig): number {
   return config.stages[config.stages.length - 1].threshold;
 }
 
