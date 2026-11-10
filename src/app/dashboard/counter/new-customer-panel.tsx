@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { toast } from "sonner";
-import { useAsyncAction } from "@/hooks/use-async-action";
+import { useAsyncAction } from "@merqo/ui";
 import { stampAction } from "@/app/dashboard/stamp-actions";
 import type { StampCard } from "@/app/dashboard/card";
 import { Button, Input, Label } from "@merqo/ui/primitives";
@@ -18,7 +18,7 @@ export function NewCustomerPanel({
   programId: string;
   onCreated: (phone: string, card: StampCard) => void;
 }) {
-  const { pending, run } = useAsyncAction();
+  const { pending, run } = useAsyncAction((fn: () => Promise<void>) => fn());
   const inputRef = useRef<HTMLInputElement>(null);
   const [phone, setPhone] = useState("");
 

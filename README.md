@@ -59,8 +59,8 @@ the profile page's two-column layout, `BackButton`, `ElevatedCard`,
 kits before promoting) all now delegate to `@merqo/ui`'s versions — see
 `docs/FILE-LAYOUT.md` and this README's Data model section below for
 what's still loopkit-local (the upload adapter, step/action wiring, and
-`ProLock`/the activity-page `PaginationNav`, both deliberately left local —
-see `CHANGELOG.md`). Bumped `@merqo/ui` to v0.30.0 (2026-09-16):
+the activity-page `PaginationNav`, deliberately left local — see
+`CHANGELOG.md`). Bumped `@merqo/ui` to v0.30.0 (2026-09-16):
 `/legal/terms` now renders only loopkit's own Annex schedule
 (`<LegalDocument doc="terms" kit="loopkit" />`), not every sibling kit's —
 previously every kit's `/legal/terms` page showed the full multi-kit annex
@@ -199,7 +199,7 @@ cross-kit consistency goal, not a coincidence. Theme is "Sealing Wax" (`src/app/
 oxblood-crimson primary plus an antique-brass counter-tone, pushed
 darker/denser than the prior "Raspberry-Rose Punch & Gold," which itself
 had replaced the earlier, dimmer "Mulberry & Gold" chosen to read as
-celebratory rather than moody-fintech. `src/lib/brand-icon.tsx`'s
+celebratory rather than moody-fintech. `src/lib/brand.ts`'s
 ImageResponse-generated favicon/apple-touch-icon carries the same
 rebrand. Form fields keep their
 primary copy to one short line, pushing rationale/edge-case detail into a
@@ -208,7 +208,7 @@ The login form (`src/features/auth/components/login-form.tsx`) runs on
 React Hook Form + Zod (a `loginSchema` in `src/lib/schemas.ts`) with a
 `zodResolver`, surfacing auth/server errors as inline `role="alert"`
 messages with generic copy (the raw error is logged); its post-navigation success branches `await`
-`navigatingAway()` (`src/hooks/use-async-action.ts`) so the submit button
+`navigatingAway()` (from `@merqo/ui`) so the submit button
 doesn't visibly re-enable mid-transition to `/dashboard`. Google OAuth
 sign-in forces the consent screen to English (`hl=en`), matching the
 same fix in paykit/merqo. The vendor-wide `/dashboard/stats` page now

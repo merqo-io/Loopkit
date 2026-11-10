@@ -12,6 +12,8 @@ don't belong to any single `src/app/<route>/` page.
 - `support.test.ts` — vitest tests for `submitSupportMessageAction`: RPC call shape (kit slug/category/body), empty body rejected before the RPC, unauthenticated rejection, and a friendly error surfaced when the RPC fails
 - `support.ts` — `submitSupportMessageAction`: validates category (enum) and body, then submits a vendor's Get-help message into the shared cross-kit `merqo.support_messages` inbox via `submitSupportMessage` (`src/lib/merqo-support.ts`); inline session check (backs a Sheet-embedded widget off the dashboard nav, not a full page); backs the dashboard's "Get help" sheet
 
+Server Actions here return `ActionResult` from `@merqo/ui/kit-api`.
+
 ## Parent
 
 [app](../README.md)

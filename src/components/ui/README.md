@@ -4,14 +4,13 @@
 
 Radix-backed shadcn primitives that `@merqo/ui/primitives` does not provide.
 button, card, checkbox, input, label, select and switch (and `cn`) are imported
-from `@merqo/ui/primitives`; `badge.tsx` stays local because the shared badge
-has no `gold` variant, which about 25 files use.
+from `@merqo/ui/primitives`, as is `Badge`. The shared badge has no `gold`
+variant, so gold badges use `GOLD_BADGE` from `@/lib/gold-badge`.
 
 ## Contents
 
 - `alert-dialog.tsx` — Radix `AlertDialog` wrapper (Root/Trigger/Portal/Overlay/Content/Header/Footer/Title/Description/Action/Cancel), used by `RewardCelebration`'s confirmation modal
 - `avatar.tsx` — Radix `Avatar` wrapper: `Avatar`/`AvatarImage`/`AvatarFallback` plus `AvatarBadge`/`AvatarGroup`/`AvatarGroupCount` for stacked-avatar UI, sized via a `size` data-attribute
-- `badge.tsx` — `Badge` (cva variants: default/secondary/gold/destructive/outline/ghost/link), `asChild`-capable via Radix `Slot`
 - `dropdown-menu.tsx` — Radix `DropdownMenu` wrapper: full primitive set (Trigger/Content/Group/Item/CheckboxItem/RadioGroup/RadioItem/Label/Separator/Shortcut/Sub/SubTrigger/SubContent)
 - `popover.tsx` — Radix `Popover` wrapper: `Popover`/`PopoverTrigger`/`PopoverContent`/`PopoverAnchor`; used by `color-picker.tsx` (the app's own tap-triggered `InfoTooltip` now comes from `@merqo/ui`, which vendors its own separate Popover primitive)
 - `table.tsx` — plain-HTML `Table` composition: `Table`/`TableHeader`/`TableBody`/`TableFooter`/`TableRow`/`TableHead`/`TableCell`/`TableCaption`, wrapped in an overflow-x container

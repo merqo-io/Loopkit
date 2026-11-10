@@ -1,3 +1,4 @@
+import { GOLD_BADGE } from "@/lib/gold-badge";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
@@ -19,7 +20,7 @@ import { RememberProgram } from "@/app/dashboard/counter/remember-program";
 import { ServeCustomer } from "@/app/dashboard/serve-customer";
 import { ProgramSwitcher } from "@/app/dashboard/program-switcher";
 import { BackButton, qrSvg, PageHeader } from "@merqo/ui";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@merqo/ui/primitives";
 
 export const metadata: Metadata = { title: "Counter" };
 
@@ -86,7 +87,9 @@ export default async function CounterPage({ searchParams }: CounterPageProps) {
           <span>
             {program.name} · {describeProgram(program)}
           </span>
-          <Badge variant={badge.variant}>{badge.label}</Badge>
+          <Badge className={badge.variant === "gold" ? GOLD_BADGE : undefined}>
+            {badge.label}
+          </Badge>
         </span>
       </PageHeader>
 

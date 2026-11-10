@@ -22,6 +22,8 @@ at render. `BackButton` falls back to a plain `<a>`.
 
 - `loading.tsx` — `RedeemVoucherLoading`, a static skeleton (`role="status"`, `aria-busy`, sr-only label) mirroring the page layout while the route streams in.
 
+`useAsyncAction` comes from `@merqo/ui`; call sites pass `(fn: () => Promise<void>) => fn()` as the action.
+
 ## Parent
 
 [dashboard](../README.md)

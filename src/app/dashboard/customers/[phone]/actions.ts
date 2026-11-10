@@ -5,7 +5,7 @@ import { requireVendor } from "@/features/auth";
 import { createServerClient } from "@/lib/supabase/server";
 import { z } from "zod";
 import { normalizePhone } from "@/lib/phone";
-import type { ActionResult } from "@/lib/action-result";
+import type { ActionResult } from "@merqo/ui/kit-api";
 
 export async function withdrawMarketingConsentAction(
   formData: FormData,

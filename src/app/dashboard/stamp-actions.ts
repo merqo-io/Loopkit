@@ -8,7 +8,7 @@ import { rewardReady } from "@/lib/loyalty";
 import { applyVisit, getProgress } from "@/lib/engine";
 import { isCardExpired } from "@/lib/expiry";
 import { createServerClient } from "@/lib/supabase/server";
-import type { ActionResult } from "@/lib/action-result";
+import type { ActionResult } from "@merqo/ui/kit-api";
 import type { Progress } from "@/lib/engine/types";
 import type { Json } from "@/lib/types";
 import { programFromForm } from "./actions-shared";

@@ -1,5 +1,5 @@
 import { getProgramById } from "@/lib/program";
-import type { ActionResult } from "@/lib/action-result";
+import type { ActionResult } from "@merqo/ui/kit-api";
 import type { StampCard } from "@/app/dashboard/card";
 
 export type CardResult = ActionResult<{

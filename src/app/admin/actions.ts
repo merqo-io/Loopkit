@@ -6,7 +6,7 @@ import { requireAdmin } from "@/lib/admin";
 // eslint-disable-next-line no-restricted-imports -- admin reads rows across vendors that RLS hides; gated by requireAdmin
 import { createServiceClient } from "@/lib/supabase/server";
 import { recordAudit } from "@/lib/admin-audit";
-import type { ActionResult } from "@/lib/action-result";
+import type { ActionResult } from "@merqo/ui/kit-api";
 
 const setProgramActiveSchema = z.object({
   programId: z.uuid(),

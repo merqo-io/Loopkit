@@ -2,7 +2,7 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { useAsyncAction } from "@/hooks/use-async-action";
+import { useAsyncAction } from "@merqo/ui";
 import {
   stampAction,
   recordVisitAction,
@@ -105,7 +105,7 @@ export function useServeCustomer({
   rewardText,
 }: ServeCustomerProps) {
   const router = useRouter();
-  const { pending, run } = useAsyncAction();
+  const { pending, run } = useAsyncAction((fn: () => Promise<void>) => fn());
   const phoneRef = useRef<HTMLInputElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const detailsRef = useRef<HTMLDetailsElement>(null);
