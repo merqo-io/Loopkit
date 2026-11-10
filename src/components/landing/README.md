@@ -21,7 +21,8 @@ Shared controls and `cn` used by this folder's modules are imported from `@merqo
 - `nav.tsx` — `Nav`: delegates the sticky-header shell to `@merqo/ui`'s `LandingNav` (`wordmark`/`end` slot component — sticky, bordered, `px-5 py-4 backdrop-blur-md`, `max-w-6xl` inner row, matching qkit's landing-header sizing exactly), supplying `Wordmark` + sr-only "loopkit home" text as `wordmark` and an `/about` link, an FAQ button (`/#faq`, hidden below `sm` — the leading `/` so it resolves correctly from `/about` too, not just from `/` where `Nav` also renders), plus either a Dashboard button (authed) or Sign in link + Join the waitlist button (signed out) as `end`
 - `nav.test.tsx` — asserts the sticky header carries qkit's `px-5 py-4 backdrop-blur-md` classes, and that the About link points at `/about`
 - `stamp-card.tsx` — `StampCard`: illustrative 8-slot stamp card (6 stamped, 1 reward slot) used in the hero, pure markup with no image; the 6th (last-stamped) dot plays `motion-safe:animate-stamp-pop` once on load, delayed 0.5s to land just after the hero's `fade-rise` reveal finishes — same class/keyframe `StampDots` uses for a real stamp landing
-- `wordmark.tsx` — `Wordmark`: "LoopKit" text logo with the "oo" rendered in gold as the brand's stamp-dot motif
+- `wordmark.tsx` — `Wordmark`: thin wrapper over `@merqo/ui`'s `Wordmark` layout shell (size `sm`); loopkit supplies the "LoopKit" text with the "oo" rendered in gold as the brand's stamp-dot motif
+- `wordmark.test.tsx` — asserts the text, the shell classes and the gold hidden "oo" span
 
 ## Shared package note
 

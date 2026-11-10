@@ -250,6 +250,8 @@ Bumped `@merqo/ui` to v0.42.1 (pinned by commit `53ec5ba`), which also supplies 
 
 Dashboard pages use `@merqo/ui`'s `PageHeader` and `EmptyState` (v0.42.1, pinned by commit `53ec5ba`; no local copies), so every screen opens with the same eyebrow, single h1 and action, and every empty list offers a next step.
 
+The admin MFA form and the landing wordmark are thin wrappers over `@merqo/ui`'s `MfaForm` and `Wordmark` (`src/app/mfa/README.md`, `src/components/landing/README.md`).
+
 ## Stack
 
 Next.js 16.3.4 · App Router · Turbopack · TypeScript strict · Tailwind v4 ·
