@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Fixed
+
+- Test-only LIKE emulator now escapes backslashes (CodeQL incomplete string escaping).
+
 ## [0.4.2] - 2026-11-10
 
 ### Changed

@@ -270,7 +270,7 @@ usage is unchanged.
 ```bash
 pnpm dev            # dev server — http://localhost:3000
 pnpm build          # production build
-pnpm test           # run test suite (vitest)
+pnpm test           # run test suite (vitest, 1679 tests)
 pnpm test:mutation  # stryker mutation testing (scoped to src/lib; advisory)
 pnpm test:e2e       # playwright e2e smoke (needs local Supabase up)
 pnpm check          # prettier --check + eslint + tsc --noEmit
