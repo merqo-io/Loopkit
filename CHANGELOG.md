@@ -13,6 +13,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - The `/supabase-migrate` skill no longer tells anyone to run `supabase gen types ... > src/lib/types.ts`, which would overwrite the barrel; it now points at hand edits in `src/lib/db-types/`.
 - docs/CONSTITUTION.md no longer says to regenerate `src/lib/types.ts` after a migration; it now says to update `src/lib/db-types/` by hand.
 
+## [0.5.1] - 2026-11-11
+
+### Changed
+
+- Re-pinned `@merqo/ui` to v0.44.2: the terms, privacy policy, pilot agreement and About text now describe Merqo as a personal software project with charging and incorporation conditional. Terms and privacy version 2026-11-10 makes signed-in vendors re-accept on next sign-in.
+
 ## [0.5.0] - 2026-11-10
 
 ### Added
