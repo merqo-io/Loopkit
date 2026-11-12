@@ -8,7 +8,6 @@ import { Plant } from "@/components/plant";
 import { Cup } from "@/components/cup";
 import { Wheel } from "@/components/wheel";
 import { ScratchCard } from "@/components/scratch-card";
-import { Button } from "@merqo/ui/primitives";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,7 +18,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+  Button,
+} from "@merqo/ui/primitives";
 
 const READY_CARD = "rounded-xl border border-gold bg-gold/10 p-4";
 const PLAIN_CARD = "rounded-xl border bg-muted/40 p-4";

@@ -13,7 +13,7 @@ Component tests verify rendering, form payloads, retry states and the expired-cy
 
 [Parent](../README.md)
 
-Shared controls and `cn` used by this folder's modules are imported from `@merqo/ui/primitives`; only `badge`, `alert-dialog`, `avatar`, `dropdown-menu`, `popover`, `table`, `toggle` and `toggle-group` remain in `src/components/ui/`.
+Shared controls and `cn` used by this folder's modules are imported from `@merqo/ui/primitives`, including the alert dialog, popover, toggle and toggle group; no local primitives remain.
 
 ## Reuse and ownership
 
