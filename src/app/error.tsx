@@ -1,11 +1,10 @@
 "use client";
 
-import { useEffect } from "react";
+import { ErrorPage } from "@merqo/ui";
 import { Wordmark } from "@/components/landing/wordmark";
-import { Button } from "@merqo/ui/primitives";
 
 /**
- * Root error boundary — replaces the raw Next error overlay in production if an
+ * Root error boundary: replaces the raw Next error overlay in production if an
  * RSC throws (e.g. Supabase unreachable on a patchy stall connection).
  */
 export default function RouteError({
@@ -15,23 +14,15 @@ export default function RouteError({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
-  useEffect(() => {
-    console.error("Unhandled error", error);
-  }, [error]);
-
   return (
-    <div className="mx-auto flex min-h-screen max-w-sm flex-col items-center justify-center gap-4 px-6 text-center">
-      <Wordmark className="text-2xl" />
-      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-        Something went wrong
-      </p>
-      <h1 className="font-display text-3xl font-semibold">That did not load</h1>
-      <p className="text-sm text-muted-foreground">
-        This is usually a flaky connection. Try again in a moment.
-      </p>
-      <Button onClick={reset} className="h-11 rounded-xl px-6 font-semibold">
-        Try again
-      </Button>
-    </div>
+    <ErrorPage
+      error={error}
+      reset={reset}
+      wordmark={<Wordmark className="text-2xl" />}
+      eyebrow="Something went wrong"
+      title="That did not load"
+      description="This is usually a flaky connection. Try again in a moment."
+      resetLabel="Try again"
+    />
   );
 }

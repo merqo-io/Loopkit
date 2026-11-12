@@ -4,7 +4,7 @@
 
 Vendor onboarding and program-management routes: `/setup` (programs list), `/setup/new` (create), and `/setup/[programId]/{edit,migrate,prep,schedule}`. Old `/setup?edit|migrate|prep|schedule=<id>` URLs redirect to the matching route. Includes a live animated preview of the customer card. Server actions call `revalidatePath("/setup", "layout")` so every sub-route refreshes.
 
-Shared controls and `cn` used by this folder's modules are imported from `@merqo/ui/primitives`; only `badge`, `alert-dialog`, `avatar`, `dropdown-menu`, `popover`, `table`, `toggle` and `toggle-group` remain in `src/components/ui/`.
+Shared controls and `cn` used by this folder's modules are imported from `@merqo/ui/primitives`, including the alert dialog, popover, toggle and toggle group; no local primitives remain.
 
 ## Contents
 

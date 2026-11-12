@@ -9,7 +9,6 @@ import type { CardStatus } from "../types";
 import { PointsCatalogPicker } from "./points-catalog-picker";
 
 import { CardShell } from "@/components/card-shell";
-import { Button } from "@merqo/ui/primitives";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -18,7 +17,8 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+  Button,
+} from "@merqo/ui/primitives";
 import { ConfirmDialog } from "@merqo/ui";
 
 // One customer's progress card for a single program, at the vendor-level

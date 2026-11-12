@@ -4,8 +4,14 @@ import { join } from "node:path";
 import { describe, it, expect } from "vitest";
 import { render } from "@testing-library/react";
 
-import { Button, Input, SelectTrigger, Select } from "@merqo/ui/primitives";
-import { ToggleGroup, ToggleGroupItem } from "./toggle-group";
+import {
+  Button,
+  Input,
+  SelectTrigger,
+  Select,
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@merqo/ui/primitives";
 import { FormCard } from "../form-card";
 
 const css = readFileSync(join(process.cwd(), "src/app/globals.css"), "utf8");

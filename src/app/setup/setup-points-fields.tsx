@@ -1,12 +1,11 @@
 "use client";
 
 import { MoneyInput } from "@merqo/ui";
-import { Input } from "@merqo/ui/primitives";
+import { Input, ToggleGroup, ToggleGroupItem } from "@merqo/ui/primitives";
 
 import { Section } from "@/components/section";
 
 import { Coins } from "lucide-react";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 import type { PointsRedemptionMode } from "@/lib/program-config";
 

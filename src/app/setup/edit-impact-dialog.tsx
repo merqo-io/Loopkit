@@ -1,17 +1,17 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Button } from "@merqo/ui/primitives";
 import {
   AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogTitle,
   AlertDialogDescription,
   AlertDialogFooter,
-  AlertDialogCancel,
-  AlertDialogAction,
-} from "@/components/ui/alert-dialog";
+  AlertDialogHeader,
+  AlertDialogTitle,
+  Button,
+} from "@merqo/ui/primitives";
 
 const SUBMIT_CLASS = "h-12 w-full rounded-xl text-base font-semibold";
 

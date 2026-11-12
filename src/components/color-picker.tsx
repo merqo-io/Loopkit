@@ -2,11 +2,11 @@
 
 import { HexColorPicker, HexColorInput } from "react-colorful";
 import {
+  cn,
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import { cn } from "@merqo/ui/primitives";
+} from "@merqo/ui/primitives";
 
 export function ColorPicker({
   value,
