@@ -15,6 +15,7 @@ describe("GlobalError", () => {
     expect(html).toContain("<main");
     expect(html).toContain("<h1");
     expect(html).toContain("That did not load");
+    expect(html).not.toContain("Something went wrong");
     expect(html).toContain(
       "An unexpected error interrupted the page. Try again, and refresh in a moment if it keeps happening.",
     );
