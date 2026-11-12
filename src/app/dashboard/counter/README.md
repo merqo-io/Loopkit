@@ -4,7 +4,7 @@
 
 The scan-first "serve a customer at the counter" view at `/dashboard/counter?p=<id>&phone=<optional>`. A large scan target is the hero; manual phone entry collapses into a fallback; the active card starts empty; a vendor can add a brand-new customer or print a shop join poster without leaving the page.
 
-Shared controls and `cn` used by this folder's modules are imported from `@merqo/ui/primitives`; only `badge`, `alert-dialog`, `avatar`, `dropdown-menu`, `popover`, `table`, `toggle` and `toggle-group` remain in `src/components/ui/`.
+Shared controls and `cn` used by this folder's modules are imported from `@merqo/ui/primitives`, including the alert dialog, popover, toggle and toggle group; no local primitives remain.
 
 ## Contents
 

@@ -8,7 +8,7 @@ import { useSetupFormState } from "./use-setup-form-state";
 
 import Link from "next/link";
 
-import { Button, cn } from "@merqo/ui/primitives";
+import { Button, cn, ToggleGroup, ToggleGroupItem } from "@merqo/ui/primitives";
 
 import { PreviewCard } from "@/app/setup/preview-card";
 import { Section } from "@/components/section";
@@ -25,7 +25,6 @@ import {
   Palette,
   Lock,
 } from "lucide-react";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import type { StampVisualStyle } from "@/components/stamp-dots";
 import { DEFAULT_STAMP_COLOR } from "@/lib/engine/stamp";
 import type { ScratchCoverStyle } from "@/lib/program-config";

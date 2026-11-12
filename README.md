@@ -49,7 +49,7 @@ output instead of a hand-copied string, so it can't drift from what the
 engine actually computes — see
 `../docs/superpowers/specs/2026-08-25-tour-example-badge-drift-fix-design.md`
 in the workspace root. Migrated onto
-the shared `@merqo/ui` component package (pinned at v0.44.2, commit `d363250`, in `package.json`): the
+the shared `@merqo/ui` component package (pinned at v0.45.1, commit `6bd6bd7`, in `package.json`): the
 dashboard nav/account dropdown, `useAsyncAction`, `InfoTooltip`,
 `ImageUploader`, `DashboardTour`, the landing page's
 sticky header (`LandingNav`, via `src/components/landing/nav.tsx`), and
@@ -255,7 +255,7 @@ The admin MFA form and the landing wordmark are thin wrappers over `@merqo/ui`'s
 ## Stack
 
 Next.js 16.3.4 · App Router · Turbopack · TypeScript strict · Tailwind v4 ·
-shadcn/ui (new-york; button, card, checkbox, input, label, select and switch come from `@merqo/ui/primitives` v0.44.1, the rest stay in `src/components/ui/`) · React Hook Form · Zod · Supabase (`@supabase/ssr`) ·
+shadcn/ui (new-york; every primitive comes from `@merqo/ui/primitives` v0.45.1, none are kept locally) · React Hook Form · Zod · Supabase (`@supabase/ssr`) ·
 Vitest 4 · pnpm 11 · Node ≥24.22.1 · deploy target: Vercel
 
 Vercel deploys only `main` (`git.deploymentEnabled` in `vercel.json`), so PR

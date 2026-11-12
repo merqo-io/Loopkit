@@ -1,41 +1,37 @@
 "use client";
 
-import "./globals.css";
+import { GlobalError } from "@merqo/ui";
 
-// Root error boundary. Next renders this ONLY when the root layout itself throws
-// (nested errors are caught closer); it replaces the layout, so it must ship its
-// own <html>/<body>. It imports the global stylesheet for the theme tokens but
-// not the next/font variables (those live on the layout it replaces), so type
-// falls back to the system stack. Kept dependency-free beyond that.
-export default function GlobalError({
+// Next renders this only when the root layout itself throws, before any
+// stylesheet loads, so the colours are literal copies of the light tokens in
+// globals.css and the font is a system stack (the next/font variables live on
+// the layout it replaces).
+const COLORS = {
+  background: "oklch(0.97 0.013 56.3)",
+  foreground: "oklch(0.22 0.035 28.9)",
+  mutedForeground: "oklch(0.45 0.035 15)",
+  primary: "oklch(0.463 0.186 19)",
+  primaryForeground: "oklch(1 0 0)",
+};
+
+const SYSTEM_FONT =
+  'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+
+export default function GlobalErrorPage({
   reset,
 }: {
   error: Error & { digest?: string };
   reset: () => void;
 }) {
   return (
-    <html lang="en">
-      <body className="flex min-h-screen items-center justify-center bg-background p-6 text-foreground">
-        <div className="max-w-sm text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-            Something went wrong
-          </p>
-          <h1 className="font-display mt-3 text-3xl font-semibold">
-            That did not load
-          </h1>
-          <p className="mt-3 text-sm text-muted-foreground">
-            An unexpected error interrupted the page. Try again, and refresh in
-            a moment if it keeps happening.
-          </p>
-          <button
-            type="button"
-            onClick={() => reset()}
-            className="mt-6 h-11 cursor-pointer rounded-xl bg-primary px-6 text-sm font-semibold text-primary-foreground"
-          >
-            Try again
-          </button>
-        </div>
-      </body>
-    </html>
+    <GlobalError
+      reset={reset}
+      colors={COLORS}
+      radius="0.75rem"
+      fontFamily={SYSTEM_FONT}
+      title="That did not load"
+      description="An unexpected error interrupted the page. Try again, and refresh in a moment if it keeps happening."
+      resetLabel="Try again"
+    />
   );
 }
