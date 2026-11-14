@@ -82,6 +82,14 @@ describe("PlanPage", () => {
     ).toBeInTheDocument();
   });
 
+  it("shows the pilot notice above the ladder", async () => {
+    stubFetch(async () => Response.json(catalog));
+    await renderPage();
+    expect(
+      screen.getByText(/merqo is free during the pilot\./i),
+    ).toBeInTheDocument();
+  });
+
   it("shows the current plan and an unavailable line when the fetch rejects", async () => {
     stubFetch(async () => {
       throw new Error("down");
