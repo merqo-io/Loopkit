@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 
+- Bump `@merqo/ui` to v0.46.0 (commit `5ebd889`): the plan page price ladder now shows a notice that Merqo is free during the pilot.
 - Moved to `@merqo/ui` v0.45.1 (commit `6bd6bd7`). The root `error.tsx`, `not-found.tsx` and `global-error.tsx` now render the shared `ErrorPage`, `NotFound` and `GlobalError`, passing the existing copy as props. Visible differences:
   - The root error page shows a "Reference: <digest>" line when Next supplies a digest, and its "Try again" button is full width.
   - The 404 page shows "404" as the large code instead of the "Error 404" eyebrow.
