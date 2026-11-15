@@ -536,3 +536,5 @@ The AI harness follows templateCentral 7.2.2: hook commands are anchored on the 
 ## Lint
 
 `eslint.config.mjs` consumes the shared `@merqo/ui/eslint` preset (comment and directive hygiene, size and complexity limits, no colour literals or em dashes in `src`). `eslint.config.test.ts` asserts the key rules stay at `error`. Colour literals are allowed only in `src/lib/brand-icon.tsx`, `src/app/global-error.tsx` and `src/lib/tokens/`. Two baseline blocks list the files over the size or complexity limits; the split-long-files task shrinks them.
+
+Vendor-facing plan-limit copy states what the plan includes and never asks the vendor to upgrade or pay; locked cards link to the plan page with the label "See plans".

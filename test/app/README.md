@@ -25,3 +25,5 @@ Supabase clients and `@/lib` collaborators mocked via `vi.mock`/`vi.hoisted`.
 serve-customer test asserts the plain "Reward unlocked!" heading (no emoji). Its lucky-mode win line reads "Won A prize!" (no emoji).
 
 dashboard-actions test covers the resolveTokenAction read-failure and not-for-this-shop copy.
+
+The plan-gate tests (`save-program`, `change-type`, `prep-program`, `activate-schedule`) assert the plan-limit errors state what the plan includes (for example "not on your plan") and never tell the vendor to upgrade.

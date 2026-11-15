@@ -409,7 +409,7 @@ export function SetupForm({
                 <span className="text-xs text-muted-foreground">
                   Accent color, the reward stamp always stays gold.
                   {!allowedCustomColor &&
-                    " Custom colours are not on your plan."}
+                    " Custom colors are not on your plan."}
                 </span>
               </div>
               <input type="hidden" name="stamp_style" value={stampStyle} />
