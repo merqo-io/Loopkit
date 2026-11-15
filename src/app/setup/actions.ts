@@ -24,9 +24,8 @@ import type { Database } from "@/lib/types";
 
 type ProgramUpdate = Database["loopkit"]["Tables"]["programs"]["Update"];
 
-const UPSELL_ERROR =
-  "You are on the free plan with 1 program. Ask an admin for Pro.";
-const STYLE_UPSELL_ERROR = "That card style needs Pro. Upgrade to unlock it.";
+const UPSELL_ERROR = "Your plan includes 1 program.";
+const STYLE_UPSELL_ERROR = "That card style is not on your plan.";
 
 // Shared by create/edit/change-type/prep: null if the mechanic/style/color is allowed, else the upsell error.
 function mechanicGateError(
@@ -378,7 +377,7 @@ export async function scheduleRetirementAction(
   });
   if (error || !data) {
     if (error?.code === "42501") {
-      return { error: "Scheduled retirement is a Pro feature." };
+      return { error: "Scheduled retirement is not on your plan." };
     }
     return { error: "Could not schedule that. Try again." };
   }

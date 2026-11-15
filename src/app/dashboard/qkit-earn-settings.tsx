@@ -39,7 +39,7 @@ export function QkitEarnSettings({
         </p>
         <ProLock
           href="/dashboard/plan"
-          label="Upgrade to Pro"
+          label="See plans"
           LinkComponent={Link}
         />
       </ElevatedCard>

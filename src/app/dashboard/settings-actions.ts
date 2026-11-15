@@ -20,7 +20,7 @@ export async function saveQkitEarnConfigAction(
   const { user } = await requireVendor();
   const pro = await isPro();
   if (!pro) {
-    return { success: false, error: "Upgrade to Pro to enable this." };
+    return { success: false, error: "Qkit stamp earning is not on your plan." };
   }
 
   const enabled = formData.get("enabled") === "on";

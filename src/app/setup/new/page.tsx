@@ -77,7 +77,7 @@ export default async function NewProgramPage() {
             </p>
             <ProLock
               href="/dashboard/plan"
-              label="Upgrade to Pro"
+              label="See plans"
               LinkComponent={Link}
               className="mt-4"
             />

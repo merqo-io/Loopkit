@@ -70,7 +70,7 @@ describe("saveProgramAction (gated create + edit)", () => {
 
     const res = await saveProgramAction({}, form(stampFields));
 
-    expect(res.error).toMatch(/free plan/i);
+    expect(res.error).toMatch(/your plan includes 1 program/i);
     expect(rpcMock).not.toHaveBeenCalled();
   });
 
@@ -116,7 +116,7 @@ describe("saveProgramAction (gated create + edit)", () => {
     rpcMock.mockResolvedValue({ data: null, error: { code: "42501" } });
 
     const res = await saveProgramAction({}, form(stampFields));
-    expect(res.error).toMatch(/free plan/i);
+    expect(res.error).toMatch(/your plan includes 1 program/i);
   });
 
   it("surfaces a generic error for a non-upsell RPC failure", async () => {
@@ -185,7 +185,7 @@ describe("saveProgramAction (gated create + edit)", () => {
       }),
     );
 
-    expect(res.error).toMatch(/needs pro/i);
+    expect(res.error).toMatch(/not on your plan/i);
     expect(rpcMock).not.toHaveBeenCalled();
   });
 
@@ -197,13 +197,13 @@ describe("saveProgramAction (gated create + edit)", () => {
       {},
       form({ ...stampFields, stamp_style: "seal" }),
     );
-    expect(styleRes.error).toMatch(/needs pro/i);
+    expect(styleRes.error).toMatch(/not on your plan/i);
 
     const colorRes = await saveProgramAction(
       {},
       form({ ...stampFields, stamp_color: "#112233" }),
     );
-    expect(colorRes.error).toMatch(/needs pro/i);
+    expect(colorRes.error).toMatch(/not on your plan/i);
 
     expect(rpcMock).not.toHaveBeenCalled();
   });
@@ -217,7 +217,7 @@ describe("saveProgramAction (gated create + edit)", () => {
       form({ ...stampFields, id: "p-edit", stamp_style: "charm" }),
     );
 
-    expect(res.error).toMatch(/needs pro/i);
+    expect(res.error).toMatch(/not on your plan/i);
     expect(updateEq).not.toHaveBeenCalled();
   });
 
