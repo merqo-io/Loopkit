@@ -1073,7 +1073,9 @@ describe("SetupForm Pro gating", () => {
     expect(wax.querySelector("svg")).not.toBeNull();
     const dots = screen.getByRole("radio", { name: "Classic dots" });
     expect(dots.querySelector("svg")).toBeNull();
-    expect(screen.getByText(/custom colors need pro/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/custom colors are not on your plan/i),
+    ).toBeInTheDocument();
   });
 
   it("shows no stamp-style lock badges or custom-color note for a Pro vendor", () => {
@@ -1091,7 +1093,7 @@ describe("SetupForm Pro gating", () => {
     const wax = screen.getByRole("radio", { name: "Wax seal" });
     expect(wax.querySelector("svg")).toBeNull();
     expect(
-      screen.queryByText(/custom colors need pro/i),
+      screen.queryByText(/custom colors are not on your plan/i),
     ).not.toBeInTheDocument();
   });
 });

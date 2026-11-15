@@ -86,4 +86,4 @@ Each page exports its own `metadata.title`, shown through the root `loopkit | %s
 
 card-link test pins the clipboard-failure copy.
 
-`qkit-earn-settings.tsx` passes `LinkComponent={Link}` to `ProLock` so the upgrade pill keeps client navigation and prefetch.
+`qkit-earn-settings.tsx` passes `LinkComponent={Link}` to `ProLock` so the plans pill keeps client navigation and prefetch.

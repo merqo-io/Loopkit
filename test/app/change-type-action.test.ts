@@ -189,7 +189,7 @@ describe("changeTypeAction", () => {
       }),
     );
 
-    expect(res.error).toMatch(/needs pro/i);
+    expect(res.error).toMatch(/not on your plan/i);
     expect(fromMock).not.toHaveBeenCalled();
     expect(rpcMock).not.toHaveBeenCalled();
   });
@@ -200,7 +200,7 @@ describe("changeTypeAction", () => {
       form({ ...stampFields, stamp_style: "seal" }),
     );
 
-    expect(res.error).toMatch(/needs pro/i);
+    expect(res.error).toMatch(/not on your plan/i);
     expect(fromMock).not.toHaveBeenCalled();
   });
 

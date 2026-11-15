@@ -10,4 +10,4 @@
 
 `ProLock` comes from `@merqo/ui` with `href="/dashboard/plan"`.
 
-The free-plan `ProLock` passes `LinkComponent={Link}` so the upgrade pill keeps client navigation and prefetch.
+The free-plan `ProLock` passes `LinkComponent={Link}` so the plans pill keeps client navigation and prefetch.
