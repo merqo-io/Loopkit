@@ -116,7 +116,7 @@ describe("scheduleRetirementAction", () => {
       form({ id: "p1", successor_id: "p2", date: futureDate() }),
     );
 
-    expect(res.error).toMatch(/not on your plan/i);
+    expect(res.error).toMatch(/not available yet/i);
   });
 
   it("returns a generic error for any other failure", async () => {
