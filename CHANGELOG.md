@@ -12,7 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 
-- Bump `@merqo/ui` to v0.49.0 (commit `f9f3bad`) for the shared auth confirm components.
+- Bump `@merqo/ui` to v0.49.1 (commit `016f59f`) for the shared auth confirm components.
 - Plan-limit copy no longer tells vendors to upgrade or pay. Errors and notes say what the plan includes (for example "Your plan includes 1 program."), and the lock pills on the new-program and qkit earn cards read "See plans". Behaviour is unchanged.
 - Bump `@merqo/ui` to v0.46.0 (commit `5ebd889`): the plan page price ladder now shows a notice that Merqo is free during the pilot.
 - Moved to `@merqo/ui` v0.45.1 (commit `6bd6bd7`). The root `error.tsx`, `not-found.tsx` and `global-error.tsx` now render the shared `ErrorPage`, `NotFound` and `GlobalError`, passing the existing copy as props. Visible differences:
