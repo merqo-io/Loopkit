@@ -1074,7 +1074,7 @@ describe("SetupForm Pro gating", () => {
     const dots = screen.getByRole("radio", { name: "Classic dots" });
     expect(dots.querySelector("svg")).toBeNull();
     expect(
-      screen.getByText(/custom colors are not on your plan/i),
+      screen.getByText(/custom colors are not available yet/i),
     ).toBeInTheDocument();
   });
 
@@ -1093,7 +1093,7 @@ describe("SetupForm Pro gating", () => {
     const wax = screen.getByRole("radio", { name: "Wax seal" });
     expect(wax.querySelector("svg")).toBeNull();
     expect(
-      screen.queryByText(/custom colors are not on your plan/i),
+      screen.queryByText(/custom colors are not available yet/i),
     ).not.toBeInTheDocument();
   });
 });

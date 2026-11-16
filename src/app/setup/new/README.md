@@ -8,6 +8,4 @@
 
 - `page.tsx` - server page; picks create vs upsell with `resolveNewView` from `../setup-view.ts`.
 
-`ProLock` comes from `@merqo/ui` with `href="/dashboard/plan"`.
-
-The free-plan `ProLock` passes `LinkComponent={Link}` so the plans pill keeps client navigation and prefetch.
+The free-plan upsell shows the plain line "More programs are not available yet." with no link, because paid loopkit features are not on any plan a vendor can currently get.
