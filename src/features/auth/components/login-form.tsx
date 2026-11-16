@@ -66,15 +66,25 @@ function SentNotice({ sent, onBack }: { sent: Sent; onBack: () => void }) {
   );
 }
 
-function FormError({ message }: { message: string | null }) {
-  if (!message) return null;
+const LINK_EXPIRED_MESSAGE =
+  "That link is invalid or has expired. Request a new one.";
+
+function FormError({
+  message,
+  linkExpired,
+}: {
+  message: string | null;
+  linkExpired: boolean;
+}) {
+  const shown = message ?? (linkExpired ? LINK_EXPIRED_MESSAGE : null);
+  if (!shown) return null;
   return (
     <p
       id="form-error"
       role="alert"
       className="text-sm font-medium text-destructive"
     >
-      {message}
+      {shown}
     </p>
   );
 }
@@ -331,7 +341,10 @@ export function LoginForm() {
                   </p>
                 )}
               </div>
-              <FormError message={formError} />
+              <FormError
+                message={formError}
+                linkExpired={searchParams.get("error") === "link"}
+              />
               <Button
                 type="submit"
                 size="lg"
