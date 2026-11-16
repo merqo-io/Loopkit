@@ -6,8 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added
+
+- `/auth/confirm` and `/auth/confirm/verify` for own-domain email links: the page shows a Continue button (a GET never consumes the token) and the POST verifies it, landing on `/dashboard` or `/reset-password` for recovery. A bad or expired link goes to `/login?error=link`, which now shows "That link is invalid or has expired. Request a new one." `/auth/callback` and every `redirectTo` are unchanged.
+
 ### Changed
 
+- Bump `@merqo/ui` to v0.49.1 (commit `016f59f`) for the shared auth confirm components.
+- Locked features now say they are not available yet instead of "not on your plan", and the new-program and qkit earn cards show plain "not available yet" lines with no link to the plan page (paid loopkit features are not on any plan a vendor can currently get). Who is locked is unchanged.
+- The plan page highlights Pro and sends the kit bearer credential when fetching merqo's plan catalog, falling back to the unavailable line when the credential is missing.
 - Plan-limit copy no longer tells vendors to upgrade or pay. Errors and notes say what the plan includes (for example "Your plan includes 1 program."), and the lock pills on the new-program and qkit earn cards read "See plans". Behaviour is unchanged.
 - Bump `@merqo/ui` to v0.46.0 (commit `5ebd889`): the plan page price ladder now shows a notice that Merqo is free during the pilot.
 - Moved to `@merqo/ui` v0.45.1 (commit `6bd6bd7`). The root `error.tsx`, `not-found.tsx` and `global-error.tsx` now render the shared `ErrorPage`, `NotFound` and `GlobalError`, passing the existing copy as props. Visible differences:

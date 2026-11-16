@@ -49,7 +49,7 @@ output instead of a hand-copied string, so it can't drift from what the
 engine actually computes — see
 `../docs/superpowers/specs/2026-08-25-tour-example-badge-drift-fix-design.md`
 in the workspace root. Migrated onto
-the shared `@merqo/ui` component package (pinned at v0.46.0, commit `5ebd889`, in `package.json`): the
+the shared `@merqo/ui` component package (pinned at v0.49.1, commit `016f59f`, in `package.json`; email links land on `/auth/confirm`, see `src/app/auth/README.md`): the
 dashboard nav/account dropdown, `useAsyncAction`, `InfoTooltip`,
 `ImageUploader`, `DashboardTour`, the landing page's
 sticky header (`LandingNav`, via `src/components/landing/nav.tsx`), and
@@ -537,4 +537,4 @@ The AI harness follows templateCentral 7.2.2: hook commands are anchored on the 
 
 `eslint.config.mjs` consumes the shared `@merqo/ui/eslint` preset (comment and directive hygiene, size and complexity limits, no colour literals or em dashes in `src`). `eslint.config.test.ts` asserts the key rules stay at `error`. Colour literals are allowed only in `src/lib/brand-icon.tsx`, `src/app/global-error.tsx` and `src/lib/tokens/`. Two baseline blocks list the files over the size or complexity limits; the split-long-files task shrinks them.
 
-Vendor-facing plan-limit copy states what the plan includes and never asks the vendor to upgrade or pay; locked cards link to the plan page with the label "See plans".
+Vendor-facing plan-limit copy states what the plan includes and never asks the vendor to upgrade or pay; locked features say they are not available yet, with no link to the plan page.

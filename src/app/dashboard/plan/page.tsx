@@ -19,10 +19,14 @@ export default async function PlanPage({
   searchParams: Promise<{ p?: string }>;
 }) {
   await requireVendor();
+  const secret = process.env.MERQO_CUSTOMER_SECRET;
   const [pro, programs, catalog] = await Promise.all([
     isPro(),
     listPrograms(),
-    fetchPlanCatalog(merqoBaseUrl()),
+    fetchPlanCatalog(
+      merqoBaseUrl(),
+      secret ? { headers: { Authorization: `Bearer ${secret}` } } : undefined,
+    ),
   ]);
   const { p } = await searchParams;
   const program = currentProgram(programs, p);
@@ -81,7 +85,7 @@ export default async function PlanPage({
       {catalog ? (
         <PricingLadder
           catalog={catalog}
-          highlight="all_access"
+          highlight="qkit"
           showEventPass={false}
         />
       ) : (

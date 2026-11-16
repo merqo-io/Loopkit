@@ -57,6 +57,14 @@ describe("LoginForm", () => {
     ).toBeInTheDocument();
   });
 
+  it("shows the expired-link message when the error search param is link", () => {
+    searchParamsValue.current = "error=link";
+    render(<LoginForm />);
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "That link is invalid or has expired. Request a new one.",
+    );
+  });
+
   it("calls signInWithOAuth when Continue with Google is clicked", async () => {
     const user = userEvent.setup();
     render(<LoginForm />);

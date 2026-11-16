@@ -39,7 +39,7 @@ describe("saveQkitEarnConfigAction", () => {
 
     expect(res).toEqual({
       success: false,
-      error: "Qkit stamp earning is not on your plan.",
+      error: "Qkit stamp earning is not available yet.",
     });
     expect(upsertMock).not.toHaveBeenCalled();
   });

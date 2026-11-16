@@ -210,6 +210,10 @@ describe("/setup/new", () => {
     expect(
       screen.getByRole("link", { name: /manage your programs/i }),
     ).toHaveAttribute("href", "/setup");
+    expect(
+      screen.getByText("More programs are not available yet."),
+    ).toBeInTheDocument();
+    expect(document.querySelector('a[href="/dashboard/plan"]')).toBeNull();
   });
 
   it("shows only the create form (no Manage link) for a first-run vendor", async () => {

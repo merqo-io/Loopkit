@@ -53,7 +53,7 @@ describe("Section", () => {
       </Section>,
     );
     const section = container.querySelector("section");
-    expect(section?.className).toContain("rounded-[20px]");
+    expect(section?.className).toContain("rounded-2xl");
     expect(section?.className).not.toContain("bg-card text-card-foreground");
   });
 });

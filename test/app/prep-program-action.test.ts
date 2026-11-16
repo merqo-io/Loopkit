@@ -105,7 +105,7 @@ describe("prepProgramAction", () => {
       }),
     );
 
-    expect(res.error).toMatch(/not on your plan/i);
+    expect(res.error).toMatch(/not available yet/i);
     expect(rpcMock).not.toHaveBeenCalled();
   });
 

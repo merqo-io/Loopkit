@@ -7,8 +7,7 @@ cup, wheel, scratch, dots, points bar), general-purpose UI (reward
 celebration), app-wide providers, and the `landing/` and `ui/` subtrees.
 `BackButton`, `ElevatedCard`, `SOCIAL_LINK_FIELDS`/`SocialLinksFields` (and,
 in `src/lib/`, `qrSvg`) now come from `@merqo/ui` (2026-09-16, promoted after
-being found duplicated across 2+ sibling kits) rather than living here. `ProLock` also comes from `@merqo/ui`; callers pass
-`href="/dashboard/plan"`.
+being found duplicated across 2+ sibling kits) rather than living here.
 
 Shared controls and `cn` used by this folder's modules are imported from `@merqo/ui/primitives`, including the alert dialog, popover, toggle and toggle group; no local primitives remain.
 
@@ -49,7 +48,7 @@ Shared controls and `cn` used by this folder's modules are imported from `@merqo
 - `scratch-card-overlay.tsx` — `ScratchCardOverlay`: the masked SVG cover that reveals via the stroke animation, the guaranteed fallback when the canvas is unusable
 - `use-scratch-auto-reveal.ts` — `useScratchAutoReveal`: the self-driven scratch-in timeline (timer commit, reduced-motion short-circuit, reset when `revealed` clears) for the real customer card
 - `use-scratch-canvas.ts` — `useScratchCanvas`: the pointer-driven canvas erase layer, sampling the cleared fraction and committing the reveal once it passes the settle threshold
-- `section.dom.test.tsx` — jsdom tests: `Section` renders its icon/eyebrow/title/description/children, omits the eyebrow paragraph when not provided, renders as a `<section>` element, and wraps content in `ElevatedCard` (not `@merqo/ui`'s own default flat shell)
+- `section.dom.test.tsx` — jsdom tests: `Section` renders its icon/eyebrow/title/description/children, omits the eyebrow paragraph when not provided, renders as a `<section>` element, and wraps content in `ElevatedCard` (not `@merqo/ui`'s own default flat shell) using the 0.47 `rounded-2xl` shape token
 - `marketing-opt-in.tsx`: `MarketingOptIn({id, shopName})`: the unticked marketing consent checkbox shared by `/c` and `/earn`; its label is `marketingConsentText(shopName)`, it posts `marketing=yes` only when ticked, and always posts the shown name as `marketing_shop`
 - `marketing-opt-in.dom.test.tsx`: asserts it starts unticked and only posts when ticked
 - `section.tsx` — `Section`: thin adapter delegating header rendering (icon badge, eyebrow, title, description) to `@merqo/ui`'s `Section` via its `wrapper` render-prop, which supplies `ElevatedCard` as the local shell; public shape unchanged, zero call-site changes at either real caller (`profile-form.tsx`, `setup-form.tsx`)
