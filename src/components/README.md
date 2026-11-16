@@ -7,8 +7,7 @@ cup, wheel, scratch, dots, points bar), general-purpose UI (reward
 celebration), app-wide providers, and the `landing/` and `ui/` subtrees.
 `BackButton`, `ElevatedCard`, `SOCIAL_LINK_FIELDS`/`SocialLinksFields` (and,
 in `src/lib/`, `qrSvg`) now come from `@merqo/ui` (2026-09-16, promoted after
-being found duplicated across 2+ sibling kits) rather than living here. `ProLock` also comes from `@merqo/ui`; callers pass
-`href="/dashboard/plan"`.
+being found duplicated across 2+ sibling kits) rather than living here.
 
 Shared controls and `cn` used by this folder's modules are imported from `@merqo/ui/primitives`, including the alert dialog, popover, toggle and toggle group; no local primitives remain.
 

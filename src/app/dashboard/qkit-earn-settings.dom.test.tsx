@@ -8,7 +8,7 @@ vi.mock("./settings-actions", () => ({
 }));
 
 describe("QkitEarnSettings", () => {
-  it("shows a plans link instead of the form when not Pro", () => {
+  it("shows a not-available note instead of the form when not Pro", () => {
     render(
       <QkitEarnSettings
         programs={[{ id: "p1", name: "Coffee Stamps" }]}
@@ -16,7 +16,8 @@ describe("QkitEarnSettings", () => {
         isPro={false}
       />,
     );
-    expect(screen.getByText(/see plans/i)).toBeInTheDocument();
+    expect(screen.getByText(/not available yet/i)).toBeInTheDocument();
+    expect(screen.queryByRole("link")).not.toBeInTheDocument();
     expect(screen.queryByRole("combobox")).not.toBeInTheDocument();
   });
 

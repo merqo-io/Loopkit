@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { canCreateProgram, getEntitlement, isPro } from "@/lib/program";
 import { SetupForm } from "@/app/setup/setup-form";
-import { ProLock } from "@merqo/ui";
 import { loadSetupContext } from "@/app/setup/setup-context";
 import { SetupShell } from "@/app/setup/setup-shell";
 import { resolveNewView, type NewView } from "@/app/setup/setup-view";
@@ -24,7 +23,7 @@ function newProgramCopy(firstRun: boolean, view: NewView) {
   }
   return {
     title: "Add a program",
-    description: "You have reached your plan's program limit.",
+    description: "You already have a program on the free plan.",
   };
 }
 
@@ -75,12 +74,9 @@ export default async function NewProgramPage() {
             <p className="mt-1.5 text-sm text-muted-foreground">
               You are on the free plan, which includes one loyalty program.
             </p>
-            <ProLock
-              href="/dashboard/plan"
-              label="See plans"
-              LinkComponent={Link}
-              className="mt-4"
-            />
+            <p className="mt-4 text-sm font-medium">
+              More programs are not available yet.
+            </p>
           </div>
         </div>
       )}

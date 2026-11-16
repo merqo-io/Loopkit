@@ -61,6 +61,7 @@ function stubFetch(impl: () => Promise<Response>) {
 
 afterEach(() => {
   vi.unstubAllGlobals();
+  vi.unstubAllEnvs();
 });
 
 async function renderPage(p?: string) {
@@ -70,16 +71,37 @@ async function renderPage(p?: string) {
 }
 
 describe("PlanPage", () => {
-  it("renders the ladder with prices and All-Access recommended, no Event Pass", async () => {
+  it("renders the ladder with prices and Pro (qkit) recommended, no Event Pass", async () => {
     stubFetch(async () => Response.json(catalog));
     await renderPage();
     expect(screen.getByText("All-Access")).toBeInTheDocument();
     expect(screen.getByText("S$49")).toBeInTheDocument();
-    expect(screen.getByText(/recommended/i)).toBeInTheDocument();
+    const card = screen
+      .getByText(/recommended/i)
+      .closest("li, article, section");
+    expect(card).toHaveTextContent("qkit");
+    expect(card).not.toHaveTextContent("All-Access");
     expect(screen.queryByText(/event pass/i)).not.toBeInTheDocument();
     expect(
       screen.getByText(/change plan from your merqo account/i),
     ).toBeInTheDocument();
+  });
+
+  it("sends the kit bearer to the plan catalog when the secret is set", async () => {
+    vi.stubEnv("MERQO_CUSTOMER_SECRET", "test-secret");
+    stubFetch(async () => Response.json(catalog));
+    await renderPage();
+    const init = vi.mocked(fetch).mock.calls[0][1] as RequestInit;
+    expect(init.headers).toMatchObject({ Authorization: "Bearer test-secret" });
+  });
+
+  it("calls the plan catalog without credentials when the secret is unset", async () => {
+    vi.stubEnv("MERQO_CUSTOMER_SECRET", undefined);
+    stubFetch(async () => Response.json(catalog));
+    await renderPage();
+    const init = vi.mocked(fetch).mock.calls[0][1] as RequestInit | undefined;
+    expect(init?.headers ?? {}).not.toHaveProperty("Authorization");
+    expect(screen.getByText("S$49")).toBeInTheDocument();
   });
 
   it("shows the pilot notice above the ladder", async () => {
