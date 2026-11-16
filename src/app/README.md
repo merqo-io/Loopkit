@@ -15,7 +15,7 @@ Shared controls and `cn` used by this folder's modules are imported from `@merqo
 - `about/` — `AboutPage`, the public "Why Merqo" page: `@merqo/ui`'s shared `AboutMerqo` component (the qkit origin story, one source reused by every kit's own `/about`), wrapped in loopkit's own `Nav`/`Footer` with a "Back to loopkit" CTA
 - `api/`
 - `apple-icon.tsx` — 180×180 Apple touch icon, generated at request time via `next/og`'s `ImageResponse` from `@/lib/brand`'s `loopkitIcon` mark — no static asset
-- `auth/`
+- `auth/` — `callback/` (OAuth and email-link code exchange) and `confirm/` (token-hash email links: Continue page plus POST verifier)
 - `c/`
 - `dashboard/`
 - `earn/`
