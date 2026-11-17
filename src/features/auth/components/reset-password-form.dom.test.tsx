@@ -44,6 +44,41 @@ describe("ResetPasswordForm", () => {
     expect(updateUserMock).not.toHaveBeenCalled();
   });
 
+  it("shows the requirements hint", () => {
+    render(<ResetPasswordForm />);
+    expect(
+      screen.getByRole("button", { name: "Password requirements" }),
+    ).toBeInTheDocument();
+  });
+
+  it("shows the specific message for a weak_password error", async () => {
+    updateUserMock.mockResolvedValue({
+      error: { code: "weak_password", reasons: ["pwned"], message: "x" },
+    });
+    const user = userEvent.setup();
+    render(<ResetPasswordForm />);
+    await user.type(screen.getByLabelText("New password"), "hunter22");
+    await user.type(screen.getByLabelText("Confirm password"), "hunter22");
+    await user.click(screen.getByRole("button", { name: "Update password" }));
+
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "This password has appeared in a data breach.",
+    );
+  });
+
+  it("keeps the fixed copy for other errors", async () => {
+    updateUserMock.mockResolvedValue({ error: { message: "boom" } });
+    const user = userEvent.setup();
+    render(<ResetPasswordForm />);
+    await user.type(screen.getByLabelText("New password"), "hunter22");
+    await user.type(screen.getByLabelText("Confirm password"), "hunter22");
+    await user.click(screen.getByRole("button", { name: "Update password" }));
+
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "Could not update your password. Try again.",
+    );
+  });
+
   it("updates the password and redirects to dashboard on success", async () => {
     const user = userEvent.setup();
     render(<ResetPasswordForm />);

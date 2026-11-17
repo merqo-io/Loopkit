@@ -6,7 +6,11 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Wordmark } from "@/components/landing/wordmark";
 import { Button, Input, Label } from "@merqo/ui/primitives";
-import { ElevatedCard } from "@merqo/ui";
+import { ElevatedCard, InfoTooltip } from "@merqo/ui";
+import {
+  PASSWORD_REQUIREMENTS_HINT,
+  weakPasswordErrorMessage,
+} from "./weak-password";
 
 // Reached from the password-reset email → /auth/callback establishes a recovery
 // session and forwards here. We update the password on that session, then land
@@ -44,7 +48,10 @@ export function ResetPasswordForm() {
       });
       if (error) {
         console.error("Password update failed", error);
-        setError("Could not update your password. Try again.");
+        setError(
+          weakPasswordErrorMessage(error) ??
+            "Could not update your password. Try again.",
+        );
         return;
       }
       router.push("/dashboard");
@@ -71,12 +78,19 @@ export function ResetPasswordForm() {
           </p>
           <form onSubmit={submit} className="mt-7 space-y-5">
             <div className="space-y-2">
-              <Label
-                htmlFor="password"
-                className="text-xs font-semibold uppercase tracking-wider text-muted-foreground"
-              >
-                New password
-              </Label>
+              <div className="flex items-center gap-1.5">
+                <Label
+                  htmlFor="password"
+                  className="text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+                >
+                  New password
+                </Label>
+                <InfoTooltip
+                  ariaLabel="Password requirements"
+                  trigger="tap"
+                  content={PASSWORD_REQUIREMENTS_HINT}
+                />
+              </div>
               <Input
                 id="password"
                 type="password"
