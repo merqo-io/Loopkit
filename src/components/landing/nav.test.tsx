@@ -19,4 +19,12 @@ describe("Nav", () => {
       "/about",
     );
   });
+
+  it("links to the FAQ page", () => {
+    render(<Nav />);
+    expect(screen.getByRole("link", { name: "FAQ" })).toHaveAttribute(
+      "href",
+      "/faq",
+    );
+  });
 });
