@@ -38,6 +38,20 @@ describe("Footer", () => {
     );
   });
 
+  it("links to the FAQ page, including in the dashboard render", () => {
+    const { unmount } = render(<Footer />);
+    expect(screen.getByRole("link", { name: "FAQ" })).toHaveAttribute(
+      "href",
+      "/faq",
+    );
+    unmount();
+    render(<Footer showSignIn={false} />);
+    expect(screen.getByRole("link", { name: "FAQ" })).toHaveAttribute(
+      "href",
+      "/faq",
+    );
+  });
+
   it("drops the sign-in link when showSignIn is false (dashboard)", () => {
     render(<Footer showSignIn={false} />);
     expect(
