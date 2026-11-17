@@ -12,6 +12,8 @@ import { HowItWorks } from "./how-it-works";
 import { Benefits } from "./benefits";
 import { Faq } from "./faq";
 import { Footer } from "./footer";
+import { FaqPage } from "@merqo/ui";
+import { FAQ_GROUPS, FAQ_INTRO, FAQ_TITLE } from "@/app/faq/faq-content";
 import { PRICING_LINE, WAITLIST_URL } from "./waitlist";
 
 const { selectMock, toastSuccess } = vi.hoisted(() => ({
@@ -44,6 +46,30 @@ function renderLanding() {
     </>,
   );
 }
+
+describe("faq page copy guardrails", () => {
+  it("publishes no price, em dash, exclamation mark or readiness claim", () => {
+    const { container } = render(
+      <FaqPage title={FAQ_TITLE} intro={FAQ_INTRO} groups={FAQ_GROUPS} />,
+    );
+    const text = container.textContent ?? "";
+    expect(text).not.toContain("$");
+    expect(text).not.toContain("—");
+    expect(text).not.toContain("!");
+    expect(text).not.toMatch(
+      /\b(live|now available|proven|tiers?|pro|shopkit|reachkit)\b/i,
+    );
+    expect(text).not.toMatch(/\/(month|day)\b/i);
+  });
+
+  it("states the pilot pricing line and that loopkit is in build", () => {
+    render(<FaqPage title={FAQ_TITLE} intro={FAQ_INTRO} groups={FAQ_GROUPS} />);
+    expect(screen.getByText(PRICING_LINE)).toBeInTheDocument();
+    expect(
+      screen.getByText(/in build, built but not yet tried/),
+    ).toBeInTheDocument();
+  });
+});
 
 describe("landing copy guardrails", () => {
   it("publishes no price, em dash or banned word", () => {
