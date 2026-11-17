@@ -132,7 +132,7 @@ mislabeled cup stage, and Plant/Cup's missing progress counter, plus a fix
 for the dashboard onboarding tour re-triggering on every load for any
 vendor who'd never visited `/profile` (`src/lib/README.md`). The tour's
 Customers step now also states explicitly that scanning the shop QR
-only joins a customer to a program, it doesn't add a stamp by itself.
+only joins a customer to a program, it doesn't add a stamp by itself. The setup server action's program-limit error now uses the same wording as the new-program page.
 See `CHANGELOG.md`
 for the latest changes, including deduplication of the
 shared bearer-auth and Merqo-RPC-call helpers, the addition of

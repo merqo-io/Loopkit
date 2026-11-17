@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Changed
 
 - Bumped `@merqo/ui` to v0.50.0 for `FaqPage`.
+- The program-limit error from the setup server action now reads "More programs are not available yet.", matching the new-program page.
 - Re-wrapped two READMEs and added a test that `/auth/confirm` routes get a CSP nonce. No behaviour change.
 - Bump `@merqo/ui` to v0.49.1 (commit `016f59f`) for the shared auth confirm components.
 - Locked features now say they are not available yet instead of "not on your plan", and the new-program and qkit earn cards show plain "not available yet" lines with no link to the plan page (paid loopkit features are not on any plan a vendor can currently get). Who is locked is unchanged.
