@@ -254,7 +254,7 @@ The admin MFA form and the landing wordmark are thin wrappers over `@merqo/ui`'s
 
 ## Stack
 
-Next.js 16.3.4 · App Router · Turbopack · TypeScript strict · Tailwind v4 ·
+Next.js 16.4.6 (clears GHSA-mfr8-8qww-v76h) · App Router · Turbopack · TypeScript strict · Tailwind v4 ·
 shadcn/ui (new-york; every primitive comes from `@merqo/ui/primitives` v0.46.0, none are kept locally) · React Hook Form · Zod · Supabase (`@supabase/ssr`) ·
 Vitest 4 · pnpm 11 · Node ≥24.22.1 · deploy target: Vercel
 
