@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 
+- Moved `@merqo/ui` to v0.50.1 (from v0.50.0): footer links get a 44px minimum touch height and a visible focus ring at every width, and the footer reserves bottom padding so the fixed Back to top button no longer covers links.
 - Bumped `@merqo/ui` to v0.50.0 for `FaqPage`.
 - The program-limit error from the setup server action now reads "More programs are not available yet.", matching the new-program page.
 - Re-wrapped two READMEs and added a test that `/auth/confirm` routes get a CSP nonce. No behaviour change.
