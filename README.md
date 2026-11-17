@@ -483,7 +483,7 @@ must also add a DNC Registry check, as set out in
 - Dashboard nav: Counter, Customers (with a Referrals link strip), Activity, Stats; Settings lives in Profile and Programs in the account menu (see `CHANGELOG.md`)
 - Dependency security overrides (force-patched transitive CVEs, each
   scoped/commented with its advisory ID, e.g. browserslist
-  GHSA-c83g-rgw3-j3cx; minimatch GHSA-g3hv-75wg-m249 and qs GHSA-6pq8-jhm2-2vcw are pinned to patched majors): `pnpm-workspace.yaml`. `.claude/deps-gate.sh`
+  GHSA-c83g-rgw3-j3cx; scoped overrides pin minimatch >=11.0.1 and qs >=6.16.1 to clear GHSA-g3hv-75wg-m249 and GHSA-6pq8-jhm2-2vcw): `pnpm-workspace.yaml`. `.claude/deps-gate.sh`
   (a fail-closed `pnpm audit --prod` high/critical gate) is CI's hard gate
   (`security.yml`) — bump the
   relevant floor there when a new advisory lands rather than waiting on
