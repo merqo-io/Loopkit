@@ -2,7 +2,7 @@ import { existsSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import * as loginLayout from "./login/layout";
 import * as resetLayout from "./reset-password/layout";
-import { NONCE_PREFIXES } from "@/lib/security-headers";
+import { NONCE_PREFIXES, needsNonce } from "@/lib/security-headers";
 
 // A nonce CSP only works on pages rendered per request; a prerendered page
 // has no nonce on its scripts and would be blocked.
@@ -13,6 +13,13 @@ describe("nonce routes render per request", () => {
   ])("/%s layout forces dynamic rendering", (_segment, layout) => {
     expect(layout.dynamic).toBe("force-dynamic");
   });
+
+  it.each(["/auth/callback", "/auth/confirm", "/auth/confirm/verify"])(
+    "%s needs a nonce",
+    (pathname) => {
+      expect(needsNonce(pathname)).toBe(true);
+    },
+  );
 
   it("lists only routes that exist", () => {
     for (const prefix of NONCE_PREFIXES) {
