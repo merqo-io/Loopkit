@@ -58,4 +58,4 @@ theme, and error/404 boundaries every route in this tree inherits.
 
 [src](../README.md)
 
-`mfa/` is the TOTP enrol/verify page that `requireAdmin()` redirects password-only admins to. `robots.ts` disallows crawling except on production. `login/` and `reset-password/` have `force-dynamic` layouts so the nonce reaches their scripts.
+`mfa/` is the TOTP enrol/verify page that `requireAdmin()` redirects password-only admins to. `robots.ts` disallows crawling except on production. `login/` and `reset-password/` have `force-dynamic` layouts so the nonce reaches their scripts. `nonce-routes.test.ts` checks those layouts, that every nonce prefix exists, and that the `/auth/*` routes get a nonce.
