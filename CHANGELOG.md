@@ -9,10 +9,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Added
 
 - Signup and the reset-password form now name the rule a weak password failed (length, character mix or a known breach), taken from the server response, and show a tap "Password requirements" hint next to the password field. Other errors keep their existing copy.
+- A public `/faq` page built on `@merqo/ui`'s `FaqPage`: ten answers in three groups, JSON-LD for search, no claim that loopkit is live. The nav's FAQ link now goes there at every screen width, so it works by touch on phones.
 - `/auth/confirm` and `/auth/confirm/verify` for own-domain email links: the page shows a Continue button (a GET never consumes the token) and the POST verifies it, landing on `/dashboard` or `/reset-password` for recovery. A bad or expired link goes to `/login?error=link`, which now shows "That link is invalid or has expired. Request a new one." `/auth/callback` and every `redirectTo` are unchanged.
 
 ### Changed
 
+- Bumped `@merqo/ui` to v0.50.0 for `FaqPage`.
+- The program-limit error from the setup server action now reads "More programs are not available yet.", matching the new-program page.
 - Re-wrapped two READMEs and added a test that `/auth/confirm` routes get a CSP nonce. No behaviour change.
 - Bump `@merqo/ui` to v0.49.1 (commit `016f59f`) for the shared auth confirm components.
 - Locked features now say they are not available yet instead of "not on your plan", and the new-program and qkit earn cards show plain "not available yet" lines with no link to the plan page (paid loopkit features are not on any plan a vendor can currently get). Who is locked is unchanged.

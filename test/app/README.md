@@ -27,4 +27,4 @@ serve-customer test asserts the plain "Reward unlocked!" heading (no emoji). Its
 
 dashboard-actions test covers the resolveTokenAction read-failure and not-for-this-shop copy.
 
-The plan-gate tests (`save-program`, `change-type`, `prep-program`, `activate-schedule`) assert the plan-limit errors say the feature is not available yet and never tell the vendor to upgrade.
+The plan-gate tests (`save-program`, `change-type`, `prep-program`, `activate-schedule`) assert the plan-limit errors say the feature is not available yet and never tell the vendor to upgrade. The save-program test expects the one-wording program-limit error "More programs are not available yet.".

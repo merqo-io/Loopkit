@@ -16,7 +16,7 @@ the cross-kit landing-page parity pass. The landing hero's "In build" badge and 
 cookie is scoped to
 `.merqo.io` (`NEXT_PUBLIC_AUTH_COOKIE_DOMAIN`, `src/lib/supabase/`), so
 signing in on one Merqo kit signs you in on the rest. `/login` now offers
-only Google OAuth and email/password, matching every sibling kit — a
+only Google OAuth and email/password (a weak password on signup or reset now names the rule it failed, and a tap hint lists the requirements), matching every sibling kit — a
 name+phone anonymous-session onboarding option unique to loopkit was
 removed (`src/features/auth/README.md`). `admin_audit`'s
 coverage now extends past `/admin` (merqo's own `/api/merqo/vendor-provision`
@@ -49,7 +49,7 @@ output instead of a hand-copied string, so it can't drift from what the
 engine actually computes — see
 `../docs/superpowers/specs/2026-08-25-tour-example-badge-drift-fix-design.md`
 in the workspace root. Migrated onto
-the shared `@merqo/ui` component package (pinned at v0.49.1, commit `016f59f`, in `package.json`; email links land on `/auth/confirm`, see `src/app/auth/README.md`): the
+the shared `@merqo/ui` component package (pinned at v0.50.0, commit `00329e5`, in `package.json`; email links land on `/auth/confirm`, see `src/app/auth/README.md`): the
 dashboard nav/account dropdown, `useAsyncAction`, `InfoTooltip`,
 `ImageUploader`, `DashboardTour`, the landing page's
 sticky header (`LandingNav`, via `src/components/landing/nav.tsx`), and
@@ -132,7 +132,7 @@ mislabeled cup stage, and Plant/Cup's missing progress counter, plus a fix
 for the dashboard onboarding tour re-triggering on every load for any
 vendor who'd never visited `/profile` (`src/lib/README.md`). The tour's
 Customers step now also states explicitly that scanning the shop QR
-only joins a customer to a program, it doesn't add a stamp by itself.
+only joins a customer to a program, it doesn't add a stamp by itself. The setup server action's program-limit error now uses the same wording as the new-program page.
 See `CHANGELOG.md`
 for the latest changes, including deduplication of the
 shared bearer-auth and Merqo-RPC-call helpers, the addition of
@@ -453,6 +453,8 @@ ToS/Privacy clickwrap doesn't need a signatory name for evidentiary
 strength beyond the record above. `/about` renders that same release's
 shared `AboutMerqo` component (the qkit origin story, one source reused
 by every kit's own `/about` page), linked from the landing `Nav`/`Footer`.
+`/faq` renders the shared `FaqPage` with loopkit's own ten rows in three
+groups, linked from the `Nav`; it is not a nonce route.
 
 Anonymous card actions (`/c` check, `/earn` claim) are rate limited per IP and
 per phone through a Postgres counter that fails closed, and a referral host
