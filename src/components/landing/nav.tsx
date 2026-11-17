@@ -24,20 +24,12 @@ export function Nav({ authed = false }: { authed?: boolean }) {
           >
             About
           </Link>
-          {/* Plain <a>, not next/link's Link: a same-document hash jump
-              doesn't reliably update the URL bar's hash when only the
-              fragment changes via Link — it scrolls but leaves the old hash
-              showing. The leading "/" makes it resolve correctly from "/about"
-              too, not just from "/" where Nav also renders. */}
-          <Button
-            asChild
-            variant="ghost"
-            size="sm"
-            className="hidden sm:inline-flex"
+          <Link
+            href="/faq"
+            className="rounded-sm px-1 text-sm text-muted-foreground outline-none hover:text-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50"
           >
-            {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- fragment-only jump, not real page navigation */}
-            <a href="/#faq">FAQ</a>
-          </Button>
+            FAQ
+          </Link>
           {authed ? (
             <Button asChild size="sm">
               <Link href="/dashboard">Dashboard</Link>
