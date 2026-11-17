@@ -12,9 +12,11 @@ Shared controls and `cn` used by this folder's modules are imported from `@merqo
   sign-in (forces `hl=en` on the consent screen, cross-kit parity) and
   email/password sign-in/sign-up on react-hook-form + `loginSchema`
   (`@/lib/schemas`) with a "check your email" state for signup confirmation
-  and password-reset links; `?error=link` (from `/auth/confirm/verify`) shows an expired-link message in the same inline error slot; auth/server errors (Google OAuth, sign-in/up,
-  forgot-password) and field-validation errors all render inline
-  (`role="alert"`), with generic copy and the raw error logged. The wordmark above the card is a home link with a
+  and password-reset links; `?error=link` (from `/auth/confirm/verify`) shows
+  an expired-link message in the same inline error slot; auth/server errors
+  (Google OAuth, sign-in/up, forgot-password) and field-validation errors all
+  render inline (`role="alert"`), with generic copy and the raw error logged.
+  The wordmark above the card is a home link with a
   mode-independent tagline ("Loyalty for Singapore's small vendors."),
   matching qkit's reference login pattern exactly — same two sign-in paths,
   no third. A 2026-07-11 name+phone onboarding option (anonymous Supabase
