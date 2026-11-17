@@ -24,7 +24,7 @@ import type { Database } from "@/lib/types";
 
 type ProgramUpdate = Database["loopkit"]["Tables"]["programs"]["Update"];
 
-const UPSELL_ERROR = "More than 1 program is not available yet.";
+const UPSELL_ERROR = "More programs are not available yet.";
 const STYLE_UPSELL_ERROR = "That card style is not available yet.";
 
 // Shared by create/edit/change-type/prep: null if the mechanic/style/color is allowed, else the upsell error.
