@@ -34,6 +34,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - The `/supabase-migrate` skill no longer tells anyone to run `supabase gen types ... > src/lib/types.ts`, which would overwrite the barrel; it now points at hand edits in `src/lib/db-types/`.
 - docs/CONSTITUTION.md no longer says to regenerate `src/lib/types.ts` after a migration; it now says to update `src/lib/db-types/` by hand.
 
+### Security
+
+- `next` and `eslint-config-next` 16.4.2 -> 16.4.6, fixing GHSA-mfr8-8qww-v76h (information disclosure across root params via `use cache` and `unstable_cache`; fixed in 16.4.5).
+
 ## [0.5.1] - 2026-11-11
 
 ### Changed
