@@ -49,7 +49,7 @@ output instead of a hand-copied string, so it can't drift from what the
 engine actually computes — see
 `../docs/superpowers/specs/2026-08-25-tour-example-badge-drift-fix-design.md`
 in the workspace root. Migrated onto
-the shared `@merqo/ui` component package (pinned at v0.50.1, commit `b1449abc`, in `package.json`; email links land on `/auth/confirm`, see `src/app/auth/README.md`): the
+the shared `@merqo/ui` component package (pinned at v0.51.0, commit `aeed30bc`, in `package.json`; email links land on `/auth/confirm`, see `src/app/auth/README.md`): the
 dashboard nav/account dropdown, `useAsyncAction`, `InfoTooltip`,
 `ImageUploader`, `DashboardTour`, the landing page's
 sticky header (`LandingNav`, via `src/components/landing/nav.tsx`), and

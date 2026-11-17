@@ -21,6 +21,7 @@ export function Footer({ showSignIn = true }: { showSignIn?: boolean }) {
       tagline="Loyalty for Singapore’s small vendors."
       kitName="loopkit"
       showSignIn={showSignIn}
+      faqHref="/faq"
     />
   );
 }
