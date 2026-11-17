@@ -70,7 +70,7 @@ describe("saveProgramAction (gated create + edit)", () => {
 
     const res = await saveProgramAction({}, form(stampFields));
 
-    expect(res.error).toMatch(/more than 1 program is not available yet/i);
+    expect(res.error).toMatch(/more programs are not available yet/i);
     expect(rpcMock).not.toHaveBeenCalled();
   });
 
@@ -116,7 +116,7 @@ describe("saveProgramAction (gated create + edit)", () => {
     rpcMock.mockResolvedValue({ data: null, error: { code: "42501" } });
 
     const res = await saveProgramAction({}, form(stampFields));
-    expect(res.error).toMatch(/more than 1 program is not available yet/i);
+    expect(res.error).toMatch(/more programs are not available yet/i);
   });
 
   it("surfaces a generic error for a non-upsell RPC failure", async () => {
