@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
+- Signup and the reset-password form now name the rule a weak password failed (length, character mix or a known breach), taken from the server response, and show a tap "Password requirements" hint next to the password field. Other errors keep their existing copy.
 - `/auth/confirm` and `/auth/confirm/verify` for own-domain email links: the page shows a Continue button (a GET never consumes the token) and the POST verifies it, landing on `/dashboard` or `/reset-password` for recovery. A bad or expired link goes to `/login?error=link`, which now shows "That link is invalid or has expired. Request a new one." `/auth/callback` and every `redirectTo` are unchanged.
 
 ### Changed
