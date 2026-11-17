@@ -16,7 +16,7 @@ the cross-kit landing-page parity pass. The landing hero's "In build" badge and 
 cookie is scoped to
 `.merqo.io` (`NEXT_PUBLIC_AUTH_COOKIE_DOMAIN`, `src/lib/supabase/`), so
 signing in on one Merqo kit signs you in on the rest. `/login` now offers
-only Google OAuth and email/password, matching every sibling kit — a
+only Google OAuth and email/password (a weak password on signup or reset now names the rule it failed, and a tap hint lists the requirements), matching every sibling kit — a
 name+phone anonymous-session onboarding option unique to loopkit was
 removed (`src/features/auth/README.md`). `admin_audit`'s
 coverage now extends past `/admin` (merqo's own `/api/merqo/vendor-provision`

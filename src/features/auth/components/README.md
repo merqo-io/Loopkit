@@ -24,7 +24,13 @@ Shared controls and `cn` used by this folder's modules are imported from `@merqo
   see `docs/superpowers/specs/2026-07-11-vendor-phone-onboarding-design.md`.
 - `reset-password-form.tsx` — `ResetPasswordForm`: `@merqo/ui`'s `ElevatedCard`-wrapped
   password + confirm-password form on an active recovery session, calls
-  `supabase.auth.updateUser` then redirects to `/dashboard`
+  `supabase.auth.updateUser` then redirects to `/dashboard`; a weak-password
+  error shows the specific rule that failed
+- `weak-password.ts` — `PASSWORD_REQUIREMENTS_HINT` (tap hint text) and
+  `weakPasswordMessage` / `weakPasswordErrorMessage`, which turn a Supabase
+  `weak_password` error into copy naming the failed rule, parsed from the
+  server response; any other error returns `null` so callers keep their fixed copy
+- `weak-password.test.ts` — unit tests for the helper
 
 ## Shared package note
 

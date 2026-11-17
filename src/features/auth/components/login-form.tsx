@@ -6,14 +6,36 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Wordmark } from "@/components/landing/wordmark";
-import { ElevatedCard } from "@merqo/ui";
+import { ElevatedCard, InfoTooltip } from "@merqo/ui";
 import { GoogleMark } from "@merqo/ui";
 import { Button, Input, Label } from "@merqo/ui/primitives";
 import { createClient } from "@/lib/supabase/client";
 import { useAsyncAction, navigatingAway } from "@merqo/ui";
+import {
+  PASSWORD_REQUIREMENTS_HINT,
+  weakPasswordErrorMessage,
+} from "./weak-password";
 import { loginSchema, type LoginInput } from "@/lib/schemas";
 
 type Mode = "signin" | "signup";
+
+function signUpErrorMessage(error: unknown): string {
+  return (
+    weakPasswordErrorMessage(error) ??
+    "Could not create your account. Check your details, or sign in if you already have one."
+  );
+}
+
+function SignupPasswordHint({ isSignin }: { isSignin: boolean }) {
+  if (isSignin) return null;
+  return (
+    <InfoTooltip
+      ariaLabel="Password requirements"
+      trigger="tap"
+      content={PASSWORD_REQUIREMENTS_HINT}
+    />
+  );
+}
 
 type Sent = { email: string; kind: "signup" | "reset" };
 
@@ -155,9 +177,7 @@ export function LoginForm() {
         });
         if (error) {
           console.error("Sign-up failed", error);
-          setFormError(
-            "Could not create your account. Check your details, or sign in if you already have one.",
-          );
+          setFormError(signUpErrorMessage(error));
           return;
         }
         // Email confirmation on → no session yet. Show a "check your email" state
@@ -303,12 +323,15 @@ export function LoginForm() {
               </div>
               <div className="space-y-2">
                 <div className="flex items-center justify-between gap-3">
-                  <Label
-                    htmlFor="password"
-                    className="text-xs font-semibold uppercase tracking-wider text-muted-foreground"
-                  >
-                    Password
-                  </Label>
+                  <div className="flex items-center gap-1.5">
+                    <Label
+                      htmlFor="password"
+                      className="text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+                    >
+                      Password
+                    </Label>
+                    <SignupPasswordHint isSignin={isSignin} />
+                  </div>
                   {isSignin && (
                     <button
                       type="button"

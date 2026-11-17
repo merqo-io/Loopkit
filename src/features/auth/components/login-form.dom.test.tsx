@@ -197,6 +197,39 @@ describe("LoginForm", () => {
     );
   });
 
+  it("shows the specific message when signup fails with weak_password", async () => {
+    authMock.signUp.mockResolvedValue({
+      data: { session: null },
+      error: {
+        code: "weak_password",
+        reasons: ["length"],
+        message: "Password should be at least 8 characters.",
+      },
+    });
+    const user = userEvent.setup();
+    render(<LoginForm />);
+    await user.click(screen.getByRole("button", { name: "Create an account" }));
+    await user.type(screen.getByLabelText("Email"), "new@example.com");
+    await user.type(screen.getByLabelText("Password"), "hunter2");
+    await user.click(screen.getByRole("button", { name: "Create account" }));
+
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "Password is too short. Use at least 8 characters.",
+    );
+  });
+
+  it("shows the requirements hint in signup mode only", async () => {
+    const user = userEvent.setup();
+    render(<LoginForm />);
+    expect(
+      screen.queryByRole("button", { name: "Password requirements" }),
+    ).not.toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Create an account" }));
+    expect(
+      screen.getByRole("button", { name: "Password requirements" }),
+    ).toBeInTheDocument();
+  });
+
   it("sends a password-reset email and shows the check-your-email reset state", async () => {
     const user = userEvent.setup();
     render(<LoginForm />);
