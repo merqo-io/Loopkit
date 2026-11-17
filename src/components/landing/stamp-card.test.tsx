@@ -25,4 +25,13 @@ describe("StampCard", () => {
     expect(dots[7]).toHaveClass("border-gold");
     expect(dots[7].querySelector("svg")).toBeInTheDocument();
   });
+
+  it("has no shadow and keeps its rounded edge and border", () => {
+    const { container } = render(<StampCard />);
+    const root = container.firstElementChild as HTMLElement;
+    expect(Array.from(root.classList).some((c) => c.startsWith("shadow"))).toBe(
+      false,
+    );
+    expect(root).toHaveClass("rounded-2xl", "border");
+  });
 });
