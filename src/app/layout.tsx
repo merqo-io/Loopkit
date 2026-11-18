@@ -3,6 +3,7 @@ import { Fraunces, Plus_Jakarta_Sans, IBM_Plex_Mono } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { themeProps } from "@merqo/ui/next";
 import { Providers } from "@/components/providers";
+import { WarmWash } from "@/components/warm-wash";
 import "./globals.css";
 
 // Display: family-wide shared face (see docs/business/2026-08-13-typography-family-standard.md).
@@ -50,6 +51,7 @@ export default function RootLayout({
     >
       <body>
         <ThemeProvider {...themeProps}>
+          <WarmWash />
           <Providers>{children}</Providers>
         </ThemeProvider>
       </body>
