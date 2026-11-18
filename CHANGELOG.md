@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
+- `DESIGN.md` drops its stale Open note about `StampCard`; the card is `rounded-lg`, bordered, with no shadow.
 - `DESIGN.md` records loopkit's own public-page values and links the shared rules in `@merqo/ui`.
 - Signup and the reset-password form now name the rule a weak password failed (length, character mix or a known breach), taken from the server response, and show a tap "Password requirements" hint next to the password field. Other errors keep their existing copy.
 - A public `/faq` page built on `@merqo/ui`'s `FaqPage`: ten answers in three groups, JSON-LD for search, no claim that loopkit is live. The nav's FAQ link now goes there at every screen width, so it works by touch on phones.
