@@ -314,6 +314,42 @@ body {
   font-family: var(--font-sans);
 }
 
+/* Warm reward-glows (brass top-right, sealing-wax top-left) on a fixed layer
+   behind the page; WarmWash omits it on public pages. */
+.warm-wash {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(
+      ellipse 70% 55% at 88% -8%,
+      oklch(0.721 0.09 75.2 / 0.14),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 65% 50% at 6% -6%,
+      oklch(0.463 0.186 19 / 0.08),
+      transparent 58%
+    );
+}
+
+/* Re-tuned for the dark canvas: flat light-mode values would read duller
+   against the dark background. */
+.dark .warm-wash {
+  background-image:
+    radial-gradient(
+      ellipse 70% 55% at 88% -8%,
+      oklch(0.749 0.095 75 / 0.16),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 65% 50% at 6% -6%,
+      oklch(0.64 0.17 18.1 / 0.14),
+      transparent 58%
+    );
+}
+
 /* Display headings tuned for Fraunces optical sizing (shared family face). */
 .font-display {
   font-family: var(--font-display);

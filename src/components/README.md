@@ -15,6 +15,7 @@ Shared controls and `cn` used by this folder's modules are imported from `@merqo
 
 - `PageHeader` and `EmptyState` come from `@merqo/ui`; there are no local copies.
 - `customer-shell.tsx` (+ `.dom.test.tsx`) — `CustomerShell`: the shared frame (wordmark, `max-w-md` column, `PageHeader`) for the customer-facing `/c` and `/earn` pages.
+- `warm-wash.tsx` (+ `.test.tsx`) — `WarmWash`: client component in the root layout that renders the fixed `.warm-wash` background layer on every route except the public pages (`/`, `/about`, `/faq`, `/legal/privacy`, `/legal/terms`, `/earn`, `/c`).
 - `card-burst.dom.test.tsx` — jsdom tests: `CardBurst` renders nothing when inactive; renders 40 absolutely (not fixed) positioned particles when active
 - `card-burst.tsx` — `CardBurst`: client component rendering a container-relative fireworks-style particle burst (40 randomized-size pieces, mixed square/circle shapes, wider spread), used inside `RewardCelebration`
 - `card-shell.dom.test.tsx` — jsdom tests: `CardShell` renders children, tilts on `pointermove`, resets to flat on `pointerleave`, skips the tilt entirely under `prefers-reduced-motion`
