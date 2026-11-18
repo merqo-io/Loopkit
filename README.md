@@ -2,6 +2,8 @@
 
 Shared UI is pinned to audited commit `989d934c1cc8d957ff383934debf8ef083b6b6a4`. The lockfile and exact build allowlist select this same source, including image lifecycle cleanup, malformed storage-URL handling and bounded money inputs.
 
+`DESIGN.md` records loopkit's own public-page design values and links the shared rules.
+
 Digital stamp-card loyalty for SG small vendors. A Merqo kit — owns the
 `loopkit` schema in the shared Merqo Supabase project, reports metrics to
 merqo over HTTP. Browser-tab title is "loopkit | Loyalty cards", and
@@ -483,7 +485,7 @@ must also add a DNC Registry check, as set out in
 - Dashboard nav: Counter, Customers (with a Referrals link strip), Activity, Stats; Settings lives in Profile and Programs in the account menu (see `CHANGELOG.md`)
 - Dependency security overrides (force-patched transitive CVEs, each
   scoped/commented with its advisory ID, e.g. browserslist
-  GHSA-c83g-rgw3-j3cx): `pnpm-workspace.yaml`. `.claude/deps-gate.sh`
+  GHSA-c83g-rgw3-j3cx; scoped overrides pin minimatch >=11.0.1 and qs >=6.16.1 to clear GHSA-g3hv-75wg-m249 and GHSA-6pq8-jhm2-2vcw): `pnpm-workspace.yaml`. `.claude/deps-gate.sh`
   (a fail-closed `pnpm audit --prod` high/critical gate) is CI's hard gate
   (`security.yml`) — bump the
   relevant floor there when a new advisory lands rather than waiting on

@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
+- `DESIGN.md` records loopkit's own public-page values and links the shared rules in `@merqo/ui`.
 - Signup and the reset-password form now name the rule a weak password failed (length, character mix or a known breach), taken from the server response, and show a tap "Password requirements" hint next to the password field. Other errors keep their existing copy.
 - A public `/faq` page built on `@merqo/ui`'s `FaqPage`: ten answers in three groups, JSON-LD for search, no claim that loopkit is live. The nav's FAQ link now goes there at every screen width, so it works by touch on phones.
 - `/auth/confirm` and `/auth/confirm/verify` for own-domain email links: the page shows a Continue button (a GET never consumes the token) and the POST verifies it, landing on `/dashboard` or `/reset-password` for recovery. A bad or expired link goes to `/login?error=link`, which now shows "That link is invalid or has expired. Request a new one." `/auth/callback` and every `redirectTo` are unchanged.
