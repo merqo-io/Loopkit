@@ -8,10 +8,7 @@ const STAMPED = 6;
 
 export function StampCard() {
   return (
-    <div
-      aria-hidden
-      className="w-full max-w-sm rounded-2xl border bg-card p-6 shadow-sm"
-    >
+    <div aria-hidden className="w-full max-w-sm rounded-2xl border bg-card p-6">
       <div className="flex items-baseline justify-between">
         <span className="font-display text-base font-bold">Kaya Toast Co.</span>
         <span className="font-mono text-xs text-muted-foreground">
