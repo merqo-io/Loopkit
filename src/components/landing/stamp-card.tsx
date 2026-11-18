@@ -8,47 +8,53 @@ const STAMPED = 6;
 
 export function StampCard() {
   return (
-    <div aria-hidden className="w-full max-w-sm rounded-2xl border bg-card p-6">
-      <div className="flex items-baseline justify-between">
-        <span className="font-display text-base font-bold">Kaya Toast Co.</span>
-        <span className="font-mono text-xs text-muted-foreground">
-          buy 8, get 1 free
-        </span>
-      </div>
-      <div className="mt-5 grid grid-cols-4 gap-3">
-        {Array.from({ length: TOTAL }).map((_, i) => {
-          const isReward = i === TOTAL - 1;
-          const stamped = i < STAMPED;
-          const justStamped = stamped && i === STAMPED - 1;
-          let dotClassName =
-            "border-dashed border-border text-muted-foreground/40";
-          let icon = <span className="font-mono text-xs">{i + 1}</span>;
-          if (isReward) {
-            dotClassName = "border-gold text-gold-accent";
-            icon = <Gift className="size-4 text-gold" />;
-          } else if (stamped) {
-            dotClassName = "border-transparent bg-gold text-gold-foreground";
-            icon = <Check className="size-4" />;
-          }
-          return (
-            <div
-              key={i}
-              style={justStamped ? { animationDelay: "0.5s" } : undefined}
-              className={cn(
-                "flex aspect-square items-center justify-center rounded-full border-2 text-sm",
-                dotClassName,
-                justStamped && "motion-safe:animate-stamp-pop",
-              )}
-            >
-              {icon}
-            </div>
-          );
-        })}
-      </div>
-      <p className="mt-4 text-sm text-muted-foreground">
-        2 more to a{" "}
-        <span className="font-medium text-foreground">free kopi</span>.
+    <div className="w-full max-w-sm rounded-lg border bg-card p-6">
+      <p className="mb-3 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+        Sample
       </p>
+      <div aria-hidden>
+        <div className="flex items-baseline justify-between">
+          <span className="font-display text-base font-bold">
+            Kaya Toast Co.
+          </span>
+          <span className="font-mono text-xs text-muted-foreground">
+            buy 8, get 1 free
+          </span>
+        </div>
+        <div className="mt-5 grid grid-cols-4 gap-3">
+          {Array.from({ length: TOTAL }).map((_, i) => {
+            const isReward = i === TOTAL - 1;
+            const stamped = i < STAMPED;
+            const justStamped = stamped && i === STAMPED - 1;
+            let dotClassName =
+              "border-dashed border-border text-muted-foreground/40";
+            let icon = <span className="font-mono text-xs">{i + 1}</span>;
+            if (isReward) {
+              dotClassName = "border-gold text-gold-accent";
+              icon = <Gift className="size-4 text-gold" />;
+            } else if (stamped) {
+              dotClassName = "border-transparent bg-gold text-gold-foreground";
+              icon = <Check className="size-4" />;
+            }
+            return (
+              <div
+                key={i}
+                className={cn(
+                  "flex aspect-square items-center justify-center rounded-full border-2 text-sm",
+                  dotClassName,
+                  justStamped && "motion-safe:animate-stamp-pop",
+                )}
+              >
+                {icon}
+              </div>
+            );
+          })}
+        </div>
+        <p className="mt-4 text-sm text-muted-foreground">
+          2 more to a{" "}
+          <span className="font-medium text-foreground">free kopi</span>.
+        </p>
+      </div>
     </div>
   );
 }

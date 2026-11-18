@@ -14,6 +14,11 @@ describe("Hero", () => {
     ).toHaveAttribute("href", WAITLIST_URL);
   });
 
+  it("has no entrance animation", () => {
+    const { container } = render(<Hero />);
+    expect(container.querySelector(".fade-rise")).toBeNull();
+  });
+
   it("uses the same waitlist CTA label in the nav", () => {
     render(<Nav />);
     expect(
