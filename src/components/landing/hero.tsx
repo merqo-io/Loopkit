@@ -11,7 +11,7 @@ const TRUST = ["No app for customers", "Just a phone number"];
 export function Hero({ authed = false }: { authed?: boolean }) {
   return (
     <section className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-16 sm:py-24 lg:grid-cols-2">
-      <div className="fade-rise">
+      <div>
         <div className="flex flex-wrap items-center gap-3">
           <Badge className={GOLD_BADGE}>In build</Badge>
           <p className="text-sm text-muted-foreground">
@@ -55,7 +55,7 @@ export function Hero({ authed = false }: { authed?: boolean }) {
           ))}
         </ul>
       </div>
-      <div className="fade-rise flex justify-center lg:justify-end">
+      <div className="flex justify-center lg:justify-end">
         <StampCard />
       </div>
     </section>

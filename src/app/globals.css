@@ -312,38 +312,6 @@ body {
   background-color: var(--color-background);
   color: var(--color-foreground);
   font-family: var(--font-sans);
-  /* two soft reward-glows: a brass wash top-right, a sealing-wax wash
-     top-left — keeps the parchment paper feeling warm, never papery. */
-  background-image:
-    radial-gradient(
-      ellipse 70% 55% at 88% -8%,
-      oklch(0.721 0.09 75.2 / 0.14),
-      transparent 60%
-    ),
-    radial-gradient(
-      ellipse 65% 50% at 6% -6%,
-      oklch(0.463 0.186 19 / 0.08),
-      transparent 58%
-    );
-  background-attachment: fixed;
-}
-
-.dark body {
-  /* Same two-glow idea, re-tuned for the dark canvas — flat light-mode
-     values would be duller against the dark background and read flat
-     instead of warm. Brighter brass wash + the lighter dark-mode
-     primary, both at higher opacity to actually read against --background. */
-  background-image:
-    radial-gradient(
-      ellipse 70% 55% at 88% -8%,
-      oklch(0.749 0.095 75 / 0.16),
-      transparent 60%
-    ),
-    radial-gradient(
-      ellipse 65% 50% at 6% -6%,
-      oklch(0.64 0.17 18.1 / 0.14),
-      transparent 58%
-    );
 }
 
 /* Display headings tuned for Fraunces optical sizing (shared family face). */
@@ -351,21 +319,6 @@ body {
   font-family: var(--font-display);
   font-optical-sizing: auto;
   letter-spacing: -0.015em;
-}
-
-/* Load reveal for landing sections; disabled under reduced-motion below. */
-@keyframes fade-rise {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-.fade-rise {
-  animation: fade-rise 0.5s ease-out both;
 }
 
 /* Card-contained celebration burst (CardBurst) — particles radiate outward
@@ -465,9 +418,6 @@ html {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .fade-rise {
-    animation: none;
-  }
   .card-burst-piece {
     animation: none;
     opacity: 0;

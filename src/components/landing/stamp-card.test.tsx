@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect } from "vitest";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { StampCard } from "./stamp-card";
 
 describe("StampCard", () => {
@@ -15,7 +15,6 @@ describe("StampCard", () => {
       expect(dots[i].querySelector("svg")).toBeInTheDocument();
     }
     expect(dots[5]).toHaveClass("motion-safe:animate-stamp-pop");
-    expect(dots[5]).toHaveStyle({ animationDelay: "0.5s" });
 
     // Unstamped dot (index 6) shows its number, not an icon.
     expect(dots[6]).toHaveTextContent("7");
@@ -32,6 +31,16 @@ describe("StampCard", () => {
     expect(Array.from(root.classList).some((c) => c.startsWith("shadow"))).toBe(
       false,
     );
-    expect(root).toHaveClass("rounded-2xl", "border");
+    expect(root).toHaveClass("rounded-lg", "border");
+  });
+
+  it("labels itself as a sample outside the aria-hidden illustration", () => {
+    const { container } = render(<StampCard />);
+    const label = screen.getByText("Sample");
+    expect(label).toBeVisible();
+    expect(label.closest("[aria-hidden]")).toBeNull();
+    expect(container.querySelector("[aria-hidden]")).toHaveTextContent(
+      "Kaya Toast Co.",
+    );
   });
 });
