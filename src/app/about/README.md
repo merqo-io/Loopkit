@@ -12,7 +12,7 @@ Shared controls and `cn` used by this folder's modules are imported from `@merqo
 
 - `page.tsx` — `AboutPage`, an async Server Component. Reflects the
   session (same pattern as `page.tsx` at the app root) so `Nav`'s CTA
-  reads "Dashboard" for a signed-in vendor and the sign-in links
+  reads "Dashboard" and shows the account menu (with Sign out) for a signed-in vendor, and the sign-in links
   otherwise. Wraps `AboutMerqo kitName="loopkit"` in loopkit's own
   `Nav`/`Footer`, with a "Back to loopkit" button as `AboutMerqo`'s
   `children`.
