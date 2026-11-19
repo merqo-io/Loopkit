@@ -15,7 +15,7 @@ Shared controls and `cn` used by this folder's modules are imported from `@merqo
 - `redeem-actions.ts` — server actions that redeem: `redeemAction` (resets a full card, then alerts the vendor on Telegram and the customer when `vendor_notify_settings` allows it; a missing row means on and notify failures never change the result), `redeemVoucherAction` (catalog-mode Points Club voucher via `redeem_voucher_by_token`, mapping `already_redeemed`/`expired` to friendly copy) and `applyPointsOffsetAction` (offset-mode points deduction returning the dollar figure)
 - `settings-actions.ts` — vendor settings actions: `saveQkitEarnConfigAction` (Pro-gated qkit-order earn program) and `saveCustomerNotifySettingsAction` (customer redemption-notify toggle, not Pro-gated), both upserting on `vendor_id`
 - `activity/`
-- `card-link.tsx` — client `CardLinkActions`: copy-link and print-QR buttons for the shop QR block
+- `card-link.tsx` — client `CardLinkActions`: copy-link (`@merqo/ui`'s `CopyButton`, keeping the sonner toasts) and print-QR buttons for the shop QR block
 - `card.ts` — exports the shared `StampCard` type `{ id, phone, stamp_count }` used across actions and form components
 - `counter/`
 - `customer-notify-settings.dom.test.tsx` — jsdom tests for `CustomerNotifySettings`: the switch defaults checked from a `true` row or (critically) no row at all, defaults unchecked from an explicit `false` row, and flips when clicked

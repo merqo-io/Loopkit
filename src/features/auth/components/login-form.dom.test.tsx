@@ -111,6 +111,30 @@ describe("LoginForm", () => {
     expect(routerRefresh).toHaveBeenCalled();
   });
 
+  it("signs in on a touch tap and shows the pending label while busy", async () => {
+    let resolve!: (v: { error: null }) => void;
+    authMock.signInWithPassword.mockReturnValue(
+      new Promise((r) => {
+        resolve = r;
+      }),
+    );
+    const user = userEvent.setup();
+    render(<LoginForm />);
+    await user.type(screen.getByLabelText("Email"), "vendor@example.com");
+    await user.type(screen.getByLabelText("Password"), "hunter2");
+    await user.pointer({
+      keys: "[TouchA]",
+      target: screen.getByRole("button", { name: "Sign in" }),
+    });
+
+    const busyButton = await screen.findByRole("button", {
+      name: "Please wait…",
+    });
+    expect(busyButton).toBeDisabled();
+    resolve({ error: null });
+    await waitFor(() => expect(routerPush).toHaveBeenCalledWith("/dashboard"));
+  });
+
   it("shows an inline alert when sign-in fails", async () => {
     authMock.signInWithPassword.mockResolvedValue({
       error: { message: "Invalid credentials" },

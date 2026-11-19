@@ -13,7 +13,7 @@ Shared controls and `cn` used by this folder's modules are imported from `@merqo
 - `page.tsx` — server page; `requireTeamMember()` only (it lives outside
   `/admin` so the `aal2` gate cannot loop back), forwards an `aal2` session to
   `/admin`, otherwise passes the verified TOTP factor (or stale unverified ones)
-  to the form.
+  to the form inside `@merqo/ui`'s `AuthShell`.
 - `loading.tsx` — skeleton shown while `page.tsx` resolves the admin check and MFA factors; keeps `<main>` as the landmark with a labelled busy status inside.
 - `loading.dom.test.tsx` — renders the skeleton and asserts the landmark, busy status and placeholders.
 - `mfa-form.tsx` — thin adapter over `@merqo/ui`'s `MfaForm`. It supplies the
