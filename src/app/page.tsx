@@ -5,20 +5,17 @@ import { Benefits } from "@/components/landing/benefits";
 import { Footer } from "@/components/landing/footer";
 import { Faq } from "@/components/landing/faq";
 import { BackToTop } from "@merqo/ui";
-import { createServerClient } from "@/lib/supabase/server";
+import { getLandingAccount } from "@/lib/landing-account";
 
 export default async function Home() {
   // Reflect the session in the landing CTAs: a signed-in vendor jumps straight
   // to the dashboard instead of being sent back through /login.
-  const supabase = await createServerClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  const authed = !!user;
+  const account = await getLandingAccount();
+  const authed = !!account;
 
   return (
     <>
-      <Nav authed={authed} />
+      <Nav authed={authed} account={account} />
       <main>
         <Hero authed={authed} />
         <HowItWorks />

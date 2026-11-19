@@ -9,10 +9,10 @@ import {
 } from "@merqo/ui";
 import { LayoutList } from "lucide-react";
 import { Wordmark } from "@/components/landing/wordmark";
-import { submitFeedbackAction } from "@/app/actions/feedback";
-import { submitSupportMessageAction } from "@/app/actions/support";
-import { SUPPORT_CATEGORY_LABELS } from "@/lib/schemas";
-import type { SupportMessageInput } from "@/lib/schemas";
+import {
+  ACCOUNT_MENU_HELP,
+  submitAccountFeedback,
+} from "@/lib/account-menu-config";
 
 type Tier = "free" | "pro";
 
@@ -30,16 +30,6 @@ function isActive(path: string, href: string): boolean {
 /** Stable anchor id for the onboarding tour, e.g. "/dashboard/customers" → "nav-customers". */
 function tourAnchor(href: string): string {
   return `nav-${href.split("/").pop()}`;
-}
-
-const HELP_CATEGORY_VALUES = Object.keys(
-  SUPPORT_CATEGORY_LABELS,
-) as SupportMessageInput["category"][];
-
-function isSupportCategory(
-  value: string | undefined,
-): value is SupportMessageInput["category"] {
-  return (HELP_CATEGORY_VALUES as string[]).includes(value ?? "");
 }
 
 /**
@@ -90,24 +80,8 @@ export function DashboardNav({
       showPlanItem
       tierBadge={<TierChip tier={tier} />}
       switchKits={getSwitchKits("loopkit")}
-      getHelp={{
-        type: "form",
-        onSubmit: async ({ message, category }) => {
-          const res = await submitSupportMessageAction({
-            category: isSupportCategory(category) ? category : "other",
-            body: message,
-          });
-          if (!res.success) throw new Error(res.error);
-        },
-        categories: HELP_CATEGORY_VALUES.map((value) => ({
-          value,
-          label: SUPPORT_CATEGORY_LABELS[value],
-        })),
-      }}
-      onFeedbackSubmit={async ({ message, nps }) => {
-        const res = await submitFeedbackAction({ nps: nps ?? 0, message });
-        if (!res.success) throw new Error(res.error);
-      }}
+      getHelp={ACCOUNT_MENU_HELP}
+      onFeedbackSubmit={submitAccountFeedback}
       showNps
     />
   );

@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Fixed
+
+- Signed-in vendors on the landing and About pages can now sign out: the nav shows a Dashboard link and the avatar account menu (Get help, Feedback, Theme, Sign out) instead of a lone Dashboard button.
+
 ### Changed
 
 - Bumped `@merqo/ui` from v0.51.0 to v0.54.0 (commit `378bd898`). Added a `--success` theme token (emerald) for `DeltaPill`.
