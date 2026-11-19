@@ -18,10 +18,15 @@ export async function getLandingAccount(): Promise<LandingAccount | null> {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) return null;
-  const { data } = await supabase.from("vendors").select("name").maybeSingle();
+  const { data } = await supabase
+    .from("vendors")
+    .select("name")
+    .eq("vendor_id", user.id)
+    .maybeSingle();
+  const avatar = user.user_metadata?.avatar_url;
   return {
     email: user.email ?? "",
     name: data?.name ?? null,
-    avatarUrl: user.user_metadata?.avatar_url ?? null,
+    avatarUrl: typeof avatar === "string" ? avatar : null,
   };
 }

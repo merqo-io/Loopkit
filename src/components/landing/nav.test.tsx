@@ -63,4 +63,11 @@ describe("Nav", () => {
       await screen.findByRole("menuitem", { name: /sign out/i }),
     ).toBeInTheDocument();
   });
+
+  it("labels the account trigger 'Account' when there is no name or email", () => {
+    render(<Nav authed account={{ email: "", name: "  ", avatarUrl: null }} />);
+    expect(
+      screen.getByRole("button", { name: /account/i }),
+    ).toBeInTheDocument();
+  });
 });

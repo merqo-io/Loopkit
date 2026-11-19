@@ -13,7 +13,9 @@ vi.mock("@/lib/supabase/server", () => ({
     auth: { getUser: () => getUser() },
     from: () => ({
       select: () => ({
-        maybeSingle: async () => ({ data: { name: "Aunty Lim" } }),
+        eq: () => ({
+          maybeSingle: async () => ({ data: { name: "Aunty Lim" } }),
+        }),
       }),
     }),
   })),

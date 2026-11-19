@@ -1,12 +1,12 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
-const { getUserMock, maybeSingleMock, createServerClientMock } = vi.hoisted(
-  () => ({
+const { getUserMock, maybeSingleMock, eqMock, createServerClientMock } =
+  vi.hoisted(() => ({
     getUserMock: vi.fn(),
     maybeSingleMock: vi.fn(),
+    eqMock: vi.fn(),
     createServerClientMock: vi.fn(),
-  }),
-);
+  }));
 
 vi.mock("@/lib/supabase/server", () => ({
   createServerClient: createServerClientMock,
@@ -15,9 +15,10 @@ vi.mock("@/lib/supabase/server", () => ({
 import { getLandingAccount } from "./landing-account";
 
 beforeEach(() => {
+  eqMock.mockReset().mockReturnValue({ maybeSingle: maybeSingleMock });
   createServerClientMock.mockReset().mockResolvedValue({
     auth: { getUser: getUserMock },
-    from: () => ({ select: () => ({ maybeSingle: maybeSingleMock }) }),
+    from: () => ({ select: () => ({ eq: eqMock }) }),
   });
 });
 
@@ -30,7 +31,11 @@ describe("getLandingAccount", () => {
   it("returns email, stall name and avatar when signed in", async () => {
     getUserMock.mockResolvedValue({
       data: {
-        user: { email: "a@b.sg", user_metadata: { avatar_url: "http://x/y" } },
+        user: {
+          id: "u1",
+          email: "a@b.sg",
+          user_metadata: { avatar_url: "http://x/y" },
+        },
       },
     });
     maybeSingleMock.mockResolvedValue({ data: { name: "Aunty Lim" } });
@@ -41,8 +46,27 @@ describe("getLandingAccount", () => {
     });
   });
 
+  it("scopes the vendor read to the signed-in user's own row", async () => {
+    getUserMock.mockResolvedValue({ data: { user: { id: "u1", email: "" } } });
+    maybeSingleMock.mockResolvedValue({ data: null });
+    await getLandingAccount();
+    expect(eqMock).toHaveBeenCalledWith("vendor_id", "u1");
+  });
+
+  it("ignores a non-string avatar_url", async () => {
+    getUserMock.mockResolvedValue({
+      data: {
+        user: { id: "u1", email: "a@b.sg", user_metadata: { avatar_url: 42 } },
+      },
+    });
+    maybeSingleMock.mockResolvedValue({ data: null });
+    expect((await getLandingAccount())?.avatarUrl).toBeNull();
+  });
+
   it("falls back to nulls when the vendor row and metadata are missing", async () => {
-    getUserMock.mockResolvedValue({ data: { user: { email: null } } });
+    getUserMock.mockResolvedValue({
+      data: { user: { id: "u1", email: null } },
+    });
     maybeSingleMock.mockResolvedValue({ data: null });
     expect(await getLandingAccount()).toEqual({
       email: "",

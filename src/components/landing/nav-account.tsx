@@ -23,14 +23,15 @@ export function NavAccount({
   name: string | null;
   avatarUrl: string | null;
 }) {
-  const label = name?.trim() || email.trim().split("@")[0];
+  const stall = name?.trim() || "";
+  const label = stall || email.trim().split("@")[0] || "Account";
   return (
     <AccountMenu
       LinkComponent={Link}
       vendor={{
         name: label,
         avatarUrl: avatarUrl ?? undefined,
-        subtitle: name?.trim() || email,
+        subtitle: stall || email,
       }}
       signOutAction={signOut}
       getHelp={ACCOUNT_MENU_HELP}
