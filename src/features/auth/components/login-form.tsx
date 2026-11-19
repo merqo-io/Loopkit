@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Wordmark } from "@/components/landing/wordmark";
-import { ElevatedCard, InfoTooltip } from "@merqo/ui";
+import { AsyncSubmitButton, AuthShell, InfoTooltip } from "@merqo/ui";
 import { GoogleMark } from "@merqo/ui";
 import { Button, Input, Label } from "@merqo/ui/primitives";
 import { createClient } from "@/lib/supabase/client";
@@ -39,52 +39,50 @@ function SignupPasswordHint({ isSignin }: { isSignin: boolean }) {
 
 type Sent = { email: string; kind: "signup" | "reset" };
 
+function HomeWordmark({ className }: { className: string }) {
+  return (
+    <Link
+      href="/"
+      aria-label="loopkit home"
+      className="inline-block transition-opacity hover:opacity-80"
+    >
+      <Wordmark className={className} />
+    </Link>
+  );
+}
+
 function SentNotice({ sent, onBack }: { sent: Sent; onBack: () => void }) {
   const isReset = sent.kind === "reset";
   return (
-    <main className="flex min-h-screen items-center justify-center p-5">
-      <div className="w-full max-w-md text-center">
-        <ElevatedCard className="px-7 py-10">
-          <Link
-            href="/"
-            aria-label="loopkit home"
-            className="inline-block transition-opacity hover:opacity-80"
-          >
-            <Wordmark className="text-2xl" />
-          </Link>
-          <h1 className="mt-6 font-display text-3xl font-bold tracking-tight">
-            Check your email
-          </h1>
-          <p className="mt-3 text-sm text-muted-foreground">
-            {isReset ? (
-              <>
-                We sent a password reset link to{" "}
-                <span className="font-medium text-foreground">
-                  {sent.email}
-                </span>
-                . Open it to choose a new password.
-              </>
-            ) : (
-              <>
-                We sent a confirmation link to{" "}
-                <span className="font-medium text-foreground">
-                  {sent.email}
-                </span>
-                . Click it to activate your account, then sign in.
-              </>
-            )}
-          </p>
-          <Button
-            type="button"
-            variant="outline"
-            className="mt-7 h-11 w-full rounded-xl"
-            onClick={onBack}
-          >
-            Back to sign in
-          </Button>
-        </ElevatedCard>
-      </div>
-    </main>
+    <AuthShell
+      align="center"
+      wordmark={<HomeWordmark className="text-2xl" />}
+      title="Check your email"
+      subtitle={
+        isReset ? (
+          <>
+            We sent a password reset link to{" "}
+            <span className="font-medium text-foreground">{sent.email}</span>.
+            Open it to choose a new password.
+          </>
+        ) : (
+          <>
+            We sent a confirmation link to{" "}
+            <span className="font-medium text-foreground">{sent.email}</span>.
+            Click it to activate your account, then sign in.
+          </>
+        )
+      }
+    >
+      <Button
+        type="button"
+        variant="outline"
+        className="h-11 w-full rounded-xl"
+        onClick={onBack}
+      >
+        Back to sign in
+      </Button>
+    </AuthShell>
   );
 }
 
@@ -246,155 +244,132 @@ export function LoginForm() {
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center p-5">
-      <div className="w-full max-w-md">
-        <div className="mb-8 text-center">
-          <Link
-            href="/"
-            aria-label="loopkit home"
-            className="inline-block transition-opacity hover:opacity-80"
-          >
-            <Wordmark className="text-3xl" />
-          </Link>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Loyalty for Singapore&apos;s small vendors.
-          </p>
-        </div>
+    <AuthShell
+      wordmark={<HomeWordmark className="text-3xl" />}
+      tagline="Loyalty for Singapore's small vendors."
+      title={isSignin ? "Welcome back" : "Create your account"}
+      subtitle={
+        isSignin
+          ? "Sign in to your loopkit dashboard."
+          : "Set up a loopkit account in seconds."
+      }
+    >
+      <Button
+        type="button"
+        variant="outline"
+        onClick={signInWithGoogle}
+        disabled={busy}
+        className="h-12 w-full gap-2.5 rounded-xl text-[0.95rem] font-medium"
+      >
+        <GoogleMark />
+        Continue with Google
+      </Button>
 
-        <ElevatedCard>
-          <div className="px-7 pt-9 pb-8">
-            <h1 className="font-display text-3xl font-bold tracking-tight">
-              {isSignin ? "Welcome back" : "Create your account"}
-            </h1>
-            <p className="mt-1.5 text-sm text-muted-foreground">
-              {isSignin
-                ? "Sign in to your loopkit dashboard."
-                : "Set up a loopkit account in seconds."}
-            </p>
-
-            <Button
-              type="button"
-              variant="outline"
-              onClick={signInWithGoogle}
-              disabled={busy}
-              className="mt-7 h-12 w-full gap-2.5 rounded-xl text-[0.95rem] font-medium"
-            >
-              <GoogleMark />
-              Continue with Google
-            </Button>
-
-            <div className="my-6 flex items-center gap-3">
-              <span className="h-px flex-1 bg-border" />
-              <span className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                or with email
-              </span>
-              <span className="h-px flex-1 bg-border" />
-            </div>
-
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-              <div className="space-y-2">
-                <Label
-                  htmlFor="email"
-                  className="text-xs font-semibold uppercase tracking-wider text-muted-foreground"
-                >
-                  Email
-                </Label>
-                <Input
-                  id="email"
-                  type="email"
-                  autoComplete="email"
-                  placeholder="you@business.sg"
-                  className="h-11 rounded-xl text-base"
-                  aria-invalid={!!errors.email}
-                  aria-describedby={errors.email ? "email-error" : undefined}
-                  {...register("email", {
-                    onChange: () => clearErrors("email"),
-                  })}
-                />
-                {errors.email && (
-                  <p
-                    id="email-error"
-                    role="alert"
-                    className="text-sm font-medium text-destructive"
-                  >
-                    {errors.email.message}
-                  </p>
-                )}
-              </div>
-              <div className="space-y-2">
-                <div className="flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-1.5">
-                    <Label
-                      htmlFor="password"
-                      className="text-xs font-semibold uppercase tracking-wider text-muted-foreground"
-                    >
-                      Password
-                    </Label>
-                    <SignupPasswordHint isSignin={isSignin} />
-                  </div>
-                  {isSignin && (
-                    <button
-                      type="button"
-                      onClick={sendReset}
-                      disabled={busy}
-                      className="text-xs font-semibold text-primary underline-offset-4 hover:underline disabled:opacity-50"
-                    >
-                      Forgot password?
-                    </button>
-                  )}
-                </div>
-                <Input
-                  id="password"
-                  type="password"
-                  autoComplete={isSignin ? "current-password" : "new-password"}
-                  placeholder="••••••••"
-                  className="h-11 rounded-xl text-base"
-                  aria-invalid={!!errors.password}
-                  aria-describedby={
-                    errors.password ? "password-error" : undefined
-                  }
-                  {...register("password")}
-                />
-                {errors.password && (
-                  <p
-                    id="password-error"
-                    className="text-sm font-medium text-destructive"
-                  >
-                    {errors.password.message}
-                  </p>
-                )}
-              </div>
-              <FormError
-                message={formError}
-                linkExpired={searchParams.get("error") === "link"}
-              />
-              <Button
-                type="submit"
-                size="lg"
-                className="h-12 w-full rounded-xl text-base font-semibold"
-                disabled={busy}
-              >
-                {busy ? "Please wait…" : submitLabel}
-              </Button>
-            </form>
-          </div>
-
-          <div className="border-t" />
-          <p className="px-7 py-4 text-center text-sm text-muted-foreground">
-            {isSignin ? "New to loopkit? " : "Already have an account? "}
-            <button
-              type="button"
-              className="font-semibold text-primary underline-offset-4 hover:underline"
-              onClick={() => {
-                setFormError(null);
-                setMode(isSignin ? "signup" : "signin");
-              }}
-            >
-              {isSignin ? "Create an account" : "Sign in"}
-            </button>
-          </p>
-        </ElevatedCard>
+      <div className="my-6 flex items-center gap-3">
+        <span className="h-px flex-1 bg-border" />
+        <span className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+          or with email
+        </span>
+        <span className="h-px flex-1 bg-border" />
       </div>
-    </main>
+
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+        <div className="space-y-2">
+          <Label
+            htmlFor="email"
+            className="text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+          >
+            Email
+          </Label>
+          <Input
+            id="email"
+            type="email"
+            autoComplete="email"
+            placeholder="you@business.sg"
+            className="h-11 rounded-xl text-base"
+            aria-invalid={!!errors.email}
+            aria-describedby={errors.email ? "email-error" : undefined}
+            {...register("email", {
+              onChange: () => clearErrors("email"),
+            })}
+          />
+          {errors.email && (
+            <p
+              id="email-error"
+              role="alert"
+              className="text-sm font-medium text-destructive"
+            >
+              {errors.email.message}
+            </p>
+          )}
+        </div>
+        <div className="space-y-2">
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-1.5">
+              <Label
+                htmlFor="password"
+                className="text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+              >
+                Password
+              </Label>
+              <SignupPasswordHint isSignin={isSignin} />
+            </div>
+            {isSignin && (
+              <button
+                type="button"
+                onClick={sendReset}
+                disabled={busy}
+                className="text-xs font-semibold text-primary underline-offset-4 hover:underline disabled:opacity-50"
+              >
+                Forgot password?
+              </button>
+            )}
+          </div>
+          <Input
+            id="password"
+            type="password"
+            autoComplete={isSignin ? "current-password" : "new-password"}
+            placeholder="••••••••"
+            className="h-11 rounded-xl text-base"
+            aria-invalid={!!errors.password}
+            aria-describedby={errors.password ? "password-error" : undefined}
+            {...register("password")}
+          />
+          {errors.password && (
+            <p
+              id="password-error"
+              className="text-sm font-medium text-destructive"
+            >
+              {errors.password.message}
+            </p>
+          )}
+        </div>
+        <FormError
+          message={formError}
+          linkExpired={searchParams.get("error") === "link"}
+        />
+        <AsyncSubmitButton
+          pending={busy}
+          pendingChildren="Please wait…"
+          className="h-12 w-full rounded-xl text-base font-semibold"
+        >
+          {submitLabel}
+        </AsyncSubmitButton>
+      </form>
+
+      <p className="mt-6 border-t pt-5 text-center text-sm text-muted-foreground">
+        {isSignin ? "New to loopkit? " : "Already have an account? "}
+        <button
+          type="button"
+          className="font-semibold text-primary underline-offset-4 hover:underline"
+          onClick={() => {
+            setFormError(null);
+            setMode(isSignin ? "signup" : "signin");
+          }}
+        >
+          {isSignin ? "Create an account" : "Sign in"}
+        </button>
+      </p>
+    </AuthShell>
   );
 }

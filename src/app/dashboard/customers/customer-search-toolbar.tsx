@@ -1,5 +1,6 @@
 import { ProgramSwitcher } from "../program-switcher";
-import { Input, Label, Button } from "@merqo/ui/primitives";
+import { SearchField } from "@merqo/ui";
+import { Label, Button } from "@merqo/ui/primitives";
 
 export function CustomerSearchToolbar({
   programs,
@@ -34,12 +35,13 @@ export function CustomerSearchToolbar({
         <Label htmlFor={searchId} className="sr-only">
           Search by phone
         </Label>
-        <Input
+        <SearchField
           id={searchId}
-          type="search"
           name="q"
           defaultValue={query ?? ""}
           placeholder="Search by phone"
+          aria-label="Search by phone"
+          wrapperClassName="min-w-0 flex-1"
           className="h-11 min-w-0 rounded-xl"
         />
         <Button

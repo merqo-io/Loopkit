@@ -8,7 +8,7 @@ Shared controls and `cn` used by this folder's modules are imported from `@merqo
 
 ## Contents
 
-- `login-form.tsx` — `LoginForm`: `@merqo/ui`'s `ElevatedCard`-wrapped Google OAuth
+- `login-form.tsx` — `LoginForm`: `@merqo/ui`'s `AuthShell`-wrapped Google OAuth
   sign-in (forces `hl=en` on the consent screen, cross-kit parity) and
   email/password sign-in/sign-up on react-hook-form + `loginSchema`
   (`@/lib/schemas`) with a "check your email" state for signup confirmation
@@ -22,7 +22,7 @@ Shared controls and `cn` used by this folder's modules are imported from `@merqo
   no third. A 2026-07-11 name+phone onboarding option (anonymous Supabase
   session, no account recovery) was removed 2026-09-01 for this reason —
   see `docs/superpowers/specs/2026-07-11-vendor-phone-onboarding-design.md`.
-- `reset-password-form.tsx` — `ResetPasswordForm`: `@merqo/ui`'s `ElevatedCard`-wrapped
+- `reset-password-form.tsx` — `ResetPasswordForm`: `@merqo/ui`'s `AuthShell`-wrapped
   password + confirm-password form on an active recovery session, calls
   `supabase.auth.updateUser` then redirects to `/dashboard`; a weak-password
   error shows the specific rule that failed
@@ -42,4 +42,4 @@ Shared controls and `cn` used by this folder's modules are imported from `@merqo
 
 [auth](../README.md)
 
-`login-form.tsx` renders the check-your-email screen through `SentNotice`.
+`login-form.tsx` renders the check-your-email screen through `SentNotice`, also an `AuthShell`. Both forms submit through `@merqo/ui`'s `AsyncSubmitButton`.

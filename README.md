@@ -206,6 +206,7 @@ ImageResponse-generated favicon/apple-touch-icon carries the same
 rebrand. Form fields keep their
 primary copy to one short line, pushing rationale/edge-case detail into a
 shared tap-to-open `(i)` info tooltip (`@merqo/ui`'s `InfoTooltip`).
+The login, reset-password and MFA pages render inside `@merqo/ui`'s `AuthShell`, `/admin` inside `AdminShell` (via `src/app/admin/admin-frame.tsx`), the customer search uses `SearchField` and the shop-link copy uses `CopyButton`.
 The login form (`src/features/auth/components/login-form.tsx`) runs on
 React Hook Form + Zod (a `loginSchema` in `src/lib/schemas.ts`) with a
 `zodResolver`, surfacing auth/server errors as inline `role="alert"`

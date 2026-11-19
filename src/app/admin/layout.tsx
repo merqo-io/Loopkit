@@ -1,12 +1,10 @@
-import { GOLD_BADGE } from "@/lib/gold-badge";
 import { redirect } from "next/navigation";
 import { LogOut } from "lucide-react";
 import { requireAdmin } from "@/lib/admin";
 import { createServerClient } from "@/lib/supabase/server";
 import { Wordmark } from "@/components/landing/wordmark";
-import { Badge } from "@merqo/ui/primitives";
 import { Button } from "@merqo/ui/primitives";
-import { AdminNav } from "@/app/admin/admin-nav";
+import { AdminFrame } from "@/app/admin/admin-frame";
 
 export default async function AdminLayout({
   children,
@@ -24,30 +22,24 @@ export default async function AdminLayout({
   }
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 z-20 border-b bg-background/85 px-5 py-3 backdrop-blur-md">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
-            <Wordmark className="text-xl" />
-            <Badge className={`${GOLD_BADGE} tracking-wider uppercase`}>
-              Admin
-            </Badge>
-          </div>
-          <form action={signOut}>
-            <Button
-              type="submit"
-              variant="ghost"
-              size="sm"
-              className="rounded-lg text-muted-foreground"
-            >
-              <LogOut className="size-4" />
-              <span className="hidden sm:inline">Sign out</span>
-            </Button>
-          </form>
-        </div>
-        <AdminNav />
-      </header>
-      <div className="flex-1">{children}</div>
-    </div>
+    <AdminFrame
+      wordmark={<Wordmark className="text-xl" />}
+      actions={
+        <form action={signOut}>
+          <Button
+            type="submit"
+            variant="ghost"
+            size="sm"
+            className="min-h-11 rounded-lg text-muted-foreground"
+          >
+            <LogOut className="size-4" />
+            <span className="hidden sm:inline">Sign out</span>
+            <span className="sr-only sm:hidden">Sign out</span>
+          </Button>
+        </form>
+      }
+    >
+      {children}
+    </AdminFrame>
   );
 }

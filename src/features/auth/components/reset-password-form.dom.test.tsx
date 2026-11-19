@@ -31,6 +31,20 @@ describe("ResetPasswordForm", () => {
     expect(screen.getByLabelText("Confirm password")).toBeInTheDocument();
   });
 
+  it("updates the password on a touch tap", async () => {
+    const user = userEvent.setup();
+    render(<ResetPasswordForm />);
+    await user.type(screen.getByLabelText("New password"), "hunter22");
+    await user.type(screen.getByLabelText("Confirm password"), "hunter22");
+    await user.pointer({
+      keys: "[TouchA]",
+      target: screen.getByRole("button", { name: "Update password" }),
+    });
+    await waitFor(() =>
+      expect(updateUserMock).toHaveBeenCalledWith({ password: "hunter22" }),
+    );
+  });
+
   it("shows an error and does not call updateUser when passwords don't match", async () => {
     const user = userEvent.setup();
     render(<ResetPasswordForm />);
