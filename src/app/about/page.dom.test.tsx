@@ -4,9 +4,18 @@ import { render, screen } from "@testing-library/react";
 
 const { getUser } = vi.hoisted(() => ({ getUser: vi.fn() }));
 
+vi.mock("@/app/actions/feedback", () => ({ submitFeedbackAction: vi.fn() }));
+vi.mock("@/app/actions/support", () => ({
+  submitSupportMessageAction: vi.fn(),
+}));
 vi.mock("@/lib/supabase/server", () => ({
   createServerClient: vi.fn(async () => ({
     auth: { getUser: () => getUser() },
+    from: () => ({
+      select: () => ({
+        maybeSingle: async () => ({ data: { name: "Aunty Lim" } }),
+      }),
+    }),
   })),
 }));
 
