@@ -5,8 +5,8 @@ import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Wordmark } from "@/components/landing/wordmark";
-import { Button, Input, Label } from "@merqo/ui/primitives";
-import { ElevatedCard, InfoTooltip } from "@merqo/ui";
+import { Input, Label } from "@merqo/ui/primitives";
+import { AsyncSubmitButton, AuthShell, InfoTooltip } from "@merqo/ui";
 import {
   PASSWORD_REQUIREMENTS_HINT,
   weakPasswordErrorMessage,
@@ -64,78 +64,68 @@ export function ResetPasswordForm() {
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center p-5">
-      <div className="w-full max-w-md">
-        <div className="mb-8 text-center">
-          <Wordmark className="text-3xl" />
-        </div>
-        <ElevatedCard className="px-7 py-9">
-          <h1 className="text-3xl font-bold tracking-tight">
-            Choose a new password
-          </h1>
-          <p className="mt-1.5 text-sm text-muted-foreground">
-            Enter it twice to confirm.
-          </p>
-          <form onSubmit={submit} className="mt-7 space-y-5">
-            <div className="space-y-2">
-              <div className="flex items-center gap-1.5">
-                <Label
-                  htmlFor="password"
-                  className="text-xs font-semibold uppercase tracking-wider text-muted-foreground"
-                >
-                  New password
-                </Label>
-                <InfoTooltip
-                  ariaLabel="Password requirements"
-                  trigger="tap"
-                  content={PASSWORD_REQUIREMENTS_HINT}
-                />
-              </div>
-              <Input
-                id="password"
-                type="password"
-                required
-                autoComplete="new-password"
-                placeholder="••••••••"
-                className="h-11 rounded-xl"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label
-                htmlFor="confirm"
-                className="text-xs font-semibold uppercase tracking-wider text-muted-foreground"
-              >
-                Confirm password
-              </Label>
-              <Input
-                id="confirm"
-                type="password"
-                required
-                autoComplete="new-password"
-                placeholder="••••••••"
-                className="h-11 rounded-xl"
-                value={confirm}
-                onChange={(e) => setConfirm(e.target.value)}
-              />
-            </div>
-            {error && (
-              <p role="alert" className="text-sm font-medium text-destructive">
-                {error}
-              </p>
-            )}
-            <Button
-              type="submit"
-              size="lg"
-              className="h-12 w-full rounded-xl text-base font-semibold"
-              disabled={busy}
+    <AuthShell
+      wordmark={<Wordmark className="text-3xl" />}
+      title="Choose a new password"
+      subtitle="Enter it twice to confirm."
+    >
+      <form onSubmit={submit} className="space-y-5">
+        <div className="space-y-2">
+          <div className="flex items-center gap-1.5">
+            <Label
+              htmlFor="password"
+              className="text-xs font-semibold uppercase tracking-wider text-muted-foreground"
             >
-              {busy ? "Saving…" : "Update password"}
-            </Button>
-          </form>
-        </ElevatedCard>
-      </div>
-    </main>
+              New password
+            </Label>
+            <InfoTooltip
+              ariaLabel="Password requirements"
+              trigger="tap"
+              content={PASSWORD_REQUIREMENTS_HINT}
+            />
+          </div>
+          <Input
+            id="password"
+            type="password"
+            required
+            autoComplete="new-password"
+            placeholder="••••••••"
+            className="h-11 rounded-xl"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        <div className="space-y-2">
+          <Label
+            htmlFor="confirm"
+            className="text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+          >
+            Confirm password
+          </Label>
+          <Input
+            id="confirm"
+            type="password"
+            required
+            autoComplete="new-password"
+            placeholder="••••••••"
+            className="h-11 rounded-xl"
+            value={confirm}
+            onChange={(e) => setConfirm(e.target.value)}
+          />
+        </div>
+        {error && (
+          <p role="alert" className="text-sm font-medium text-destructive">
+            {error}
+          </p>
+        )}
+        <AsyncSubmitButton
+          pending={busy}
+          pendingChildren="Saving…"
+          className="h-12 w-full rounded-xl text-base font-semibold"
+        >
+          Update password
+        </AsyncSubmitButton>
+      </form>
+    </AuthShell>
   );
 }
