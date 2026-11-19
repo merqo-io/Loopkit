@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 
+- Bumped `@merqo/ui` from v0.51.0 to v0.54.0 (commit `378bd898`). Added a `--success` theme token (emerald) for `DeltaPill`.
 - Landing: Benefits is a plain list and How it works a single-column numbered sequence instead of two identical icon rows; "Zero friction" now reads "Customers need no app or card"; the stamp card is labelled "Sample" and uses `rounded-lg`; the hero entrance animation is removed; the fixed two-colour background wash is removed on public pages (`/`, `/about`, `/faq`, public legal, `/earn`, `/c`) only and stays on dashboard, setup, auth and admin screens.
 
 ### Added
