@@ -45,6 +45,9 @@
      --gold-foreground for this — it stays dark in both modes and goes
      unreadable on a dark card. */
   --gold-accent: var(--gold-foreground);
+
+  /* Tailwind emerald-700, the existing positive hue, darkened from the emerald-600 used elsewhere so text-success holds 4.5:1 on a 12% tint of itself over the card (DeltaPill). */
+  --success: oklch(0.508 0.118 165.6);
 }
 
 .dark {
@@ -83,6 +86,9 @@
      light-toned in both themes, so it always wants a dark foreground. */
   --gold-foreground: oklch(0.22 0.035 28.9);
   --gold-accent: var(--gold);
+
+  /* Tailwind emerald-400, matching the dark-mode positive text already in use. */
+  --success: oklch(0.765 0.177 163.2);
 }
 
 @theme inline {
@@ -110,6 +116,7 @@
   --color-gold: var(--gold);
   --color-gold-foreground: var(--gold-foreground);
   --color-gold-accent: var(--gold-accent);
+  --color-success: var(--success);
 
   /* Small-text scale for badges, eyebrows and meta lines (replaces ad-hoc 10px / 0.65rem). */
   --text-2xs: 0.625rem;
