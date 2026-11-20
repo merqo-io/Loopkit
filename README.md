@@ -10,7 +10,7 @@ merqo over HTTP. Browser-tab title is "loopkit | Loyalty cards", and
 pages with their own title use a `title.template` of "loopkit | %s" (every dashboard and admin page now sets one; UI copy has no emoji, em dashes or error contractions, and the shop QR is called the "join code"). Display font is Fraunces
 (`src/app/layout.tsx`), the shared family face every Merqo kit now uses —
 see `docs/business/2026-08-13-typography-family-standard.md` in the
-workspace root for why. The landing page's
+workspace root for why. The landing page's nav shows a Dashboard link and an account menu with Sign out when signed in; its
 footer matches qkit's exactly (single-row wordmark/tagline/copyright/
 sign-in link, no CTA band above it) and its `BackToTop` button matches
 the cross-kit landing-page parity pass. The landing hero's "In build" badge and waitlist CTA are pinned by
@@ -51,7 +51,7 @@ output instead of a hand-copied string, so it can't drift from what the
 engine actually computes — see
 `../docs/superpowers/specs/2026-08-25-tour-example-badge-drift-fix-design.md`
 in the workspace root. Migrated onto
-the shared `@merqo/ui` component package (pinned at v0.54.0, commit `378bd898`, in `package.json`; email links land on `/auth/confirm`, see `src/app/auth/README.md`): the
+the shared `@merqo/ui` component package (pinned at v0.54.1, commit `272bf23c`, in `package.json`; email links land on `/auth/confirm`, see `src/app/auth/README.md`): the
 dashboard nav/account dropdown, `useAsyncAction`, `InfoTooltip`,
 `ImageUploader`, `DashboardTour`, the landing page's
 sticky header (`LandingNav`, via `src/components/landing/nav.tsx`), and
@@ -206,6 +206,7 @@ ImageResponse-generated favicon/apple-touch-icon carries the same
 rebrand. Form fields keep their
 primary copy to one short line, pushing rationale/edge-case detail into a
 shared tap-to-open `(i)` info tooltip (`@merqo/ui`'s `InfoTooltip`).
+The login, reset-password and MFA pages render inside `@merqo/ui`'s `AuthShell`, `/admin` inside `AdminShell` (via `src/app/admin/admin-frame.tsx`), the customer search uses `SearchField` and the shop-link copy uses `CopyButton`.
 The login form (`src/features/auth/components/login-form.tsx`) runs on
 React Hook Form + Zod (a `loginSchema` in `src/lib/schemas.ts`) with a
 `zodResolver`, surfacing auth/server errors as inline `role="alert"`

@@ -6,8 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Fixed
+
+- Signed-in vendors on the landing and About pages can now sign out: the nav shows a Dashboard link and the avatar account menu (Get help, Feedback, Theme, Sign out) instead of a lone Dashboard button.
+
 ### Changed
 
+- Bumped `@merqo/ui` from v0.54.0 to v0.54.1 (commit `272bf23c`). The legal gate no longer caches failed legal-status calls and retries idempotent Supabase and merqo calls once on dropped connections, fixing the sign-in `/legal/accept` loop.
+- Adopted `@merqo/ui` `AuthShell` (login, reset password, MFA), `AdminShell` (admin header and tabs, replacing `admin-nav.tsx` with a small `admin-frame.tsx` client wrapper), `SearchField` (customer search, now with a clear button), `CopyButton` (shop link) and `AsyncSubmitButton` (login and reset-password submit). Admin sign-out is now an icon-only 44px target on phones.
 - Bumped `@merqo/ui` from v0.51.0 to v0.54.0 (commit `378bd898`). Added a `--success` theme token (emerald) for `DeltaPill`.
 - Landing: Benefits is a plain list and How it works a single-column numbered sequence instead of two identical icon rows; "Zero friction" now reads "Customers need no app or card"; the stamp card is labelled "Sample" and uses `rounded-lg`; the hero entrance animation is removed; the fixed two-colour background wash is removed on public pages (`/`, `/about`, `/faq`, public legal, `/earn`, `/c`) only and stays on dashboard, setup, auth and admin screens.
 

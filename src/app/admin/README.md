@@ -12,9 +12,9 @@ Shared controls and `cn` used by this folder's modules are imported from `@merqo
 - `admin-page-header.tsx` — `AdminPageHeader`: the admin pages' title row, a thin wrapper over the `@merqo/ui` `PageHeader` (eyebrow "Internal").
 - `actions.ts`: Server Actions (all admin-only via `requireAdmin()`): `setProgramActive`, `removeCard`, each writing via the service-role client and appending an `admin_audit` row via `recordAudit` (`@/lib/admin-audit`, shared with `vendor-provision/route.ts`).
 - `activity/` — `AdminActivityPage`: read-only viewer over `admin_audit` (`listAdminAudit`, `@/lib/admin-data`), rendered via `@merqo/ui`'s `AuditLogTable` with a `formatAction` map for the real action strings `actions.ts`/`vendor-provision/route.ts` write, and the `detail.actor === "merqo_system"` sentinel surfaced as "Merqo (system)" instead of a raw vendor id.
-- `admin-nav.tsx` — `AdminNav` client component: the Overview/Programs/Vendors/Activity tab bar, highlighting the active section by path.
+- `admin-frame.tsx` — `AdminFrame` client wrapper: feeds `usePathname()` and `next/link` to `@merqo/ui`'s `AdminShell` with the Overview/Programs/Vendors/Activity tabs.
 - `health-badge.tsx` — `ProgramHealthBadge`: `ProgramHealth` rendered through `@merqo/ui`'s `StatusBadge`, shared by the programs list and the program detail header.
-- `layout.tsx` — `AdminLayout`: gates every `/admin` route with `requireAdmin()`, renders the header (wordmark, Admin badge, sign-out) and `AdminNav`.
+- `layout.tsx` — `AdminLayout`: gates every `/admin` route with `requireAdmin()`, passes the wordmark and sign-out server action to `AdminFrame`, which renders the header and tabs.
 - `loading.tsx` / `loading-skeleton.tsx` — route skeleton for the overview (and `AdminLoadingShell`, shared by each admin route's own `loading.tsx`): `aria-busy`, an sr-only "Loading" status, header, optional stat tiles and one card.
 - `page.tsx`: `AdminOverviewPage`: platform-wide totals (programs, customers, stamps, rewards), and a recent cross-shop activity feed, wrapped in `@merqo/ui`'s `ElevatedCard`.
 - `programs/`
@@ -23,7 +23,7 @@ Shared controls and `cn` used by this folder's modules are imported from `@merqo
 ## Connectivity
 
 `programs/`, `vendors/`, and `activity/` are the admin sections linked from
-`admin-nav.tsx`'s tab bar; all render inside `layout.tsx`'s gated shell.
+`admin-frame.tsx`'s tab bar; all render inside `layout.tsx`'s gated shell.
 `programs/`'s and `vendors/`'s page/detail components pull shared pieces from
 this folder — `StatCard` from `@merqo/ui` for figure tiles, `health-badge.tsx` for health
 badges, and `actions.ts` for the Server Actions their client components call
