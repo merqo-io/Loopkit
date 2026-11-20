@@ -40,6 +40,29 @@ describe("Nav", () => {
     );
   });
 
+  it("hides About and FAQ below sm so the nav keeps its gutter at 375px", () => {
+    render(<Nav />);
+    for (const name of ["About", "FAQ"]) {
+      expect(screen.getByRole("link", { name })).toHaveClass(
+        "hidden",
+        "sm:inline",
+      );
+    }
+    expect(screen.getByRole("link", { name: "Sign in" })).not.toHaveClass(
+      "hidden",
+    );
+  });
+
+  it("keeps Dashboard and the account menu visible at every width when signed in", () => {
+    render(<Nav authed account={ACCOUNT} />);
+    expect(screen.getByRole("link", { name: "Dashboard" })).not.toHaveClass(
+      "hidden",
+    );
+    expect(
+      screen.getByRole("button", { name: /account|menu|aunty/i }),
+    ).toBeInTheDocument();
+  });
+
   it("shows Sign in and no account menu when signed out", () => {
     render(<Nav />);
     expect(screen.getByRole("link", { name: "Sign in" })).toBeInTheDocument();

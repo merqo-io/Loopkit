@@ -455,7 +455,7 @@ collects a typed legal name — just the agree checkbox — since a plain
 ToS/Privacy clickwrap doesn't need a signatory name for evidentiary
 strength beyond the record above. `/about` renders that same release's
 shared `AboutMerqo` component (the qkit origin story, one source reused
-by every kit's own `/about` page), linked from the landing `Nav`/`Footer`.
+by every kit's own `/about` page), linked from the landing `Footer` and, from 640px up, the `Nav`.
 `/faq` renders the shared `FaqPage` with loopkit's own ten rows in three
 groups, linked from the `Nav`; it is not a nonce route.
 
