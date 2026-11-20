@@ -7,6 +7,8 @@ don't belong to any single `src/app/<route>/` page.
 
 ## Contents
 
+- `auth.ts` — `signOutAction`: signs the session out and redirects to `/login`; backs the landing nav's account menu
+- `auth.test.ts` — `signOutAction` signs out then redirects to `/login`
 - `feedback.test.ts` — vitest tests for `submitFeedbackAction`: RPC call shape (kit slug/nps/message), out-of-range `nps` rejected before the RPC, unauthenticated rejection, and a friendly error surfaced when the RPC fails
 - `feedback.ts` — `submitFeedbackAction`: validates NPS (0–10) + optional message, then submits vendor feedback into the shared cross-kit `merqo.vendor_feedback` table via `submitVendorFeedback` (`src/lib/merqo-vendor-feedback.ts`) — the `SECURITY DEFINER` RPC is the authorization boundary, not this action; backs `@merqo/ui`'s `FeedbackSheet`, wired from `dashboard-nav.tsx`'s `onFeedbackSubmit`
 - `support.test.ts` — vitest tests for `submitSupportMessageAction`: RPC call shape (kit slug/category/body), empty body rejected before the RPC, unauthenticated rejection, and a friendly error surfaced when the RPC fails

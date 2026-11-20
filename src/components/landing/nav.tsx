@@ -3,8 +3,17 @@ import Link from "next/link";
 import { Button } from "@merqo/ui/primitives";
 import { Wordmark } from "./wordmark";
 import { WAITLIST_URL } from "./waitlist";
+import { NavAccount } from "./nav-account";
+import { signOutAction } from "@/app/actions/auth";
+import type { LandingAccount } from "@/lib/landing-account";
 
-export function Nav({ authed = false }: { authed?: boolean }) {
+export function Nav({
+  authed = false,
+  account = null,
+}: {
+  authed?: boolean;
+  account?: LandingAccount | null;
+}) {
   return (
     <LandingNav
       wordmark={
@@ -31,9 +40,19 @@ export function Nav({ authed = false }: { authed?: boolean }) {
             FAQ
           </Link>
           {authed ? (
-            <Button asChild size="sm">
-              <Link href="/dashboard">Dashboard</Link>
-            </Button>
+            <>
+              <Button asChild size="sm" variant="ghost" className="min-h-10">
+                <Link href="/dashboard">Dashboard</Link>
+              </Button>
+              {account ? (
+                <NavAccount
+                  signOut={signOutAction}
+                  email={account.email}
+                  name={account.name}
+                  avatarUrl={account.avatarUrl}
+                />
+              ) : null}
+            </>
           ) : (
             <>
               <Link
