@@ -1,42 +1,37 @@
 "use client";
 
 import Link from "next/link";
-import { AccountMenu } from "@merqo/ui";
-import {
-  ACCOUNT_MENU_HELP,
-  submitAccountFeedback,
-} from "@/lib/account-menu-config";
+import { LandingAccountNav, type NavUser } from "@merqo/ui";
+import { submitFeedbackAction } from "@/app/actions/feedback";
+import { submitSupportMessageAction } from "@/app/actions/support";
+import { SUPPORT_CATEGORY_LABELS } from "@/lib/schemas";
 
 /**
- * Avatar menu for the landing nav. A client wrapper because the help and
- * feedback handlers are functions, which a Server Component can't pass down.
- * Tier is left out: reading it needs the vendor-only entitlement guard.
+ * Client wrapper because the support and feedback adapters are plain
+ * functions, which a Server Component can't pass to a client component. Errors
+ * reach the root layout's sonner Toaster through the shared default `onError`.
  */
 export function NavAccount({
+  user,
   signOut,
-  email,
-  name,
-  avatarUrl,
 }: {
+  user: NavUser;
   signOut: () => Promise<void>;
-  email: string;
-  name: string | null;
-  avatarUrl: string | null;
 }) {
-  const stall = name?.trim() || "";
-  const label = stall || email.trim().split("@")[0] || "Account";
   return (
-    <AccountMenu
-      LinkComponent={Link}
-      vendor={{
-        name: label,
-        avatarUrl: avatarUrl ?? undefined,
-        subtitle: stall || email,
-      }}
+    <LandingAccountNav
+      kit="loopkit"
+      dashboardHref="/dashboard"
+      user={user}
       signOutAction={signOut}
-      getHelp={ACCOUNT_MENU_HELP}
-      onFeedbackSubmit={submitAccountFeedback}
-      showNps
+      LinkComponent={Link}
+      supportCategories={SUPPORT_CATEGORY_LABELS}
+      actions={{
+        submitSupport: ({ category, message }) =>
+          submitSupportMessageAction({ category, body: message }),
+        submitFeedback: ({ nps, message }) =>
+          submitFeedbackAction({ nps, message }),
+      }}
     />
   );
 }
