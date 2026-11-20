@@ -30,7 +30,9 @@ vi.mock("@/lib/tour-prefs", () => ({
 }));
 vi.mock("next/navigation", () => ({ redirect: vi.fn() }));
 vi.mock("@/app/dashboard/dashboard-nav", () => ({
-  DashboardNav: () => <div data-testid="dashboard-nav" />,
+  DashboardNav: ({ accountName }: { accountName: string }) => (
+    <div data-testid="dashboard-nav" data-account-name={accountName} />
+  ),
 }));
 vi.mock("@/components/dashboard-tour", () => ({
   DashboardTour: ({ seen }: { seen: boolean }) => (
@@ -45,6 +47,7 @@ vi.mock("@/components/landing/footer", () => ({
 }));
 
 import DashboardLayout from "./layout";
+import { getVendorProfile } from "@/lib/vendor";
 
 beforeEach(() => {
   mocks.maybeSingle.mockReset().mockResolvedValue({ data: null });
@@ -64,6 +67,25 @@ describe("DashboardLayout", () => {
     const wrapper = nav.parentElement;
     expect(wrapper).toHaveClass("contents", "print:hidden");
     expect(wrapper?.tagName).not.toBe("HEADER");
+  });
+
+  it("labels the account menu with the stall name", async () => {
+    render(await DashboardLayout({ children: <div>content</div> }));
+
+    expect(screen.getByTestId("dashboard-nav")).toHaveAttribute(
+      "data-account-name",
+      "Kopi & Co",
+    );
+  });
+
+  it("falls back to the shared accountLabel chain when the stall name is empty", async () => {
+    vi.mocked(getVendorProfile).mockResolvedValueOnce({ name: "  " } as never);
+    render(await DashboardLayout({ children: <div>content</div> }));
+
+    expect(screen.getByTestId("dashboard-nav")).toHaveAttribute(
+      "data-account-name",
+      "vendor",
+    );
   });
 
   it("ends every page with the family footer, without a sign-in link and hidden in print", async () => {

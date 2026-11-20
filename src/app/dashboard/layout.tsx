@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
+import { accountLabel } from "@merqo/ui";
 import { requireVendor } from "@/features/auth";
 import { isAdmin } from "@/lib/admin";
 import { isPro } from "@/lib/program";
@@ -63,8 +64,7 @@ export default async function DashboardLayout({
         <Suspense fallback={null}>
           <DashboardNav
             signOut={signOut}
-            email={user.email ?? ""}
-            vendorName={vendorProfile.name}
+            accountName={accountLabel(user, vendorProfile.name)}
             avatarUrl={user.user_metadata?.avatar_url ?? null}
             tier={pro ? "pro" : "free"}
           />
