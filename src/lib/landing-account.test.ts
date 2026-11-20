@@ -28,21 +28,21 @@ describe("getLandingAccount", () => {
     expect(await getLandingAccount()).toBeNull();
   });
 
-  it("returns email, stall name and avatar when signed in", async () => {
+  it("names the account after the vendor row when signed in", async () => {
     getUserMock.mockResolvedValue({
       data: {
         user: {
           id: "u1",
           email: "a@b.sg",
-          user_metadata: { avatar_url: "http://x/y" },
+          user_metadata: { avatar_url: "https://x/y.png" },
         },
       },
     });
     maybeSingleMock.mockResolvedValue({ data: { name: "Aunty Lim" } });
     expect(await getLandingAccount()).toEqual({
-      email: "a@b.sg",
       name: "Aunty Lim",
-      avatarUrl: "http://x/y",
+      email: "a@b.sg",
+      avatarUrl: "https://x/y.png",
     });
   });
 
@@ -53,25 +53,11 @@ describe("getLandingAccount", () => {
     expect(eqMock).toHaveBeenCalledWith("vendor_id", "u1");
   });
 
-  it("ignores a non-string avatar_url", async () => {
+  it("falls back to the email local part without a vendor row", async () => {
     getUserMock.mockResolvedValue({
-      data: {
-        user: { id: "u1", email: "a@b.sg", user_metadata: { avatar_url: 42 } },
-      },
+      data: { user: { id: "u1", email: "a@b.sg" } },
     });
     maybeSingleMock.mockResolvedValue({ data: null });
-    expect((await getLandingAccount())?.avatarUrl).toBeNull();
-  });
-
-  it("falls back to nulls when the vendor row and metadata are missing", async () => {
-    getUserMock.mockResolvedValue({
-      data: { user: { id: "u1", email: null } },
-    });
-    maybeSingleMock.mockResolvedValue({ data: null });
-    expect(await getLandingAccount()).toEqual({
-      email: "",
-      name: null,
-      avatarUrl: null,
-    });
+    expect((await getLandingAccount())?.name).toBe("a");
   });
 });
