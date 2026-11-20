@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Fixed
 
+- The landing nav no longer crowds the screen edge at 375px: the About and FAQ links are hidden below the `sm` breakpoint, leaving the logo with Sign in (signed out) or Dashboard and the account avatar (signed in).
 - Signed-in vendors on the landing and About pages can now sign out: the nav shows a Dashboard link and the avatar account menu (Get help, Feedback, Theme, Sign out) instead of a lone Dashboard button.
 
 ### Changed
