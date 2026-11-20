@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { LandingAccountNav, type NavUser } from "@merqo/ui";
 import { submitFeedbackAction } from "@/app/actions/feedback";
 import { submitSupportMessageAction } from "@/app/actions/support";
@@ -24,7 +23,6 @@ export function NavAccount({
       dashboardHref="/dashboard"
       user={user}
       signOutAction={signOut}
-      LinkComponent={Link}
       supportCategories={SUPPORT_CATEGORY_LABELS}
       actions={{
         submitSupport: ({ category, message }) =>
