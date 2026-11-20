@@ -1,18 +1,17 @@
-import { LandingNav } from "@merqo/ui";
+import { LandingNav, type NavUser } from "@merqo/ui";
 import Link from "next/link";
 import { Button } from "@merqo/ui/primitives";
 import { Wordmark } from "./wordmark";
 import { WAITLIST_URL } from "./waitlist";
 import { NavAccount } from "./nav-account";
 import { signOutAction } from "@/app/actions/auth";
-import type { LandingAccount } from "@/lib/landing-account";
 
 export function Nav({
   authed = false,
   account = null,
 }: {
   authed?: boolean;
-  account?: LandingAccount | null;
+  account?: NavUser | null;
 }) {
   return (
     <LandingNav
@@ -29,30 +28,18 @@ export function Nav({
         <>
           <Link
             href="/about"
-            className="rounded-sm px-1 text-sm text-muted-foreground outline-none hover:text-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50"
+            className="hidden rounded-sm px-1 text-sm text-muted-foreground outline-none hover:text-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50 sm:inline"
           >
             About
           </Link>
           <Link
             href="/faq"
-            className="rounded-sm px-1 text-sm text-muted-foreground outline-none hover:text-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50"
+            className="hidden rounded-sm px-1 text-sm text-muted-foreground outline-none hover:text-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50 sm:inline"
           >
             FAQ
           </Link>
-          {authed ? (
-            <>
-              <Button asChild size="sm" variant="ghost" className="min-h-10">
-                <Link href="/dashboard">Dashboard</Link>
-              </Button>
-              {account ? (
-                <NavAccount
-                  signOut={signOutAction}
-                  email={account.email}
-                  name={account.name}
-                  avatarUrl={account.avatarUrl}
-                />
-              ) : null}
-            </>
+          {authed && account ? (
+            <NavAccount user={account} signOut={signOutAction} />
           ) : (
             <>
               <Link

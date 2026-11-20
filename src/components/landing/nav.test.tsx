@@ -3,25 +3,24 @@ import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Nav } from "./nav";
-import type { LandingAccount } from "@/lib/landing-account";
+import type { NavUser } from "@merqo/ui";
 
 vi.mock("@/app/actions/feedback", () => ({ submitFeedbackAction: vi.fn() }));
 vi.mock("@/app/actions/support", () => ({
   submitSupportMessageAction: vi.fn(),
 }));
 
-const ACCOUNT: LandingAccount = {
+const ACCOUNT: NavUser = {
   email: "vendor@example.com",
   name: "Aunty Lim",
-  avatarUrl: null,
 };
 
 describe("Nav", () => {
-  it("renders the sticky header matching qkit's px-5 py-4 sizing", () => {
+  it("renders the shared sticky header", () => {
     render(<Nav />);
 
     const header = screen.getByRole("banner");
-    expect(header).toHaveClass("px-5", "py-4", "backdrop-blur-md");
+    expect(header).toHaveClass("sticky", "py-4", "backdrop-blur-md");
     expect(screen.getByText("loopkit home")).toBeInTheDocument();
   });
 
@@ -39,6 +38,29 @@ describe("Nav", () => {
       "href",
       "/faq",
     );
+  });
+
+  it("hides About and FAQ below sm so the nav keeps its gutter at 375px", () => {
+    render(<Nav />);
+    for (const name of ["About", "FAQ"]) {
+      expect(screen.getByRole("link", { name })).toHaveClass(
+        "hidden",
+        "sm:inline",
+      );
+    }
+    expect(screen.getByRole("link", { name: "Sign in" })).not.toHaveClass(
+      "hidden",
+    );
+  });
+
+  it("keeps Dashboard and the account menu visible at every width when signed in", () => {
+    render(<Nav authed account={ACCOUNT} />);
+    expect(screen.getByRole("link", { name: "Dashboard" })).not.toHaveClass(
+      "hidden",
+    );
+    expect(
+      screen.getByRole("button", { name: /account|menu|aunty/i }),
+    ).toBeInTheDocument();
   });
 
   it("shows Sign in and no account menu when signed out", () => {
@@ -64,10 +86,18 @@ describe("Nav", () => {
     ).toBeInTheDocument();
   });
 
-  it("labels the account trigger 'Account' when there is no name or email", () => {
-    render(<Nav authed account={{ email: "", name: "  ", avatarUrl: null }} />);
-    expect(
-      screen.getByRole("button", { name: /account/i }),
-    ).toBeInTheDocument();
+  it("shows the Switch products entry in the account menu", async () => {
+    const user = userEvent.setup();
+    render(<Nav authed account={ACCOUNT} />);
+    await user.pointer({
+      keys: "[TouchA]",
+      target: screen.getByRole("button", { name: /account|menu|aunty/i }),
+    });
+    expect(await screen.findByText(/switch products/i)).toBeInTheDocument();
+  });
+
+  it("shows no account menu without an account", () => {
+    render(<Nav authed />);
+    expect(screen.queryByRole("button", { name: /account|aunty/i })).toBeNull();
   });
 });

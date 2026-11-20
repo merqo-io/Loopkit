@@ -51,7 +51,7 @@ output instead of a hand-copied string, so it can't drift from what the
 engine actually computes — see
 `../docs/superpowers/specs/2026-08-25-tour-example-badge-drift-fix-design.md`
 in the workspace root. Migrated onto
-the shared `@merqo/ui` component package (pinned at v0.54.1, commit `272bf23c`, in `package.json`; email links land on `/auth/confirm`, see `src/app/auth/README.md`): the
+the shared `@merqo/ui` component package (pinned at v0.56.0, commit `9705d396`, in `package.json`; email links land on `/auth/confirm`, see `src/app/auth/README.md`): the
 dashboard nav/account dropdown, `useAsyncAction`, `InfoTooltip`,
 `ImageUploader`, `DashboardTour`, the landing page's
 sticky header (`LandingNav`, via `src/components/landing/nav.tsx`), and
@@ -455,7 +455,7 @@ collects a typed legal name — just the agree checkbox — since a plain
 ToS/Privacy clickwrap doesn't need a signatory name for evidentiary
 strength beyond the record above. `/about` renders that same release's
 shared `AboutMerqo` component (the qkit origin story, one source reused
-by every kit's own `/about` page), linked from the landing `Nav`/`Footer`.
+by every kit's own `/about` page), linked from the landing `Footer` and, from 640px up, the `Nav`.
 `/faq` renders the shared `FaqPage` with loopkit's own ten rows in three
 groups, linked from the `Nav`; it is not a nonce route.
 
