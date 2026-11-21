@@ -9,6 +9,16 @@ merqo.
 
 ## Contents
 
+- `legal-page-client.tsx` — `LegalPageClient`, a `"use client"` wrapper around
+  `@merqo/ui`'s `LegalPage` with `next/link`. Needed because `@merqo/ui` 0.57
+  inlines its client-only `LegalDocument` into `LegalPage` without a client
+  boundary, so `LegalPage` rendered straight from a Server Component 500s.
+  Remove once the package keeps the boundary.
+- `wordmark.tsx` — `LegalWordmark`, the loopkit mark the three pages pass to
+  the shared components (which wrap it in the home link).
+- `page.dom.test.tsx` — renders the three pages: shared metadata titles,
+  wordmark home link, and the accept submit gated on the checkbox (touch)
+  with `next` sanitised.
 - `terms/`
 - `privacy/`
 - `accept/`
