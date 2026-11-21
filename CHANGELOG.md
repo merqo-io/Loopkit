@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Fixed
 
+- The landing nav account label now shows the same stall name as the dashboard (the shared `merqo.vendor_profile` stall name) instead of the signed-in user's full name; if that read fails it falls back to the local vendor name.
 - The landing nav no longer crowds the screen edge at 375px: the About and FAQ links are hidden below the `sm` breakpoint, leaving the logo with Sign in (signed out) or Dashboard and the account avatar (signed in).
 - Signed-in vendors on the landing and About pages can now sign out: the nav shows a Dashboard link and the avatar account menu (Get help, Feedback, Theme, Sign out) instead of a lone Dashboard button.
 
