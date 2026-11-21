@@ -6,12 +6,11 @@ The public Privacy Policy page.
 
 ## Contents
 
-- `page.tsx` — `PrivacyPage`, a one-line Server Component rendering
-  `@merqo/ui`'s `<LegalDocument doc="privacy" />` (the component brings its
-  own `mx-auto max-w-3xl` prose container, so there's no local layout).
-  Exports `metadata` with the page title "Privacy policy".
-- `page.dom.test.tsx` — jsdom test asserting `PrivacyPage` renders
-  `LegalDocument` with `doc="privacy"`.
+- `page.tsx` — `PrivacyPage`, a Server Component rendering `LegalPageClient`
+  (`@merqo/ui`'s `LegalPage`, see `../legal-page-client.tsx`) with
+  `doc="privacy"`. The component brings its own prose container, so there's
+  no local layout. Exports `legalPageMetadata("privacy")` as `metadata`.
+  Tested in `../page.dom.test.tsx`.
 
 ## Parent
 

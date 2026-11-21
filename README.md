@@ -64,9 +64,9 @@ what's still loopkit-local (the upload adapter, step/action wiring, and
 the activity-page `PaginationNav`, deliberately left local — see
 `CHANGELOG.md`). Bumped `@merqo/ui` to v0.30.0 (2026-09-16):
 `/legal/terms` now renders only loopkit's own Annex schedule
-(`<LegalDocument doc="terms" kit="loopkit" />`), not every sibling kit's —
+(`<LegalPage doc="terms" kit="loopkit" />`), not every sibling kit's —
 previously every kit's `/legal/terms` page showed the full multi-kit annex
-since none passed kit context; `legal/accept/actions.ts`'s recorded
+since none passed kit context (the `/legal/terms`, `/legal/privacy` and `/legal/accept` pages now render `@merqo/ui`'s shared `LegalPage` and `AcceptTermsPage`); `legal/accept/actions.ts`'s recorded
 `doc_sha256` hashes that same scoped content. `DashboardNav`'s wrapper
 (`src/app/dashboard/dashboard-nav.tsx`) passes `LinkComponent={Link}`
 (v0.10.0+) so the package renders `next/link`'s `Link` instead of a

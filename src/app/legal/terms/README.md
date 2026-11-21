@@ -6,14 +6,12 @@ The public Terms of Service page.
 
 ## Contents
 
-- `page.tsx` — `TermsPage`, a one-line Server Component rendering
-  `@merqo/ui`'s `<LegalDocument doc="terms" kit="loopkit" />` (the component
-  brings its own `mx-auto max-w-3xl` prose container, so there's no local
-  layout). The `kit` prop scopes the rendered Annex to loopkit's own
-  schedule only, not every sibling kit's. Exports `metadata` with the page
-  title "Terms of service".
-- `page.dom.test.tsx` — jsdom test asserting `TermsPage` renders
-  `LegalDocument` with `doc="terms"`.
+- `page.tsx` — `TermsPage`, a Server Component rendering `LegalPageClient`
+  (`@merqo/ui`'s `LegalPage`, see `../legal-page-client.tsx`) with
+  `doc="terms" kit="loopkit"`. The component brings its own prose container,
+  so there's no local layout. The `kit` prop scopes the rendered Annex to
+  loopkit's own schedule only, not every sibling kit's. Exports
+  `legalPageMetadata("terms")` as `metadata`. Tested in `../page.dom.test.tsx`.
 
 ## Parent
 
