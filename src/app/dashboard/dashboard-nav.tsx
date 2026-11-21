@@ -39,19 +39,16 @@ function tourAnchor(href: string): string {
  */
 export function DashboardNav({
   signOut,
-  email,
-  vendorName,
+  accountName,
   avatarUrl,
   tier,
 }: {
   signOut: () => Promise<void>;
-  email: string;
-  vendorName: string | null;
+  accountName: string;
   avatarUrl: string | null;
   tier: Tier;
 }) {
   const path = usePathname();
-  const label = vendorName?.trim() || email.trim().split("@")[0];
 
   return (
     <SharedDashboardNav
@@ -68,10 +65,10 @@ export function DashboardNav({
       isActiveHref={(href) => isActive(path, href)}
       tourAnchor={tourAnchor}
       vendor={{
-        name: label,
+        name: accountName,
         avatarUrl: avatarUrl ?? undefined,
         tier,
-        subtitle: vendorName?.trim() || "Your stall",
+        subtitle: accountName,
       }}
       signOutAction={signOut}
       extraLink={{ href: "/setup", label: "Programs", icon: LayoutList }}

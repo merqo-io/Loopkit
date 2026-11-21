@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Changed
 
 - The terms, privacy and accept-terms pages now use `@merqo/ui`'s `LegalPage` / `legalPageMetadata` and `AcceptTermsPage`. Each page gets a loopkit wordmark linking home and a proper title; the accept page keeps its sanitised `next` and runs no legal gate. A small `LegalPageClient` wrapper keeps `LegalPage` out of Server Components, which 500 on 0.57.0. The local `accept-form.tsx` is removed.
+- Repinned `@merqo/ui` to v0.58.0 (commit `716824ed`). The dashboard account menu trigger now shows the stall name through the shared `accountLabel` fallback chain, so it matches the landing nav; the "Your stall" placeholder is gone.
 - Repinned `@merqo/ui` to v0.57.0 (commit `b496faa6`) and mounted `AppLinkProvider` with `next/link` in `Providers`. Client exports (dashboard nav, landing account menu, auth forms) navigate client-side without a `LinkComponent` prop; the redundant props were removed.
 
 - Repinned `@merqo/ui` to v0.56.0 (commit `9705d396`) and moved the landing and About account menu onto the shared `LandingAccountNav` and `toNavUser`. The menu now includes Switch products, and feedback is sent as vendor NPS.

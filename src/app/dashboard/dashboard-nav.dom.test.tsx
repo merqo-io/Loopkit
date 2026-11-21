@@ -28,8 +28,7 @@ vi.mock("@/app/actions/support", () => ({
 describe("DashboardNav", () => {
   const baseProps = {
     signOut: vi.fn(async () => {}),
-    email: "vendor@example.com",
-    vendorName: "Kopi Corner",
+    accountName: "Kopi Corner",
     avatarUrl: null,
     tier: "free" as const,
   };
@@ -134,15 +133,6 @@ describe("DashboardNav", () => {
     const menu = within(screen.getByRole("menu"));
     expect(menu.getByText("Kopi Corner")).toBeInTheDocument();
     expect(screen.queryByText("Vendor account")).not.toBeInTheDocument();
-    expect(screen.queryByText("vendor@example.com")).not.toBeInTheDocument();
-  });
-
-  it("falls back to 'Your stall' (not the email) when no stall name is set", async () => {
-    const user = userEvent.setup();
-    render(<DashboardNav {...baseProps} vendorName={null} />);
-    await user.click(screen.getByRole("button", { name: /account menu/i }));
-    const menu = within(screen.getByRole("menu"));
-    expect(menu.getByText("Your stall")).toBeInTheDocument();
     expect(screen.queryByText("vendor@example.com")).not.toBeInTheDocument();
   });
 
