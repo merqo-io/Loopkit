@@ -1,7 +1,6 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import Link from "next/link";
 import {
   DashboardNav as SharedDashboardNav,
   getSwitchKits,
@@ -53,7 +52,6 @@ export function DashboardNav({
 
   return (
     <SharedDashboardNav
-      LinkComponent={Link}
       wordmark={
         <a
           href="/dashboard"

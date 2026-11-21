@@ -14,6 +14,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Changed
 
 - Repinned `@merqo/ui` to v0.58.0 (commit `716824ed`). The dashboard account menu trigger now shows the stall name through the shared `accountLabel` fallback chain, so it matches the landing nav; the "Your stall" placeholder is gone.
+- Repinned `@merqo/ui` to v0.57.0 (commit `b496faa6`) and mounted `AppLinkProvider` with `next/link` in `Providers`. Client exports (dashboard nav, landing account menu, auth forms) navigate client-side without a `LinkComponent` prop; the redundant props were removed.
+
 - Repinned `@merqo/ui` to v0.56.0 (commit `9705d396`) and moved the landing and About account menu onto the shared `LandingAccountNav` and `toNavUser`. The menu now includes Switch products, and feedback is sent as vendor NPS.
 - Bumped `@merqo/ui` from v0.54.0 to v0.54.1 (commit `272bf23c`). The legal gate no longer caches failed legal-status calls and retries idempotent Supabase and merqo calls once on dropped connections, fixing the sign-in `/legal/accept` loop.
 - Adopted `@merqo/ui` `AuthShell` (login, reset password, MFA), `AdminShell` (admin header and tabs, replacing `admin-nav.tsx` with a small `admin-frame.tsx` client wrapper), `SearchField` (customer search, now with a clear button), `CopyButton` (shop link) and `AsyncSubmitButton` (login and reset-password submit). Admin sign-out is now an icon-only 44px target on phones.
