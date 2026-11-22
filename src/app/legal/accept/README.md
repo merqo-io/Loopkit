@@ -11,20 +11,13 @@ Shared controls and `cn` used by this folder's modules are imported from `@merqo
 ## Contents
 
 - `page.tsx` — `LegalAcceptPage`. Reads the `next` search param (through
-  `safeRedirectPath` from `@merqo/ui`) and renders the client form.
+  `safeRedirectPath` from `@merqo/ui`) and renders `@merqo/ui`'s
+  `AcceptTermsPage` with the `acceptLegalTerms` action and the shared
+  `LegalWordmark`. The shared page owns the heading, the agree checkbox
+  (no typed name) and the submit, which stays disabled until it's checked.
   Deliberately runs **no** legal-gate check itself — it is what the gate
   redirects to, so gating it would loop. Exports `metadata` with the page
-  title "Review updated terms".
-- `page.dom.test.tsx` — jsdom tests asserting the heading renders and that a
-  safe `next` param passes through to `AcceptForm` unchanged while an
-  unsafe/missing one falls back to `/dashboard`.
-- `accept-form.tsx` — `AcceptForm`, a client component wrapping
-  `@merqo/ui`'s `TermsAcceptanceCheckbox` (just the agree checkbox — no
-  typed name); the submit button is disabled until it's checked. Posts to
-  `acceptLegalTerms`.
-- `accept-form.dom.test.tsx` — jsdom tests asserting the hidden `next`
-  field carries the prop through and Continue stays disabled until the
-  checkbox is checked.
+  title "Review updated terms". Tested in `../page.dom.test.tsx`.
 - `actions.ts` — `acceptLegalTerms` server action. Re-checks for a
   signed-in user (redirects to `/login` otherwise), reads the real `ip`
   (via a local `clientIp` helper reading `x-forwarded-for`/`x-real-ip`) and
