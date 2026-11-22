@@ -24,20 +24,12 @@ export function Nav({
           <span className="sr-only">loopkit home</span>
         </Link>
       }
+      links={[
+        { label: "About", href: "/about" },
+        { label: "FAQ", href: "/faq" },
+      ]}
       end={
         <>
-          <Link
-            href="/about"
-            className="hidden rounded-sm px-1 text-sm text-muted-foreground outline-none hover:text-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50 sm:inline"
-          >
-            About
-          </Link>
-          <Link
-            href="/faq"
-            className="hidden rounded-sm px-1 text-sm text-muted-foreground outline-none hover:text-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50 sm:inline"
-          >
-            FAQ
-          </Link>
           {authed && account ? (
             <NavAccount user={account} signOut={signOutAction} />
           ) : (
