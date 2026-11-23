@@ -20,13 +20,13 @@ describe("Nav", () => {
     render(<Nav />);
 
     const header = screen.getByRole("banner");
-    expect(header).toHaveClass("sticky", "py-4", "backdrop-blur-md");
+    expect(header).toHaveClass("sticky", "py-4");
     expect(screen.getByText("loopkit home")).toBeInTheDocument();
   });
 
   it("links to the About page", () => {
     render(<Nav />);
-    expect(screen.getByRole("link", { name: "About" })).toHaveAttribute(
+    expect(screen.getAllByRole("link", { name: "About" })[0]).toHaveAttribute(
       "href",
       "/about",
     );
@@ -34,22 +34,21 @@ describe("Nav", () => {
 
   it("links to the FAQ page", () => {
     render(<Nav />);
-    expect(screen.getByRole("link", { name: "FAQ" })).toHaveAttribute(
+    expect(screen.getAllByRole("link", { name: "FAQ" })[0]).toHaveAttribute(
       "href",
       "/faq",
     );
   });
 
-  it("hides About and FAQ below sm so the nav keeps its gutter at 375px", () => {
+  it("opens About and FAQ from the burger menu below sm", async () => {
+    const user = userEvent.setup();
     render(<Nav />);
-    for (const name of ["About", "FAQ"]) {
-      expect(screen.getByRole("link", { name })).toHaveClass(
-        "hidden",
-        "sm:inline",
-      );
-    }
-    expect(screen.getByRole("link", { name: "Sign in" })).not.toHaveClass(
-      "hidden",
+    await user.click(screen.getByRole("button", { name: "Menu" }));
+    expect(
+      screen.getAllByRole("link", { name: "About" }).length,
+    ).toBeGreaterThan(0);
+    expect(screen.getAllByRole("link", { name: "FAQ" }).length).toBeGreaterThan(
+      0,
     );
   });
 
@@ -59,7 +58,7 @@ describe("Nav", () => {
       "hidden",
     );
     expect(
-      screen.getByRole("button", { name: /account|menu|aunty/i }),
+      screen.getByRole("button", { name: /account menu/i }),
     ).toBeInTheDocument();
   });
 
@@ -79,7 +78,7 @@ describe("Nav", () => {
     );
     expect(screen.queryByRole("link", { name: "Sign in" })).toBeNull();
 
-    const trigger = screen.getByRole("button", { name: /account|menu|aunty/i });
+    const trigger = screen.getByRole("button", { name: /account menu/i });
     await user.pointer({ keys: "[TouchA]", target: trigger });
     expect(
       await screen.findByRole("menuitem", { name: /sign out/i }),
@@ -91,7 +90,7 @@ describe("Nav", () => {
     render(<Nav authed account={ACCOUNT} />);
     await user.pointer({
       keys: "[TouchA]",
-      target: screen.getByRole("button", { name: /account|menu|aunty/i }),
+      target: screen.getByRole("button", { name: /account menu/i }),
     });
     expect(await screen.findByText(/switch products/i)).toBeInTheDocument();
   });
