@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.5.2] - 2026-11-23
+
 ### Fixed
 
 - The landing nav account label now shows the same stall name as the dashboard (the shared `merqo.vendor_profile` stall name) instead of the signed-in user's full name; if that read fails it falls back to the auth user name.
@@ -14,6 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 
+- Repinned `@merqo/ui` to v0.60.0 (commit `d9ba206c`): the Terms "Fees and billing" section changed and the legal version date was bumped, so signed-in vendors re-accept on next sign-in.
 - The landing nav at 375px now has a burger menu holding About and FAQ next to the logo and the call to action, instead of hiding them. Repinned `@merqo/ui` to v0.59.1 (commit `94eb4548`).
 - The terms, privacy and accept-terms pages now use `@merqo/ui`'s `LegalPage` / `legalPageMetadata` and `AcceptTermsPage`. Each page gets a loopkit wordmark linking home and a proper title; the accept page keeps its sanitised `next` and runs no legal gate. A small `LegalPageClient` wrapper keeps `LegalPage` out of Server Components, which 500 on 0.57.0. The local `accept-form.tsx` is removed.
 - Repinned `@merqo/ui` to v0.58.0 (commit `716824ed`). The dashboard account menu trigger now shows the stall name through the shared `accountLabel` fallback chain, so it matches the landing nav; the "Your stall" placeholder is gone.
