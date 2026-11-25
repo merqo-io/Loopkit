@@ -1,10 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { DataTable, type DataTableColumn } from "@merqo/ui";
+import { DataTable, type DataTableColumn, formatDate } from "@merqo/ui";
 import type { ProgramOverviewRow } from "@/lib/admin-data";
 import { programHealth, type ProgramHealth } from "@/lib/program-health";
-import { formatSgtDate } from "@/lib/format";
 import { ProgramHealthBadge } from "@/app/admin/health-badge";
 
 // `DataTable` is a `@merqo/ui` Client Component, so its `columns` cell
@@ -77,7 +76,7 @@ export function ProgramsTable({
       header: "Last activity",
       cell: (p) => (
         <span className="text-muted-foreground">
-          {p.last_activity_at ? formatSgtDate(p.last_activity_at) : "Not set"}
+          {p.last_activity_at ? formatDate(p.last_activity_at) : "Not set"}
         </span>
       ),
     },

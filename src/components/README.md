@@ -89,3 +89,5 @@ tilt treatment regardless of which visual they host.
 On coarse pointers the shared controls reach 44px via the `@media (pointer: coarse)` rules in `src/app/globals.css`; use `.tap-area` to grow only the touch area of a small control.
 
 Celebration and game copy (reward-celebration, wheel) carries no emoji.
+
+`section.tsx` wraps `@merqo/ui`'s `Section` in an `ElevatedCard` (`rounded-2xl`); its test checks that class rather than the library's in-page `rounded-xl` group.

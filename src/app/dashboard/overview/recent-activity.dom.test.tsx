@@ -45,6 +45,11 @@ describe("RecentActivity", () => {
     expect(screen.queryByRole("link", { name: "Serve" })).toBeNull();
   });
 
+  it("shows the time in SGT", () => {
+    render(<RecentActivity rows={[row()]} />);
+    expect(screen.getByText("8 Sep 2026, 10:00 am")).toBeInTheDocument();
+  });
+
   it("masks the phone number", () => {
     render(<RecentActivity rows={[row()]} />);
     expect(screen.getByText("9123 ****")).toBeInTheDocument();
