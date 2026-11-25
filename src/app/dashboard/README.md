@@ -87,3 +87,5 @@ Each page exports its own `metadata.title`, shown through the root `loopkit | %s
 card-link test pins the clipboard-failure copy.
 
 `qkit-earn-settings.tsx` shows the plain line "Qkit stamp earning is not available yet." with no link to non-Pro vendors.
+
+Dates and times on these pages render through `@merqo/ui`'s `formatDate`/`formatDateTime` (Singapore time).
