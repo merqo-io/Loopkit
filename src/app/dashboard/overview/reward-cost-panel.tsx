@@ -1,7 +1,6 @@
 import Link from "next/link";
 import type { CostView } from "@/app/dashboard/dashboard-view";
-import { formatSgd } from "@/lib/money";
-import { ElevatedCard } from "@merqo/ui";
+import { formatMoney, ElevatedCard } from "@merqo/ui";
 
 export function RewardCostPanel({
   cost,
@@ -10,7 +9,7 @@ export function RewardCostPanel({
   cost: CostView;
   manageHref?: string;
 }) {
-  const knownCost = formatSgd(cost.knownCostCents);
+  const knownCost = formatMoney(cost.knownCostCents);
   const costValue =
     cost.programsMissingCost === 0 ? knownCost : `${knownCost}+`;
 
@@ -65,10 +64,10 @@ export function RewardCostPanel({
               <span className="whitespace-nowrap text-muted-foreground">
                 {p.unitCents === null
                   ? "cost not set"
-                  : `${formatSgd(p.unitCents)} ea`}
+                  : `${formatMoney(p.unitCents)} ea`}
               </span>
               <span className="min-w-12 text-right font-semibold">
-                {p.lineCents === null ? "" : formatSgd(p.lineCents)}
+                {p.lineCents === null ? "" : formatMoney(p.lineCents)}
               </span>
             </div>
           ))}

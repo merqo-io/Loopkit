@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Gift, Stamp, UserPlus } from "lucide-react";
 import type { VendorActivityRow } from "@/lib/activity";
-import { formatSgtDateTime } from "@/lib/format";
+import { formatDateTime } from "@merqo/ui";
 import { maskPhone } from "@/lib/phone";
 
 function mark(row: VendorActivityRow) {
@@ -55,7 +55,7 @@ export function RecentActivity({ rows }: { rows: VendorActivityRow[] }) {
                   </span>
                 </span>
                 <span className="shrink-0 font-mono text-[0.7rem] text-muted-foreground">
-                  {formatSgtDateTime(row.createdAt)}
+                  {formatDateTime(row.createdAt)}
                 </span>
                 {!row.isReward && programId && (
                   <Link

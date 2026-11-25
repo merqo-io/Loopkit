@@ -35,7 +35,7 @@ describe("RewardCostPanel", () => {
   it("shows the summary numbers", () => {
     render(<RewardCostPanel cost={cost()} />);
     expect(screen.getByText("17")).toBeInTheDocument();
-    expect(screen.getByText("$33.00")).toBeInTheDocument();
+    expect(screen.getByText("S$33.00")).toBeInTheDocument();
     expect(screen.getByText(/23/)).toBeInTheDocument();
     expect(screen.getByText(/expired unclaimed/)).toBeInTheDocument();
   });
@@ -45,7 +45,7 @@ describe("RewardCostPanel", () => {
     expect(screen.queryByText(/no cost set/)).toBeNull();
     rerender(<RewardCostPanel cost={cost({ programsMissingCost: 1 })} />);
     expect(screen.getByText(/1 program has no cost set/)).toBeInTheDocument();
-    expect(screen.getByText("$33.00+")).toBeInTheDocument();
+    expect(screen.getByText("S$33.00+")).toBeInTheDocument();
   });
 
   it("lists every program in the breakdown", () => {
@@ -53,6 +53,8 @@ describe("RewardCostPanel", () => {
     expect(screen.getByText(/12 x kopi-o/)).toBeInTheDocument();
     expect(screen.getByText(/1 x \$15 voucher/)).toBeInTheDocument();
     expect(screen.getByText("cost not set")).toBeInTheDocument();
+    expect(screen.getByText("S$0.80 ea")).toBeInTheDocument();
+    expect(screen.getByText("S$9.60")).toBeInTheDocument();
   });
 });
 

@@ -4,8 +4,7 @@ import { listPrograms } from "@/lib/program";
 import { getCustomerDetail, getMarketingConsentStatus } from "@/lib/customers";
 import { listActivity } from "@/lib/activity";
 import { normalizePhone } from "@/lib/phone";
-import { formatSgtDate } from "@/lib/format";
-import { ElevatedCard, PageHeader } from "@merqo/ui";
+import { formatDate, ElevatedCard, PageHeader } from "@merqo/ui";
 import { Badge } from "@merqo/ui/primitives";
 import { ActivityTable } from "@/app/dashboard/activity/activity-table";
 import { AdjustStampForm } from "./adjust-stamp-form";
@@ -55,7 +54,7 @@ export default async function CustomerDetailPage({
       >
         {detail.name && `${phone} · `}
         {detail.lastSeenAt
-          ? `Last seen ${formatSgtDate(detail.lastSeenAt)}`
+          ? `Last seen ${formatDate(detail.lastSeenAt)}`
           : "No visits recorded yet"}
       </PageHeader>
 

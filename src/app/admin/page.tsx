@@ -2,8 +2,7 @@ import { AdminPageHeader } from "@/app/admin/admin-page-header";
 import { Gift, Stamp } from "lucide-react";
 import { requireAdmin } from "@/lib/admin";
 import { platformTotals, recentActivity } from "@/lib/admin-data";
-import { formatSgtDateTime } from "@/lib/format";
-import { ElevatedCard, EmptyState, StatCard } from "@merqo/ui";
+import { formatDateTime, ElevatedCard, EmptyState, StatCard } from "@merqo/ui";
 
 export const revalidate = 0;
 
@@ -92,7 +91,7 @@ export default async function AdminOverviewPage() {
                       </span>
                     </span>
                     <span className="shrink-0 text-muted-foreground">
-                      {formatSgtDateTime(event.created_at)}
+                      {formatDateTime(event.created_at)}
                     </span>
                   </li>
                 );

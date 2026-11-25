@@ -1,9 +1,8 @@
 import Link from "next/link";
 import type { VendorCustomerRow } from "@/lib/customers";
-import { formatSgtDate } from "@/lib/format";
+import { formatDate, ElevatedCard, EmptyState } from "@merqo/ui";
 import { Badge } from "@merqo/ui/primitives";
 import { Button } from "@merqo/ui/primitives";
-import { ElevatedCard, EmptyState } from "@merqo/ui";
 
 export function VendorCustomerList({
   customers,
@@ -49,7 +48,7 @@ export function VendorCustomerList({
               </Link>
             </div>
             <span className="shrink-0 text-xs text-muted-foreground">
-              {formatSgtDate(customer.lastSeenAt)}
+              {formatDate(customer.lastSeenAt)}
             </span>
           </div>
           {customer.name && (

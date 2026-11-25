@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Changed
+
+- Repinned `@merqo/ui` to v0.61.1 and adopted its `formatMoney`, `formatDate` and `formatDateTime`; removed the local `formatSgd`, `formatSgtDate` and `formatSgtDateTime`. Reward costs on the dashboard Overview now read "S$33.00" instead of "$33.00". The admin activity log uses the table's default SGT timestamp.
+
 ## [0.5.2] - 2026-11-23
 
 ### Fixed
