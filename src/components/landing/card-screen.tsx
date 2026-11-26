@@ -105,12 +105,9 @@ export function CounterScreen({
       {ready ? (
         <p className="text-xs font-semibold text-gold-accent">{REWARD_READY}</p>
       ) : null}
-      {note ? (
-        <p className="text-xs text-muted-foreground" aria-live="polite">
-          {note}
-        </p>
-      ) : null}
-      {action ? <div className="mt-auto">{action}</div> : null}
+      <div className="mt-auto flex min-h-11 items-center" aria-live="polite">
+        {action ?? <p className="text-xs text-muted-foreground">{note}</p>}
+      </div>
     </div>
   );
 }

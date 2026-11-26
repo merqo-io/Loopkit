@@ -54,6 +54,8 @@ function useTapPlay() {
   } | null>(null);
   if (override !== null && !reduced) {
     if (scrollStep < override.at) setOverride(null);
+    // Raising `at` keeps a press alive while scrolling on; only scrolling back
+    // above the press point rewinds it.
     else if (scrollStep > override.at)
       setOverride({ ...override, at: scrollStep });
   }

@@ -25,7 +25,7 @@ export function Hero({ authed = false }: { authed?: boolean }) {
           loopkit · loyalty for small vendors
         </p>
         <h1 className="mt-4 max-w-xl text-balance font-display text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl">
-          Turn one-time buyers into regulars.
+          Turn one&#8209;time buyers into regulars.
         </h1>
         <p className="mt-5 max-w-md text-lg text-muted-foreground">
           A digital stamp card for your stall. Stamp customers by phone, reward

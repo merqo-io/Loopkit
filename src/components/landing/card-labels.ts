@@ -15,6 +15,8 @@ export const COUNTER_TITLE = "Counter";
 
 export const stampsLine = (n: number) => `${n} / ${CARD_TOTAL} stamps`;
 export const rewardLine = `Reward: ${REWARD_TEXT}`;
+// A non-breaking space keeps the number on one line inside notes.
+const NOTE_PHONE = SAMPLE_PHONE.replace(" ", " ");
 export const stampedNote = (n: number) =>
-  `Stamped ${SAMPLE_PHONE}, ${n}/${CARD_TOTAL}`;
-export const redeemedNote = `Reward redeemed for ${SAMPLE_PHONE}.`;
+  `Stamped ${NOTE_PHONE}, ${n}/${CARD_TOTAL}`;
+export const redeemedNote = `Reward redeemed for ${NOTE_PHONE}.`;
