@@ -1,6 +1,12 @@
 "use client";
 
-import { useRef, useState, type ReactNode, type RefObject } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+  type RefObject,
+} from "react";
 import {
   Journey,
   JourneyStep,
@@ -15,58 +21,104 @@ import {
   CARD_TOTAL,
   CHECK_BUTTON,
   REDEEM_BUTTON,
+  SAMPLE_PHONE,
   STAMP_BUTTON,
-  cardCreatedNote,
   redeemedNote,
+  stampedNote,
 } from "./card-labels";
 import { CONTAINER } from "./rhythm";
 
-const PHONE = "h-[300px] w-[210px] max-w-full min-w-0";
-const STAGE =
-  "grid w-full grid-cols-1 justify-items-center gap-3 sm:flex sm:flex-wrap sm:justify-center sm:gap-4";
+const PHONE =
+  "h-[236px] w-[165px] max-w-full min-w-0 sm:h-[260px] sm:w-[210px]";
+const STAGE = "flex w-full flex-nowrap justify-center gap-2 sm:gap-4";
 const REPLAY =
   "inline-flex min-h-11 items-center justify-center rounded-lg border-[1.5px] border-border px-4 text-sm font-semibold transition-colors hover:bg-muted active:bg-muted/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background";
 
+/** Frames of the join walk-through: empty field, typing, button pressed, card. */
+const JOIN_FRAMES = 3;
+const JOIN_TICK_MS = 700;
+const JOIN_TYPED = ["", "9123 4", SAMPLE_PHONE, SAMPLE_PHONE];
+
 /**
- * One step's play head. Scroll plays the step and rewinds it. A tap or the
- * replay control overrides it until the scroll position moves to another step,
- * so scrolling back up still rewinds. Under reduced motion scroll drives
- * nothing: the step shows its finished state and the controls replay it.
+ * Steps 2 and 3 are the visitor's to press. Scrolling never plays them: it
+ * only rewinds a press once the scroll position moves on. Under reduced motion
+ * the step rests on its finished state and Replay hands back the button.
  */
-function useStepPlay(ref: RefObject<HTMLElement | null>) {
+function useTapPlay() {
   const reduced = usePrefersReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
   const scrollStep = useScrollPlay(ref, 1);
   const [override, setOverride] = useState<{
     at: number;
     value: boolean;
   } | null>(null);
-  if (override !== null && !reduced && override.at !== scrollStep) {
-    setOverride(null);
+  if (override !== null && !reduced) {
+    if (scrollStep < override.at) setOverride(null);
+    else if (scrollStep > override.at)
+      setOverride({ ...override, at: scrollStep });
   }
-  const base = reduced || scrollStep >= 1;
   return {
-    played: override ? override.value : base,
+    ref,
+    played: override ? override.value : reduced,
     play: () => setOverride({ at: scrollStep, value: true }),
     rewind: () => setOverride({ at: scrollStep, value: false }),
   };
 }
 
+/**
+ * Step 1 is a watch: scroll position is the play head and rewinds on the way
+ * up. Replay re-runs the frames on a timer; under reduced motion it instead
+ * returns to the start with an operable button.
+ */
+function useJoinPlay() {
+  const reduced = usePrefersReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
+  const scrollStep = useScrollPlay(ref, JOIN_FRAMES);
+  const [override, setOverride] = useState<{
+    at: number;
+    frame: number;
+  } | null>(null);
+  if (override !== null && !reduced && override.at !== scrollStep) {
+    setOverride(null);
+  }
+  const running = override !== null && !reduced && override.frame < JOIN_FRAMES;
+  useEffect(() => {
+    if (!running || override === null) return;
+    const t = setTimeout(
+      () => setOverride({ at: override.at, frame: override.frame + 1 }),
+      JOIN_TICK_MS,
+    );
+    return () => clearTimeout(t);
+  }, [running, override]);
+  const restingFrame = reduced
+    ? JOIN_FRAMES
+    : Math.min(scrollStep, JOIN_FRAMES);
+  const frame = override ? override.frame : restingFrame;
+  return {
+    ref,
+    frame,
+    reduced,
+    replay: () => setOverride({ at: scrollStep, frame: 0 }),
+    finish: () => setOverride({ at: scrollStep, frame: JOIN_FRAMES }),
+  };
+}
+
 function Stage({
   stageRef,
-  played,
-  rewind,
+  showReplay,
+  replay,
   children,
 }: {
   stageRef: RefObject<HTMLDivElement | null>;
-  played: boolean;
-  rewind: () => void;
+  showReplay: boolean;
+  replay: () => void;
   children: ReactNode;
 }) {
   return (
     <div ref={stageRef} className="flex w-full flex-col items-center gap-3">
       <div className={STAGE}>{children}</div>
-      {played ? (
-        <button type="button" onClick={rewind} className={REPLAY}>
+      {showReplay ? (
+        <button type="button" onClick={replay} className={REPLAY}>
           Replay
         </button>
       ) : null}
@@ -75,19 +127,33 @@ function Stage({
 }
 
 function JoinStage() {
-  const ref = useRef<HTMLDivElement>(null);
-  const { played, play, rewind } = useStepPlay(ref);
+  const { ref, frame, reduced, replay, finish } = useJoinPlay();
+  const done = frame === JOIN_FRAMES;
   return (
-    <Stage stageRef={ref} played={played} rewind={rewind}>
+    <Stage stageRef={ref} showReplay={done} replay={replay}>
       <PhoneFrame label="Customer's phone" size="small" className={PHONE}>
-        {played ? (
+        {done ? (
           <CardScreen stamps={0} />
         ) : (
           <JoinScreen
+            phone={JOIN_TYPED[frame]}
             action={
-              <PressButton onClick={play} className="h-11 text-sm">
-                {CHECK_BUTTON}
-              </PressButton>
+              reduced ? (
+                <PressButton
+                  onClick={finish}
+                  className="h-11 px-2 text-sm leading-tight text-balance"
+                >
+                  {CHECK_BUTTON}
+                </PressButton>
+              ) : (
+                <PressButton
+                  aria-hidden
+                  tabIndex={-1}
+                  className={`pointer-events-none h-11 px-2 text-sm leading-tight text-balance ${frame === 2 ? "scale-[0.97]" : ""}`}
+                >
+                  {CHECK_BUTTON}
+                </PressButton>
+              )
             }
           />
         )}
@@ -97,20 +163,16 @@ function JoinStage() {
 }
 
 function StampStage() {
-  const ref = useRef<HTMLDivElement>(null);
-  const { played, play, rewind } = useStepPlay(ref);
+  const { ref, played, play, rewind } = useTapPlay();
   return (
-    <Stage stageRef={ref} played={played} rewind={rewind}>
+    <Stage stageRef={ref} showReplay={played} replay={rewind}>
       <PhoneFrame label="Vendor's counter" size="small" className={PHONE}>
         <CounterScreen
           stamps={played ? 1 : 0}
-          note={played ? cardCreatedNote : undefined}
+          note={played ? stampedNote(1) : undefined}
           action={
             played ? undefined : (
-              <PressButton
-                onClick={play}
-                className="h-11 px-2 text-sm leading-tight text-balance"
-              >
+              <PressButton onClick={play} className="h-11 text-sm">
                 {STAMP_BUTTON}
               </PressButton>
             )
@@ -129,10 +191,9 @@ function StampStage() {
 }
 
 function RedeemStage() {
-  const ref = useRef<HTMLDivElement>(null);
-  const { played, play, rewind } = useStepPlay(ref);
+  const { ref, played, play, rewind } = useTapPlay();
   return (
-    <Stage stageRef={ref} played={played} rewind={rewind}>
+    <Stage stageRef={ref} showReplay={played} replay={rewind}>
       <PhoneFrame label="Vendor's counter" size="small" className={PHONE}>
         <CounterScreen
           stamps={played ? 0 : CARD_TOTAL}
@@ -150,7 +211,7 @@ function RedeemStage() {
       <PhoneFrame label="Customer's phone" size="small" className={PHONE}>
         <CardScreen
           stamps={played ? 0 : CARD_TOTAL}
-          status={played ? "redeemed" : "ready"}
+          status={played ? "stamping" : "ready"}
         />
       </PhoneFrame>
     </Stage>
@@ -180,8 +241,8 @@ export function CardJourney() {
           />
           <JourneyStep
             label="Come back"
-            heading="The card fills, the reward is ready."
-            say="When it is full you redeem it from the counter and their card shows it."
+            heading="The card fills, you redeem the reward."
+            say="When the card is full the reward is ready. Redeem it from the counter and the card starts again."
             stage={<RedeemStage />}
           />
         </Journey>

@@ -4,16 +4,16 @@ import { cn } from "@merqo/ui/primitives";
 
 import {
   CARD_TOTAL,
+  COUNTER_TITLE,
   JOIN_NOTE,
   REWARD_READY,
-  REWARD_REDEEMED,
   SAMPLE_PHONE,
   SHOP_NAME,
   rewardLine,
   stampsLine,
 } from "./card-labels";
 
-export type CardStatus = "stamping" | "ready" | "redeemed";
+export type CardStatus = "stamping" | "ready";
 
 /** The customer's card as /c shows it: dots, the count, the reward, a status. */
 export function CardScreen({
@@ -57,20 +57,26 @@ export function CardScreen({
         aria-live="polite"
       >
         {status === "ready" ? REWARD_READY : null}
-        {status === "redeemed" ? REWARD_REDEEMED : null}
       </p>
     </div>
   );
 }
 
 /** The /c join page: the phone-number prompt a customer sees after the QR. */
-export function JoinScreen({ action }: { action: ReactNode }) {
+export function JoinScreen({
+  phone = SAMPLE_PHONE,
+  action,
+}: {
+  /** What is typed in the field so far; empty shows the placeholder caret. */
+  phone?: string;
+  action: ReactNode;
+}) {
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-2 text-left">
       <p className="truncate font-display text-sm font-bold">{SHOP_NAME}</p>
       <p className="text-xs text-muted-foreground">{JOIN_NOTE}</p>
-      <p className="rounded-lg border border-border px-3 py-2 font-mono text-xs">
-        {SAMPLE_PHONE}
+      <p className="min-h-[34px] rounded-lg border border-border px-3 py-2 font-mono text-xs">
+        {phone}
       </p>
       <div className="mt-auto">{action}</div>
     </div>
@@ -91,6 +97,7 @@ export function CounterScreen({
 }) {
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-2 text-left">
+      <p className="truncate font-display text-sm font-bold">{COUNTER_TITLE}</p>
       <p className="font-mono text-xs font-medium">{SAMPLE_PHONE}</p>
       <p className="font-mono text-xs text-muted-foreground">
         {stampsLine(stamps)}

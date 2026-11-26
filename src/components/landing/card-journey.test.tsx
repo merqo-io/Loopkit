@@ -39,7 +39,7 @@ it("tells the story in exactly three steps with no numerals", () => {
   expect(document.getElementById("how")).not.toBeNull();
 });
 
-it("a touch on each real button plays its step", async () => {
+it("the visitor presses the counter buttons to play steps 2 and 3", async () => {
   stubReducedMotion(false);
   stubScroll(() => 5000);
   const user = userEvent.setup();
@@ -47,71 +47,82 @@ it("a touch on each real button plays its step", async () => {
 
   await user.pointer({
     keys: "[TouchA]",
-    target: screen.getByRole("button", { name: "Check my card" }),
+    target: screen.getByRole("button", { name: "Add stamp" }),
   });
-  expect(screen.queryByRole("button", { name: "Check my card" })).toBeNull();
-
-  await user.pointer({
-    keys: "[TouchA]",
-    target: screen.getByRole("button", { name: "Create card and first stamp" }),
-  });
-  expect(
-    screen.getByText("Card created for 9123 4567, first stamp added."),
-  ).toBeVisible();
+  expect(screen.getByText("Stamped 9123 4567, 1/8")).toBeVisible();
 
   expect(screen.getAllByText("Reward ready!")).toHaveLength(2);
   await user.pointer({
     keys: "[TouchA]",
     target: screen.getByRole("button", { name: "Redeem" }),
   });
-  expect(screen.getByText("Reward redeemed")).toBeVisible();
   expect(screen.getByText("Reward redeemed for 9123 4567.")).toBeVisible();
+  expect(screen.queryByText("Reward ready!")).toBeNull();
 });
 
-it("reduced motion shows every step finished and Replay rewinds it", async () => {
+it("reduced motion shows every step finished and Replay hands back the button", async () => {
   stubReducedMotion(true);
   const user = userEvent.setup();
   render(<CardJourney />);
-  expect(screen.getByText("Reward redeemed")).toBeVisible();
+  expect(screen.getByText("Reward redeemed for 9123 4567.")).toBeVisible();
   expect(screen.queryByRole("button", { name: "Redeem" })).toBeNull();
   const replays = screen.getAllByRole("button", { name: "Replay" });
   expect(replays).toHaveLength(3);
 
   await user.pointer({ keys: "[TouchA]", target: replays[2] });
-  expect(screen.getByRole("button", { name: "Redeem" })).toBeInTheDocument();
   await user.pointer({
     keys: "[TouchA]",
     target: screen.getByRole("button", { name: "Redeem" }),
   });
-  expect(screen.getByText("Reward redeemed")).toBeVisible();
-});
+  expect(screen.getByText("Reward redeemed for 9123 4567.")).toBeVisible();
 
-it("scroll plays a step and scrolling back up rewinds it", () => {
-  stubReducedMotion(false);
-  let top = 100;
-  stubScroll(() => top);
-  render(<CardJourney />);
-  expect(screen.queryByRole("button", { name: "Redeem" })).toBeNull();
-
-  top = 5000;
-  act(() => {
-    window.dispatchEvent(new Event("scroll"));
+  await user.pointer({
+    keys: "[TouchA]",
+    target: screen.getAllByRole("button", { name: "Replay" })[0],
   });
-  expect(screen.getByRole("button", { name: "Redeem" })).toBeInTheDocument();
+  await user.pointer({
+    keys: "[TouchA]",
+    target: screen.getByRole("button", { name: "Check my card" }),
+  });
+  expect(screen.queryByRole("button", { name: "Check my card" })).toBeNull();
 });
 
-it("a tap lapses when scroll moves on", async () => {
+it("scroll never plays steps 2 and 3, it only builds step 1", () => {
   stubReducedMotion(false);
   let top = 5000;
   stubScroll(() => top);
   render(<CardJourney />);
-  await userEvent.click(screen.getByRole("button", { name: "Redeem" }));
-  expect(screen.queryByRole("button", { name: "Redeem" })).toBeNull();
+  expect(screen.getByText(/New here\?/)).toBeVisible();
 
   top = 100;
   act(() => {
     window.dispatchEvent(new Event("scroll"));
   });
+  expect(screen.queryByText(/New here\?/)).toBeNull();
+  expect(screen.getByRole("button", { name: "Add stamp" })).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: "Redeem" })).toBeInTheDocument();
+
+  top = 5000;
+  act(() => {
+    window.dispatchEvent(new Event("scroll"));
+  });
+  expect(screen.getByText(/New here\?/)).toBeVisible();
+});
+
+it("a press lapses when scroll moves back up, not when it moves on", async () => {
+  stubReducedMotion(false);
+  let top = 100;
+  stubScroll(() => top);
+  render(<CardJourney />);
+  await userEvent.click(screen.getByRole("button", { name: "Redeem" }));
+  expect(screen.queryByRole("button", { name: "Redeem" })).toBeNull();
+
+  top = -5000;
+  act(() => {
+    window.dispatchEvent(new Event("scroll"));
+  });
+  expect(screen.queryByRole("button", { name: "Redeem" })).toBeNull();
+
   top = 5000;
   act(() => {
     window.dispatchEvent(new Event("scroll"));

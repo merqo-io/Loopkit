@@ -36,7 +36,7 @@ export function StampCard() {
       <PhoneFrame
         label="Sample stamp card on a customer's phone"
         size="large"
-        className="h-[340px]"
+        className="h-[250px]"
       >
         <CardScreen
           key={state}
