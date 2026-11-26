@@ -6,7 +6,7 @@ test("landing renders", async ({ page }) => {
   await page.goto("/");
   await expect(
     page.getByRole("heading", {
-      name: /Turn one-time buyers into regulars/,
+      name: /Turn one[-‑]time buyers into regulars/,
     }),
   ).toBeVisible();
   await expect(
