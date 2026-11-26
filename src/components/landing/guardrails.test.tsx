@@ -8,9 +8,8 @@ import type { CardStatus } from "@/features/card-check/types";
 import { metadata } from "@/app/layout";
 import { Nav } from "./nav";
 import { Hero } from "./hero";
-import { HowItWorks } from "./how-it-works";
-import { Benefits } from "./benefits";
-import { Faq } from "./faq";
+import { CardJourney } from "./card-journey";
+import { LandingClosing, LandingFaq } from "./sections";
 import { Footer } from "./footer";
 import { FaqPage } from "@merqo/ui";
 import { FAQ_GROUPS, FAQ_INTRO, FAQ_TITLE } from "@/app/faq/faq-content";
@@ -38,9 +37,9 @@ function renderLanding() {
       <Nav />
       <main>
         <Hero />
-        <HowItWorks />
-        <Benefits />
-        <Faq />
+        <CardJourney />
+        <LandingFaq />
+        <LandingClosing />
       </main>
       <Footer />
     </>,
@@ -98,7 +97,7 @@ describe("landing copy guardrails", () => {
   it("points every signup CTA at the waitlist", () => {
     renderLanding();
     const ctas = screen.getAllByRole("link", { name: /join the waitlist/i });
-    expect(ctas).toHaveLength(2);
+    expect(ctas).toHaveLength(3);
     for (const cta of ctas) expect(cta).toHaveAttribute("href", WAITLIST_URL);
     expect(WAITLIST_URL).toBe("https://merqo.io/waitlist?kit=loopkit");
     expect(screen.queryByText("Get started")).toBeNull();
