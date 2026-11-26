@@ -30,7 +30,7 @@ Shared controls and `cn` used by this folder's modules are imported from `@merqo
 - `login/`
 - `not-found.dom.test.tsx` — jsdom test asserting the full 404 copy and the "Back to home" link
 - `not-found.tsx` — branded 404 rendering `NotFound` from `@merqo/ui` ("404" code, "Page not found", the stale-link sentence, one "Back to home" button), e.g. for a stale or mistyped customer card link
-- `page.tsx` — `Home`: landing page composing Nav/Hero/HowItWorks/Benefits/Faq/Footer/BackToTop, reads the viewer via `getLandingAccount` to toggle authed CTAs and feed the nav's account menu (Sign out). No CTA band above the footer, matching qkit.
+- `page.tsx` — `Home`: landing page composing Nav/Hero/CardJourney/LandingFaq/LandingClosing/Footer/BackToTop, reads the viewer via `getLandingAccount` to toggle authed CTAs and feed the nav's account menu (Sign out). No CTA band above the footer, matching qkit.
 - `reset-password/`
 - `setup/`
 

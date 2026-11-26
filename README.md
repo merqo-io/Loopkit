@@ -10,7 +10,7 @@ merqo over HTTP. Browser-tab title is "loopkit | Loyalty cards", and
 pages with their own title use a `title.template` of "loopkit | %s" (every dashboard and admin page now sets one; UI copy has no emoji, em dashes or error contractions, and the shop QR is called the "join code"). Display font is Fraunces
 (`src/app/layout.tsx`), the shared family face every Merqo kit now uses —
 see `docs/business/2026-08-13-typography-family-standard.md` in the
-workspace root for why. The landing page's nav shows a Dashboard link and an account menu (labelled with the shared stall name) with Sign out when signed in; its
+workspace root for why. The landing page is a hero with one switchable stamp card, a three-step scroll journey (`#how`), three FAQ rows and a closing call; its nav shows a Dashboard link and an account menu (labelled with the shared stall name) with Sign out when signed in; its
 footer matches qkit's exactly (single-row wordmark/tagline/copyright/
 sign-in link, no CTA band above it) and its `BackToTop` button matches
 the cross-kit landing-page parity pass. The landing hero's "In build" badge and waitlist CTA are pinned by

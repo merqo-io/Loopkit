@@ -5,12 +5,15 @@ import { Badge } from "@merqo/ui/primitives";
 import { Button } from "@merqo/ui/primitives";
 import { WAITLIST_URL } from "./waitlist";
 import { StampCard } from "./stamp-card";
+import { CONTAINER } from "./rhythm";
 
 const TRUST = ["No app for customers", "Just a phone number"];
 
 export function Hero({ authed = false }: { authed?: boolean }) {
   return (
-    <section className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-16 sm:py-24 lg:grid-cols-2">
+    <section
+      className={`${CONTAINER} grid items-center gap-12 py-16 sm:py-24 lg:grid-cols-2`}
+    >
       <div>
         <div className="flex flex-wrap items-center gap-3">
           <Badge className={GOLD_BADGE}>In build</Badge>
@@ -22,7 +25,7 @@ export function Hero({ authed = false }: { authed?: boolean }) {
           loopkit · loyalty for small vendors
         </p>
         <h1 className="mt-4 max-w-xl text-balance font-display text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl">
-          Turn one-time buyers into regulars.
+          Turn one&#8209;time buyers into regulars.
         </h1>
         <p className="mt-5 max-w-md text-lg text-muted-foreground">
           A digital stamp card for your stall. Stamp customers by phone, reward
