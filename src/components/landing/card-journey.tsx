@@ -21,9 +21,9 @@ import {
 } from "./card-labels";
 import { CONTAINER } from "./rhythm";
 
-const PHONE = "h-[300px] w-full min-w-0 sm:w-[210px]";
+const PHONE = "h-[300px] w-[210px] max-w-full min-w-0";
 const STAGE =
-  "grid grid-cols-1 justify-items-center gap-3 sm:flex sm:flex-wrap sm:justify-center sm:gap-4";
+  "grid w-full grid-cols-1 justify-items-center gap-3 sm:flex sm:flex-wrap sm:justify-center sm:gap-4";
 const REPLAY =
   "inline-flex min-h-11 items-center justify-center rounded-lg border-[1.5px] border-border px-4 text-sm font-semibold transition-colors hover:bg-muted active:bg-muted/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background";
 
@@ -107,7 +107,10 @@ function StampStage() {
           note={played ? cardCreatedNote : undefined}
           action={
             played ? undefined : (
-              <PressButton onClick={play} className="h-11 px-2 text-sm">
+              <PressButton
+                onClick={play}
+                className="h-11 px-2 text-sm leading-tight text-balance"
+              >
                 {STAMP_BUTTON}
               </PressButton>
             )
