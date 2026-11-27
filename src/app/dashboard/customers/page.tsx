@@ -15,10 +15,8 @@ import {
   CUSTOMER_SEGMENTS,
   type CustomerSegment,
 } from "@/lib/customer-segments";
-import { formatSgtDate } from "@/lib/format";
+import { formatDate, ElevatedCard, PageHeader, EmptyState } from "@merqo/ui";
 import { cn } from "@merqo/ui/primitives";
-
-import { ElevatedCard, PageHeader, EmptyState } from "@merqo/ui";
 
 import { VendorCustomerList } from "./vendor-customer-list";
 import { CustomerControls } from "./customer-controls";
@@ -257,7 +255,7 @@ export default async function CustomersPage({
                 </p>
               </div>
               <span className="shrink-0 text-muted-foreground">
-                {formatSgtDate(card.updated_at)}
+                {formatDate(card.updated_at)}
               </span>
             </ElevatedCard>
           ))}

@@ -45,3 +45,5 @@ Admin writes patch only the intended owned profile fields and preserve unrelated
 Every page and action is gated by `requireAdmin()`, which needs `aal2`; a password-only session is redirected to `/mfa`. Service-client imports carry an eslint-disable reason.
 
 Each page exports its own `metadata.title`, shown through the root `loopkit | %s` template. UI copy is plain: no emoji, no em dashes, no contractions in errors.
+
+Dates and times on these pages render through `@merqo/ui`'s `formatDate`/`formatDateTime` (Singapore time).

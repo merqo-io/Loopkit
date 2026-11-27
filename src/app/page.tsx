@@ -1,9 +1,8 @@
 import { Nav } from "@/components/landing/nav";
 import { Hero } from "@/components/landing/hero";
-import { HowItWorks } from "@/components/landing/how-it-works";
-import { Benefits } from "@/components/landing/benefits";
+import { CardJourney } from "@/components/landing/card-journey";
+import { LandingClosing, LandingFaq } from "@/components/landing/sections";
 import { Footer } from "@/components/landing/footer";
-import { Faq } from "@/components/landing/faq";
 import { BackToTop } from "@merqo/ui";
 import { getLandingAccount } from "@/lib/landing-account";
 
@@ -18,9 +17,9 @@ export default async function Home() {
       <Nav authed={authed} account={account} />
       <main>
         <Hero authed={authed} />
-        <HowItWorks />
-        <Benefits />
-        <Faq />
+        <CardJourney />
+        <LandingFaq />
+        <LandingClosing authed={authed} />
       </main>
       <Footer />
       <BackToTop />

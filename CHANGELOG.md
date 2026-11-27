@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Changed
+
+- Landing redesigned to the shared Merqo public pattern: a hero stamp card that switches between just joined, mid-card and reward ready, a three-step scroll journey (watch, tap, come back) with a reduced-motion path, three FAQ rows and a closing call. Removed the Benefits grid, numbered HowItWorks list and the four-row FAQ.
+- Repinned `@merqo/ui` to v0.61.1 and adopted its `formatMoney`, `formatDate` and `formatDateTime`; removed the local `formatSgd`, `formatSgtDate` and `formatSgtDateTime`. Reward costs on the dashboard Overview now read "S$33.00" instead of "$33.00", and amounts of S$1,000 or more get thousands separators. An invalid date now renders "-" instead of "Invalid Date". The admin activity log uses the table's default SGT timestamp.
+
 ## [0.5.2] - 2026-11-23
 
 ### Fixed

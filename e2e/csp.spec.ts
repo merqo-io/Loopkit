@@ -34,7 +34,9 @@ test("a static page keeps the static CSP and still runs", async ({ page }) => {
     /script-src 'self' 'unsafe-inline'/,
   );
   await expect(
-    page.getByRole("heading", { name: /Turn one-time buyers into regulars/ }),
+    page.getByRole("heading", {
+      name: /Turn one[-‑]time buyers into regulars/,
+    }),
   ).toBeVisible();
   expect(problems).toEqual([]);
 });

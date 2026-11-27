@@ -23,7 +23,8 @@ several (`admin-data.test.ts`, `admin.test.ts`, `cards.test.ts`,
 - `loyalty.test.ts` — `rewardReady`: stamp count vs. requirement check
 - `merqo-auth.test.ts` — `provisionBearerOk`: true on the correct `MERQO_PROVISION_SECRET` bearer, false when missing/unset, false when the `MERQO_METRICS_SECRET` value is sent instead — the two secrets must not be interchangeable; plus `bearerOk(request, envVarName)`, the shared helper the 3 `src/app/api/merqo/*` routes now call instead of each defining their own copy
 - `metrics.test.ts` — `computeLoopkitMetrics`: maps programs/cards/stamp events onto merqo's metrics shape
-- `money.test.ts` — `dollarsToCents` (rounding, incl. the `1.005 -> 100` IEEE-754 case), `centsToDollars`, `formatSgd` (`"$1.20"`)
+- `ui-format.test.ts` — pins the `@merqo/ui` `formatMoney` (`S$1,000.00`) and `formatDate`/`formatDateTime` (SGT, `-` for invalid input) formats loopkit relies on
+- `money.test.ts` — `dollarsToCents` (rounding, incl. the `1.005 -> 100` IEEE-754 case), `centsToDollars`
 - `phone.test.ts` — `normalizePhone`: SG mobile formats normalize to E.164 `+65…`; `maskPhone`: keeps the first 4 local digits and masks the rest, returns a too-short input unchanged
 - `program-access.test.ts` — `currentProgram`/`canCreateProgram`/`getEntitlement`: free/Pro program-count gating, and `getEntitlement`'s full shape including `allowedFamilies`/`allowedStampStyles`/`customColor`/`showBranding`; its `Program` fixture includes `birthday_bonus_enabled` (migration `0041`)
 - `program-config.test.ts` — `segmentWinPercent`/`overallWinPercent`: each segment's rounded win-% share of total weight, the reward-only overall percentage, and the zero-total-weight edge case for both

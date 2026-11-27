@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { dollarsToCents, centsToDollars, formatSgd } from "@/lib/money";
+import { dollarsToCents, centsToDollars } from "@/lib/money";
 
 describe("dollarsToCents", () => {
   it("converts and rounds to the nearest cent", () => {
@@ -18,13 +18,5 @@ describe("centsToDollars", () => {
   it("is the inverse for whole cents", () => {
     expect(centsToDollars(120)).toBeCloseTo(1.2, 10);
     expect(centsToDollars(0)).toBe(0);
-  });
-});
-
-describe("formatSgd", () => {
-  it("always shows two decimal places with a leading $", () => {
-    expect(formatSgd(120)).toBe("$1.20");
-    expect(formatSgd(0)).toBe("$0.00");
-    expect(formatSgd(1050)).toBe("$10.50");
   });
 });

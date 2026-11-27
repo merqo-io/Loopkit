@@ -2,9 +2,13 @@
 
 import { Gift, Stamp, Pencil } from "lucide-react";
 import Link from "next/link";
-import { DataTable, type DataTableColumn, EmptyState } from "@merqo/ui";
+import {
+  DataTable,
+  type DataTableColumn,
+  EmptyState,
+  formatDateTime,
+} from "@merqo/ui";
 import { Badge } from "@merqo/ui/primitives";
-import { formatSgtDateTime } from "@/lib/format";
 import type { VendorActivityRow } from "@/lib/activity";
 
 function activityIcon(event: VendorActivityRow) {
@@ -105,7 +109,7 @@ export function ActivityTable({
       header: "Date",
       cell: (event) => (
         <span className="text-muted-foreground">
-          {formatSgtDateTime(event.createdAt)}
+          {formatDateTime(event.createdAt)}
         </span>
       ),
       className: "text-right",

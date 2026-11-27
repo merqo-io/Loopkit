@@ -1,46 +1,49 @@
 // @vitest-environment jsdom
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { StampCard } from "./stamp-card";
 
+function pressed() {
+  return screen
+    .getAllByRole("button")
+    .filter((b) => b.getAttribute("aria-pressed") === "true")
+    .map((b) => b.textContent);
+}
+
 describe("StampCard", () => {
-  it("renders 8 dots: 6 stamped (last one animated), 1 unstamped, 1 reward", () => {
+  it("starts mid-card with the newest stamp animated", () => {
     const { container } = render(<StampCard />);
-    const dots = container.querySelectorAll(".rounded-full");
-    expect(dots).toHaveLength(8);
-
-    // Stamped dots (0-5) show a check icon; the last stamped dot (index 5)
-    // carries the "just stamped" pop animation and delay.
-    for (let i = 0; i < 6; i++) {
-      expect(dots[i].querySelector("svg")).toBeInTheDocument();
-    }
-    expect(dots[5]).toHaveClass("motion-safe:animate-stamp-pop");
-
-    // Unstamped dot (index 6) shows its number, not an icon.
-    expect(dots[6]).toHaveTextContent("7");
-    expect(dots[6]).not.toHaveClass("motion-safe:animate-stamp-pop");
-
-    // Reward dot (index 7, last) shows a gift icon and the gold border class.
-    expect(dots[7]).toHaveClass("border-gold");
-    expect(dots[7].querySelector("svg")).toBeInTheDocument();
+    expect(screen.getByText("5 / 8 stamps")).toBeInTheDocument();
+    expect(pressed()).toEqual(["Mid-card"]);
+    expect(
+      container.querySelectorAll(".motion-safe\\:animate-stamp-pop"),
+    ).toHaveLength(1);
   });
 
-  it("has no shadow and keeps its rounded edge and border", () => {
-    const { container } = render(<StampCard />);
-    const root = container.firstElementChild as HTMLElement;
-    expect(Array.from(root.classList).some((c) => c.startsWith("shadow"))).toBe(
-      false,
-    );
-    expect(root).toHaveClass("rounded-lg", "border");
+  it("walks the card through joined, mid-card and reward ready by touch", async () => {
+    const user = userEvent.setup();
+    render(<StampCard />);
+    await user.pointer({
+      keys: "[TouchA]",
+      target: screen.getByRole("button", { name: "Just joined" }),
+    });
+    expect(screen.getByText("1 / 8 stamps")).toBeInTheDocument();
+    expect(screen.queryByText("Reward ready!")).toBeNull();
+
+    await user.pointer({
+      keys: "[TouchA]",
+      target: screen.getByRole("button", { name: "Reward ready" }),
+    });
+    expect(screen.getByText("8 / 8 stamps")).toBeInTheDocument();
+    expect(screen.getByText("Reward ready!")).toBeInTheDocument();
+    expect(pressed()).toEqual(["Reward ready"]);
   });
 
-  it("labels itself as a sample outside the aria-hidden illustration", () => {
+  it("has no shadow and keeps one small radius on its own surfaces", () => {
     const { container } = render(<StampCard />);
-    const label = screen.getByText("Sample");
-    expect(label).toBeVisible();
-    expect(label.closest("[aria-hidden]")).toBeNull();
-    expect(container.querySelector("[aria-hidden]")).toHaveTextContent(
-      "Kaya Toast Co.",
-    );
+    expect(container.querySelector('[class*="shadow"]')).toBeNull();
+    expect(container.querySelector('[class*="rounded-["]')).toBeNull();
+    expect(container.querySelector('[class*="rounded-2"]')).toBeNull();
   });
 });

@@ -1,13 +1,19 @@
 import { notFound } from "next/navigation";
-import { BackButton, PageHeader, EmptyState, StatCard } from "@merqo/ui";
+import {
+  BackButton,
+  PageHeader,
+  EmptyState,
+  StatCard,
+  formatDate,
+  formatDateTime,
+  ElevatedCard,
+} from "@merqo/ui";
 import { Gift, Stamp } from "lucide-react";
 import { requireAdmin } from "@/lib/admin";
 import { getProgramDetail } from "@/lib/admin-data";
 import { programHealth } from "@/lib/program-health";
 import { ProgramHealthBadge } from "@/app/admin/health-badge";
-import { formatSgtDate, formatSgtDateTime } from "@/lib/format";
 import { Badge } from "@merqo/ui/primitives";
-import { ElevatedCard } from "@merqo/ui";
 import { Manage } from "@/app/admin/programs/[id]/manage";
 
 export const revalidate = 0;
@@ -86,7 +92,7 @@ export default async function AdminProgramDetailPage({
         <StatCard
           reverse
           label="Last activity"
-          value={lastActivityAt ? formatSgtDate(lastActivityAt) : "Not set"}
+          value={lastActivityAt ? formatDate(lastActivityAt) : "Not set"}
           valueClassName="font-mono tracking-tight tabular-nums"
         />
       </div>
@@ -129,7 +135,7 @@ export default async function AdminProgramDetailPage({
                       </span>
                     </span>
                     <span className="shrink-0 text-muted-foreground">
-                      {formatSgtDateTime(event.created_at)}
+                      {formatDateTime(event.created_at)}
                     </span>
                   </li>
                 );

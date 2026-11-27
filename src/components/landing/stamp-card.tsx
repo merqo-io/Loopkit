@@ -1,60 +1,67 @@
-import { Check, Gift } from "lucide-react";
-import { cn } from "@merqo/ui/primitives";
+"use client";
 
-// 8-slot card: 6 stamped, the 8th is the reward. The hero thesis — the small
-// joy of a nearly-finished card. Pure markup, no image, renders in the HTML.
-const TOTAL = 8;
-const STAMPED = 6;
+import { useState } from "react";
+import { PhoneFrame } from "@merqo/ui";
 
+import { CardScreen, type CardStatus } from "./card-screen";
+import { CARD_TOTAL } from "./card-labels";
+
+type StateKey = "joined" | "mid" | "ready";
+
+const STATES: Record<
+  StateKey,
+  { label: string; stamps: number; status: CardStatus }
+> = {
+  joined: { label: "Just joined", stamps: 1, status: "stamping" },
+  mid: { label: "Mid-card", stamps: 5, status: "stamping" },
+  ready: { label: "Reward ready", stamps: CARD_TOTAL, status: "ready" },
+};
+
+const ORDER: readonly StateKey[] = ["joined", "mid", "ready"];
+
+/**
+ * The hero's product object: one customer's stamp card in a phone, with a
+ * segmented control that walks it from a fresh card to a reward. Client state
+ * only, so it behaves the same with or without reduced motion.
+ */
 export function StampCard() {
+  const [state, setState] = useState<StateKey>("mid");
+  const current = STATES[state];
+
   return (
-    <div className="w-full max-w-sm rounded-lg border bg-card p-6">
-      <p className="mb-3 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-        Sample
-      </p>
-      <div aria-hidden>
-        <div className="flex items-baseline justify-between">
-          <span className="font-display text-base font-bold">
-            Kaya Toast Co.
-          </span>
-          <span className="font-mono text-xs text-muted-foreground">
-            buy 8, get 1 free
-          </span>
-        </div>
-        <div className="mt-5 grid grid-cols-4 gap-3">
-          {Array.from({ length: TOTAL }).map((_, i) => {
-            const isReward = i === TOTAL - 1;
-            const stamped = i < STAMPED;
-            const justStamped = stamped && i === STAMPED - 1;
-            let dotClassName =
-              "border-dashed border-border text-muted-foreground/40";
-            let icon = <span className="font-mono text-xs">{i + 1}</span>;
-            if (isReward) {
-              dotClassName = "border-gold text-gold-accent";
-              icon = <Gift className="size-4 text-gold" />;
-            } else if (stamped) {
-              dotClassName = "border-transparent bg-gold text-gold-foreground";
-              icon = <Check className="size-4" />;
-            }
-            return (
-              <div
-                key={i}
-                className={cn(
-                  "flex aspect-square items-center justify-center rounded-full border-2 text-sm",
-                  dotClassName,
-                  justStamped && "motion-safe:animate-stamp-pop",
-                )}
-              >
-                {icon}
-              </div>
-            );
-          })}
-        </div>
-        <p className="mt-4 text-sm text-muted-foreground">
-          2 more to a{" "}
-          <span className="font-medium text-foreground">free kopi</span>.
-        </p>
+    <figure
+      className="flex w-full flex-col items-center gap-5"
+      aria-label="Sample loopkit stamp card"
+    >
+      <PhoneFrame
+        label="Sample stamp card on a customer's phone"
+        size="large"
+        className="h-[250px]"
+      >
+        <CardScreen
+          key={state}
+          stamps={current.stamps}
+          status={current.status}
+          popLast
+        />
+      </PhoneFrame>
+      <div
+        role="group"
+        aria-label="Card status"
+        className="flex w-full max-w-[28rem] rounded-lg border border-border p-1"
+      >
+        {ORDER.map((s) => (
+          <button
+            key={s}
+            type="button"
+            aria-pressed={state === s}
+            onClick={() => setState(s)}
+            className="min-h-11 flex-auto whitespace-nowrap rounded-lg px-2 text-xs font-semibold transition-colors hover:bg-muted active:bg-muted/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background aria-pressed:bg-foreground aria-pressed:text-background aria-pressed:hover:bg-foreground/85 sm:px-3 sm:text-sm"
+          >
+            {STATES[s].label}
+          </button>
+        ))}
       </div>
-    </div>
+    </figure>
   );
 }

@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { PageHeader, EmptyState } from "@merqo/ui";
+import { PageHeader, EmptyState, formatDate } from "@merqo/ui";
 import { requireVendor } from "@/features/auth";
 import { listPrograms, applyDueCutovers } from "@/lib/program";
 import { getVendorProfile } from "@/lib/vendor";
@@ -14,7 +14,6 @@ import {
   countNewThisMonth,
 } from "@/lib/stats";
 import { listActivity } from "@/lib/activity";
-import { formatSgtDate } from "@/lib/format";
 import {
   buildOverviewModel,
   buildOverviewPrograms,
@@ -117,7 +116,7 @@ export default async function DashboardPage() {
       }
     >
       {vendorName ? `${vendorName} · ` : ""}
-      {formatSgtDate(new Date(nowMs).toISOString())}
+      {formatDate(new Date(nowMs).toISOString())}
     </PageHeader>
   );
 

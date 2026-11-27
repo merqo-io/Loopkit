@@ -46,7 +46,7 @@ describe("Section", () => {
     expect(container.querySelector("section")).toBeInTheDocument();
   });
 
-  it("wraps content in an ElevatedCard, not @merqo/ui's default flat shell", () => {
+  it("wraps content in an ElevatedCard, not @merqo/ui's in-page rounded-xl group", () => {
     const { container } = render(
       <Section icon={<Store />} title="T" description="D">
         <p>c</p>
@@ -54,6 +54,6 @@ describe("Section", () => {
     );
     const section = container.querySelector("section");
     expect(section?.className).toContain("rounded-2xl");
-    expect(section?.className).not.toContain("bg-card text-card-foreground");
+    expect(section?.className).not.toMatch(/\brounded-xl\b/);
   });
 });
