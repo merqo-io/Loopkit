@@ -14,7 +14,7 @@ workspace root for why. The landing page is a hero with one switchable stamp car
 footer matches qkit's exactly (single-row wordmark/tagline/copyright/
 sign-in link, no CTA band above it) and its `BackToTop` button matches
 the cross-kit landing-page parity pass. The landing hero's "In build" badge and waitlist CTA are pinned by
-`src/components/landing/hero.test.tsx`. The landing `StampCard` has no shadow, only its border and `rounded-lg` corners, and carries a visible "Sample" label, per the shared public page rules. The hero has no entrance animation and the body has no gradient wash. In production, the Supabase auth
+`src/components/landing/hero.test.tsx`. The landing `StampCard` has no shadow, only its border and `rounded-lg` corners, and carries a visible "Sample" label, per the shared public page rules. The hero kicker reads "loopkit · stamp cards for hawkers and small shops", and the header and hero buttons are at least 44px high for phone taps. The hero has no entrance animation and the body has no gradient wash. In production, the Supabase auth
 cookie is scoped to
 `.merqo.io` (`NEXT_PUBLIC_AUTH_COOKIE_DOMAIN`, `src/lib/supabase/`), so
 signing in on one Merqo kit signs you in on the rest. `/login` now offers

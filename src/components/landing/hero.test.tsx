@@ -14,6 +14,13 @@ describe("Hero", () => {
     ).toHaveAttribute("href", WAITLIST_URL);
   });
 
+  it("describes the product as stamp cards for hawkers and small shops", () => {
+    render(<Hero />);
+    expect(
+      screen.getByText("loopkit · stamp cards for hawkers and small shops"),
+    ).toBeInTheDocument();
+  });
+
   it("has no entrance animation", () => {
     const { container } = render(<Hero />);
     expect(container.querySelector(".fade-rise")).toBeNull();

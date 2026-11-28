@@ -22,7 +22,7 @@ export function Hero({ authed = false }: { authed?: boolean }) {
           </p>
         </div>
         <p className="mt-4 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          loopkit · loyalty for small vendors
+          loopkit · stamp cards for hawkers and small shops
         </p>
         <h1 className="mt-4 max-w-xl text-balance font-display text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl">
           Turn one&#8209;time buyers into regulars.
@@ -32,7 +32,7 @@ export function Hero({ authed = false }: { authed?: boolean }) {
           the regulars, nothing for them to download.
         </p>
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-          <Button asChild size="lg">
+          <Button asChild size="lg" className="min-h-11">
             {authed ? (
               <Link href="/dashboard">
                 Go to dashboard
@@ -45,7 +45,7 @@ export function Hero({ authed = false }: { authed?: boolean }) {
               </a>
             )}
           </Button>
-          <Button asChild size="lg" variant="outline">
+          <Button asChild size="lg" variant="outline" className="min-h-11">
             <a href="#how">How it works</a>
           </Button>
         </div>
