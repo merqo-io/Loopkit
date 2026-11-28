@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Fixed
+
+- Landing header Sign in link is now at least 44x44 for phone taps.
+
 ### Changed
 
 - Repinned `@merqo/ui` to v0.62.1. The shared `/about` page now lists qkit as running in a pilot, loopkit, paykit and stockkit as In build, adds printkit, and drops the one-sign-in sentence. The shared footer logo and FAQ link and the header logo are at least 44px high for phone taps.
