@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 
+- Repinned `@merqo/ui` to v0.62.1. The shared `/about` page now lists qkit as running in a pilot, loopkit, paykit and stockkit as In build, adds printkit, and drops the one-sign-in sentence. The shared footer logo and FAQ link and the header logo are at least 44px high for phone taps.
 - Landing hero kicker now reads "loopkit · stamp cards for hawkers and small shops". The header Sign in link and Join the waitlist button and the hero Join the waitlist and How it works buttons are at least 44px high for phone taps.
 - Landing redesigned to the shared Merqo public pattern: a hero stamp card that switches between just joined, mid-card and reward ready, a three-step scroll journey (watch, tap, come back) with a reduced-motion path, three FAQ rows and a closing call. Removed the Benefits grid, numbered HowItWorks list and the four-row FAQ.
 - Repinned `@merqo/ui` to v0.61.1 and adopted its `formatMoney`, `formatDate` and `formatDateTime`; removed the local `formatSgd`, `formatSgtDate` and `formatSgtDateTime`. Reward costs on the dashboard Overview now read "S$33.00" instead of "$33.00", and amounts of S$1,000 or more get thousands separators. An invalid date now renders "-" instead of "Invalid Date". The admin activity log uses the table's default SGT timestamp.

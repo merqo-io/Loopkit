@@ -20,7 +20,7 @@ describe("Nav", () => {
     render(<Nav />);
 
     const header = screen.getByRole("banner");
-    expect(header).toHaveClass("sticky", "py-4");
+    expect(header).toHaveClass("sticky", "py-3");
     expect(screen.getByText("loopkit home")).toBeInTheDocument();
   });
 
