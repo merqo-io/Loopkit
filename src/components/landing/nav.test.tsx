@@ -20,7 +20,7 @@ describe("Nav", () => {
     render(<Nav />);
 
     const header = screen.getByRole("banner");
-    expect(header).toHaveClass("sticky", "py-4");
+    expect(header).toHaveClass("sticky", "py-3");
     expect(screen.getByText("loopkit home")).toBeInTheDocument();
   });
 
@@ -65,6 +65,10 @@ describe("Nav", () => {
   it("shows Sign in and no account menu when signed out", () => {
     render(<Nav />);
     expect(screen.getByRole("link", { name: "Sign in" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Sign in" })).toHaveClass(
+      "min-h-11",
+      "min-w-11",
+    );
     expect(screen.queryByRole("link", { name: "Dashboard" })).toBeNull();
   });
 

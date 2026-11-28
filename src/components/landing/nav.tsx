@@ -36,11 +36,11 @@ export function Nav({
             <>
               <Link
                 href="/login"
-                className="rounded-sm px-1 text-sm text-muted-foreground outline-none hover:text-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50"
+                className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-sm px-1 text-sm text-muted-foreground outline-none hover:text-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50"
               >
                 Sign in
               </Link>
-              <Button asChild size="sm">
+              <Button asChild size="sm" className="min-h-11">
                 <a href={WAITLIST_URL}>Join the waitlist</a>
               </Button>
             </>

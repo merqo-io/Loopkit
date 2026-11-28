@@ -14,7 +14,7 @@ workspace root for why. The landing page is a hero with one switchable stamp car
 footer matches qkit's exactly (single-row wordmark/tagline/copyright/
 sign-in link, no CTA band above it) and its `BackToTop` button matches
 the cross-kit landing-page parity pass. The landing hero's "In build" badge and waitlist CTA are pinned by
-`src/components/landing/hero.test.tsx`. The landing `StampCard` has no shadow, only its border and `rounded-lg` corners, and carries a visible "Sample" label, per the shared public page rules. The hero has no entrance animation and the body has no gradient wash. In production, the Supabase auth
+`src/components/landing/hero.test.tsx`. The landing `StampCard` has no shadow, only its border and `rounded-lg` corners, and carries a visible "Sample" label, per the shared public page rules. The hero kicker reads "loopkit · stamp cards for hawkers and small shops", and the header and hero buttons are at least 44px high for phone taps, and the header Sign in link is at least 44x44. The hero has no entrance animation and the body has no gradient wash. In production, the Supabase auth
 cookie is scoped to
 `.merqo.io` (`NEXT_PUBLIC_AUTH_COOKIE_DOMAIN`, `src/lib/supabase/`), so
 signing in on one Merqo kit signs you in on the rest. `/login` now offers
@@ -51,7 +51,7 @@ output instead of a hand-copied string, so it can't drift from what the
 engine actually computes — see
 `../docs/superpowers/specs/2026-08-25-tour-example-badge-drift-fix-design.md`
 in the workspace root. Migrated onto
-the shared `@merqo/ui` component package (pinned at v0.61.1, commit `c0f1f23d`, in `package.json`; email links land on `/auth/confirm`, see `src/app/auth/README.md`): the
+the shared `@merqo/ui` component package (pinned at v0.62.1, commit `eaec999a`, in `package.json`; email links land on `/auth/confirm`, see `src/app/auth/README.md`): the
 dashboard nav/account dropdown, `useAsyncAction`, `InfoTooltip`,
 `ImageUploader`, `DashboardTour`, the landing page's
 sticky header (`LandingNav`, via `src/components/landing/nav.tsx`), and
