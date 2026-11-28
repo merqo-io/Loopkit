@@ -35,6 +35,8 @@ Shared controls and `cn` used by this folder's modules are imported from `@merqo
 
 `Badge` comes from `@merqo/ui/primitives`; gold badges use `GOLD_BADGE` from `@/lib/gold-badge`.
 
+The header padding (`py-3`) and the 44px logo and link sizes come from the shared `@merqo/ui` v0.62.1 `LandingNav`, so `nav.test.tsx` asserts that class.
+
 ## Parent
 
 [components](../README.md)
