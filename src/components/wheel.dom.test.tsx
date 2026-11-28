@@ -122,8 +122,8 @@ describe("Wheel", () => {
     mockRaf();
     const { container } = render(<Wheel segments={SEGMENTS} landedId={null} />);
     const paths = container.querySelectorAll("path");
-    expect(paths[0].getAttribute("class")).toContain("fill-rose");
-    expect(paths[1].getAttribute("class")).toContain("fill-emerald");
+    expect(paths[0].getAttribute("class")).toContain("fill-art-wheel-loss");
+    expect(paths[1].getAttribute("class")).toContain("fill-success");
   });
 
   it("uses a vendor-picked segment color when set, instead of the reward/non-reward default", () => {
@@ -137,9 +137,11 @@ describe("Wheel", () => {
     );
     const paths = container.querySelectorAll("path");
     expect(paths[0].getAttribute("fill")).toBe("#3b82f6");
-    expect(paths[0].getAttribute("class") ?? "").not.toContain("fill-rose");
+    expect(paths[0].getAttribute("class") ?? "").not.toContain(
+      "fill-art-wheel-loss",
+    );
     // Segment b has no custom color — still falls back to the default.
-    expect(paths[1].getAttribute("class")).toContain("fill-emerald");
+    expect(paths[1].getAttribute("class")).toContain("fill-success");
   });
 
   describe("self-owned result overlay", () => {

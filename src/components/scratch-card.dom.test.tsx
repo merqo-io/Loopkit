@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import { drawCanvasCover } from "./scratch-card-cover";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { ScratchCard, type ScratchCoverStyle } from "./scratch-card";
@@ -16,6 +17,7 @@ function mockMatchMedia(reducedMotion: boolean) {
 // transparent getImageData so one scratch crosses SETTLE_FRACTION.
 function makeFakeCtx() {
   return {
+    canvas: document.createElement("canvas"),
     globalCompositeOperation: "source-over",
     fillStyle: "",
     strokeStyle: "",
@@ -256,6 +258,13 @@ describe("ScratchCard", () => {
         getContextSpy.mockRestore();
       },
     );
+
+    it("resolves art tokens from the canvas element before painting", () => {
+      const ctx = makeFakeCtx();
+      ctx.canvas.style.setProperty("--art-scratch-e8c374", "rgb(1, 2, 3)");
+      drawCanvasCover(ctx as unknown as CanvasRenderingContext2D, "ticket");
+      expect(ctx.fillStyle).toBe("rgb(1, 2, 3)");
+    });
 
     it("scratching enough of the canvas commits the reveal early, and cleanup removes the listeners on unmount", () => {
       const { canvas, unmount, getContextSpy } = mountWithCanvasContext();

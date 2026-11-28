@@ -1,12 +1,13 @@
 // @vitest-environment jsdom
 import { render } from "@testing-library/react";
+import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { Cup } from "@/components/cup";
 import { FlameLayers } from "@/components/flame-layers";
 import { Wheel } from "@/components/wheel";
 
-// Colour values the mechanic art shipped with, before they moved to
-// src/lib/tokens/mechanic-art.ts. The rendered DOM must not drift from them.
+// Colours the mechanic art shipped with. Each one is now an --art-* token in
+// globals.css; the rendered DOM must reference exactly these, as tokens.
 const ORIGINAL = {
   cup: new Set([
     "#2a1810",
@@ -34,8 +35,6 @@ const ORIGINAL = {
     "#f3e6cd",
     "#f5e9d2",
     "#f5ecd8",
-    "color-mix(in oklch, #b89e77, black 15%)",
-    "color-mix(in oklch, #b89e77, black 20%)",
   ]),
   flame: new Set([
     "#5c3d24",
@@ -65,45 +64,85 @@ const ORIGINAL = {
   ]),
 };
 
+const CSS = readFileSync("src/app/globals.css", "utf8");
 const COLOUR_ATTRS = ["fill", "stroke", "stop-color"];
 
-function literalColours(container: HTMLElement): string[] {
+function colours(container: HTMLElement): string[] {
   const found: string[] = [];
   for (const el of container.querySelectorAll("*")) {
     for (const attr of COLOUR_ATTRS) {
       const v = el.getAttribute(attr);
-      if (v && /^#|^color-mix|^rgba?\(/.test(v)) found.push(v);
+      if (v && /^var\(--art-|^color-mix/.test(v)) found.push(v);
     }
   }
   return found;
 }
 
+function literals(container: HTMLElement): string[] {
+  const found: string[] = [];
+  for (const el of container.querySelectorAll("*")) {
+    for (const attr of COLOUR_ATTRS) {
+      const v = el.getAttribute(attr);
+      if (v && /^#|^rgba?\(|^oklch\(/.test(v)) found.push(v);
+    }
+  }
+  return found;
+}
+
+function tokenIds(group: string): Set<string> {
+  const ids = new Set<string>();
+  for (const m of CSS.matchAll(
+    new RegExp(`--art-${group}-([0-9a-f]{6}):\\s*oklch\\(`, "g"),
+  )) {
+    ids.add(`#${m[1]}`);
+  }
+  return ids;
+}
+
+function referencedTokens(list: string[]): string[] {
+  return list.flatMap((c) =>
+    [...c.matchAll(/var\((--art-[\w-]+)\)/g)].map((m) => m[1]),
+  );
+}
+
 describe("mechanic art colours", () => {
-  it("renders the cup with only its original colours", () => {
+  it("defines an art token for every original colour", () => {
+    expect(tokenIds("cup")).toEqual(ORIGINAL.cup);
+    expect(tokenIds("flame")).toEqual(ORIGINAL.flame);
+  });
+
+  it("renders the cup from defined art tokens only", () => {
     const { container } = render(
       <Cup stage={4} totalStages={5} wilting={false} />,
     );
-    const colours = literalColours(container);
-    expect(colours.length).toBeGreaterThan(0);
-    for (const c of colours) expect(ORIGINAL.cup.has(c)).toBe(true);
+    const found = colours(container);
+    expect(found.length).toBeGreaterThan(0);
+    expect(literals(container)).toEqual([]);
+    for (const t of referencedTokens(found)) {
+      expect(CSS).toContain(`${t}:`);
+    }
   });
 
-  it("renders the flame with only its original colours", () => {
+  it("renders the flame from defined art tokens only", () => {
     const { container } = render(<FlameLayers stage={3} />);
-    const colours = literalColours(container);
-    expect(colours.length).toBeGreaterThan(0);
-    for (const c of colours) expect(ORIGINAL.flame.has(c)).toBe(true);
+    const found = colours(container);
+    expect(found.length).toBeGreaterThan(0);
+    expect(literals(container)).toEqual([]);
+    for (const t of referencedTokens(found)) {
+      expect(CSS).toContain(`${t}:`);
+    }
   });
 
-  it("renders the wheel with its original highlight colours", () => {
+  it("renders the wheel highlights from art tokens", () => {
     const { container } = render(
       <Wheel
         segments={[{ id: "a", label: "A", reward: true }]}
         landedId={null}
       />,
     );
-    for (const c of ["#fbe8b8", "#fff7e0"]) {
-      expect(literalColours(container)).toContain(c);
-    }
+    const found = colours(container);
+    expect(found).toContain("var(--art-wheel-fbe8b8)");
+    expect(found).toContain("var(--art-wheel-fff7e0)");
+    expect(literals(container)).toEqual([]);
   });
 });

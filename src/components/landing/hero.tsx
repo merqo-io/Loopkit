@@ -1,4 +1,3 @@
-import { GOLD_BADGE } from "@/lib/gold-badge";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Badge } from "@merqo/ui/primitives";
@@ -16,7 +15,7 @@ export function Hero({ authed = false }: { authed?: boolean }) {
     >
       <div>
         <div className="flex flex-wrap items-center gap-3">
-          <Badge className={GOLD_BADGE}>In build</Badge>
+          <Badge variant="gold">In build</Badge>
           <p className="text-sm text-muted-foreground">
             Built, not yet tried with vendors.
           </p>

@@ -7,7 +7,7 @@ import { maskPhone } from "@/lib/phone";
 function mark(row: VendorActivityRow) {
   if (row.isReward) return { Icon: Gift, cls: "bg-gold/20 text-gold-accent" };
   if (row.kind === "first-visit" || row.label === "First visit") {
-    return { Icon: UserPlus, cls: "bg-emerald-500/15 text-emerald-600" };
+    return { Icon: UserPlus, cls: "bg-success/12 text-success" };
   }
   return { Icon: Stamp, cls: "bg-primary/10 text-primary" };
 }

@@ -13,7 +13,7 @@ import type { VendorActivityRow } from "@/lib/activity";
 
 function activityIcon(event: VendorActivityRow) {
   if (event.isAdjust) {
-    return { bg: "bg-amber-500/15 text-amber-600", Icon: Pencil };
+    return { bg: "bg-warning/12 text-warning", Icon: Pencil };
   }
   if (event.isReward) {
     return { bg: "bg-gold/20 text-gold-accent", Icon: Gift };

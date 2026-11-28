@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "5.2.2",
-    "@merqo/ui": "github:merqo-io/merqo-ui#eaec999a51442ccab9ef0ad2f9fa89a7bf6dffaa",
+    "@merqo/ui": "github:merqo-io/merqo-ui#13c3d3f9d54b20c1615dfba5fe7222b3f47f2a2d",
     "@supabase/ssr": "^0.10.3",
     "@supabase/supabase-js": "2.110.0",
     "@zxing/browser": "^0.2.1",

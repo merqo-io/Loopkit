@@ -5,7 +5,7 @@ import type { BaseStat } from "@/app/dashboard/dashboard-view";
 
 const TONE_CLASS: Record<BaseStat["tone"], string> = {
   plain: "",
-  pos: "text-emerald-600 dark:text-emerald-400",
+  pos: "text-success",
   soft: "text-muted-foreground",
 };
 

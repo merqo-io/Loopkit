@@ -62,7 +62,7 @@ export function ScratchCard({
       className={cn(
         // Embossed edge (inner highlight + drop shadow), not a flat
         // border — reads as a physical card, not a pasted rectangle.
-        "relative h-28 w-48 overflow-hidden rounded-xl border border-gold/25 shadow-[0_3px_10px_-3px_rgb(0_0_0_/_0.35),inset_0_1px_0_0_rgb(255_255_255_/_0.06)]",
+        "relative h-28 w-48 overflow-hidden rounded-xl border border-gold/25 shadow-[0_3px_10px_-3px_color-mix(in_oklch,var(--art-black)_35%,transparent),inset_0_1px_0_0_color-mix(in_oklch,var(--art-white)_6%,transparent)]",
         className,
       )}
     >

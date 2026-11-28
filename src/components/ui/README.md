@@ -5,7 +5,7 @@
 No local primitives remain: every shadcn primitive (button, card, checkbox,
 input, label, select, switch, badge, alert dialog, popover, toggle and toggle
 group, plus `cn`) is imported from `@merqo/ui/primitives`. The shared badge has
-no `gold` variant, so gold badges use `GOLD_BADGE` from `@/lib/gold-badge`.
+no `gold` variant, so gold badges use `variant="gold"`.
 
 ## Contents
 

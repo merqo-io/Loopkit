@@ -1,4 +1,3 @@
-import { GOLD_BADGE } from "@/lib/gold-badge";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
@@ -87,7 +86,7 @@ export default async function CounterPage({ searchParams }: CounterPageProps) {
           <span>
             {program.name} · {describeProgram(program)}
           </span>
-          <Badge className={badge.variant === "gold" ? GOLD_BADGE : undefined}>
+          <Badge variant={badge.variant === "gold" ? "gold" : undefined}>
             {badge.label}
           </Badge>
         </span>

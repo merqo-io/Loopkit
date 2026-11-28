@@ -15,7 +15,7 @@ describe("visits bars", () => {
     expect(bars[1].style.height).toBe("100%");
     expect(bars[0]).toHaveClass("bg-primary/30");
     expect(bars[1]).toHaveClass("bg-primary/70");
-    expect(bars[0].title).toBe("1 Sept: 0");
+    expect(bars[0].title).toBe("1 Sep: 0");
   });
   it("retains Stats raw-date titles", () => {
     render(<VisitsChart data={data} />);

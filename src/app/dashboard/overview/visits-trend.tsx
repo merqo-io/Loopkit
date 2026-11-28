@@ -37,11 +37,7 @@ export function VisitsTrend({
     <figure className="m-0 flex w-full max-w-[37rem] flex-col gap-2">
       <figcaption className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5 text-xs font-bold uppercase tracking-wider text-muted-foreground">
         <span>Visits, last {wide ? 14 : 7} days</span>
-        {deltaText && (
-          <span className="text-emerald-600 dark:text-emerald-400">
-            {deltaText}
-          </span>
-        )}
+        {deltaText && <span className="text-success">{deltaText}</span>}
       </figcaption>
       <VisitsBars data={bars} priorCount={priorCount} />
     </figure>

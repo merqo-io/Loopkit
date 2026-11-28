@@ -33,7 +33,7 @@ Shared controls and `cn` used by this folder's modules are imported from `@merqo
 
 `back-to-top.tsx` moved to `@merqo/ui` (v0.31.0) as `BackToTop` — it was byte-identical across four kits.
 
-`Badge` comes from `@merqo/ui/primitives`; gold badges use `GOLD_BADGE` from `@/lib/gold-badge`.
+`Badge` comes from `@merqo/ui/primitives`; gold badges use `variant="gold"`.
 
 The header padding (`py-3`) and the 44px logo and link sizes come from the shared `@merqo/ui` v0.62.1 `LandingNav`, so `nav.test.tsx` asserts that class.
 
