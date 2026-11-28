@@ -33,13 +33,13 @@ export function FlameLayers({
         <svg viewBox="0 0 100 100" aria-hidden="true" className="size-[146px]">
           <defs>
             <linearGradient id={logGradId} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor={MECHANIC_ART.flame.tone9c7248} />
-              <stop offset="100%" stopColor={MECHANIC_ART.flame.tone5c3d24} />
+              <stop offset="0%" stopColor={MECHANIC_ART.flame.char1} />
+              <stop offset="100%" stopColor={MECHANIC_ART.flame.char2} />
             </linearGradient>
             <radialGradient id={coalGradId} cx="40%" cy="30%" r="75%">
-              <stop offset="0%" stopColor={MECHANIC_ART.flame.toneff9d4d} />
-              <stop offset="55%" stopColor={MECHANIC_ART.flame.tonee8590c} />
-              <stop offset="100%" stopColor={MECHANIC_ART.flame.tone7c2d12} />
+              <stop offset="0%" stopColor={MECHANIC_ART.flame.amber3} />
+              <stop offset="55%" stopColor={MECHANIC_ART.flame.orange3} />
+              <stop offset="100%" stopColor={MECHANIC_ART.flame.orange7} />
             </radialGradient>
             <filter
               id={ghostBlurId}

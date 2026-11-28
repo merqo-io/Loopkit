@@ -138,7 +138,7 @@ export function ProgramCardStatus({
       {card.qr && (
         <div className="flex flex-col items-center gap-2 pt-2">
           <div
-            className="w-full max-w-[180px] rounded-xl border bg-white p-3 [&_svg]:h-auto [&_svg]:w-full"
+            className="w-full max-w-[180px] rounded-xl border bg-paper p-3 [&_svg]:h-auto [&_svg]:w-full"
             // SVG from qrSvg() over a server-minted token or link, never user text
             dangerouslySetInnerHTML={{ __html: card.qr }}
           />
@@ -162,7 +162,7 @@ export function ProgramCardStatus({
             >
               <p className="text-xs font-medium">{v.rewardText}</p>
               <div
-                className="w-full max-w-[120px] rounded-lg border bg-white p-2 [&_svg]:h-auto [&_svg]:w-full"
+                className="w-full max-w-[120px] rounded-lg border bg-paper p-2 [&_svg]:h-auto [&_svg]:w-full"
                 // SVG from qrSvg() over a server-minted token or link, never user text
                 dangerouslySetInnerHTML={{ __html: v.qr }}
               />

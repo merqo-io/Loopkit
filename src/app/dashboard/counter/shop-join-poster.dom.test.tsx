@@ -55,7 +55,7 @@ describe("ShopJoinPoster", () => {
     );
     const poster = container.querySelector("#shop-join-poster");
     expect(poster).not.toBeNull();
-    expect(poster?.className).toContain("bg-white");
+    expect(poster?.className).toContain("bg-paper");
     expect(poster?.className).not.toContain("bg-card");
   });
 

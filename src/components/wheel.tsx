@@ -208,7 +208,7 @@ export function Wheel({
         <defs>
           {/* Housing ring + hub read as metal, not a flat UI stroke. */}
           <radialGradient id={rimGradId} cx="35%" cy="30%" r="75%">
-            <stop offset="0%" stopColor={MECHANIC_ART.wheel.tonefbe8b8} />
+            <stop offset="0%" stopColor={MECHANIC_ART.wheel.wheelHighlight} />
             <stop offset="55%" stopColor="var(--color-gold)" />
             <stop
               offset="100%"
@@ -216,7 +216,7 @@ export function Wheel({
             />
           </radialGradient>
           <radialGradient id={hubGoldId} cx="35%" cy="30%" r="75%">
-            <stop offset="0%" stopColor={MECHANIC_ART.wheel.tonefff7e0} />
+            <stop offset="0%" stopColor={MECHANIC_ART.wheel.wheelSheen} />
             <stop offset="55%" stopColor="var(--color-gold)" />
             <stop
               offset="100%"
@@ -275,10 +275,10 @@ export function Wheel({
             const sx = 50 + 45 * Math.cos(midRad);
             const sy = 50 + 45 * Math.sin(midRad);
             const rewardTextClass = segment.reward
-              ? "fill-art-white"
+              ? "fill-paper"
               : "fill-art-wheel-loss-ink";
             const segmentTextClass = segment.color
-              ? "fill-art-white [paint-order:stroke] [stroke-linejoin:round] [stroke-width:2.5px] stroke-art-black/60"
+              ? "fill-paper [paint-order:stroke] [stroke-linejoin:round] [stroke-width:2.5px] stroke-paper-foreground/60"
               : rewardTextClass;
             return (
               <g key={segment.id}>
@@ -356,7 +356,7 @@ export function Wheel({
         <svg width="16" height="15" viewBox="0 0 16 15" aria-hidden="true">
           <defs>
             <linearGradient id={`${uid}-pointer`} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor={MECHANIC_ART.wheel.tonefbe8b8} />
+              <stop offset="0%" stopColor={MECHANIC_ART.wheel.wheelHighlight} />
               <stop offset="100%" stopColor="var(--color-gold)" />
             </linearGradient>
           </defs>

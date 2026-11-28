@@ -5,6 +5,11 @@ import { describe, expect, it } from "vitest";
 import { Cup } from "@/components/cup";
 import { FlameLayers } from "@/components/flame-layers";
 import { Wheel } from "@/components/wheel";
+import {
+  ART_FALLBACKS,
+  MECHANIC_ART,
+  resolveArtColor,
+} from "@/lib/tokens/mechanic-art";
 
 // Colours the mechanic art shipped with. Each one is now an --art-* token in
 // globals.css; the rendered DOM must reference exactly these, as tokens.
@@ -89,16 +94,6 @@ function literals(container: HTMLElement): string[] {
   return found;
 }
 
-function tokenIds(group: string): Set<string> {
-  const ids = new Set<string>();
-  for (const m of CSS.matchAll(
-    new RegExp(`--art-${group}-([0-9a-f]{6}):\\s*oklch\\(`, "g"),
-  )) {
-    ids.add(`#${m[1]}`);
-  }
-  return ids;
-}
-
 function referencedTokens(list: string[]): string[] {
   return list.flatMap((c) =>
     [...c.matchAll(/var\((--art-[\w-]+)\)/g)].map((m) => m[1]),
@@ -106,9 +101,22 @@ function referencedTokens(list: string[]): string[] {
 }
 
 describe("mechanic art colours", () => {
-  it("defines an art token for every original colour", () => {
-    expect(tokenIds("cup")).toEqual(ORIGINAL.cup);
-    expect(tokenIds("flame")).toEqual(ORIGINAL.flame);
+  it("defines every art token the table references, one per original colour", () => {
+    const defined = (group: "cup" | "flame") =>
+      Object.values(MECHANIC_ART[group]).flatMap((v) =>
+        [...v.matchAll(/var\((--art-[\w-]+)\)/g)].map((m) => m[1]),
+      );
+    for (const t of [...defined("cup"), ...defined("flame")]) {
+      expect(CSS).toContain(`  ${t}: oklch(`);
+    }
+    const solid = (group: "cup" | "flame") =>
+      Object.values(MECHANIC_ART[group]).filter((v) => /^var\(/.test(v));
+    expect(solid("cup")).toHaveLength(ORIGINAL.cup.size);
+    expect(solid("flame")).toHaveLength(ORIGINAL.flame.size);
+  });
+
+  it("names no art token after its hex value", () => {
+    expect(CSS).not.toMatch(/--art-[a-z]+-[0-9a-f]{6}:/);
   });
 
   it("renders the cup from defined art tokens only", () => {
@@ -141,8 +149,37 @@ describe("mechanic art colours", () => {
       />,
     );
     const found = colours(container);
-    expect(found).toContain("var(--art-wheel-fbe8b8)");
-    expect(found).toContain("var(--art-wheel-fff7e0)");
+    expect(found).toContain("var(--art-wheel-highlight)");
+    expect(found).toContain("var(--art-wheel-sheen)");
     expect(literals(container)).toEqual([]);
+  });
+});
+
+describe("resolveArtColor", () => {
+  const el = document.createElement("canvas");
+  document.body.append(el);
+
+  it("returns the token's computed value", () => {
+    document.documentElement.style.setProperty("--art-scratch-gold-mid", "red");
+    expect(resolveArtColor(el, "var(--art-scratch-gold-mid)")).toBe("red");
+    document.documentElement.style.removeProperty("--art-scratch-gold-mid");
+  });
+
+  it("falls back to a literal colour when the property is empty", () => {
+    const out = resolveArtColor(el, "var(--art-scratch-gold-mid)");
+    expect(out).toBe(ART_FALLBACKS["--art-scratch-gold-mid"]);
+    expect(out).not.toContain("var(");
+  });
+
+  it("passes literal values through and never returns var()", () => {
+    expect(resolveArtColor(el, "black")).toBe("black");
+    expect(resolveArtColor(el, "var(--not-a-token)")).toBe("transparent");
+  });
+
+  it("has a literal fallback for every scratch token", () => {
+    for (const v of Object.values(MECHANIC_ART.scratch)) {
+      const name = /^var\((--[\w-]+)\)$/.exec(v)![1];
+      expect(ART_FALLBACKS[name]).toBeTruthy();
+    }
   });
 });

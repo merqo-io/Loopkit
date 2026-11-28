@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 
+- Added `--paper`, `--paper-foreground`, `--paper-muted` (light in both themes; muted holds 4.5:1 on paper), `--scrim`, `--scrim-foreground` and `--chart-1..5` tokens. The join poster, QR wells, scanner overlay, scratch-card highlights, stamp seal and wheel text use them instead of white/black utilities. Card-burst confetti and the program dots use gold, primary and chart tokens rather than status colours. Art tokens are renamed by material and ramp position instead of hex. `resolveArtColor` falls back to a literal colour, never a `var()` string.
 - Moved `@merqo/ui` to 0.63.0 (commit `13c3d3f9`). Added a `--warning` token (light and dark; text on its 12% tint holds 4.5:1) and `--art-*` game-art tokens in `globals.css`. Cup, flame, scratch-card and wheel art now draw from tokens instead of hex, rgb and Tailwind palette literals, and the scratch canvas resolves tokens at draw time. The wheel's reward wedge uses `--success`, so it shifts slightly from emerald to the theme green. Status colours (activity, overview, setup program badge, game confetti, program avatars) use `success`/`warning`/`destructive` tokens and the shared `success`/`muted` Badge. Gold badges use the shared `gold` Badge variant and `src/lib/gold-badge.ts` is gone. `formatShortDate` is the shared SGT formatter (September now reads "Sep", not "Sept"). The join poster's grey text is now black at reduced opacity so it stays readable in dark mode on the fixed white sheet.
 
 ### Fixed

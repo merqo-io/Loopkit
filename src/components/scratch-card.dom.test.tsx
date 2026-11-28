@@ -261,7 +261,7 @@ describe("ScratchCard", () => {
 
     it("resolves art tokens from the canvas element before painting", () => {
       const ctx = makeFakeCtx();
-      ctx.canvas.style.setProperty("--art-scratch-e8c374", "rgb(1, 2, 3)");
+      ctx.canvas.style.setProperty("--art-scratch-gold-light", "rgb(1, 2, 3)");
       drawCanvasCover(ctx as unknown as CanvasRenderingContext2D, "ticket");
       expect(ctx.fillStyle).toBe("rgb(1, 2, 3)");
     });

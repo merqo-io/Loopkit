@@ -5,9 +5,9 @@ import type { OverviewProgram } from "@/app/dashboard/dashboard-view";
 const SEED = [
   "bg-primary",
   "bg-gold",
-  "bg-success",
-  "bg-warning",
-  "bg-destructive",
+  "bg-chart-1",
+  "bg-chart-2",
+  "bg-chart-3",
 ];
 
 export function YourPrograms({ programs }: { programs: OverviewProgram[] }) {

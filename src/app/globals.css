@@ -55,77 +55,90 @@
   /* Game art. Cup, flame and scratch-cover materials are physical objects
      (brass, coffee, fire, foil) that read the same in both themes, so their
      tokens live in :root only. Only the wheel's non-reward wedge differs. */
-  --art-white: oklch(1 0 0);
-  --art-black: oklch(0 0 0);
-  --art-black-07: oklch(0 0 0 / 0.07);
+  /* Printed and scanned surfaces (join poster, QR wells) stay light in dark
+     mode: a QR code needs a light quiet zone and the poster is meant to be
+     screenshotted and printed. paper-muted holds 4.5:1 on paper. */
+  --paper: oklch(1 0 0);
+  --paper-foreground: oklch(0.15 0 0);
+  --paper-muted: oklch(0.45 0 0);
+  /* Full-screen scanner overlay: dark in both themes so the camera view reads. */
+  --scrim: oklch(0.15 0 0 / 0.9);
+  --scrim-foreground: oklch(1 0 0 / 0.8);
+  /* Decorative hues for confetti and list dots. Nothing reads as text on them. */
+  --chart-1: oklch(0.65 0.17 40);
+  --chart-2: oklch(0.62 0.12 200);
+  --chart-3: oklch(0.6 0.15 280);
+  --chart-4: oklch(0.68 0.14 140);
+  --chart-5: oklch(0.65 0.18 350);
+  --art-scratch-ink-07: oklch(0.15 0 0 / 0.07);
   --art-wheel-loss: oklch(0.712 0.194 13.4 / 0.7);
   --art-wheel-loss-ink: oklch(0.271 0.105 12.1 / 0.7);
-  --art-cup-dae4ef: oklch(0.9146 0.0185 250.6);
-  --art-cup-c1ccd7: oklch(0.8401 0.0195 248.1);
-  --art-cup-a8b4c1: oklch(0.7646 0.0229 250.3);
-  --art-cup-909caa: oklch(0.6877 0.0248 252.3);
-  --art-cup-798694: oklch(0.6142 0.0261 250.2);
-  --art-cup-4a4f56: oklch(0.4256 0.0133 256.8);
-  --art-cup-f5ecd8: oklch(0.9448 0.0282 86.6);
-  --art-cup-3d2413: oklch(0.2881 0.0472 53.9);
-  --art-cup-4a3420: oklch(0.3451 0.0449 62.7);
-  --art-cup-b89e77: oklch(0.7127 0.0615 77.6);
-  --art-cup-f5e9d2: oklch(0.9375 0.0331 83.7);
-  --art-cup-d9c29e: oklch(0.8243 0.0548 78.9);
-  --art-cup-8a5a2f: oklch(0.5112 0.0861 60.8);
-  --art-cup-f0e2c8: oklch(0.9172 0.0377 83);
-  --art-cup-c9b393: oklch(0.7774 0.0504 77.1);
-  --art-cup-d3bd97: oklch(0.8074 0.0567 81.2);
-  --art-cup-f3e6cd: oklch(0.9287 0.0359 83.8);
-  --art-cup-9a713f: oklch(0.5791 0.0845 70.3);
-  --art-cup-c9a063: oklch(0.7301 0.0925 76.4);
-  --art-cup-d9b878: oklch(0.7971 0.0904 83.2);
-  --art-cup-7a5230: oklch(0.4748 0.0724 60.1);
-  --art-cup-a97c50: oklch(0.621 0.082 64.7);
-  --art-cup-5a3820: oklch(0.3756 0.0608 54.9);
-  --art-cup-2a1810: oklch(0.2308 0.0327 44.7);
-  --art-cup-6b4326: oklch(0.4228 0.0699 55.5);
-  --art-flame-7c2d12: oklch(0.4084 0.1165 38.2);
-  --art-flame-e8590c: oklch(0.6442 0.1916 41.7);
-  --art-flame-ff9d4d: oklch(0.7826 0.1499 57.1);
-  --art-flame-5c3d24: oklch(0.3897 0.0579 58.8);
-  --art-flame-9c7248: oklch(0.5849 0.0784 65.3);
-  --art-flame-fde047: oklch(0.9052 0.1657 98.1);
-  --art-flame-f97316: oklch(0.7049 0.1867 47.6);
-  --art-flame-fffbeb: oklch(0.9869 0.0214 95.3);
-  --art-flame-ea580c: oklch(0.6461 0.1943 41.1);
-  --art-flame-7f1d1d: oklch(0.3958 0.1331 25.7);
-  --art-flame-9ca3af: oklch(0.7137 0.0192 261.3);
-  --art-flame-ffdd88: oklch(0.908 0.1108 88.4);
-  --art-flame-ffb84d: oklch(0.8305 0.1453 74.2);
-  --art-flame-fff4d6: oklch(0.9681 0.0409 90.2);
-  --art-flame-fdba74: oklch(0.8366 0.1165 66.3);
-  --art-flame-fde68a: oklch(0.9243 0.1151 95.7);
-  --art-flame-9a3412: oklch(0.4698 0.143 37.3);
-  --art-flame-fffdf5: oklch(0.9934 0.0107 95.2);
-  --art-flame-fef9e0: oklch(0.9794 0.0331 97.7);
-  --art-flame-fbbf24: oklch(0.8369 0.1644 84.4);
-  --art-flame-b45309: oklch(0.5553 0.1455 49);
-  --art-flame-fef3c7: oklch(0.9619 0.058 95.6);
-  --art-flame-f59e0b: oklch(0.7686 0.1647 70.1);
-  --art-flame-c2410c: oklch(0.5534 0.1739 38.4);
-  --art-scratch-230-180-90-04: oklch(0.7979 0.1222 80.2 / 0.4);
-  --art-scratch-230-180-90-055: oklch(0.7979 0.1222 80.2 / 0.55);
-  --art-scratch-e8c374: oklch(0.8326 0.1067 85);
-  --art-scratch-201d19: oklch(0.2327 0.0088 75.2);
-  --art-scratch-2c2924: oklch(0.2824 0.01 80.6);
-  --art-scratch-3a3630: oklch(0.335 0.0117 78.2);
-  --art-scratch-255-233-214-092: oklch(0.9467 0.0349 63.2 / 0.92);
-  --art-scratch-4a121c: oklch(0.2808 0.0844 14.1);
-  --art-scratch-6a1c2a: oklch(0.3576 0.1101 14.4);
-  --art-scratch-8a2436: oklch(0.428 0.1364 15.2);
-  --art-scratch-42-26-6-09: oklch(0.2337 0.041 70 / 0.9);
-  --art-scratch-8a691f: oklch(0.5405 0.0979 83.4);
-  --art-scratch-caa042: oklch(0.727 0.1211 84.5);
-  --art-scratch-fbe8b8: oklch(0.9346 0.0653 89);
-  --art-scratch-2a1a06: oklch(0.2337 0.041 70);
-  --art-wheel-fbe8b8: oklch(0.9346 0.0653 89);
-  --art-wheel-fff7e0: oklch(0.9763 0.0313 91);
+  --art-cup-steel-1: oklch(0.9146 0.0185 250.6);
+  --art-cup-steel-2: oklch(0.8401 0.0195 248.1);
+  --art-cup-steel-3: oklch(0.7646 0.0229 250.3);
+  --art-cup-steel-4: oklch(0.6877 0.0248 252.3);
+  --art-cup-steel-5: oklch(0.6142 0.0261 250.2);
+  --art-cup-steel-6: oklch(0.4256 0.0133 256.8);
+  --art-cup-cream-1: oklch(0.9448 0.0282 86.6);
+  --art-cup-wood-8: oklch(0.2881 0.0472 53.9);
+  --art-cup-wood-7: oklch(0.3451 0.0449 62.7);
+  --art-cup-sand: oklch(0.7127 0.0615 77.6);
+  --art-cup-cream-2: oklch(0.9375 0.0331 83.7);
+  --art-cup-cream-5: oklch(0.8243 0.0548 78.9);
+  --art-cup-wood-3: oklch(0.5112 0.0861 60.8);
+  --art-cup-cream-4: oklch(0.9172 0.0377 83);
+  --art-cup-cream-8: oklch(0.7774 0.0504 77.1);
+  --art-cup-cream-6: oklch(0.8074 0.0567 81.2);
+  --art-cup-cream-3: oklch(0.9287 0.0359 83.8);
+  --art-cup-wood-2: oklch(0.5791 0.0845 70.3);
+  --art-cup-brass: oklch(0.7301 0.0925 76.4);
+  --art-cup-cream-7: oklch(0.7971 0.0904 83.2);
+  --art-cup-wood-4: oklch(0.4748 0.0724 60.1);
+  --art-cup-wood-1: oklch(0.621 0.082 64.7);
+  --art-cup-wood-6: oklch(0.3756 0.0608 54.9);
+  --art-cup-wood-9: oklch(0.2308 0.0327 44.7);
+  --art-cup-wood-5: oklch(0.4228 0.0699 55.5);
+  --art-flame-orange-7: oklch(0.4084 0.1165 38.2);
+  --art-flame-orange-3: oklch(0.6442 0.1916 41.7);
+  --art-flame-amber-3: oklch(0.7826 0.1499 57.1);
+  --art-flame-char-2: oklch(0.3897 0.0579 58.8);
+  --art-flame-char-1: oklch(0.5849 0.0784 65.3);
+  --art-flame-yellow-3: oklch(0.9052 0.1657 98.1);
+  --art-flame-orange-1: oklch(0.7049 0.1867 47.6);
+  --art-flame-glow-2: oklch(0.9869 0.0214 95.3);
+  --art-flame-orange-2: oklch(0.6461 0.1943 41.1);
+  --art-flame-crimson: oklch(0.3958 0.1331 25.7);
+  --art-flame-ash: oklch(0.7137 0.0192 261.3);
+  --art-flame-yellow-2: oklch(0.908 0.1108 88.4);
+  --art-flame-amber-2: oklch(0.8305 0.1453 74.2);
+  --art-flame-glow-4: oklch(0.9681 0.0409 90.2);
+  --art-flame-amber-1: oklch(0.8366 0.1165 66.3);
+  --art-flame-yellow-1: oklch(0.9243 0.1151 95.7);
+  --art-flame-orange-6: oklch(0.4698 0.143 37.3);
+  --art-flame-glow-1: oklch(0.9934 0.0107 95.2);
+  --art-flame-glow-3: oklch(0.9794 0.0331 97.7);
+  --art-flame-yellow-4: oklch(0.8369 0.1644 84.4);
+  --art-flame-orange-4: oklch(0.5553 0.1455 49);
+  --art-flame-glow-5: oklch(0.9619 0.058 95.6);
+  --art-flame-amber-4: oklch(0.7686 0.1647 70.1);
+  --art-flame-orange-5: oklch(0.5534 0.1739 38.4);
+  --art-scratch-foil-40: oklch(0.7979 0.1222 80.2 / 0.4);
+  --art-scratch-foil-55: oklch(0.7979 0.1222 80.2 / 0.55);
+  --art-scratch-gold-light: oklch(0.8326 0.1067 85);
+  --art-scratch-charcoal-1: oklch(0.2327 0.0088 75.2);
+  --art-scratch-charcoal-2: oklch(0.2824 0.01 80.6);
+  --art-scratch-charcoal-3: oklch(0.335 0.0117 78.2);
+  --art-scratch-blush-92: oklch(0.9467 0.0349 63.2 / 0.92);
+  --art-scratch-wine-1: oklch(0.2808 0.0844 14.1);
+  --art-scratch-wine-2: oklch(0.3576 0.1101 14.4);
+  --art-scratch-wine-3: oklch(0.428 0.1364 15.2);
+  --art-scratch-umber-90: oklch(0.2337 0.041 70 / 0.9);
+  --art-scratch-gold-dark: oklch(0.5405 0.0979 83.4);
+  --art-scratch-gold-mid: oklch(0.727 0.1211 84.5);
+  --art-scratch-gold-pale: oklch(0.9346 0.0653 89);
+  --art-scratch-umber: oklch(0.2337 0.041 70);
+  --art-wheel-highlight: oklch(0.9346 0.0653 89);
+  --art-wheel-sheen: oklch(0.9763 0.0313 91);
 }
 
 .dark {
@@ -172,6 +185,9 @@
   --warning: oklch(0.88 0.13 80);
   --art-wheel-loss: oklch(0.645 0.246 16.4 / 0.6);
   --art-wheel-loss-ink: oklch(1 0 0 / 0.8);
+  --paper: oklch(1 0 0);
+  --paper-foreground: oklch(0.15 0 0);
+  --paper-muted: oklch(0.45 0 0);
 }
 
 @theme inline {
@@ -201,8 +217,16 @@
   --color-gold-accent: var(--gold-accent);
   --color-success: var(--success);
   --color-warning: var(--warning);
-  --color-art-white: var(--art-white);
-  --color-art-black: var(--art-black);
+  --color-paper: var(--paper);
+  --color-paper-foreground: var(--paper-foreground);
+  --color-paper-muted: var(--paper-muted);
+  --color-scrim: var(--scrim);
+  --color-scrim-foreground: var(--scrim-foreground);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
   --color-art-wheel-loss: var(--art-wheel-loss);
   --color-art-wheel-loss-ink: var(--art-wheel-loss-ink);
 

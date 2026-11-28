@@ -121,14 +121,14 @@ export function ScanButton({
         </button>
       )}
       {open && (
-        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-5 bg-black/90 p-5">
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-5 bg-scrim p-5">
           <video
             ref={videoRef}
             className="w-full max-w-sm rounded-2xl"
             muted
             playsInline
           />
-          <p className="text-sm text-white/80">
+          <p className="text-sm text-scrim-foreground">
             Point at the customer&rsquo;s QR code
           </p>
           <Button

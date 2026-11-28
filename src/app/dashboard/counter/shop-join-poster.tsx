@@ -20,10 +20,10 @@ export function ShopJoinPoster({
       <style>{PRINT_CSS}</style>
       <div
         id="shop-join-poster"
-        className="mx-auto max-w-sm rounded-2xl border bg-white p-8 text-center text-black"
+        className="mx-auto max-w-sm rounded-2xl border bg-paper p-8 text-center text-paper-foreground"
       >
         <p className="text-lg font-bold tracking-tight">{shopName}</p>
-        <p className="mt-1 text-sm font-medium text-black/60">
+        <p className="mt-1 text-sm font-medium text-paper-muted">
           Join our loyalty card
         </p>
         <div
@@ -35,9 +35,9 @@ export function ShopJoinPoster({
           Scan to join. Just your phone number.
         </p>
         {showBranding && (
-          <p className="mt-4 text-xs text-black/55">via LoopKit</p>
+          <p className="mt-4 text-xs text-paper-muted">via LoopKit</p>
         )}
-        <code className="mt-2 block truncate text-xs text-black/60">
+        <code className="mt-2 block truncate text-xs text-paper-muted">
           {link}
         </code>
       </div>

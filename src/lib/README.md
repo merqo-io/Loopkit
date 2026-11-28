@@ -28,6 +28,7 @@ profile/status).
 - `engine/`
 - `entitlement-cache.ts`: `isPaidEntitlement(row, now)`: pure check that a cached merqo entitlement is `paid` and not past `valid_until`; mirrors `loopkit.is_pro` so a lapsed plan stops counting without a new push
 - `expiry.ts` — `isCardExpired`: pure day-elapsed check against a card's cycle start and the program's `expiry_days`
+- `format.test.ts` — `formatShortDate` renders the SGT day for a `YYYY-MM-DD` key and round-trips `sgtDateKey` without shifting the day
 - `format.ts` — `sgtDateKey`: an Asia/Singapore calendar-day grouping key (display formatting is `@merqo/ui`'s `formatDate`/`formatDateTime`); `formatShortDate` is re-exported from `@merqo/ui` ("10 Jul", SGT, no year) so `visits-bars.tsx` keeps its import
 - `image-upload-adapter.test.ts` — vitest tests: `uploadLoopkitImage` uploads to the given bucket/path and returns the public URL, throws when the storage upload fails
 - `image-upload-adapter.ts` — `uploadLoopkitImage`: `@merqo/ui`'s `ImageUploader.onUpload` implementation, wrapping the app's own Supabase Storage upload call (a plain function, not a factory — `@merqo/ui` builds the object path internally from `pathPrefix`, so there's nothing vendor-scoped left to bind at creation time)

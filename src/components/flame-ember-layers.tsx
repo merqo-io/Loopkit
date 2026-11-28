@@ -69,7 +69,7 @@ function SparkPop({
       cx={cx}
       cy={cy}
       r={seeded(seed, 0.7, 1.3)}
-      fill={MECHANIC_ART.flame.toneffdd88}
+      fill={MECHANIC_ART.flame.yellow2}
       style={{
         animationDelay: `${delay}s`,
         animationDuration: `${seeded(seed + 0.4, 0.8, 1.5)}s`,
@@ -124,7 +124,7 @@ export function EmberLayerContent({
           x={x}
           y={y}
           r={r * 0.55}
-          fill={MECHANIC_ART.flame.toneffb84d}
+          fill={MECHANIC_ART.flame.amber2}
           seed={i}
         />
       </g>
@@ -182,7 +182,7 @@ export function SparkLayerContent({
         x={48}
         y={83.5}
         r={1.4}
-        fill={MECHANIC_ART.flame.toneffb84d}
+        fill={MECHANIC_ART.flame.amber2}
         seed={20}
       />
       <GhostFlame

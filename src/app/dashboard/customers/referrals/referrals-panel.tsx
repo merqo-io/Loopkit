@@ -125,7 +125,7 @@ export function ReferralsPanel({
               </div>
               <div className="flex items-center gap-3">
                 <div
-                  className="shrink-0 rounded-xl border bg-white p-1.5 [&_svg]:size-16"
+                  className="shrink-0 rounded-xl border bg-paper p-1.5 [&_svg]:size-16"
                   // SVG from qrSvg() over a server-minted token or link, never user text
                   dangerouslySetInnerHTML={{ __html: host.qr }}
                 />
