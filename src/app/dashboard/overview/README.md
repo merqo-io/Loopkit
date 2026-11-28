@@ -33,3 +33,5 @@ composes them.
 [dashboard](../README.md)
 
 This folder now imports its shared page and dialog components from `@merqo/ui` (v0.42.1) instead of local copies.
+
+Status colours here (positive deltas, first-visit marks, program avatars) use the `success`, `warning` and `destructive` tokens, not palette classes.

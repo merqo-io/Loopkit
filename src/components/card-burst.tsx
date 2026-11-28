@@ -6,9 +6,9 @@ import { cn } from "@merqo/ui/primitives";
 const COLORS = [
   "bg-gold",
   "bg-primary",
-  "bg-emerald-500",
-  "bg-sky-500",
-  "bg-rose-500",
+  "bg-chart-1",
+  "bg-chart-2",
+  "bg-chart-3",
 ];
 
 type Piece = {

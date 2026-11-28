@@ -31,7 +31,7 @@ Shared controls and `cn` used by this folder's modules are imported from `@merqo
   shop QR uses), and renders a setup prompt instead of the form when the
   vendor has no active program yet. Its "Back to dashboard" nav is
   `@merqo/ui`'s `BackButton`.
-- `referrals-panel.tsx` — client `ReferralsPanel`: the create form
+- `referrals-panel.tsx` — client `ReferralsPanel`: the create form The QR well is `bg-paper`, a light surface in both themes so the code stays scannable in dark mode.
   (`useActionState` + `createReferralHostAction`, a program `Select`, phone
   and optional label `Input`s) above the host list; a freshly created host
   is prepended to local state from the action's own result (comparing

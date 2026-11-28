@@ -62,7 +62,7 @@ export function ScratchCard({
       className={cn(
         // Embossed edge (inner highlight + drop shadow), not a flat
         // border — reads as a physical card, not a pasted rectangle.
-        "relative h-28 w-48 overflow-hidden rounded-xl border border-gold/25 shadow-[0_3px_10px_-3px_rgb(0_0_0_/_0.35),inset_0_1px_0_0_rgb(255_255_255_/_0.06)]",
+        "relative h-28 w-48 overflow-hidden rounded-xl border border-gold/25 shadow-[0_3px_10px_-3px_color-mix(in_oklch,var(--paper-foreground)_35%,transparent),inset_0_1px_0_0_color-mix(in_oklch,var(--paper)_6%,transparent)]",
         className,
       )}
     >
@@ -83,7 +83,7 @@ export function ScratchCard({
           {reward && (
             <span
               aria-hidden="true"
-              className="size-1.5 shrink-0 rounded-full bg-gold ring-1 ring-white/60"
+              className="size-1.5 shrink-0 rounded-full bg-gold ring-1 ring-paper/60"
             />
           )}
           {label}
@@ -119,7 +119,7 @@ export function ScratchCard({
         <div
           aria-hidden="true"
           data-testid="scratch-reveal-shine"
-          className="scratch-reveal-shine pointer-events-none absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-white/40 to-transparent"
+          className="scratch-reveal-shine pointer-events-none absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-paper/40 to-transparent"
         />
       )}
     </div>

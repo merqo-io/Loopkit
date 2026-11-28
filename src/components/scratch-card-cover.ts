@@ -1,5 +1,5 @@
 import type { ScratchCoverStyle } from "@/lib/engine/chance";
-import { MECHANIC_ART } from "@/lib/tokens/mechanic-art";
+import { MECHANIC_ART, resolveArtColor } from "@/lib/tokens/mechanic-art";
 
 export type Stroke = { id: number; d: string; delayMs: number; width: number };
 
@@ -52,15 +52,15 @@ export type CoverVisual = {
 
 export const COVER_STYLES: Record<ScratchCoverStyle, CoverVisual> = {
   foil: {
-    gradFrom: MECHANIC_ART.scratch.hexfbe8b8,
+    gradFrom: MECHANIC_ART.scratch.goldPale,
     gradTo: "color-mix(in oklch, var(--color-gold) 55%, black)",
-    textColor: MECHANIC_ART.scratch.hex2a1a06,
+    textColor: MECHANIC_ART.scratch.umber,
     text: "Scratch to reveal",
     pattern: "foil-fleck",
-    canvasFrom: MECHANIC_ART.scratch.hexfbe8b8,
-    canvasMid: MECHANIC_ART.scratch.hexcaa042,
-    canvasTo: MECHANIC_ART.scratch.hex8a691f,
-    canvasText: MECHANIC_ART.scratch.c_rgba_42_26_6_0_9,
+    canvasFrom: MECHANIC_ART.scratch.goldPale,
+    canvasMid: MECHANIC_ART.scratch.goldMid,
+    canvasTo: MECHANIC_ART.scratch.goldDark,
+    canvasText: MECHANIC_ART.scratch.umber90,
   },
   wax: {
     gradFrom: "var(--color-primary)",
@@ -69,10 +69,10 @@ export const COVER_STYLES: Record<ScratchCoverStyle, CoverVisual> = {
     text: "Scratch to reveal",
     pattern: "foil-fleck",
     decoration: "wax-medallion",
-    canvasFrom: MECHANIC_ART.scratch.hex8a2436,
-    canvasMid: MECHANIC_ART.scratch.hex6a1c2a,
-    canvasTo: MECHANIC_ART.scratch.hex4a121c,
-    canvasText: MECHANIC_ART.scratch.c_rgba_255_233_214_0_92,
+    canvasFrom: MECHANIC_ART.scratch.wine3,
+    canvasMid: MECHANIC_ART.scratch.wine2,
+    canvasTo: MECHANIC_ART.scratch.wine1,
+    canvasText: MECHANIC_ART.scratch.blush92,
   },
   ticket: {
     gradFrom: "color-mix(in oklch, var(--color-muted) 90%, black 10%)",
@@ -80,10 +80,10 @@ export const COVER_STYLES: Record<ScratchCoverStyle, CoverVisual> = {
     textColor: "var(--color-gold)",
     text: "SCRATCH & WIN",
     decoration: "ticket-lines",
-    canvasFrom: MECHANIC_ART.scratch.hex3a3630,
-    canvasMid: MECHANIC_ART.scratch.hex2c2924,
-    canvasTo: MECHANIC_ART.scratch.hex201d19,
-    canvasText: MECHANIC_ART.scratch.hexe8c374,
+    canvasFrom: MECHANIC_ART.scratch.charcoal3,
+    canvasMid: MECHANIC_ART.scratch.charcoal2,
+    canvasTo: MECHANIC_ART.scratch.charcoal1,
+    canvasText: MECHANIC_ART.scratch.goldLight,
   },
 };
 
@@ -96,18 +96,19 @@ export function drawCanvasCover(
   coverStyle: ScratchCoverStyle,
 ) {
   const visual = COVER_STYLES[coverStyle];
+  const paint = (value: string) => resolveArtColor(ctx.canvas, value);
   ctx.globalCompositeOperation = "source-over";
   ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
 
   const grad = ctx.createLinearGradient(0, 0, CANVAS_W, CANVAS_H);
-  grad.addColorStop(0, visual.canvasFrom);
-  grad.addColorStop(0.55, visual.canvasMid);
-  grad.addColorStop(1, visual.canvasTo);
+  grad.addColorStop(0, paint(visual.canvasFrom));
+  grad.addColorStop(0.55, paint(visual.canvasMid));
+  grad.addColorStop(1, paint(visual.canvasTo));
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
 
   if (coverStyle === "foil") {
-    ctx.strokeStyle = MECHANIC_ART.scratch.c_rgba_0_0_0_0_07;
+    ctx.strokeStyle = paint(MECHANIC_ART.scratch.ink07);
     ctx.lineWidth = 1;
     for (let i = 0; i < 60; i++) {
       const y = Math.random() * CANVAS_H;
@@ -117,7 +118,7 @@ export function drawCanvasCover(
       ctx.stroke();
     }
   } else if (coverStyle === "wax") {
-    ctx.strokeStyle = MECHANIC_ART.scratch.c_rgba_230_180_90_0_55;
+    ctx.strokeStyle = paint(MECHANIC_ART.scratch.foil55);
     ctx.lineWidth = 1.1;
     ctx.beginPath();
     ctx.arc(CANVAS_W / 2, CANVAS_H / 2 - 14, 16, 0, Math.PI * 2);
@@ -127,7 +128,7 @@ export function drawCanvasCover(
     ctx.arc(CANVAS_W / 2, CANVAS_H / 2 - 14, 11, 0, Math.PI * 2);
     ctx.stroke();
   } else {
-    ctx.strokeStyle = MECHANIC_ART.scratch.c_rgba_230_180_90_0_4;
+    ctx.strokeStyle = paint(MECHANIC_ART.scratch.foil40);
     ctx.lineWidth = 1;
     ctx.setLineDash([3, 3]);
     ctx.beginPath();
@@ -137,7 +138,7 @@ export function drawCanvasCover(
     ctx.setLineDash([]);
   }
 
-  ctx.fillStyle = visual.canvasText;
+  ctx.fillStyle = paint(visual.canvasText);
   ctx.font = '700 13px "Plus Jakarta Sans", ui-sans-serif, sans-serif';
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";

@@ -72,7 +72,7 @@ function renderSeal({ state, accent, icon }: SlotProps) {
   const isReward = state === "reward";
   return (
     <span
-      className="flex size-full items-center justify-center rounded-full text-white"
+      className="flex size-full items-center justify-center rounded-full text-paper"
       style={{
         background: domeGradient(
           isReward ? "var(--color-gold)" : accent,

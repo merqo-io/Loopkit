@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState, type RefObject } from "react";
 import type { ScratchCoverStyle } from "@/lib/engine/chance";
-import { MECHANIC_ART } from "@/lib/tokens/mechanic-art";
 import { CANVAS_H, CANVAS_W, drawCanvasCover } from "./scratch-card-cover";
 
 const BRUSH_RADIUS = 13;
+// destination-out erases by alpha alone, so the brush needs no theme colour.
+const OPAQUE = "black";
+const TRANSPARENT = "transparent";
 // Real scratch cards don't need full coverage to feel "revealed."
 const SETTLE_FRACTION = 0.55;
 
@@ -48,9 +50,9 @@ export function useScratchCanvas({
 
     function brushAt(x: number, y: number) {
       const grad = context.createRadialGradient(x, y, 0, x, y, BRUSH_RADIUS);
-      grad.addColorStop(0, MECHANIC_ART.scratch.c_rgba_0_0_0_1);
-      grad.addColorStop(0.75, MECHANIC_ART.scratch.c_rgba_0_0_0_1);
-      grad.addColorStop(1, MECHANIC_ART.scratch.c_rgba_0_0_0_0);
+      grad.addColorStop(0, OPAQUE);
+      grad.addColorStop(0.75, OPAQUE);
+      grad.addColorStop(1, TRANSPARENT);
       context.globalCompositeOperation = "destination-out";
       context.fillStyle = grad;
       context.beginPath();

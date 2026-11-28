@@ -48,3 +48,5 @@ at render. `BackButton` falls back to a plain `<a>`.
 [app](../README.md)
 
 This folder now imports its shared page and dialog components from `@merqo/ui` (v0.42.1) instead of local copies.
+
+The program-list Active/Inactive pill is the shared `Badge` (`success` and `muted` variants).

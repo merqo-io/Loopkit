@@ -6,7 +6,7 @@ import { activateProgramAction } from "@/app/setup/actions";
 import { loadSetupContext } from "@/app/setup/setup-context";
 import { SetupShell } from "@/app/setup/setup-shell";
 import { legacySetupPath } from "@/app/setup/setup-view";
-import { cn } from "@merqo/ui/primitives";
+import { Badge } from "@merqo/ui/primitives";
 
 export const metadata: Metadata = { title: "Programs" };
 
@@ -76,16 +76,12 @@ export default async function SetupPage({
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
                     <p className="truncate font-medium">{program.name}</p>
-                    <span
-                      className={cn(
-                        "shrink-0 rounded-full px-1.5 py-0.5 text-[0.6rem] font-semibold uppercase tracking-wider ring-1 ring-inset",
-                        program.active
-                          ? "bg-emerald-500/15 text-emerald-700 ring-emerald-500/30 dark:bg-emerald-400/15 dark:text-emerald-400 dark:ring-emerald-400/30"
-                          : "bg-secondary text-muted-foreground ring-border",
-                      )}
+                    <Badge
+                      variant={program.active ? "success" : "muted"}
+                      className="shrink-0 px-1.5 py-0.5 text-[0.6rem] uppercase tracking-wider"
                     >
                       {program.active ? "Active" : "Inactive"}
-                    </span>
+                    </Badge>
                   </div>
                   <p className="text-xs text-muted-foreground">
                     {typeLabel[program.type] ?? program.type}

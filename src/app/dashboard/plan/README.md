@@ -10,7 +10,7 @@ Vendor billing/plan page at `/dashboard/plan`, shows Free vs. Pro feature compar
 - `loading.tsx` — `PlanLoading`, a static skeleton (`role="status"`, `aria-busy`, sr-only label) mirroring the page layout while the route streams in.
 - `plan-page.dom.test.tsx`: renders `PlanPage` with a stubbed catalog fetch. The shared `PricingLadder` shows a pilot notice above the plans since `@merqo/ui` v0.46.0 ("Merqo is free during the pilot..."), and the test asserts it renders. It also asserts the bearer header is sent to the catalog fetch when the secret is set and omitted when it is not.
 
-`Badge` comes from `@merqo/ui/primitives`; gold badges use `GOLD_BADGE` from `@/lib/gold-badge`. The merqo base URL comes from `merqoBaseUrl` in `@merqo/ui/kit-api`.
+`Badge` comes from `@merqo/ui/primitives`; gold badges use `variant="gold"`. The merqo base URL comes from `merqoBaseUrl` in `@merqo/ui/kit-api`.
 
 ## Parent
 

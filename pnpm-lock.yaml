@@ -31,8 +31,8 @@ importers:
         specifier: 5.2.2
         version: 5.2.2(react-hook-form@7.81.0(react@19.2.7))
       '@merqo/ui':
-        specifier: github:merqo-io/merqo-ui#eaec999a51442ccab9ef0ad2f9fa89a7bf6dffaa
-        version: https://codeload.github.com/merqo-io/merqo-ui/tar.gz/eaec999a51442ccab9ef0ad2f9fa89a7bf6dffaa(@eslint-community/eslint-plugin-eslint-comments@4.8.1(eslint@9.39.4(jiti@2.7.0)))(@playwright/test@1.61.1)(@supabase/ssr@0.10.3(@supabase/supabase-js@2.110.0))(@supabase/supabase-js@2.110.0)(@types/react@19.2.17)(eslint-plugin-sonarjs@4.2.2(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0))(next-themes@0.4.6(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(next@16.4.6(@babel/core@7.29.7)(@playwright/test@1.61.1)(@types/node@24.13.2)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(radix-ui@1.6.1(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sonner@1.7.4(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(tailwindcss@4.3.2)(zod@4.6.6)
+        specifier: github:merqo-io/merqo-ui#13c3d3f9d54b20c1615dfba5fe7222b3f47f2a2d
+        version: https://codeload.github.com/merqo-io/merqo-ui/tar.gz/13c3d3f9d54b20c1615dfba5fe7222b3f47f2a2d(@eslint-community/eslint-plugin-eslint-comments@4.8.1(eslint@9.39.4(jiti@2.7.0)))(@playwright/test@1.61.1)(@supabase/ssr@0.10.3(@supabase/supabase-js@2.110.0))(@supabase/supabase-js@2.110.0)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(eslint-plugin-sonarjs@4.2.2(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0))(next-themes@0.4.6(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(next@16.4.6(@babel/core@7.29.7)(@playwright/test@1.61.1)(@types/node@24.13.2)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(radix-ui@1.6.1(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sonner@1.7.4(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(tailwindcss@4.3.2)(zod@4.6.6)
       '@supabase/ssr':
         specifier: ^0.10.3
         version: 0.10.3(@supabase/supabase-js@2.110.0)
@@ -971,9 +971,9 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@merqo/ui@https://codeload.github.com/merqo-io/merqo-ui/tar.gz/eaec999a51442ccab9ef0ad2f9fa89a7bf6dffaa':
-    resolution: {gitHosted: true, tarball: https://codeload.github.com/merqo-io/merqo-ui/tar.gz/eaec999a51442ccab9ef0ad2f9fa89a7bf6dffaa}
-    version: 0.62.1
+  '@merqo/ui@https://codeload.github.com/merqo-io/merqo-ui/tar.gz/13c3d3f9d54b20c1615dfba5fe7222b3f47f2a2d':
+    resolution: {gitHosted: true, integrity: sha512-ffx/8FhYkMDK9Tt4n6wxkYG6vdLaUMWRTXxRerV+l+UCHJRv+w7+/ANhDeuHwX26w2Nu2PzqDPe8YHvqewkwHw==, tarball: https://codeload.github.com/merqo-io/merqo-ui/tar.gz/13c3d3f9d54b20c1615dfba5fe7222b3f47f2a2d}
+    version: 0.63.0
     engines: {node: '>=24'}
     peerDependencies:
       '@eslint-community/eslint-plugin-eslint-comments': '>=4.8.1'
@@ -2683,6 +2683,12 @@ packages:
   clsx@2.1.1:
     resolution: {integrity: sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA==}
     engines: {node: '>=6'}
+
+  cmdk@1.1.1:
+    resolution: {integrity: sha512-Vsv7kFaXm+ptHDMZ7izaRsP70GgrW9NBNGswt9OZaVBLlE0SNpDq8eu/VGXyF9r7M0azK3Wy7OlYXsuyYLFzHg==}
+    peerDependencies:
+      react: ^18 || ^19 || ^19.0.0-rc
+      react-dom: ^18 || ^19 || ^19.0.0-rc
 
   color-convert@2.0.1:
     resolution: {integrity: sha512-RRECPsj7iu/xb5oKYcsFHSppFNnsj/52OVTRKb4zP5onXwVF3zVmmToNcOfGC+CRDpfK/U584fMg38ZHCaElKQ==}
@@ -5529,11 +5535,12 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@merqo/ui@https://codeload.github.com/merqo-io/merqo-ui/tar.gz/eaec999a51442ccab9ef0ad2f9fa89a7bf6dffaa(@eslint-community/eslint-plugin-eslint-comments@4.8.1(eslint@9.39.4(jiti@2.7.0)))(@playwright/test@1.61.1)(@supabase/ssr@0.10.3(@supabase/supabase-js@2.110.0))(@supabase/supabase-js@2.110.0)(@types/react@19.2.17)(eslint-plugin-sonarjs@4.2.2(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0))(next-themes@0.4.6(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(next@16.4.6(@babel/core@7.29.7)(@playwright/test@1.61.1)(@types/node@24.13.2)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(radix-ui@1.6.1(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sonner@1.7.4(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(tailwindcss@4.3.2)(zod@4.6.6)':
+  '@merqo/ui@https://codeload.github.com/merqo-io/merqo-ui/tar.gz/13c3d3f9d54b20c1615dfba5fe7222b3f47f2a2d(@eslint-community/eslint-plugin-eslint-comments@4.8.1(eslint@9.39.4(jiti@2.7.0)))(@playwright/test@1.61.1)(@supabase/ssr@0.10.3(@supabase/supabase-js@2.110.0))(@supabase/supabase-js@2.110.0)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(eslint-plugin-sonarjs@4.2.2(eslint@9.39.4(jiti@2.7.0)))(eslint@9.39.4(jiti@2.7.0))(next-themes@0.4.6(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(next@16.4.6(@babel/core@7.29.7)(@playwright/test@1.61.1)(@types/node@24.13.2)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(radix-ui@1.6.1(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sonner@1.7.4(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(tailwindcss@4.3.2)(zod@4.6.6)':
     dependencies:
       '@icons-pack/react-simple-icons': 13.13.0(react@19.2.7)
       class-variance-authority: 0.7.1
       clsx: 2.1.1
+      cmdk: 1.1.1(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       driver.js: 1.8.0
       lucide-react: 0.468.0(react@19.2.7)
       next-themes: 0.4.6(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
@@ -5557,6 +5564,7 @@ snapshots:
       zod: 4.6.6
     transitivePeerDependencies:
       - '@types/react'
+      - '@types/react-dom'
       - supports-color
 
   '@napi-rs/lzma-linux-x64-gnu@1.5.1':
@@ -7206,6 +7214,18 @@ snapshots:
       wrap-ansi: 6.2.0
 
   clsx@2.1.1: {}
+
+  cmdk@1.1.1(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7):
+    dependencies:
+      '@radix-ui/react-compose-refs': 1.1.3(@types/react@19.2.17)(react@19.2.7)
+      '@radix-ui/react-dialog': 1.1.18(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@radix-ui/react-id': 1.1.2(@types/react@19.2.17)(react@19.2.7)
+      '@radix-ui/react-primitive': 2.1.7(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      react: 19.2.7
+      react-dom: 19.2.7(react@19.2.7)
+    transitivePeerDependencies:
+      - '@types/react'
+      - '@types/react-dom'
 
   color-convert@2.0.1:
     dependencies:

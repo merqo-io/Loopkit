@@ -208,7 +208,7 @@ export function Wheel({
         <defs>
           {/* Housing ring + hub read as metal, not a flat UI stroke. */}
           <radialGradient id={rimGradId} cx="35%" cy="30%" r="75%">
-            <stop offset="0%" stopColor={MECHANIC_ART.wheel.hexfbe8b8} />
+            <stop offset="0%" stopColor={MECHANIC_ART.wheel.wheelHighlight} />
             <stop offset="55%" stopColor="var(--color-gold)" />
             <stop
               offset="100%"
@@ -216,7 +216,7 @@ export function Wheel({
             />
           </radialGradient>
           <radialGradient id={hubGoldId} cx="35%" cy="30%" r="75%">
-            <stop offset="0%" stopColor={MECHANIC_ART.wheel.hexfff7e0} />
+            <stop offset="0%" stopColor={MECHANIC_ART.wheel.wheelSheen} />
             <stop offset="55%" stopColor="var(--color-gold)" />
             <stop
               offset="100%"
@@ -275,10 +275,10 @@ export function Wheel({
             const sx = 50 + 45 * Math.cos(midRad);
             const sy = 50 + 45 * Math.sin(midRad);
             const rewardTextClass = segment.reward
-              ? "fill-white"
-              : "fill-rose-950/70 dark:fill-white/80";
+              ? "fill-paper"
+              : "fill-art-wheel-loss-ink";
             const segmentTextClass = segment.color
-              ? "fill-white [paint-order:stroke] [stroke-linejoin:round] [stroke-width:2.5px] stroke-black/60"
+              ? "fill-paper [paint-order:stroke] [stroke-linejoin:round] [stroke-width:2.5px] stroke-paper-foreground/60"
               : rewardTextClass;
             return (
               <g key={segment.id}>
@@ -287,16 +287,16 @@ export function Wheel({
                   // A vendor-picked color (segment.color, the wheel color
                   // picker in setup-form.tsx) wins when set. Otherwise:
                   // reward segments read as an unambiguous "win" color
-                  // (emerald, not the low-contrast muted-gold this used to
-                  // be) against a clearly "not this one" muted-rose for
+                  // (success green, not the low-contrast muted-gold this used to
+                  // be) against a clearly "not this one" muted rose for
                   // non-reward segments — the two need to be tellable
                   // apart at a glance, not just on close inspection.
                   {...(segment.color
                     ? { fill: segment.color }
                     : {
                         className: segment.reward
-                          ? "fill-emerald-500 dark:fill-emerald-400"
-                          : "fill-rose-400/70 dark:fill-rose-500/60",
+                          ? "fill-success"
+                          : "fill-art-wheel-loss",
                       })}
                   // Gold dividers, not a background-colored gap — real
                   // contrast, ties to the rim's own gold housing.
@@ -350,13 +350,13 @@ export function Wheel({
         // otherwise paint over the pointer's lower half.
         className="absolute inset-x-0 -top-1.5 z-10 flex justify-center"
         style={{
-          filter: MECHANIC_ART.wheel.c_drop_shadow_0_1px_1_5px_rgb_0_0_0_0_4,
+          filter: MECHANIC_ART.wheel.dropShadow,
         }}
       >
         <svg width="16" height="15" viewBox="0 0 16 15" aria-hidden="true">
           <defs>
             <linearGradient id={`${uid}-pointer`} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor={MECHANIC_ART.wheel.hexfbe8b8} />
+              <stop offset="0%" stopColor={MECHANIC_ART.wheel.wheelHighlight} />
               <stop offset="100%" stopColor="var(--color-gold)" />
             </linearGradient>
           </defs>

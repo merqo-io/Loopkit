@@ -44,7 +44,7 @@ export function FlameComposite({
         cx={cx + seeded(seed, -w * 0.7, w * 0.7)}
         cy={baseY - seeded(seed + 0.5, h * 1.1, h * 1.9)}
         r={seeded(seed + 0.25, 0.7, 1.6)}
-        fill={MECHANIC_ART.flame.hexffdd88}
+        fill={MECHANIC_ART.flame.yellow2}
         style={{
           animationDelay: `${seeded(seed + 0.75, 0, 2)}s`,
           animationDuration: `${seeded(seed + 0.1, 1.1, 2)}s`,
@@ -131,7 +131,7 @@ export function LargeFlameComposite({
         cx={cx + seeded(seed, -10, 10)}
         cy={baseY - seeded(seed + 0.5, 18, 36)}
         r={seeded(seed + 0.25, 0.9, 1.8)}
-        fill={MECHANIC_ART.flame.hexffdd88}
+        fill={MECHANIC_ART.flame.yellow2}
         style={{
           animationDelay: `${seeded(seed + 0.75, 0, 2.2)}s`,
           animationDuration: `${seeded(seed + 0.1, 1.2, 2.1)}s`,
@@ -149,7 +149,7 @@ export function LargeFlameComposite({
         className="motion-safe:animate-flame-smoke-drift"
         d={`M${sx - 3} ${baseY - 34} C${sx - 6} ${baseY - 44} ${sx + 4} ${baseY - 50} ${sx} ${baseY - 60}
             C${sx + 5} ${baseY - 52} ${sx - 2} ${baseY - 44} ${sx + 2} ${baseY - 34} Z`}
-        fill={MECHANIC_ART.flame.hex9ca3af}
+        fill={MECHANIC_ART.flame.ash}
         style={{
           animationDelay: `${seeded(seed + 0.5, 0, 4)}s`,
           animationDuration: `${seeded(seed + 0.25, 3.5, 5.5)}s`,
@@ -165,20 +165,20 @@ export function LargeFlameComposite({
           <feGaussianBlur stdDeviation={2.4} />
         </filter>
         <linearGradient id={outerId} x1="0" y1="1" x2="0" y2="0">
-          <stop offset="0%" stopColor={MECHANIC_ART.flame.hex7f1d1d} />
-          <stop offset="45%" stopColor={MECHANIC_ART.flame.hexea580c} />
-          <stop offset="100%" stopColor={MECHANIC_ART.flame.hexfde047} />
+          <stop offset="0%" stopColor={MECHANIC_ART.flame.crimson} />
+          <stop offset="45%" stopColor={MECHANIC_ART.flame.orange2} />
+          <stop offset="100%" stopColor={MECHANIC_ART.flame.yellow3} />
         </linearGradient>
         <linearGradient id={coreId} x1="0" y1="1" x2="0" y2="0">
-          <stop offset="0%" stopColor={MECHANIC_ART.flame.hexf97316} />
-          <stop offset="100%" stopColor={MECHANIC_ART.flame.hexfffbeb} />
+          <stop offset="0%" stopColor={MECHANIC_ART.flame.orange1} />
+          <stop offset="100%" stopColor={MECHANIC_ART.flame.glow2} />
         </linearGradient>
       </defs>
       {smokePuffs}
       <path
         className="motion-safe:animate-flame-glow-pulse"
         d={flameCur(cx, baseY, 34, 17)}
-        fill={MECHANIC_ART.flame.hexf97316}
+        fill={MECHANIC_ART.flame.orange1}
         opacity={0.5}
         filter={`url(#${glowId})`}
         style={{ animationDuration: `${seeded(70, 1.6, 2.4)}s` }}
@@ -200,7 +200,7 @@ export function LargeFlameComposite({
         className="motion-safe:animate-flame-wisp-drift"
         d={`M${cx - 1} ${baseY - 24} C${cx - 3} ${baseY - 30} ${cx + 2} ${baseY - 33} ${cx} ${baseY - 40}
             C${cx + 3} ${baseY - 34} ${cx + 1} ${baseY - 29} ${cx + 1.5} ${baseY - 23} Z`}
-        fill={MECHANIC_ART.flame.hexfde047}
+        fill={MECHANIC_ART.flame.yellow3}
         opacity={0.4}
         style={{
           animationDuration: `${seeded(73, 2, 3)}s`,
